@@ -1,0 +1,1629 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4139baa6-d57c-47ae-a839-05da53cec30e}</UniqueIdentifier>
+      <Extensions>.cpp</Extensions>
+    </Filter>
+    <Filter Include="Source Files\frontend">
+      <UniqueIdentifier>{b94eed57-e29b-4831-8e66-74054a4e94ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\frontend\Menu">
+      <UniqueIdentifier>{866c15fc-d242-4318-8363-c9755f37867d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\frontend\Book">
+      <UniqueIdentifier>{c8cdf6a4-2093-4488-b757-f00d9b3c0971}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Character AI">
+      <UniqueIdentifier>{9005c27a-aeed-4c42-8f0e-760b881b9183}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Character AI\beaky">
+      <UniqueIdentifier>{8ec55e6a-76fa-4894-a1ae-d8108d53cd97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Vehicles">
+      <UniqueIdentifier>{b9f08a43-e41c-4854-bb21-485fd9da132c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Bosses">
+      <UniqueIdentifier>{b12e5ae1-ff8e-482f-bf46-1e7b929b07f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Bosses\mechatweety">
+      <UniqueIdentifier>{2c5f6a13-6dd9-448d-b9b4-e070f8628997}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Bosses\WestBoss">
+      <UniqueIdentifier>{0e316fdf-37b9-461b-84e5-8d4bbe96f08c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Bosses\ZooBoss">
+      <UniqueIdentifier>{58f88424-c507-4e72-a4a8-c4c3f93582bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Multiplayer">
+      <UniqueIdentifier>{47797393-516b-4387-a0bf-efda33a3b473}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Power-ups">
+      <UniqueIdentifier>{7d506794-f378-4338-9594-d2e63b49ad14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Effects">
+      <UniqueIdentifier>{b0200f40-ca1c-46d0-80f3-45ad8314cf11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Environment">
+      <UniqueIdentifier>{275d9738-2778-444e-a1e9-8ae69321ba17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Special Case">
+      <UniqueIdentifier>{48f0939d-19c5-4b78-88b2-2fdc7e29c97b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Camera">
+      <UniqueIdentifier>{646b94b8-1204-4118-8dfc-8837437b4b0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Physics">
+      <UniqueIdentifier>{a39ca539-b57a-48dc-926f-649f95897cfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\System">
+      <UniqueIdentifier>{b342f156-2ecd-49c6-bbe8-e1a39fad3552}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{a9954921-3968-418c-b155-71319eb50913}</UniqueIdentifier>
+      <Extensions>.h</Extensions>
+    </Filter>
+    <Filter Include="Header Files\frontend headers">
+      <UniqueIdentifier>{c2a49fb3-3a27-4722-bcbf-34b667596778}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\frontend headers\Menu Headers">
+      <UniqueIdentifier>{f34521dd-4a2c-4b93-888d-c9542a3aba2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\frontend headers\Book headers">
+      <UniqueIdentifier>{a39d2734-4ea4-4454-8d7b-1e9206c65b50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Character AI Headers">
+      <UniqueIdentifier>{1fd11b56-66c4-4c43-82ae-28090bd5056b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Character AI Headers\beaky headers">
+      <UniqueIdentifier>{ecf8d2fb-255a-47f2-ad6c-4d30fe1a58e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Vehicle Headers">
+      <UniqueIdentifier>{d70e96c8-8548-43ca-a7d8-a85e13eeecb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Boss Headers">
+      <UniqueIdentifier>{f89f3a92-0602-4b03-b22c-f84fbd3f110e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Boss Headers\mechatweety headers">
+      <UniqueIdentifier>{83ec1b53-f7e7-4bc8-965e-3362006dcb76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Boss Headers\WestBoss headers">
+      <UniqueIdentifier>{8112059a-6772-4fb6-bd4e-8151c5d5f2c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Boss Headers\ZooBoss headers">
+      <UniqueIdentifier>{455edb42-37ed-468d-b05f-2ddd7932a16d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Multiplayer Headers">
+      <UniqueIdentifier>{296c9651-6fc9-4978-ab5b-2214cdff7134}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Power-up Headers">
+      <UniqueIdentifier>{70374188-c411-4678-9758-a334e6adf5ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Effects Headers">
+      <UniqueIdentifier>{05b3ac68-7b9c-4541-aa6b-793ae2a0d55f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Effects Headers\Shadows">
+      <UniqueIdentifier>{e629abde-f8f3-43de-9cbf-1d240a443f8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Environment Headers">
+      <UniqueIdentifier>{a7e76fcf-6693-42f7-8694-9a4f1b3a1f15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Special Case Headers">
+      <UniqueIdentifier>{16fdd748-05a4-4408-a276-ef5d2fed3a4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Camera Headers">
+      <UniqueIdentifier>{7c0657ce-7482-455c-821c-39afb0eba77f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Physics Headers">
+      <UniqueIdentifier>{47590734-d4f9-4354-bf74-4019bdc24055}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\System Headers">
+      <UniqueIdentifier>{e63cfdea-96d5-49d5-ada8-94e3d309ba0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Misc">
+      <UniqueIdentifier>{48efa268-c3c4-4ffe-bf8f-d6514a2a460e}</UniqueIdentifier>
+      <Extensions>.txt</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="audiomenu.cpp">
+      <Filter>Source Files\frontend\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="credits.cpp">
+      <Filter>Source Files\frontend\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="extrasmenu.cpp">
+      <Filter>Source Files\frontend\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="frontendmenu.cpp">
+      <Filter>Source Files\frontend\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="gallerymenu.cpp">
+      <Filter>Source Files\frontend\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="optionsmenu.cpp">
+      <Filter>Source Files\frontend\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="recordsmenu.cpp">
+      <Filter>Source Files\frontend\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="startgamemenu.cpp">
+      <Filter>Source Files\frontend\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="twoplayermenu.cpp">
+      <Filter>Source Files\frontend\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="BookList.cpp">
+      <Filter>Source Files\frontend\Book</Filter>
+    </ClCompile>
+    <ClCompile Include="CheckBox.cpp">
+      <Filter>Source Files\frontend\Book</Filter>
+    </ClCompile>
+    <ClCompile Include="HealthBar.cpp">
+      <Filter>Source Files\frontend\Book</Filter>
+    </ClCompile>
+    <ClCompile Include="Icon.cpp">
+      <Filter>Source Files\frontend\Book</Filter>
+    </ClCompile>
+    <ClCompile Include="PaperBook.cpp">
+      <Filter>Source Files\frontend\Book</Filter>
+    </ClCompile>
+    <ClCompile Include="popup.cpp">
+      <Filter>Source Files\frontend\Book</Filter>
+    </ClCompile>
+    <ClCompile Include="Slider.cpp">
+      <Filter>Source Files\frontend\Book</Filter>
+    </ClCompile>
+    <ClCompile Include="Spinner.cpp">
+      <Filter>Source Files\frontend\Book</Filter>
+    </ClCompile>
+    <ClCompile Include="Table.cpp">
+      <Filter>Source Files\frontend\Book</Filter>
+    </ClCompile>
+    <ClCompile Include="TextBox.cpp">
+      <Filter>Source Files\frontend\Book</Filter>
+    </ClCompile>
+    <ClCompile Include="TextFX.cpp">
+      <Filter>Source Files\frontend\Book</Filter>
+    </ClCompile>
+    <ClCompile Include="death.cpp">
+      <Filter>Source Files\frontend</Filter>
+    </ClCompile>
+    <ClCompile Include="frontendanimation.cpp">
+      <Filter>Source Files\frontend</Filter>
+    </ClCompile>
+    <ClCompile Include="frontendcamera.cpp">
+      <Filter>Source Files\frontend</Filter>
+    </ClCompile>
+    <ClCompile Include="frontendmain.cpp">
+      <Filter>Source Files\frontend</Filter>
+    </ClCompile>
+    <ClCompile Include="langaugeanimation.cpp">
+      <Filter>Source Files\frontend</Filter>
+    </ClCompile>
+    <ClCompile Include="languagemain.cpp">
+      <Filter>Source Files\frontend</Filter>
+    </ClCompile>
+    <ClCompile Include="ResetTutorial.cpp">
+      <Filter>Source Files\frontend</Filter>
+    </ClCompile>
+    <ClCompile Include="secretsmenu.cpp">
+      <Filter>Source Files\frontend</Filter>
+    </ClCompile>
+    <ClCompile Include="tutorial.cpp">
+      <Filter>Source Files\frontend</Filter>
+    </ClCompile>
+    <ClCompile Include="volume.cpp">
+      <Filter>Source Files\frontend</Filter>
+    </ClCompile>
+    <ClCompile Include="buzzard.cpp">
+      <Filter>Source Files\Character AI\beaky</Filter>
+    </ClCompile>
+    <ClCompile Include="buzzardscripts.cpp">
+      <Filter>Source Files\Character AI\beaky</Filter>
+    </ClCompile>
+    <ClCompile Include="alligator.cpp">
+      <Filter>Source Files\Character AI</Filter>
+    </ClCompile>
+    <ClCompile Include="anvilgang.cpp">
+      <Filter>Source Files\Character AI</Filter>
+    </ClCompile>
+    <ClCompile Include="apes.cpp">
+      <Filter>Source Files\Character AI</Filter>
+    </ClCompile>
+    <ClCompile Include="bears.cpp">
+      <Filter>Source Files\Character AI</Filter>
+    </ClCompile>
+    <ClCompile Include="bjshellac.cpp">
+      <Filter>Source Files\Character AI</Filter>
+    </ClCompile>
+    <ClCompile Include="constructionbot.cpp">
+      <Filter>Source Files\Character AI</Filter>
+    </ClCompile>
+    <ClCompile Include="constructionworker.cpp">
+      <Filter>Source Files\Character AI</Filter>
+    </ClCompile>
+    <ClCompile Include="doggy.cpp">
+      <Filter>Source Files\Character AI</Filter>
+    </ClCompile>
+    <ClCompile Include="genericai.cpp">
+      <Filter>Source Files\Character AI</Filter>
+    </ClCompile>
+    <ClCompile Include="minerbot.cpp">
+      <Filter>Source Files\Character AI</Filter>
+    </ClCompile>
+    <ClCompile Include="museumguard.cpp">
+      <Filter>Source Files\Character AI</Filter>
+    </ClCompile>
+    <ClCompile Include="nastycan.cpp">
+      <Filter>Source Files\Character AI</Filter>
+    </ClCompile>
+    <ClCompile Include="securitybot.cpp">
+      <Filter>Source Files\Character AI</Filter>
+    </ClCompile>
+    <ClCompile Include="shark.cpp">
+      <Filter>Source Files\Character AI</Filter>
+    </ClCompile>
+    <ClCompile Include="taskforce.cpp">
+      <Filter>Source Files\Character AI</Filter>
+    </ClCompile>
+    <ClCompile Include="tazcatcher.cpp">
+      <Filter>Source Files\Character AI</Filter>
+    </ClCompile>
+    <ClCompile Include="tribalchief.cpp">
+      <Filter>Source Files\Character AI</Filter>
+    </ClCompile>
+    <ClCompile Include="tweety.cpp">
+      <Filter>Source Files\Character AI</Filter>
+    </ClCompile>
+    <ClCompile Include="zookeeper.cpp">
+      <Filter>Source Files\Character AI</Filter>
+    </ClCompile>
+    <ClCompile Include="atlasphere.cpp">
+      <Filter>Source Files\Vehicles</Filter>
+    </ClCompile>
+    <ClCompile Include="floorpolisher.cpp">
+      <Filter>Source Files\Vehicles</Filter>
+    </ClCompile>
+    <ClCompile Include="hovercraft.cpp">
+      <Filter>Source Files\Vehicles</Filter>
+    </ClCompile>
+    <ClCompile Include="minecart.cpp">
+      <Filter>Source Files\Vehicles</Filter>
+    </ClCompile>
+    <ClCompile Include="pneumaticplunger.cpp">
+      <Filter>Source Files\Vehicles</Filter>
+    </ClCompile>
+    <ClCompile Include="rocketbike.cpp">
+      <Filter>Source Files\Vehicles</Filter>
+    </ClCompile>
+    <ClCompile Include="trolley.cpp">
+      <Filter>Source Files\Vehicles</Filter>
+    </ClCompile>
+    <ClCompile Include="vehicles.cpp">
+      <Filter>Source Files\Vehicles</Filter>
+    </ClCompile>
+    <ClCompile Include="crateattack.cpp">
+      <Filter>Source Files\Bosses\mechatweety</Filter>
+    </ClCompile>
+    <ClCompile Include="electricityattack.cpp">
+      <Filter>Source Files\Bosses\mechatweety</Filter>
+    </ClCompile>
+    <ClCompile Include="mechatweety.cpp">
+      <Filter>Source Files\Bosses\mechatweety</Filter>
+    </ClCompile>
+    <ClCompile Include="mtweetymagnet.cpp">
+      <Filter>Source Files\Bosses\mechatweety</Filter>
+    </ClCompile>
+    <ClCompile Include="mtweetyscripts.cpp">
+      <Filter>Source Files\Bosses\mechatweety</Filter>
+    </ClCompile>
+    <ClCompile Include="redshield.cpp">
+      <Filter>Source Files\Bosses\mechatweety</Filter>
+    </ClCompile>
+    <ClCompile Include="rocketscience.cpp">
+      <Filter>Source Files\Bosses\mechatweety</Filter>
+    </ClCompile>
+    <ClCompile Include="tazbossitems.cpp">
+      <Filter>Source Files\Bosses\mechatweety</Filter>
+    </ClCompile>
+    <ClCompile Include="tweetytransporter.cpp">
+      <Filter>Source Files\Bosses\mechatweety</Filter>
+    </ClCompile>
+    <ClCompile Include="BrickDisplay.cpp">
+      <Filter>Source Files\Bosses\WestBoss</Filter>
+    </ClCompile>
+    <ClCompile Include="GolfBar.cpp">
+      <Filter>Source Files\Bosses\WestBoss</Filter>
+    </ClCompile>
+    <ClCompile Include="WestBoss.cpp">
+      <Filter>Source Files\Bosses\WestBoss</Filter>
+    </ClCompile>
+    <ClCompile Include="WestBossExp.cpp">
+      <Filter>Source Files\Bosses\WestBoss</Filter>
+    </ClCompile>
+    <ClCompile Include="ZooBoss.cpp">
+      <Filter>Source Files\Bosses\ZooBoss</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>Source Files\Bosses</Filter>
+    </ClCompile>
+    <ClCompile Include="bossgamecontinue.cpp">
+      <Filter>Source Files\Bosses</Filter>
+    </ClCompile>
+    <ClCompile Include="CityBoss.cpp">
+      <Filter>Source Files\Bosses</Filter>
+    </ClCompile>
+    <ClCompile Include="tazboss1.cpp">
+      <Filter>Source Files\Bosses</Filter>
+    </ClCompile>
+    <ClCompile Include="destruct.cpp">
+      <Filter>Source Files\Multiplayer</Filter>
+    </ClCompile>
+    <ClCompile Include="diner.cpp">
+      <Filter>Source Files\Multiplayer</Filter>
+    </ClCompile>
+    <ClCompile Include="multiplayer.cpp">
+      <Filter>Source Files\Multiplayer</Filter>
+    </ClCompile>
+    <ClCompile Include="race.cpp">
+      <Filter>Source Files\Multiplayer</Filter>
+    </ClCompile>
+    <ClCompile Include="Tournament.cpp">
+      <Filter>Source Files\Multiplayer</Filter>
+    </ClCompile>
+    <ClCompile Include="bubblegum.cpp">
+      <Filter>Source Files\Power-ups</Filter>
+    </ClCompile>
+    <ClCompile Include="chillipepper.cpp">
+      <Filter>Source Files\Power-ups</Filter>
+    </ClCompile>
+    <ClCompile Include="hiccup.cpp">
+      <Filter>Source Files\Power-ups</Filter>
+    </ClCompile>
+    <ClCompile Include="invisibletaz.cpp">
+      <Filter>Source Files\Power-ups</Filter>
+    </ClCompile>
+    <ClCompile Include="superburp.cpp">
+      <Filter>Source Files\Power-ups</Filter>
+    </ClCompile>
+    <ClCompile Include="superburpeffect.cpp">
+      <Filter>Source Files\Power-ups</Filter>
+    </ClCompile>
+    <ClCompile Include="aircon.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="cartoonscaling.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="cheesegun.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="clouds.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="costumes.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="decals.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="eating.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="effects.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="electrocution.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="envmap.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="explode.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="fade.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="fire.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="Fireball.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="fireworks.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="Flies.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="flocking.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="footalign.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="Glare.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="glowaroundplinth.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="haar.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="halo.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="holysmoke.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="laser.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="lightning.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="lights.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="mirrorball.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="MonitorFX.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="PageItemFX.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="phoneboxeffect.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="polyeffects.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="PongDust.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="postcard.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="precipitation.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="rapperblast.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="rumble.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="securitybox.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="shadow.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="shatter.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="shockwave.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="sparks.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="spineffect.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="tarbubble.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="tartantaz.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="thoughtbubble.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="thwap.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="transportereffect.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="VideoFX.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="voodoocloud.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="voodoospelleffect.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="waterfall.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="waterrings.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="watersplash.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="zzz.cpp">
+      <Filter>Source Files\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="arrow.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="breakables.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="bumper.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="clangerreset.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="destructibles.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="doors.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="escalator.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="fallingobjects.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="famethrowa.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="floorpolisherwantedposter.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="foodrandomiser.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="fountain.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="fountainextrasystem.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="ice.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="lava.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="magnet.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="mailbox.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="musicandsavagebeasts.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="phonebox.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="portal.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="projectile.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="scenicobjects.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="slides.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="speedboost.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="splatobjects.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="springyobjects.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="steppingstone.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="swingingobjects.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="tiltingobjects.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="transporter.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="tumbleweed.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="wantedposter.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="water.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="zapper.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="snowball.cpp">
+      <Filter>Source Files\Special Case</Filter>
+    </ClCompile>
+    <ClCompile Include="special.cpp">
+      <Filter>Source Files\Special Case</Filter>
+    </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>Source Files\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="cameracase.cpp">
+      <Filter>Source Files\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="cutscene.cpp">
+      <Filter>Source Files\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="KOScam.cpp">
+      <Filter>Source Files\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="quakecam.cpp">
+      <Filter>Source Files\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="smashcamera.cpp">
+      <Filter>Source Files\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="collision.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="collisioncache.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="physics.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="actors.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="animation.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="attach.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="characters.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheats.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="chrisscene.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="claudescene.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="collectibles.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Colour.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="control.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="countdown.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="debris.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="debug.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="demo.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="display.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="endgamecredits.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="endoflevelstats.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="events.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="files.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="font.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="GlobalSettings.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="gui.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="health.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="highscores.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="invisibleobjects.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="LinkedList.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="map.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="mapfile.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="maths.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="MemCard.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="mouse.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="music.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="objectviewer.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="ParseMap.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="paths.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="pause.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="PhilScene.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="playerstats.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="prompt.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Rectangle.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="scene.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="sfx.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="sonystuff.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="splashscreen.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="status.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="subtitle.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="textures.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="timer.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="tonyscene.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="trail.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="trigger.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="util.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Vec.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="audiomenu.h">
+      <Filter>Header Files\frontend headers\Menu Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="credits.h">
+      <Filter>Header Files\frontend headers\Menu Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="extrasmenu.h">
+      <Filter>Header Files\frontend headers\Menu Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="frontendmenu.h">
+      <Filter>Header Files\frontend headers\Menu Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="gallerymenu.h">
+      <Filter>Header Files\frontend headers\Menu Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="optionsmenu.h">
+      <Filter>Header Files\frontend headers\Menu Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="recordsmenu.h">
+      <Filter>Header Files\frontend headers\Menu Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="startgamemenu.h">
+      <Filter>Header Files\frontend headers\Menu Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="twoplayermenu.h">
+      <Filter>Header Files\frontend headers\Menu Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="BookList.h">
+      <Filter>Header Files\frontend headers\Book headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CheckBox.h">
+      <Filter>Header Files\frontend headers\Book headers</Filter>
+    </ClInclude>
+    <ClInclude Include="HealthBar.h">
+      <Filter>Header Files\frontend headers\Book headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Icon.h">
+      <Filter>Header Files\frontend headers\Book headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PaperBook.h">
+      <Filter>Header Files\frontend headers\Book headers</Filter>
+    </ClInclude>
+    <ClInclude Include="popup.h">
+      <Filter>Header Files\frontend headers\Book headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Slider.h">
+      <Filter>Header Files\frontend headers\Book headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Spinner.h">
+      <Filter>Header Files\frontend headers\Book headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Table.h">
+      <Filter>Header Files\frontend headers\Book headers</Filter>
+    </ClInclude>
+    <ClInclude Include="TextBox.h">
+      <Filter>Header Files\frontend headers\Book headers</Filter>
+    </ClInclude>
+    <ClInclude Include="TextFX.h">
+      <Filter>Header Files\frontend headers\Book headers</Filter>
+    </ClInclude>
+    <ClInclude Include="death.h">
+      <Filter>Header Files\frontend headers</Filter>
+    </ClInclude>
+    <ClInclude Include="frontendanimation.h">
+      <Filter>Header Files\frontend headers</Filter>
+    </ClInclude>
+    <ClInclude Include="frontendcamera.h">
+      <Filter>Header Files\frontend headers</Filter>
+    </ClInclude>
+    <ClInclude Include="frontendmain.h">
+      <Filter>Header Files\frontend headers</Filter>
+    </ClInclude>
+    <ClInclude Include="languageanimation.h">
+      <Filter>Header Files\frontend headers</Filter>
+    </ClInclude>
+    <ClInclude Include="languagemain.h">
+      <Filter>Header Files\frontend headers</Filter>
+    </ClInclude>
+    <ClInclude Include="secretsmenu.h">
+      <Filter>Header Files\frontend headers</Filter>
+    </ClInclude>
+    <ClInclude Include="tutorial.h">
+      <Filter>Header Files\frontend headers</Filter>
+    </ClInclude>
+    <ClInclude Include="volume.h">
+      <Filter>Header Files\frontend headers</Filter>
+    </ClInclude>
+    <ClInclude Include="buzzard.h">
+      <Filter>Header Files\Character AI Headers\beaky headers</Filter>
+    </ClInclude>
+    <ClInclude Include="buzzardscripts.h">
+      <Filter>Header Files\Character AI Headers\beaky headers</Filter>
+    </ClInclude>
+    <ClInclude Include="alligator.h">
+      <Filter>Header Files\Character AI Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="anvilgang.h">
+      <Filter>Header Files\Character AI Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="apes.h">
+      <Filter>Header Files\Character AI Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="bears.h">
+      <Filter>Header Files\Character AI Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="bjshellac.h">
+      <Filter>Header Files\Character AI Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="constructionbot.h">
+      <Filter>Header Files\Character AI Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="constructionworker.h">
+      <Filter>Header Files\Character AI Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="doggy.h">
+      <Filter>Header Files\Character AI Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="genericai.h">
+      <Filter>Header Files\Character AI Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="minerbot.h">
+      <Filter>Header Files\Character AI Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="museumguard.h">
+      <Filter>Header Files\Character AI Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="nastycan.h">
+      <Filter>Header Files\Character AI Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="securitybot.h">
+      <Filter>Header Files\Character AI Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="shark.h">
+      <Filter>Header Files\Character AI Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="taskforce.h">
+      <Filter>Header Files\Character AI Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="tazcatcher.h">
+      <Filter>Header Files\Character AI Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="tribalchief.h">
+      <Filter>Header Files\Character AI Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="tweety.h">
+      <Filter>Header Files\Character AI Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="zookeeper.h">
+      <Filter>Header Files\Character AI Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="atlassphere.h">
+      <Filter>Header Files\Vehicle Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="floorpolisher.h">
+      <Filter>Header Files\Vehicle Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="hovercraft.h">
+      <Filter>Header Files\Vehicle Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="minecart.h">
+      <Filter>Header Files\Vehicle Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="pneumaticplunger.h">
+      <Filter>Header Files\Vehicle Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="rocketbike.h">
+      <Filter>Header Files\Vehicle Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="trolley.h">
+      <Filter>Header Files\Vehicle Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="vehicles.h">
+      <Filter>Header Files\Vehicle Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="crateattack.h">
+      <Filter>Header Files\Boss Headers\mechatweety headers</Filter>
+    </ClInclude>
+    <ClInclude Include="electricityattack.h">
+      <Filter>Header Files\Boss Headers\mechatweety headers</Filter>
+    </ClInclude>
+    <ClInclude Include="mechatweety.h">
+      <Filter>Header Files\Boss Headers\mechatweety headers</Filter>
+    </ClInclude>
+    <ClInclude Include="mtweetymagnet.h">
+      <Filter>Header Files\Boss Headers\mechatweety headers</Filter>
+    </ClInclude>
+    <ClInclude Include="mtweetyscripts.h">
+      <Filter>Header Files\Boss Headers\mechatweety headers</Filter>
+    </ClInclude>
+    <ClInclude Include="redshield.h">
+      <Filter>Header Files\Boss Headers\mechatweety headers</Filter>
+    </ClInclude>
+    <ClInclude Include="rocketscience.h">
+      <Filter>Header Files\Boss Headers\mechatweety headers</Filter>
+    </ClInclude>
+    <ClInclude Include="tazbossitems.h">
+      <Filter>Header Files\Boss Headers\mechatweety headers</Filter>
+    </ClInclude>
+    <ClInclude Include="tweetytransporter.h">
+      <Filter>Header Files\Boss Headers\mechatweety headers</Filter>
+    </ClInclude>
+    <ClInclude Include="BrickDisplay.h">
+      <Filter>Header Files\Boss Headers\WestBoss headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GolfBar.h">
+      <Filter>Header Files\Boss Headers\WestBoss headers</Filter>
+    </ClInclude>
+    <ClInclude Include="WestBoss.h">
+      <Filter>Header Files\Boss Headers\WestBoss headers</Filter>
+    </ClInclude>
+    <ClInclude Include="WestBossExp.h">
+      <Filter>Header Files\Boss Headers\WestBoss headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ZooBoss.h">
+      <Filter>Header Files\Boss Headers\ZooBoss headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss.h">
+      <Filter>Header Files\Boss Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="bossgamecontinue.h">
+      <Filter>Header Files\Boss Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CityBoss.h">
+      <Filter>Header Files\Boss Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="tazboss1.h">
+      <Filter>Header Files\Boss Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="destruct.h">
+      <Filter>Header Files\Multiplayer Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="diner.h">
+      <Filter>Header Files\Multiplayer Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="multiplayer.h">
+      <Filter>Header Files\Multiplayer Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="race.h">
+      <Filter>Header Files\Multiplayer Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="tournament.h">
+      <Filter>Header Files\Multiplayer Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="bubblegum.h">
+      <Filter>Header Files\Power-up Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="chillipepper.h">
+      <Filter>Header Files\Power-up Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="hiccup.h">
+      <Filter>Header Files\Power-up Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="invisibletaz.h">
+      <Filter>Header Files\Power-up Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="superburp.h">
+      <Filter>Header Files\Power-up Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="superburpeffect.h">
+      <Filter>Header Files\Power-up Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="shadow.h">
+      <Filter>Header Files\Effects Headers\Shadows</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadowExtra.h">
+      <Filter>Header Files\Effects Headers\Shadows</Filter>
+    </ClInclude>
+    <ClInclude Include="aircon.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="cartoonscaling.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="cheesegun.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="clouds.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Colour.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="costumes.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="decals.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="eating.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="effects.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="electrocution.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="envmap.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="explode.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="fade.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="fire.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Fireball.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="fireworks.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Flies.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="flocking.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="footalign.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Glare.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="glowaroundplinth.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="haar.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="halo.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="holysmoke.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="laser.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="lightning.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="lights.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="mirrorball.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PageItemFX.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="phoneboxeffect.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="polyeffects.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PongDust.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="postcard.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="precipitation.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="rapperblast.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="rumble.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="securitybox.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="shatter.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="shockwave.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="sparks.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="spineffect.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="tarbubble.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="tartantaz.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="thoughtbubble.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="thwap.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="transportereffect.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="VideoFX.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="voodoocloud.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="voodoospelleffect.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="waterfall.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="waterrings.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="watersplash.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="zzz.h">
+      <Filter>Header Files\Effects Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="arrow.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="breakables.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="bumper.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="clangerreset.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="destructibles.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="doors.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="escalator.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="fallingobjects.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="famethrowa.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="floorpolisherwantedposter.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="foodrandomiser.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="fountain.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="fountainextrasystem.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ice.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="lava.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="magnet.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="mailbox.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="musicandsavagebeasts.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="phonebox.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="portal.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="projectile.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="scenicobjects.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="slides.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="speedboost.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="splatobjects.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="springyobjects.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="steppingstone.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="swingingobjects.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="tiltingobjects.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="transporter.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="tumbleweed.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="wantedposter.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="water.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="zapper.h">
+      <Filter>Header Files\Environment Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="MonitorFX.h">
+      <Filter>Header Files\Special Case Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="snowball.h">
+      <Filter>Header Files\Special Case Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="special.h">
+      <Filter>Header Files\Special Case Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>Header Files\Camera Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="cameracase.h">
+      <Filter>Header Files\Camera Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="cutscene.h">
+      <Filter>Header Files\Camera Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="KOScam.h">
+      <Filter>Header Files\Camera Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="quakecam.h">
+      <Filter>Header Files\Camera Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="smashcamera.h">
+      <Filter>Header Files\Camera Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="collision.h">
+      <Filter>Header Files\Physics Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="collisioncache.h">
+      <Filter>Header Files\Physics Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="physics.h">
+      <Filter>Header Files\Physics Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="actors.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="animation.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="attach.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="characters.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheats.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="chrisscene.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="claudescene.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="collectibles.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="consoleWindow.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="control.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="countdown.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="debris.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="debug.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="demo.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="display.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Dungeon.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="endgamecredits.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="endoflevelstats.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="events.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="files.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="font.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="global.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalSettings.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="gui.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="health.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="highscores.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="invisibleobjects.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="LinkedList.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="LoopArray.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="map.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="mapfile.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="maths.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Windows\me.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="MemCard.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="mouse.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="music.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="objectviewer.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ParseMap.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="paths.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="pause.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PhilScene.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="playerstats.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="prompt.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Rectangle.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="scene.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="sfx.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="sonystuff.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="splashscreen.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Stack.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="status.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="subtitle.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="taz.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="text.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="text2.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="textures.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="timer.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="tonyscene.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="trail.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="trigger.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="util.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Vec.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="XboxStrings.h">
+      <Filter>Header Files\System Headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="main.txt">
+      <Filter>Misc</Filter>
+    </Text>
+    <Text Include="ReleaseLog.txt">
+      <Filter>Misc</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="main.xls">
+      <Filter>Misc</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\Usr\Local\sce\ee\lib\app.cmd" />
+    <CustomBuild Include="..\..\Usr\Local\sce\ee\lib\crt0.s" />
+  </ItemGroup>
+</Project>

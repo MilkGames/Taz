@@ -1,0 +1,2093 @@
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// This file is part of Taz: Wanted, © 2001 Blitz Games Ltd.
+//
+//      File : PageItemFX.cpp
+//   Purpose : Special effects for page items
+// Component : Taz
+//		Info : // PP: Come to me, My Pretties!!
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+#include "global.h"				// PP: global stuff
+#include "main.h"				// PP: main stuff
+#include "TextBox.h"			// PP: Text box page-item - displays a text string
+#include "util.h"				// PP: general utility functions
+// PP: #include "VideoFX.h"			// PP: Video effects - motion blur, defocus, whatever.  Top-of-the-Pops-TASTIC, Mate!
+#include "TextFX.h"				// PP: Text effects, eg. button glyphs, coloured text
+#include "Icon.h"				// PP: icon effects
+#include "PageItemFX.h"			// PP: Special effects for page items
+#include "display.h"			// PP: provide basic display setup and managment functions
+#include "quakecam.h"
+#include "stack.h"// PP: TEMP
+
+
+/* PP: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+													PAGEITEMEFFECT methods
+
+					Base class for effect parasites that influence the drawing of the PAGEITEMs to which they belong.
+
+											book > pages > rows > items > *EFFECTS*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PAGEITEMEFFECT::setMode
+	Purpose 	: set the mode of the effect
+	Parameters 	: mode for effect (see PIEMode enum PIEMODE_...)
+	Returns 	: this
+	Info 		: // PP: this gets called (with the appropriate mode) whenever the effect is started
+*/
+PAGEITEMEFFECT* PAGEITEMEFFECT::setMode(const PIEMode modeIn)
+{
+	this->mode=modeIn;
+
+	// PP: effect has not finished running yet
+	this->finished=false;
+
+	return this;
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PAGEITEMEFFECT::init
+	Purpose 	: initialise the effect
+	Parameters 	: 
+	Returns 	: 
+	Info 		: 
+*/
+void PAGEITEMEFFECT::init(void)
+{
+	// PP: no delay on starting the effect
+	this->delay=0.0f;
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PAGEITEMEFFECT::init2
+	Purpose 	: initialise the effect
+	Parameters 	: ptr to the PAGEITEM to which this effect belongs and upon which it will act,
+					mode for effect (see PIEMode enum PIEMODE_...)
+	Returns 	: 
+	Info 		: // PP: called init2 (rather than init) to prevent inheritance hoy that I don't understand
+*/
+void PAGEITEMEFFECT::init2(PAGEITEM* const itemIn, const PIEMode modeIn)
+{
+	// PP: set item
+	this->item=itemIn;// PP: Might be handy to have a virtual setItem method??
+	
+	// PP: NOTE: setMode is virtual
+	this->setMode(modeIn);
+}
+
+
+/* PP: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+														PIE_FADE methods
+
+							PAGEITEMEFFECT subclass that alpha-fades its PAGEITEM into or out of view.
+
+				This is one of the first PAGEITEMEFFECT subclasses, and a good starting point I'm sure you'll agree.
+
+											book > pages > rows > items > *EFFECTS*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+/* PP: NOTE:
+
+If you're going to be using fades, you'll have to ensure that opacity gets properly inherited all the way down the page hierarchy.
+At the moment it doesn't, but it wouldn't be a huge task to make it do so.
+
+Since I'm planning to move Taz's text & overlays away from fades anyway (they're not cartoony),
+I can't be bothered looking into it right now.
+
+Next game maybe!
+
+*/
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_FADE::setMode
+	Purpose 	: set the mode of the effect
+	Parameters 	: mode for effect (see PIEMode enum PIEMODE_...)
+	Returns 	: (PAGEITEMEFFECT*)this
+	Info 		: this overrides PAGEITEMEFFECT::setMode
+*/
+
+// PP: default speed for a PIE_SLIDE effect
+#define PIESLIDE_DEFAULT_SPEED			1200.0f
+
+PAGEITEMEFFECT* PIE_FADE::setMode(const PIEMode modeIn)
+{
+	PAGEITEMEFFECT::setMode(modeIn);
+
+	if(this->mode == PIEMODE_ENTER)
+	{
+		// PP: fading in: start from complete transparency	// PP: (temp, gie's a sodding chance, would ye?!)
+		this->opacity=0.0f;
+	}
+	else// PP: PIEMODE_EXIT or PIEMODE_ON
+	{
+		// PP: maximum opacity	// PP: (temp, gie's a sodding chance, would ye?!)
+		this->opacity=this->maxOpacity;
+	}
+
+	// PP: update item's opacity
+	this->item->opacity=this->opacity;
+
+	return (PAGEITEMEFFECT*)this;
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_FADE::init
+	Purpose 	: initialise the effect
+	Parameters 	: 
+	Returns 	: 
+	Info 		: this overrides PAGEITEMEFFECT::init
+*/
+void PIE_FADE::init(void)
+{
+	PAGEITEMEFFECT::init();
+
+// PP: default duration for a page-item fade effect, in seconds
+#define PIEFADE_DEFAULT_DURATION			0.3f
+
+// PP: default max opacity for a page-item fade effect (full opacity)
+#define PIEFADE_DEFAULT_MAX_OPACITY			1.0f
+
+	// PP: set default fade time for the effect
+	this->duration=PIEFADE_DEFAULT_DURATION;
+
+	// PP: well, you can see what this line does
+	this->maxOpacity=PIEFADE_DEFAULT_MAX_OPACITY;
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_FADE::update
+	Purpose 	: update the effect
+	Parameters 	: 
+	Returns 	: true if finished, else false
+	Info 		: this overrides PAGEITEMEFFECT::update
+*/
+bool PIE_FADE::update(void)
+{
+	if(this->finished)
+	{
+		return true;
+	}
+
+	if(this->mode == PIEMODE_ENTER)
+	{
+		// PP: fading in
+		this->opacity += (rawFTime/this->duration);
+
+		if(this->opacity >= this->maxOpacity)
+		{
+			this->opacity=this->maxOpacity;
+			this->finished=true;
+		}
+	}
+	else if(this->mode == PIEMODE_EXIT)
+	{
+		// PP: fading out
+		this->opacity -= (rawFTime/this->duration);
+
+		if(this->opacity <= 0.0f)
+		{
+			this->opacity=0.0f;
+			this->finished=true;
+		}
+	}
+	else// PP: on
+	{
+		this->finished=true;
+	}
+
+	// PP: LOOK: this effect works by talking to its item's 'opacity' member.  Groovy.
+	// PP: A frog is looking at you from under the water.
+	this->item->opacity=this->opacity;
+
+	// PP: bkPrintf("PIE_FADE: setting item's opacity to %5.2f\n", this->item->opacity);
+
+	return this->finished;
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_FADE::shutdown
+	Purpose 	: shut-down the effect
+	Parameters 	: 
+	Returns 	: 
+	Info 		: this overrides PAGEITEMEFFECT::shutdown, to return its item to full opacity
+*/
+void PIE_FADE::shutdown(void)
+{
+	// PP: return item to full opacity
+	this->item->opacity=1.0f;// PP: yes, FULL opacity, not this->maxOpacity
+
+	// PP: perform base-class shutdown
+	PAGEITEMEFFECT::shutdown();
+}
+
+
+/* PP: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+														PIE_SLIDE methods
+
+							PAGEITEMEFFECT subclass that 'slides' its PAGEITEM onto or off of the screen.
+
+				This is one of the first PAGEITEMEFFECT subclasses, and a good starting point I'm sure you'll agree.
+
+														> rows > items
+										  book > pages					> *EFFECTS*
+														> free items
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_SLIDE::setMode
+	Purpose 	: set the mode of the effect
+	Parameters 	: mode for effect (see PIEMode enum PIEMODE_...)
+	Returns 	: (PAGEITEMEFFECT*)this
+	Info 		: this overrides PAGEITEMEFFECT::setMode
+*/
+
+// PP: default speed for a PIE_SLIDE effect
+#define PIESLIDE_DEFAULT_SPEED			1200.0f
+
+PAGEITEMEFFECT* PIE_SLIDE::setMode(const PIEMode modeIn)
+{
+	PAGEITEMEFFECT::setMode(modeIn);
+
+	// PP: **** NOTE THAT DIRECTION IS NOT SET HERE - WE WOULDN'T WANT TO OVERRIDE A PREVIOUS setDir CALL ****
+
+	this->accel=0.0f;
+
+	if(this->mode == PIEMODE_ENTER)
+	{
+		// PP: going to slide into view from offstage...
+
+		this->speed=PIESLIDE_DEFAULT_SPEED;			// PP: pixels/sec
+
+		// PP: negative source offset in direction of interest
+		this->srcOffset=float(-videoMode.xScreen);
+		this->destOffset=0.0f;
+	}
+	else if(this->mode == PIEMODE_EXIT)
+	{
+		// PP: going to slide out of view from onstage...
+
+		this->speed=PIESLIDE_DEFAULT_SPEED;			// PP: pixels/sec
+
+		// PP: positive target offset in direction of interest
+		this->srcOffset=0.0f;
+		this->destOffset=float(videoMode.xScreen);
+	}
+	else if(this->mode == PIEMODE_ON)
+	{
+		// PP: TEMP TEST
+		this->speed=PIESLIDE_DEFAULT_SPEED;			// PP: pixels/sec
+		this->srcOffset=this->destOffset=0.0f;
+	}
+
+	this->offset=this->srcOffset;
+
+	return (PAGEITEMEFFECT*)this;
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_SLIDE::setDir
+	Purpose 	: set the direction of the slide
+	Parameters 	: slide direction (PIESLIDEDIR_..., see PIESlideDir enum)
+	Returns 	: this
+	Info 		: 
+*/
+PIE_SLIDE* PIE_SLIDE::setDir(const PIESlideDir dirIn)
+{
+	// PP: set effect's axis and its direction along that axis...
+
+	this->axis=((dirIn&1)==0);
+	this->dir=((dirIn&2)?(-1):1);
+
+	// PP: on the axis on which the PIE_SLIDE is NOT sliding, there is no offset
+	this->xyOffset[this->axis^1]=0.0f;
+
+	return this;
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_SLIDE::init
+	Purpose 	: initialise the effect
+	Parameters 	: 
+	Returns 	: 
+	Info 		: this overrides PAGEITEMEFFECT::init
+*/
+void PIE_SLIDE::init(void)
+{
+	PAGEITEMEFFECT::init();
+
+// PP: default direction for a PIE_SLIDE effect
+#define PIESLIDE_DEFAULT_DIRECTION		PIESLIDEDIR_LEFT
+
+	// PP: set up effect defaults...
+	this->setDir(PIESLIDE_DEFAULT_DIRECTION);
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_SLIDE::update
+	Purpose 	: update the effect
+	Parameters 	: 
+	Returns 	: true if finished, else false
+	Info 		: this overrides PAGEITEMEFFECT::update
+*/
+bool PIE_SLIDE::update(void)
+{
+	if(this->finished)
+	{
+		return true;
+	}
+
+	this->offset += (this->speed * rawFTime);
+
+	this->speed += (this->accel * rawFTime);
+
+	if(this->offset > this->destOffset)
+	{
+		this->offset = this->destOffset;
+		this->finished=true;
+	}
+
+	this->xyOffset[this->axis]=this->offset*this->dir;
+
+	return this->finished;
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_SLIDE::draw
+	Purpose 	: draw the effect
+	Parameters 	: 
+	Returns 	: 
+	Info 		: this overrides PAGEITEMEFFECT::draw
+*/
+void PIE_SLIDE::draw(void)
+{
+	// PP: apply translation matrix to offset the item as appropriate, then draw the item
+
+	TBMatrix	transMat;
+	TBMatrix	objMat;
+	TBMatrix	finalMat;
+
+	bmMatTranslate(transMat, this->xyOffset[X], this->xyOffset[Y], 0.0f);
+
+	// PP: have the pageitem alter the object matrix ready to draw
+	this->item->startDraw();
+
+	// PP: now multiply-in our screen-space offset matrix
+	bdGetObjectMatrix(objMat);
+	bmMatMultiply(finalMat, transMat, objMat);// PP: not sure about the ordering here
+
+	bdSetObjectMatrix(finalMat);
+
+	// PP: draw the item's background and border if it has them
+	this->item->drawBackgroundAndBorder();
+
+	// PP: draw the item
+	//this->item->drawWithoutEffect();
+	this->item->mainDraw();
+
+	// PP: end the draw; restore object matrix to state before the item started to draw
+	this->item->endDraw();
+}
+
+/* JW: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+														PIE_ZOOM methods
+
+							PAGEITEMEFFECT subclass that scales its PAGEITEM into or out of the screen.
+
+														> rows > items
+										  book > pages					> *EFFECTS*
+														> free items
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_ZOOM::setMode
+	Purpose 	: set the mode of the effect
+	Parameters 	: mode for effect (see PIEMode enum PIEMODE_...)
+	Returns 	: (PAGEITEMEFFECT*)this
+	Info 		: // PP: this overrides PAGEITEMEFFECT::setMode
+*/
+PAGEITEMEFFECT* PIE_ZOOM::setMode(const PIEMode modeIn)
+{
+	bkPrintf("zoom setmode %d\n", modeIn);
+
+	PAGEITEMEFFECT::setMode(modeIn);
+
+	this->scale = this->originalScale;
+
+	this->speed = this->originalSpeed;
+
+	return (PAGEITEMEFFECT*)this;
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_SLIDE::setDir
+	Purpose 	: set the direction of the slide
+	Parameters 	: slide direction (PIESLIDEDIR_..., see PIESlideDir enum)
+	Returns 	: this
+	Info 		: 
+*/
+PIE_ZOOM* PIE_ZOOM::setSpeed(const float speed)
+{
+	this->originalSpeed = speed;
+
+	return this;
+}
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_SLIDE::setAccel
+	Purpose 	: set the direction of the slide
+	Parameters 	: slide direction (PIESLIDEDIR_..., see PIESlideDir enum)
+	Returns 	: this
+	Info 		: 
+*/
+PIE_ZOOM* PIE_ZOOM::setAccel(const float accel)
+{
+	this->accel = accel;
+
+	return this;
+}
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_ZOOM::setTarget
+	Purpose 	: sets the target size of the zoom effetc
+	Parameters 	: zoom target
+	Returns 	: this
+	Info 		: if the speed of the zoom is positive this will be the final size of the item, if it's negative the item will start at this scale
+*/
+
+PIE_ZOOM* PIE_ZOOM::setOrigin(const float origin)
+{
+	this->originalScale = origin;
+
+	return this;
+}
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_ZOOM::setTarget
+	Purpose 	: sets the target size of the zoom effetc
+	Parameters 	: zoom target
+	Returns 	: this
+	Info 		: if the speed of the zoom is positive this will be the final size of the item, if it's negative the item will start at this scale
+*/
+
+PIE_ZOOM* PIE_ZOOM::setTarget(const float target)
+{
+	this->target = target;
+
+	return this;
+}
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_ZOOM::init
+	Purpose 	: initialise the effect
+	Parameters 	: 
+	Returns 	: 
+	Info 		: this overrides PAGEITEMEFFECT::init
+*/
+void PIE_ZOOM::init(void)
+{
+	// PP: base-class initialisation
+	PAGEITEMEFFECT::init();
+	
+	// effect defaults...
+
+// default target for a PIE_ZOOM effect
+#define PIEZOOM_DEFAULT_TARGET		1.0f
+// default target for a PIE_ZOOM effect
+#define PIEZOOM_DEFAULT_ORIGIN		0.0f
+// default acceleration for a PIE_ZOOM effect
+#define PIEZOOM_DEFAULT_ACCEL		1.0f
+// default speed for a PIE_ZOOM effect
+#define PIEZOOM_DEFAULT_SPEED		1.0f
+
+	this->setAccel(PIEZOOM_DEFAULT_ACCEL);
+
+	this->setSpeed(PIEZOOM_DEFAULT_SPEED);
+
+	this->setOrigin(PIEZOOM_DEFAULT_ORIGIN);
+
+	this->setTarget(PIEZOOM_DEFAULT_TARGET);
+}
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_SLIDE::update
+	Purpose 	: update the effect
+	Parameters 	: 
+	Returns 	: true if finished, else false
+	Info 		: this overrides PAGEITEMEFFECT::update
+*/
+bool PIE_ZOOM::update(void)
+{
+	if(this->finished)
+	{
+		return true;
+	}
+
+	this->scale += (this->speed * rawFTime);
+
+	this->speed += (this->accel * rawFTime);
+
+	if(this->scale > this->target)
+	{
+		this->scale = this->target;
+		this->finished=true;
+
+		rumbleCam_explosion(&camera[0], gameStatus.player1->actorInstance.position, 2.5f);
+
+		PlaySample("thud.wav", 255);
+	}
+
+	return this->finished;
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_SLIDE::draw
+	Purpose 	: draw the effect
+	Parameters 	: 
+	Returns 	: 
+	Info 		: this overrides PAGEITEMEFFECT::draw
+*/
+void PIE_ZOOM::draw(void)
+{
+	// PP: apply translation matrix to offset the item as appropriate, then draw the item
+
+	TBMatrix	transMat;
+	TBMatrix	objMat;
+	TBMatrix	finalMat;
+
+	bmMatScale(transMat, this->scale, this->scale, this->scale);
+
+	// PP: have the pageitem alter the object matrix ready to draw
+	this->item->startDraw();
+
+	// PP: now multiply-in our screen-space offset matrix
+	bdGetObjectMatrix(objMat);
+	bmMatMultiply(finalMat, transMat, objMat);// PP: not sure about the ordering here
+
+	bdSetObjectMatrix(finalMat);
+
+	// PP: draw the item's background and border if it has them
+	this->item->drawBackgroundAndBorder();
+
+	// PP: draw the item
+	//this->item->drawWithoutEffect();
+	this->item->mainDraw();
+
+	// PP: TEMP TEST
+	//this->item->mainDrawDebug();
+
+	// PP: end the draw; restore object matrix to state before the item started to draw
+	this->item->endDraw();
+}
+
+bool PIE_ZOOM::getState()
+{
+	return this->finished;
+}
+
+
+/* PP: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+														PIE_FLASH
+
+								ON-mode PAGEITEMEFFECT subclass that makes its PAGEITEM flash.
+
+											book > pages > rows > items > *EFFECTS*
+
+														@pie_flash
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_FLASH::setInterval
+	Purpose 	: set the time interval between flashes (seconds)
+	Parameters 	: the time interval between flashes (seconds)
+	Returns 	: (PAGEITEMEFFECT*)this
+	Info 		: 
+*/
+PAGEITEMEFFECT* PIE_FLASH::setInterval(const float intervalIn)
+{
+	this->interval=intervalIn;
+
+	return this;
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_FLASH::setMode
+	Purpose 	: set the mode of the effect
+	Parameters 	: mode for effect (see PIEMode enum PIEMODE_...)
+	Returns 	: (PAGEITEMEFFECT*)this
+	Info 		: this overrides PAGEITEMEFFECT::setMode
+*/
+PAGEITEMEFFECT* PIE_FLASH::setMode(const PIEMode modeIn)
+{
+	PAGEITEMEFFECT::setMode(modeIn);
+
+	this->timer=0.0f;
+
+	return (PAGEITEMEFFECT*)this;
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_FLASH::init
+	Purpose 	: initialise the effect
+	Parameters 	: 
+	Returns 	: 
+	Info 		: this overrides PAGEITEMEFFECT::init
+*/
+void PIE_FLASH::init(void)
+{
+	PAGEITEMEFFECT::init();
+
+#define PIEFLASH_DEFAULT_INTERVAL		0.7f
+
+	this->setInterval(PIEFLASH_DEFAULT_INTERVAL);
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_FLASH::update
+	Purpose 	: update the effect
+	Parameters 	: 
+	Returns 	: true if finished, else false
+	Info 		: this overrides PAGEITEMEFFECT::update
+*/
+bool PIE_FLASH::update(void)
+{
+	PAGEITEMEFFECT::update();
+
+	this->on=(bmFMod(this->timer, this->interval)<(this->interval/2.0f));
+
+	if(this->on)
+	{
+		this->item->opacity=1.0f;
+	}
+	else
+	{
+		this->item->opacity=0.5f;
+	}
+
+	this->timer += rawFTime;
+
+	return this->finished;
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_FLASH::draw
+	Purpose 	: draw the effect
+	Parameters 	: 
+	Returns 	: 
+	Info 		: this overrides PAGEITEMEFFECT::draw
+*/
+/*void PIE_FLASH::draw(void)
+{
+	if(this->on)
+	{
+		this->item->drawWithoutEffect();
+	}
+}*/
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_FLASH::shutdown
+	Purpose 	: shut-down the effect
+	Parameters 	: 
+	Returns 	: 
+	Info 		: this overrides PAGEITEMEFFECT::shutdown, to return its item to full opacity
+*/
+void PIE_FLASH::shutdown(void)
+{
+	// PP: return item to full opacity
+	this->item->opacity=1.0f;// PP: yes, FULL opacity, not this->maxOpacity
+
+	// PP: perform base-class shutdown
+	PAGEITEMEFFECT::shutdown();
+}
+
+
+/* PP: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+															TEXT_PIE
+
+					Base-class for PAGEITEMEFFECT subclasses that manipulate the characters in a TEXTBOX.
+
+														> rows > items
+										  book > pages					> *EFFECTS*
+														> free items
+
+															@text_pie
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+
+// PP: information held by the effect about each character in the textbox
+struct TEXTPIE_CHARINFO
+{
+	TBVector2D		posOffset;
+	float			angOffset;
+
+	float			angOffsetSin;
+	float			angOffsetCos;
+
+}BALIGN16;
+
+
+#define TEXTPIE_PRECALC_SINE_AND_COSINE(_info) \
+		(_info)->angOffsetCos=bmCosApprox((_info)->angOffset); \
+		(_info)->angOffsetSin=bmSinApprox((_info)->angOffset);
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: TEXT_PIE::init2
+	Purpose 	: initialise the effect
+	Parameters 	: ptr to the PAGEITEM to which this effect belongs and upon which it will act,
+					mode for effect (see PIEMode enum PIEMODE_...)
+	Returns 	: 
+	Info 		: this overrides PAGEITEMEFFECT::init2
+*/
+void TEXT_PIE::init2(PAGEITEM* const itemIn, const PIEMode modeIn)
+{
+	TEXTPIE_CHARINFO*		info;
+
+	// PP: base class init
+	PAGEITEMEFFECT::init2(itemIn, modeIn);
+
+	// PP: malloc character info
+	this->baseCharInfo=new TEXTPIE_CHARINFO[TEXTFX_STRING_LENGTH];
+
+	for(int i=this->getNumChars()-1; i>=0; i--)
+	{
+		info= &(this->baseCharInfo[i]);
+
+		// PP: zero offsets...
+
+		info->posOffset[X]=0.0f;
+		info->posOffset[Y]=0.0f;
+
+		// PP: zero angle...
+
+		info->angOffset=0.0f;
+		info->angOffsetSin=0.0f;
+		info->angOffsetCos=1.0f;
+	}
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: TEXT_PIE::processCharacter
+	Purpose 	: process one of the textbox's characters
+	Parameters 	: ptr to the first of the four verts forming the character,
+					index of the character
+	Returns 	: 
+	Info 		: called for each pass of each character by TextFX_escapeCallback
+					So, y'know, keep it lean.
+					This overrides PAGEITEMEFFECT::processCharacter.
+*/
+void TEXT_PIE::processCharacter(TBPrimVertex* const verts, const int polyIndex)
+{
+	TBVector2D				tempVec, tempVec2;
+	TBVector2D				firstVec;
+	TBVector2D				centrePos;
+	TEXTPIE_CHARINFO*		info;
+
+	float					inverseScale;
+	TBVector2D				posOffset;
+
+	BDVERTEX_GETX(&verts[0], centrePos[X]);
+	BDVERTEX_GETY(&verts[0], centrePos[Y]);	
+
+#define ADD_TO_CENTREPOS(_i) \
+	BDVERTEX_GETX(&verts[_i], tempVec[X]); \
+	BDVERTEX_GETY(&verts[_i], tempVec[Y]); \
+	bmVector2DAdd(centrePos, centrePos, tempVec);
+
+/*
+
+	// PP: BASE CENTRE
+
+	ADD_TO_CENTREPOS(2);
+
+	bmVector2DCDiv(centrePos, centrePos, 2.0f);
+
+/*/
+
+	// PP: TRUE CENTRE
+
+	ADD_TO_CENTREPOS(1);
+	ADD_TO_CENTREPOS(2);
+	ADD_TO_CENTREPOS(3);
+
+	bmVector2DCDiv(centrePos, centrePos, 4.0f);
+
+//*/
+
+	info= &(this->baseCharInfo[polyIndex]);
+	
+	BDVERTEX_GETX(&verts[0], firstVec[X]);
+	BDVERTEX_GETY(&verts[0], firstVec[Y]);
+
+	for(int i=0; i<4; i++)
+	{		
+		BDVERTEX_GETX(&verts[i], tempVec[X]);
+		BDVERTEX_GETY(&verts[i], tempVec[Y]);
+		
+		bmVector2DSub(tempVec2, tempVec, centrePos);
+		
+		tempVec[X]=(info->angOffsetCos*tempVec2[X])+(info->angOffsetSin*tempVec2[Y]);
+		tempVec[Y]=(info->angOffsetCos*tempVec2[Y])-(info->angOffsetSin*tempVec2[X]);
+		
+		bmVector2DAdd(tempVec2, tempVec, centrePos);
+
+		bmVector2DAdd(tempVec, tempVec2, info->posOffset);
+		
+		BDVERTEX_SETX(&verts[i], tempVec[X]);
+		BDVERTEX_SETY(&verts[i], tempVec[Y]);
+	}
+
+// PP: TODO: on PS2, gotter re-form the degenerate quads between the characters (think this might only be needed with bdPrintFontLite?)
+
+#if(BPLATFORM == PS2)
+
+/*	if(((TEXTBOX*)this->item)->quickPrint())
+	{
+		if(polyIndex > 0)
+		{
+			BDVERTEX_SETX(&verts[-1], firstVec[X]);
+			BDVERTEX_SETY(&verts[-1], firstVec[Y]);
+
+			BDVERTEX_SETX(&verts[-2], firstVec[X]);
+			BDVERTEX_SETY(&verts[-2], firstVec[Y]);
+
+			if(polyIndex < (this->getNumChars()-1))
+			{
+				BDVERTEX_SETX(&verts[4], tempVec[X]);
+				BDVERTEX_SETY(&verts[4], tempVec[Y]);
+
+				BDVERTEX_SETX(&verts[5], tempVec[X]);
+				BDVERTEX_SETY(&verts[5], tempVec[Y]);
+			}
+		}
+
+	}*/
+
+#endif// PP: (BPLATFORM == PS2)
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: TEXT_PIE::shutdown
+	Purpose 	: shut-down the effect
+	Parameters 	: 
+	Returns 	: 
+	Info 		: 
+*/
+void TEXT_PIE::shutdown(void)
+{
+	SAFE_DELETE(this->baseCharInfo);
+}
+
+
+/* PP: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+														PIE_TEXTLIFE
+
+			TEXT_PIE (PAGEITEMEFFECT) subclass for TEXTBOXes that adds some movement, or 'life', to the characters.
+							I haven't quite decided on the exact nature of the movement yet,
+								and even if I had it'd be likely to change at some point,
+										so I've used this generic name to save hassle.
+
+														> rows > items
+										  book > pages					> *EFFECTS*
+														> free items
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+
+// PP: information held by the effect about each character in the textbox
+struct TEXTLIFE_CHARINFO
+{
+	float			phase;
+	float			speed;
+
+}BALIGN16;
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_TEXTLIFE::init2
+	Purpose 	: initialise the effect
+	Parameters 	: ptr to the PAGEITEM to which this effect belongs and upon which it will act,
+					mode for effect (see PIEMode enum PIEMODE_...)
+	Returns 	: 
+	Info 		: this overrides TEXT_PIE::init2
+*/
+void PIE_TEXTLIFE::init2(PAGEITEM* const itemIn, const PIEMode modeIn)
+{
+	TEXTLIFE_CHARINFO*		info;
+
+	TEXT_PIE::init2(itemIn, modeIn);
+
+	// PP: malloc character info
+	this->charInfo=new TEXTLIFE_CHARINFO[TEXTFX_STRING_LENGTH];
+
+#define TEXTLIFE_MIN_SPEED			1.6f
+#define TEXTLIFE_MAX_SPEED			2.0f
+
+	for(int i=/*this->getNumChars()*/TEXTFX_STRING_LENGTH-1; i>=0; i--)// PP: TEXTFX_STRING_LENGTH is a good idea here cos string length may change after this init
+	{
+		info= &(this->charInfo[i]);
+
+		// PP: randomise phase offset
+		info->phase=bmRandf();
+
+		// PP: randomise speed
+		info->speed=TEXTLIFE_MIN_SPEED+(bmRandf()*(TEXTLIFE_MAX_SPEED-TEXTLIFE_MIN_SPEED));
+	}
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_TEXTLIFE::update
+	Purpose 	: update the effect
+	Parameters 	: 
+	Returns 	: true if finished, else false
+	Info 		: this overrides PAGEITEMEFFECT::update
+*/
+bool PIE_TEXTLIFE::update(void)
+{
+	// PP: TEMP TEST
+
+#define TEXTLIFE_ANGLE_RANGE		0.17f
+#define TEXTLIFE_RADIUS				25.0f
+
+	TEXTPIE_CHARINFO*		baseInfo;
+	TEXTLIFE_CHARINFO*		info;
+	float					tempFloat;
+
+	for(int i=this->getNumChars()-1; i>=0; i--)
+	{
+		baseInfo= &(this->baseCharInfo[i]);
+		info= &(this->charInfo[i]);
+
+		// PP: update character's phase...
+
+		info->phase += rawFTime*info->speed;
+
+		if(info->phase > 1.0f)
+		{
+			info->phase -= 1.0f;
+		}
+
+		if(info->phase > 0.5f)// PP: right
+		{
+			if(info->phase > 0.75f)// PP: down from right
+			{
+				tempFloat=1.0f-((info->phase-0.75f)/0.25f);
+			}
+			else// PP: up to right
+			{
+				tempFloat=((info->phase-0.5f)/0.25f);
+			}
+
+			baseInfo->angOffset=tempFloat*TEXTLIFE_ANGLE_RANGE;
+
+			TEXTPIE_PRECALC_SINE_AND_COSINE(baseInfo);
+
+			baseInfo->posOffset[X]=(-TEXTLIFE_RADIUS*baseInfo->angOffsetCos)+TEXTLIFE_RADIUS;
+			baseInfo->posOffset[Y]=(TEXTLIFE_RADIUS*baseInfo->angOffsetSin);
+		}
+		else// PP: left
+		{
+			if(info->phase > 0.25f)// PP: down from left
+			{
+				tempFloat=1.0f-((info->phase-0.25f)/0.25f);
+			}
+			else// PP: up to left
+			{
+				tempFloat=(info->phase/0.25f);
+			}
+
+			baseInfo->angOffset=tempFloat*(-TEXTLIFE_ANGLE_RANGE);
+
+			TEXTPIE_PRECALC_SINE_AND_COSINE(baseInfo);
+
+			baseInfo->posOffset[X]=(TEXTLIFE_RADIUS*baseInfo->angOffsetCos)-TEXTLIFE_RADIUS;
+			baseInfo->posOffset[Y]=(-TEXTLIFE_RADIUS*baseInfo->angOffsetSin);
+		}
+	}
+
+	return this->finished;
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_TEXTLIFE::shutdown
+	Purpose 	: shut-down the effect
+	Parameters 	: 
+	Returns 	: 
+	Info 		: this overrides TEXT_PIE::shutdown
+*/
+void PIE_TEXTLIFE::shutdown(void)
+{
+	SAFE_DELETE(this->charInfo);
+}
+
+
+/* PP: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+														PIE_TEXTEXPLODE
+
+			EXIT-mode TEXT_PIE (PAGEITEMEFFECT) subclass that makes a textbox explode, sending all the characters flying.
+
+														> rows > items
+										  book > pages					> *EFFECTS*
+														> free items
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+
+// PP: information held by the effect about each character in the textbox
+struct TEXTEXPLODE_CHARINFO
+{
+	TBVector2D		vel;
+	float			rotSpeed;
+
+}BALIGN16;
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_TEXTEXPLODE::PIE_TEXTEXPLODE 
+	Purpose 	: copy constructor
+	Parameters 	: ptr to PIE_TEXTEXPLODE to copy
+	Returns 	: 
+	Info 		: this overloads the implicit copy constructor, to reproduce malloced members
+*/
+/* PP: REMOUT: not yet	void PIE_TEXTEXPLODE::PIE_TEXTEXPLODE(const PIE_TEXTEXPLODE* const base)
+{
+
+}*/
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_TEXTEXPLODE::init2
+	Purpose 	: initialise the effect
+	Parameters 	: ptr to the PAGEITEM to which this effect belongs and upon which it will act,
+					mode for effect (see PIEMode enum PIEMODE_...)
+	Returns 	: 
+	Info 		: this overrides TEXT_PIE::init2
+*/
+void PIE_TEXTEXPLODE::init2(PAGEITEM* const itemIn, const PIEMode modeIn)
+{
+	TEXT_PIE::init2(itemIn, modeIn);
+
+	// PP: malloc character info
+	this->charInfo=new TEXTEXPLODE_CHARINFO[TEXTFX_STRING_LENGTH];
+
+	TEXTEXPLODE_CHARINFO*	info;
+
+	for(int i=/*this->getNumChars()*/TEXTFX_STRING_LENGTH-1; i>=0; i--)// PP: TEXTFX_STRING_LENGTH is a good idea here cos string length may change after this init
+	{
+		info= &this->charInfo[i];
+
+		// PP: give the character a random rotation speed/direction
+
+#define TEXTEXPLODE_MAX_ROTSPEED	48.0f// PP: radians/sec
+
+		info->rotSpeed=bmRandfSigned()*TEXTEXPLODE_MAX_ROTSPEED;
+
+		// PP: give the character a random velocity
+
+#define TEXTEXPLODE_MAX_SPEED		1000.0f
+
+		info->vel[X]=bmRandfSigned()*TEXTEXPLODE_MAX_SPEED;
+		info->vel[Y]=bmRandf/*Signed*/()*TEXTEXPLODE_MAX_SPEED;
+
+		// PP: TODO?: scale the velocity by the inverse of the draw scale and final font size of the text
+	}
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_TEXTEXPLODE::update
+	Purpose 	: update the effect
+	Parameters 	: 
+	Returns 	: true if finished, else false
+	Info 		: this overrides PAGEITEMEFFECT::update
+*/
+bool PIE_TEXTEXPLODE::update(void)
+{
+	// PP: update the flying characters' velocities, angles and positions...
+
+	TEXTPIE_CHARINFO*		baseInfo;
+	TEXTEXPLODE_CHARINFO*	info;
+
+	// PP: assume effect is finished till we discover otherwise
+	this->finished=true;
+
+	for(int i=this->getNumChars()-1; i>=0; i--)
+	{
+		info=		&this->charInfo[i];
+		baseInfo=	&this->baseCharInfo[i];
+
+		// PP: apply gravity
+
+#define TEXTEXPLODE_GRAVITY		(-1800.0f)			// PP: ?
+
+		info->vel[Y]+= (TEXTEXPLODE_GRAVITY*rawFTime);
+
+		baseInfo->posOffset[X] += (info->vel[X]*rawFTime);
+		baseInfo->posOffset[Y] += (info->vel[Y]*rawFTime);
+
+		// PP: check if character is still on screen
+		if(baseInfo->posOffset[Y] > (-videoMode.yScreen))
+		{
+			// PP: yes it might be: effect ain't finished then
+			this->finished=false;
+		}
+
+		baseInfo->angOffset+=(info->rotSpeed*rawFTime);
+
+		baseInfo->angOffset=Aabs(baseInfo->angOffset);
+
+		TEXTPIE_PRECALC_SINE_AND_COSINE(baseInfo);
+	}
+
+	return this->finished;
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_TEXTEXPLODE::shutdown
+	Purpose 	: shut-down the effect
+	Parameters 	: 
+	Returns 	: 
+	Info 		: 
+*/
+void PIE_TEXTEXPLODE::shutdown(void)
+{
+	SAFE_DELETE(this->charInfo);	
+}
+
+
+/* PP: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+															ORT_PIE
+
+	Base-class for PAGEITEMEFFECT subclasses that need to draw their PAGEITEMs to an offscreen render target as part of their effect.
+
+														> rows > items
+										  book > pages					> *EFFECTS*
+														> free items
+
+															@ort_pie
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+// PP: initialise static ORT_PIE members...
+ushort				ORT_PIE::numORTUsers=0;
+TBRenderTarget*		ORT_PIE::renderTarget=NULL;
+RENDERTARGETINFO	ORT_PIE::renderTargetInfo;
+bool				ORT_PIE::renderTargetLocked=false;
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: ORT_PIE::useORT
+	Purpose 	: register this effect as a user of the offscreen render target
+	Parameters 	: 
+	Returns 	: false if there was some problem (ie ORT creation failed), else true
+	Info 		: This'll get called when the effect starts
+					// PP: DANGER: ORT CREATION AND DELETION IS *REAL* *FUCKING* *SLOW* !!!!
+*/
+
+#define TIME_RT_CREATION		// PP: like it says on the tin
+
+#if (BPLATFORM==PS2)
+#define RENDER_TARGET_CREATION_FLAGS	BCREATERENDERTARGET_PRIVATEZ// PP: BCREATERENDERTARGET_LOCKABLE creates targets that badly leak/fragment memory - should maybe talk to tech team at some point
+#define RENDER_TARGET_COLOUR_DEPTH		16
+
+#define RENDER_TARGET_WIDTH				256
+#define RENDER_TARGET_HEIGHT			128
+
+#elif (BPLATFORM==PC)
+#define RENDER_TARGET_CREATION_FLAGS	BCREATERENDERTARGET_PRIVATEZ
+#define RENDER_TARGET_COLOUR_DEPTH		videoMode.bppScreen
+
+#define RENDER_TARGET_WIDTH				256// PP: 256
+#define RENDER_TARGET_HEIGHT			128// PP: 128
+
+#else
+#define RENDER_TARGET_CREATION_FLAGS	BCREATERENDERTARGET_PRIVATEZ
+#define RENDER_TARGET_COLOUR_DEPTH		32
+
+// PP: teehee eat my res
+#define RENDER_TARGET_WIDTH				640// PP: 256
+#define RENDER_TARGET_HEIGHT			480// PP: 128
+
+#endif// PP: (BPLATFORM==PS2)
+
+bool ORT_PIE::useORT(void)
+{
+	// PP: create the ORT if it doesn't exist...
+
+	if(ORT_PIE::renderTarget == NULL)
+	{
+#ifdef TIME_RT_CREATION
+		STARTTIMER;
+#endif// PP: TIME_RT_CREATION
+
+		// create a shared target with 16bit colour & 16bit Z
+		if (ORT_PIE::renderTarget = bdCreateRenderTarget(RENDER_TARGET_WIDTH, RENDER_TARGET_HEIGHT, RENDER_TARGET_COLOUR_DEPTH, RENDER_TARGET_COLOUR_DEPTH, RENDER_TARGET_CREATION_FLAGS))
+		{
+			// retrieve the dimensions and depths that were actually used
+			bdGetRenderTargetInfo(ORT_PIE::renderTarget,
+									&(ORT_PIE::renderTargetInfo.width),
+									&(ORT_PIE::renderTargetInfo.height),
+									&(ORT_PIE::renderTargetInfo.rgbDepth),
+									&(ORT_PIE::renderTargetInfo.zDepth));
+
+			bkPrintf("ORT_PIE::useORT: created render target successfully (%d*%d, %d bit RGB, %d bit Z)\n",
+				ORT_PIE::renderTargetInfo.width, ORT_PIE::renderTargetInfo.height, ORT_PIE::renderTargetInfo.rgbDepth, ORT_PIE::renderTargetInfo.zDepth);
+		}
+		else
+		{
+			bkPrintf("ORT_PIE::useORT: failed to create render target\n");
+
+			// PP: failure
+			return false;
+		}
+
+#ifdef TIME_RT_CREATION
+		ENDTIMER("ORT_PIE render target creation");
+#endif// PP: TIME_RT_CREATION
+	}
+
+	// PP: one more effect using the ORT
+	ORT_PIE::numORTUsers++;
+
+	// PP: success
+	return true;
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: ORT_PIE::releaseORT
+	Purpose 	: unregister this effect as a user of the offscreen render target
+	Parameters 	: 
+	Returns 	: 
+	Info 		: This'll get called when the effect finishes
+					// PP: DANGER: ORT CREATION AND DELETION IS *REAL* *FUCKING* *SLOW* !!!!
+*/
+void ORT_PIE::releaseORT(void)
+{
+	// PP: TEMP!!!
+	return;
+
+	// PP: one less effect using the ORT
+	ORT_PIE::numORTUsers--;
+
+	if(ORT_PIE::numORTUsers == 0)
+	{
+		// PP: free the ORT here
+
+		// PP: NOTE: It is essential that the specified render target not be current on any texture stage when deleted, if this occurs a crash is likely.
+
+		bdSetTexture(0, NULL);
+
+		bdDeleteRenderTarget(ORT_PIE::renderTarget);
+
+		ORT_PIE::renderTarget=NULL;
+	}
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: ORT_PIE::drawItemToORT
+	Purpose 	: draw the effect's item to the offscreen render target
+	Parameters 	: 
+	Returns 	: false if there was a problem (eg. ORT is locked for drawing by another ORT_PIE), else true
+	Info 		: // PP: TODO?: params like, um, blockyness, rotation etc?
+*/
+bool ORT_PIE::drawItemToORT(void)
+{
+	if(ORT_PIE::renderTargetLocked)
+	{
+		// PP: oops - render target is already being drawn to (presumably by the PAGEITEM containing this's PAGEITEM)
+
+		// PP: But that's not necessarily a bad thing -
+		// PP: maybe there's, like, a page whose effect requires it to draw itself AND ALL ITS CONTENTS to the ORT in a wunner.
+		// PP: In that case, let's just abort the effect draw of this sub-item, and instead draw it in the normal way.
+		// PP: It's the best thing we can do without allocating multiple render targets, which is not practical at all.
+
+		// PP: simply draw the pageitem in the normal way
+		this->item->drawWithoutEffect();
+
+		return false;
+	}
+
+	// PP: lock the ORT for drawing, so's no sub-items of this item try to use it for their own wee effects.
+	// PP: The little tykes - get out of it!!
+	ORT_PIE::renderTargetLocked=true;
+
+	pushRenderTarget(ORT_PIE::renderTarget, 255,255,255,0, 1.0f, BSETRENDERTARGET_CLEARRGB);
+
+	// PP: apply a scale matrix so's the item uses every bit of space available to it on the render target
+
+	TBMatrix		objMat;
+	TBMatrix		scaleMat;
+	TBVector2D		scale;
+
+	bdGetObjectMatrix(objMat);
+
+	scale[X]=videoMode.xScreen/this->item->optRect.width();
+	scale[Y]=videoMode.yScreen/this->item->optRect.height();
+
+	bmMatScale(scaleMat, scale[X], scale[Y], 0.0f);
+
+	bdSetObjectMatrix(scaleMat);
+
+	// PP: A'ight check dis.  Ya need da alpha framewrite massif.
+	SETFRAMEWRITE(rgbFramewriteChannels|BDFRAMEWRITE_ALPHA);
+
+	// PP: draw the item's background and border if it has them
+	this->item->drawBackgroundAndBorder();
+
+	this->item->mainDraw();
+
+	// PP: alpha framewrite off again - it's not a pretty thing to leave switched on
+	SETFRAMEWRITE(rgbFramewriteChannels);
+
+	bdSetObjectMatrix(objMat);
+
+	bdSetRenderTargetAsTexture(ORT_PIE::renderTarget, 0);
+
+	popRenderTarget();
+
+	// PP: a'ight, render target is free again now
+	ORT_PIE::renderTargetLocked=false;
+
+	// PP: success
+	return true;
+}
+
+
+/* PP: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+														PIE_SQUASHY
+
+				ORT_PIE (PAGEITEMEFFECT) subclass that makes its PAGEITEM behave like a cute squashy thing.
+									You'll want to take it home and give it a cuddle.
+
+														> rows > items
+										  book > pages					> *EFFECTS*
+														> free items
+
+														@pie_squashy
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+#define PIESQUASHY_START_ANG	1.0f		// PP: radians
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_SQUASHY::init2
+	Purpose 	: initialise the effect
+	Parameters 	: ptr to the PAGEITEM to which this effect belongs and upon which it will act,
+					mode for effect (see PIEMode enum PIEMODE_...)
+	Returns 	: 
+	Info 		: this overrides PAGEITEMEFFECT::init2
+*/
+void PIE_SQUASHY::init2(PAGEITEM* const itemIn, const PIEMode modeIn)
+{
+	PAGEITEMEFFECT::init2(itemIn, modeIn);
+
+	// PP: TEMP
+	this->dir= (bmRand()&1)?1:(-1);
+
+	// PP: MOVEME
+//	this->swingXOffset= this->dir*this->item->optRect.width()/2.0f;
+	this->swingAng= PIESQUASHY_START_ANG;// PP: this->swingAng= -this->dir*HALFPI;
+
+	// PP: TEMP
+	this->swingPos[0]=0.0f;
+	this->swingPos[1]=0.0f;
+
+	this->itemHalfWidth=this->item->optRect.width()/2.0f;
+
+	// PP: initialise nodes...
+
+	PIESQUASHYNODE*		node;
+	TBPrimVertex*		vert;
+
+	this->nodeLength=this->item->optRect.width()/float(PIESQUASHY_NUM_NODES-1);
+	this->nodeHalfHeight=this->item->optRect.height()/2.0f;
+	
+	vert= &this->verts[0];
+
+	for(int i=0; i<PIESQUASHY_NUM_NODES; i++)
+	{
+		node= &this->nodes[i];
+
+		node->realAng=this->swingAng;
+
+		if(i>0)
+		{
+			node->relativeAng=0.0f;
+		}
+		else
+		{
+			node->relativeAng=node->realAng;
+		}
+
+		node->relativeLength=1.0f;
+
+		node->mass=1.0f;
+
+		node->vel[0]=0.0f;
+		node->vel[1]=0.0f;
+
+		node->accel[0]=0.0f;
+		node->accel[1]=0.0f;
+
+//		node->realLength=node->relativeLength*this->nodeLength;
+
+//		node->height=this->nodeHalfHeight;
+
+		node->bulgeFactor= 1.0f-(ABS(i-(PIESQUASHY_NUM_NODES/2))/float(PIESQUASHY_NUM_NODES/2));
+
+		// PP: NOTE: WEIRD: this is the only time I can think of when you need to use 255 alpha for textured verts - must be a render target thang?
+
+		BDVERTEX_SETRGBA(vert, 128, 128, 128, 255);
+		BDVERTEX_SETUV(vert, i/float(PIESQUASHY_NUM_NODES-1), 0);
+
+		vert++;
+
+		BDVERTEX_SETRGBA(vert, 128, 128, 128, 255);
+		BDVERTEX_SETUV(vert, i/float(PIESQUASHY_NUM_NODES-1), 1);
+
+		vert++;
+	}
+
+	this->firstUpdate=true;
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_SQUASHY::update
+	Purpose 	: update the effect
+	Parameters 	: 
+	Returns 	: true if finished, else false
+	Info 		: this overrides PAGEITEMEFFECT::update
+*/
+
+#define PIESQUASHY_SWING_RADIUS			3.0f// PP: videoMode.yScreen
+
+bool PIE_SQUASHY::update(void)
+{
+#define PIESQUASHY_SWING_SPEED			2.6f	// PP: rads/sec
+
+	if((this->mode == PIEMODE_ENTER)/* || (this->mode == PIEMODE_ON)*/)
+	{
+		// PP: update swing angle
+		this->swingAng-=(PIESQUASHY_SWING_SPEED*rawFTime);// PP: this->swingAng+=(this->dir*PIESQUASHY_SWING_SPEED*rawFTime);
+
+		// PP: check for swing finishing
+		if((this->swingAng) < 0)// PP: if((this->swingAng*this->dir) > 0)
+		{
+			this->swingAng=0.0f;
+
+			// PP: TEMP	// PP: TODO: gonnie huftie wait for the squashing-about to settle before finishing (the ENTER stage of) the effect
+			// PP: REMOUT: TEMP TEST	this->finished=true;
+		}
+		
+		// PP: calculate swing pos...
+
+		this->swingPos[X]= PIESQUASHY_SWING_RADIUS*bmSinApprox(this->swingAng)-this->itemHalfWidth;
+		//this->swingPos[X]+=this->swingXOffset;
+
+		this->swingPos[Y]= (PIESQUASHY_SWING_RADIUS*bmCosApprox(this->swingAng))-PIESQUASHY_SWING_RADIUS;
+
+		// PP: TODO: CALCULATE PHYSICS...
+		// PP: CALCULATE VERT POSITIONS...
+
+		PIESQUASHYNODE		*node, *prevNode;
+		float				perpAng;
+		TBVector2D			vertOffset;				// PP: vert offset from node, can be negated to get other vert's offset
+		TBPrimVertex*		vert;
+		float				cos, sin;
+
+		this->nodes[0].realAng=this->swingAng;
+		bmVector2DCopy(this->nodes[0].pos, this->swingPos);
+		bmVector2DCopy(this->nodes[0].optPos, this->swingPos);
+
+//		prevNode= &this->nodes[0];
+
+		vert= &this->verts[0];
+
+		for(int i=0; i<PIESQUASHY_NUM_NODES; i++)
+		{
+			node= &this->nodes[i];
+			// PP: ~~~~~~~~~~~~~~~
+
+			// PP: irrelevant		node->realLength=node->relativeLength*this->nodeLength;
+
+			// PP: ANGLE & POSITION...
+
+			if(i>0)
+			{
+				perpAng=prevNode->realAng+HALFPI;
+
+				node->realAng=(prevNode->realAng)+(node->relativeAng);
+
+				node->optPos[X]=prevNode->pos[X]+(this->nodeLength*bmSinApprox(perpAng));
+				node->optPos[Y]=prevNode->pos[Y]+(this->nodeLength*bmCosApprox(perpAng));
+
+				// PP: TEmP TeST
+				//bmVector2DCopy(node->pos, node->optPos);
+				
+				// PP: VELOCITY...
+
+				if(this->firstUpdate)
+				{
+					bmVectorCopy(node->pos, node->optPos);
+				}
+				else
+				{
+					TBVector2D	tv;
+
+					// PP: calc a from s
+
+					bmVector2DSub(tv, node->optPos, node->pos);
+					bmVector2DCMul(node->accel, tv, 10.0f);
+					//works		bmVector2DCMul(node->vel, tv, 10.0f);
+
+					// PP: apply a to v
+
+					bmVector2DCMul(tv, node->accel, fTime);
+					bmVector2DAdd(node->vel, node->vel, tv);
+
+					// PP: apply v to p
+
+					bmVector2DCMul(tv, node->vel, fTime);// PP: damp
+					bmVector2DAdd(node->pos, node->pos, tv);
+
+					bmVector2DCMul(node->vel, node->vel, 0.95f);
+
+					// PP: get rel ang
+				// PP: REMOUT: TEMP TEST
+					
+					float	relAngDiff;
+					float	relAngCopy;
+
+					relAngCopy=node->relativeAng;
+
+					node->relativeAng=HALFPI-bmATan2Approx(node->pos[Y]-prevNode->pos[Y], node->pos[X]-prevNode->pos[X])-(prevNode->realAng+HALFPI);
+
+					relAngDiff=node->relativeAng-relAngCopy;
+
+					// PP: TEST!!!!!
+					//relAngDiff*=0.7f;
+
+					// PP: NEW:
+					// PP: NOW RUN THROUGH THE NODES AFTER THIS ONE, ROTATING THEM BY THE NEW realANg
+
+					PIESQUASHYNODE	*node2, *prevNode2;
+
+					prevNode2=prevNode;
+
+					VEC		tempVEC;
+
+					for(int j=i; j<PIESQUASHY_NUM_NODES; j++)
+					{
+						node2= &this->nodes[j];
+						
+						tempVEC=(VEC(node2->pos[X], node2->pos[Y])-VEC(node->pos[X], node->pos[Y])).rotateZ(relAngDiff);
+
+						node2->pos[X]=node->pos[X]+tempVEC[X];
+						node2->pos[Y]=node->pos[Y]+tempVEC[Y];
+
+						tempVEC=(VEC(node2->optPos[X], node2->optPos[Y])-VEC(node->pos[X], node->pos[Y])).rotateZ(relAngDiff);
+
+						node2->optPos[X]=node->pos[X]+tempVEC[X];
+						node2->optPos[Y]=node->pos[Y]+tempVEC[Y];
+					}
+				}
+			}
+
+			// PP: BULGE...
+
+#define PIESQUASHY_BULGE_FACTOR		4.0f
+
+			node->height= this->nodeHalfHeight+((1.0f-node->relativeLength)*(this->nodeHalfHeight)*(node->bulgeFactor)*PIESQUASHY_BULGE_FACTOR);
+
+			// PP: VERT POSITIONS...
+
+			vertOffset[X]=node->height*bmSinApprox(node->realAng);
+			vertOffset[Y]=node->height*bmCosApprox(node->realAng);
+
+			BDVERTEX_SETXYZW(vert, node->pos[X]+vertOffset[X], node->pos[Y]+vertOffset[Y], 0.0f, 1.0f);
+
+			vert++;
+
+			// PP: ~~~~~~~~~~~~~~~~~~~~~~~
+
+			vertOffset[X]= -vertOffset[X];
+			vertOffset[Y]= -vertOffset[Y];
+
+			BDVERTEX_SETXYZW(vert, node->pos[X]+vertOffset[X], node->pos[Y]+vertOffset[Y], 0.0f, 1.0f);
+
+			vert++;
+
+			// PP: ~~~~~~~
+			prevNode=node;
+		}
+
+		this->firstUpdate=false;
+	}
+	else if(this->mode == PIEMODE_EXIT)
+	{
+		// PP: nothing to do, so we're finished
+		this->finished=true;
+	}
+
+	// PP: TODO: ON & EXIT stages
+
+	return this->finished;
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIE_SQUASHY::draw
+	Purpose 	: draw the effect
+	Parameters 	: 
+	Returns 	: 
+	Info 		: this overrides PAGEITEMEFFECT::draw
+*/
+void PIE_SQUASHY::draw(void)
+{
+	int i;
+
+	// PP: draw the item to the offscreen render target, ready for texturing onto the mesh
+	if(!ORT_PIE::drawItemToORT())// PP: NOTE this sets ORT as current texture on stage 0
+	{
+		// PP: oops - render target is already being drawn to (presumably a PAGEITEM containing this's PAGEITEM)
+
+		// PP: well, drawItemToORT has already drawn the item in the normal way instead, so there's nothing more to do here
+
+		return;
+	}
+
+	// PP: get into scale & pos for drawing the item
+	this->item->startDraw();
+
+/*
+	// PP: TEMP TEST
+	//this->swingXOffset= this->dir*this->item->optRect.width()/2.0f;
+
+	// PP: TEMP...
+
+	TBPrimVertex	verts[4];
+	float			width, height;
+	TBVector2D		vertPos;
+	TBVector2D		tempPos;
+
+	width=this->item->optRect.width()/2.0f;
+	height=this->item->optRect.height()/2.0f;
+
+	for(int v=0; v<4; v++)
+	{
+		// PP: REAL TEMP
+		tempPos[X]=(((v&1)?1:(-1))*width);
+		tempPos[Y]=(((v/2)?(-1):1)*height);
+
+		bmVector2DAdd(vertPos, tempPos, this->swingPos);
+
+		//vertPos[X]-=this->swingXOffset;
+
+		BDVERTEX_SETRGBA(&verts[v], 128, 128, 128, 128);
+		BDVERTEX_SETUV(&verts[v], float(v&1), float(v/2));
+		BDVERTEX_SETXYZW(&verts[v], vertPos[X], vertPos[Y], 0.0f, 1.0f);
+		BDVERTEX_SETNORMAL(&verts[v], 0.0f, 0.0f, 0.0f);
+	}
+
+
+
+	bdDrawPrimitive(BDPRIMTYPE_TRIANGLESTRIP,verts,4,BVERTTYPE_SINGLE);
+
+//	this->item->mainDraw();
+
+/*/
+
+	// PP: ve'important you know
+	SETWRAP(CLAMP);
+
+	bdDrawPrimitive(BDPRIMTYPE_TRIANGLESTRIP,this->verts,PIESQUASHY_NUM_NODES*2,BVERTTYPE_SINGLE);
+
+	// PP: TEMP TEST
+	{
+		for(i=0; i<PIESQUASHY_NUM_NODES; i++)
+		{
+			utilDraw2DSprite(QwilsonTexture, this->nodes[i].optPos, this->item->optRect.height()*0.2f, 0.0f, 0.0f, GREEN);
+		}
+
+		for(i=0; i<PIESQUASHY_NUM_NODES; i++)
+		{
+			utilDraw2DSprite(QwilsonTexture, this->nodes[i].pos, this->item->optRect.height()*0.2f, 0.0f, 0.0f, LIGHTBLUE);
+		}
+	}
+
+//*/
+
+	// PP: restore scale & pos, having drawn the item
+	this->item->endDraw();
+}
+
+
+/* PP: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+														PIECHOOSER methods
+
+											Base class for pageitem effect choosers.
+							Effect choosers help choose the effects to use for the items on a page.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+
+// PP: PIECHOOSER base-class instance
+PIECHOOSER					basePIEChooser;
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIECHOOSER::itemEffect
+	Purpose 	: choose and initialise an appropriate effect for a general PAGEITEM
+	Parameters 	: ptr to item for which to choose effect, mode of effect (PIEMODE_...), 
+	Returns 	: 
+	Info 		: this base-class implementation chooses no effects
+*/
+void PIECHOOSER::itemEffect(struct TAG_PAGEITEM* const item, const PIEMode mode) const
+{
+	item->startEffect(NULL);
+
+	// PP: TODO: in subclasses, look at the members of the item such as 'selected' and 'highlighted' when deciding on an effect
+	// PP: maybe even consider screen position?  size?
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIECHOOSER::textboxEffect
+	Purpose 	: choose and initialise an appropriate effect for a TEXTBOX
+	Parameters 	: ptr to textbox for which to choose effect, mode of effect (PIEMODE_...), 
+	Returns 	: 
+	Info 		: this base-class implementation chooses no effects
+*/
+void PIECHOOSER::textboxEffect(TEXTBOX* const textbox, const PIEMode mode) const
+{
+	// PP: IMPORTANT: some PIECHOOSER subclasses might not override textboxEffect, in which case we should call their itemEffect override
+	this->itemEffect((PAGEITEM*)textbox, mode);
+
+	// PP: TODO: in subclasses, look at the members of the textbox such as 'style', 'selected' and 'highlighted' when deciding on an effect
+	// PP: maybe even consider screen position?  size?  wrapping?  selectability?
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIECHOOSER::iconEffect
+	Purpose 	: choose and initialise an appropriate effect for an ICON
+	Parameters 	: ptr to icon for which to choose effect, mode of effect (PIEMODE_...), 
+	Returns 	: 
+	Info 		: this base-class implementation chooses no effects
+*/
+void PIECHOOSER::iconEffect(ICON* const icon, const PIEMode mode) const
+{
+	// PP: IMPORTANT: some PIECHOOSER subclasses might not override iconEffect, in which case we should call their itemEffect override
+	this->itemEffect((PAGEITEM*)icon, mode);
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIECHOOSER::pageEffect
+	Purpose 	: choose and initialise an appropriate effect for a page
+	Parameters 	: ptr to page for which to choose effect, mode of effect (PIEMODE_...), 
+	Returns 	: 
+	Info 		: this base-class implementation chooses no effects
+*/
+void PIECHOOSER::pageEffect(PAGE* const page, const PIEMode mode) const
+{	
+	// PP: IMPORTANT: some PIECHOOSER subclasses might not override pageEffect, in which case we should call their itemEffect override
+	this->itemEffect((PAGEITEM*)page, mode);
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: PIECHOOSER::bookEffect
+	Purpose 	: choose and initialise an appropriate effect for a book
+	Parameters 	: ptr to book for which to choose effect, mode of effect (PIEMODE_...), 
+	Returns 	: 
+	Info 		: this base-class implementation chooses no effects
+*/
+void PIECHOOSER::bookEffect(BOOK* const book, const PIEMode mode) const
+{
+	// PP: IMPORTANT: some PIECHOOSER subclasses might not override bookEffect, in which case we should call their itemEffect override
+	this->itemEffect((PAGEITEM*)book, mode);
+}
+
+
+/* PP: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+														MAINPIECHOOSER
+
+										The main pageitem effect chooser that we use.
+
+				// PP: If you find that you want a different set of effects for a particular sub-game or whatever,
+				I'd suggest you make a subclass of MAINPIECHOOSER that overrides only the methods you want to change.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+
+// PP: MAINPIECHOOSER instance (the default chooser set for pages on init)
+MAINPIECHOOSER	mainPIEChooser;
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: MAINPIECHOOSER::itemEffect
+	Purpose 	: choose and initialise an appropriate effect for a general PAGEITEM
+	Parameters 	: ptr to item for which to choose effect, mode of effect (PIEMODE_...), 
+	Returns 	: 
+	Info 		: this overrides PIECHOOSER::itemEffect
+*/
+void MAINPIECHOOSER::itemEffect(PAGEITEM* const item, const PIEMode mode) const
+{
+	if(mode == PIEMODE_ON)
+	{
+		item->startEffect(NULL);
+	}
+	else
+	{
+		item->startEffect(new PIE_FADE(item, mode));// PP: VERY TEMP, DON'T WORRY
+	}
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: MAINPIECHOOSER::textboxEffect
+	Purpose 	: choose and initialise an appropriate effect for a TEXTBOX
+	Parameters 	: ptr to textbox for which to choose effect, mode of effect (PIEMODE_...), 
+	Returns 	: 
+	Info 		: this overrides PIECHOOSER::textboxEffect
+*/
+void MAINPIECHOOSER::textboxEffect(TEXTBOX* const textbox, const PIEMode mode) const
+{
+	// PP: TEMP TEST
+/*	textbox->startEffect(NULL);
+	return;*/
+
+	if(mode == PIEMODE_ON)
+	{
+#if(BPLATFORM != PS2)// PP: awaiting PS2 Babel fix
+		if(textbox->selected)
+		{
+			textbox->startEffect(new PIE_TEXTLIFE((PAGEITEM*)textbox, mode));
+		}
+		else
+#endif// PP: (BPLATFORM != PS2)// PP: awaiting PS2 Babel fix
+		{
+			textbox->startEffect(NULL);
+		}
+	}
+	else if(mode == PIEMODE_EXIT)
+	{
+#if(BPLATFORM == PS2)// PP: AWAITING BABEL FIX
+		this->itemEffect((PAGEITEM*)textbox, mode);
+#else// PP: not ps2
+		textbox->startEffect(new PIE_TEXTEXPLODE(textbox, mode));
+#endif// PP: not ps2
+	}
+	else// PP: enter
+	{
+		/*if(textbox->style == TEXTSTYLE_TITLE)
+		{
+			textbox->startEffect(new PIE_SQUASHY(textbox, mode));
+		}
+		else*/
+		{
+			// PP: temp
+			textbox->startEffect(new PIE_FADE(textbox, mode));
+
+		}
+	}
+
+	//this->itemEffect(textbox, mode);
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: MAINPIECHOOSER::iconEffect
+	Purpose 	: choose and initialise an appropriate effect for an ICON
+	Parameters 	: ptr to icon for which to choose effect, mode of effect (PIEMODE_...), 
+	Returns 	: 
+	Info 		: this overrides PIECHOOSER::iconEffect
+*/
+void MAINPIECHOOSER::iconEffect(ICON* const icon, const PIEMode mode) const
+{
+	this->itemEffect((PAGEITEM*)icon, mode);// PP: VERY TEMP, DON'T WORRY
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: MAINPIECHOOSER::pageEffect
+	Purpose 	: choose and initialise an appropriate effect for a PAGE
+	Parameters 	: ptr to page for which to choose effect, mode of effect (PIEMODE_...), 
+	Returns 	: 
+	Info 		: this overrides PIECHOOSER::pageEffect
+*/
+void MAINPIECHOOSER::pageEffect(PAGE* const page, const PIEMode mode) const
+{
+	if(mode != PIEMODE_ON)// PP: CAUTION: I get a crash when I take this check out - not had time to look into why yet, but just be aware of it// PP: I don't imagine it'll be anything too cryptic
+	{
+		page->startEffect(new PIE_FADE(page, mode));// PP: VERY TEMP, DON'T WORRY
+	}
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: MAINPIECHOOSER::bookEffect
+	Purpose 	: choose and initialise an appropriate effect for a BOOK
+	Parameters 	: ptr to book for which to choose effect, mode of effect (PIEMODE_...), 
+	Returns 	: 
+	Info 		: this overrides PIECHOOSER::bookEffect
+*/
+void MAINPIECHOOSER::bookEffect(BOOK* const book, const PIEMode mode) const
+{
+	if(mode != PIEMODE_ON)// PP: CAUTION: I get a crash when I take this check out - not had time to look into why yet, but just be aware of it// PP: I don't imagine it'll be anything too cryptic
+	{
+		book->startEffect(new PIE_FADE(book, mode));// PP: VERY TEMP, DON'T WORRY
+	}
+}
+
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+														MEMCARDPIECHOOSER
+
+										The main pageitem effect chooser that we use.
+
+				// If you find that you want a different set of effects for a particular sub-game or whatever,
+				I'd suggest you make a subclass of MEMCARDPIECHOOSER that overrides only the methods you want to change.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+
+// MAINPIECHOOSER instance (the default chooser set for pages on init)
+MEMCARDPIECHOOSER	memcardPIEChooser;
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: MEMCARDPIECHOOSER::pageEffect
+	Purpose 	: choose and initialise an appropriate effect for a PAGE
+	Parameters 	: ptr to page for which to choose effect, mode of effect (PIEMODE_...), 
+	Returns 	: 
+	Info 		: this overrides PIECHOOSER::pageEffect
+*/
+void MEMCARDPIECHOOSER::pageEffect(PAGE* const page, const PIEMode mode) const
+{
+	if (page->flags&PAGEFLAG_TOPLEVELPAGE)
+	{
+		if (mode == PIEMODE_ENTER || mode == PIEMODE_EXIT)
+			page->startEffect(new PIE_SLIDE(page, mode));
+		else
+			page->startEffect(NULL);
+	}
+}
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: MEMCARDPIECHOOSER::bookEffect
+	Purpose 	: choose and initialise an appropriate effect for a book
+	Parameters 	: ptr to book for which to choose effect, mode of effect (PIEMODE_...), 
+	Returns 	: 
+	Info 		: this overrides PIECHOOSER::bookEffect
+*/
+void MEMCARDPIECHOOSER::bookEffect(struct TAG_BOOK* const book, const PIEMode mode) const
+{
+	if(book->flags & BKFLAG_TOPLEVELBOOK)
+	{
+		book->startEffect(new PIE_FADE(book, mode));
+	}
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+														ZOOMPIECHOOSER
+
+										The main pageitem effect chooser that we use.
+
+				// If you find that you want a different set of effects for a particular sub-game or whatever,
+				I'd suggest you make a subclass of MEMCARDPIECHOOSER that overrides only the methods you want to change.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+
+// MAINPIECHOOSER instance (the default chooser set for pages on init)
+WANTEDPIECHOOSER	WantedPIEChooser;
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: MEMCARDPIECHOOSER::pageEffect
+	Purpose 	: choose and initialise an appropriate effect for a PAGE
+	Parameters 	: ptr to page for which to choose effect, mode of effect (PIEMODE_...), 
+	Returns 	: 
+	Info 		: this overrides PIECHOOSER::pageEffect
+*/
+void WANTEDPIECHOOSER::pageEffect(PAGE* const page, const PIEMode mode) const
+{
+	/*if (page->flags&PAGEFLAG_TOPLEVELPAGE)
+	{
+		page->setEffect(
+	}*/
+
+	page->startEffect(NULL);
+}
+
+
+
+/*	--------------------------------------------------------------------------------
+	Function 	: MEMCARDPIECHOOSER::bookEffect
+	Purpose 	: choose and initialise an appropriate effect for a book
+	Parameters 	: ptr to book for which to choose effect, mode of effect (PIEMODE_...), 
+	Returns 	: 
+	Info 		: this overrides PIECHOOSER::bookEffect
+*/
+void WANTEDPIECHOOSER::bookEffect(struct TAG_BOOK* const book, const PIEMode mode) const
+{
+	if(book->flags & BKFLAG_TOPLEVELBOOK)
+	{
+		book->startEffect(NULL);
+	}
+}
+
+
+// PP: ~~~~~~~~ TEMP TEST
+/*
+struct sa
+{
+	virtual void init(void)
+	{
+	}
+
+	virtual void init(int x, int y)
+	{
+	}
+
+	sa(void)
+	{
+		this->init();
+	}
+};
+
+struct sb : public sa
+{
+	void init(int x, int y)
+	{
+	}
+
+	sb(void)
+	{
+		this->init();
+	}
+};*/

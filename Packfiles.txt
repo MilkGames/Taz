@@ -1,0 +1,22 @@
+Taz uses packfiles (.ps2/.xbx/.gbc/.pc) to store all the resources used in the game.
+These packfiles are created using the packager tool within gizmo.
+
+To build a packfile you should follow these steps:
+
+1) Run gizmo from the c:\babel\gizmo\gizmo.exe.
+
+2) From the gizmo\tools menu choose packager.
+
+3) Choose file\open profile to select a profile from the c:\taz\profiles directory.
+
+4) From the profile drop box you can now select the specific profile you wish to build.
+
+5) Next choose build from the profile menu.
+
+6) In the new dialog box make sure the xbx box is ticked in the top left box.
+
+7) Now click the build button and the package should be built.
+	All packages will be built into the c:\taz\paks directory with the exception of splshscr.xbx, streams.xbx
+	and text.xbx which will be in the c:\taz\source directory. 
+
+

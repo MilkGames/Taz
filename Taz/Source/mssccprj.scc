@@ -1,0 +1,13 @@
+SCC = This is a Source Code Control file
+
+[Taz.dsp]
+SCC_Aux_Path = "C:\Program Files\Microsoft Visual Studio\VSS"
+SCC_Project_Name = "$/TeamPhoenix/Taz/source", DOCAAAAA
+
+[tazPS2.dsp]
+SCC_Aux_Path = "C:\Program Files\Microsoft Visual Studio\VSS"
+SCC_Project_Name = "$/TeamPhoenix/Taz/sourcePS2", CLEAAAAA
+
+[tazXBox.dsp]
+SCC_Aux_Path = "C:\Program Files\Microsoft Visual Studio\VSS"
+SCC_Project_Name = "$/TeamPhoenix/Taz/xboxmastersource", NRGAAAAA

@@ -1,0 +1,2 @@
+
+int timeattackHandler(int reason);

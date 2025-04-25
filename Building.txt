@@ -1,0 +1,24 @@
+These are the steps needed to successfuly re-compile for xbox.
+
+1) The Babel and Taz directories should be copied to your c: drive.
+
+2) The code should be compiled in Visual Studio 6 by opening the taz.dsw file found in the Taz\Source directory.
+
+3) You should be using version 4432 of the Microsoft XDK.
+
+4) There are debug and release versions of the project available.
+
+5) If this is a final build then INFOGRAMES and _MASTER should be defined in global.h.
+
+6) You should now be able to compile and run the game.
+
+
+Master Disk
+
+1) To create a disk all files in taz\paks should be copied to a single directory.
+
+2) All .xbx files in taz\source should be copied to the same directory.
+
+3) The final executable should be copied to this directory and renamed default.xbe.
+
+4) You can then create an ISO image from this directory using the Microsoft tool gdfimage.

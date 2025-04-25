@@ -1,0 +1,130 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.35931.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Taz", "Taz.vcxproj", "{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}"
+EndProject
+Project("{059D6162-CD51-11D0-AE1F-00A0C90FFFC3}") = "TazGameCube", "TazGameCube.dsp", "{B5DDE20A-D9D1-4183-8B6C-CD6DA97762CD}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tazPS2", "tazPS2.vcxproj", "{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tazXBox", "tazXBox.vcxproj", "{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Consumer Demo|x86 = Consumer Demo|x86
+		Debug Consumer Demo|x86 = Debug Consumer Demo|x86
+		Debug|x86 = Debug|x86
+		PS2 Consumer Demo EE Debug|x86 = PS2 Consumer Demo EE Debug|x86
+		PS2 Consumer Demo EE Release|x86 = PS2 Consumer Demo EE Release|x86
+		PS2 EE Debug CD|x86 = PS2 EE Debug CD|x86
+		PS2 EE Debug|x86 = PS2 EE Debug|x86
+		PS2 EE Release|x86 = PS2 EE Release|x86
+		PS2 Rolling Demo EE Release|x86 = PS2 Rolling Demo EE Release|x86
+		PS2 Standalone Consumer Demo EE Debug|x86 = PS2 Standalone Consumer Demo EE Debug|x86
+		PS2 Standalone Consumer Demo EE Release|x86 = PS2 Standalone Consumer Demo EE Release|x86
+		Pseudo Release|x86 = Pseudo Release|x86
+		Release Consumer Demo|x86 = Release Consumer Demo|x86
+		Release|x86 = Release|x86
+		Template|x86 = Template|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}.Consumer Demo|x86.ActiveCfg = Debug Consumer Demo|Win32
+		{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}.Consumer Demo|x86.Build.0 = Debug Consumer Demo|Win32
+		{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}.Debug Consumer Demo|x86.ActiveCfg = Debug Consumer Demo|Win32
+		{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}.Debug Consumer Demo|x86.Build.0 = Debug Consumer Demo|Win32
+		{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}.Debug|x86.ActiveCfg = Debug|Win32
+		{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}.Debug|x86.Build.0 = Debug|Win32
+		{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}.PS2 Consumer Demo EE Debug|x86.ActiveCfg = Debug|Win32
+		{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}.PS2 Consumer Demo EE Debug|x86.Build.0 = Debug|Win32
+		{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}.PS2 Consumer Demo EE Release|x86.ActiveCfg = Release|Win32
+		{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}.PS2 Consumer Demo EE Release|x86.Build.0 = Release|Win32
+		{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}.PS2 EE Debug CD|x86.ActiveCfg = Debug|Win32
+		{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}.PS2 EE Debug CD|x86.Build.0 = Debug|Win32
+		{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}.PS2 EE Debug|x86.ActiveCfg = Debug|Win32
+		{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}.PS2 EE Debug|x86.Build.0 = Debug|Win32
+		{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}.PS2 EE Release|x86.ActiveCfg = Release|Win32
+		{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}.PS2 EE Release|x86.Build.0 = Release|Win32
+		{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}.PS2 Rolling Demo EE Release|x86.ActiveCfg = Release|Win32
+		{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}.PS2 Rolling Demo EE Release|x86.Build.0 = Release|Win32
+		{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}.PS2 Standalone Consumer Demo EE Debug|x86.ActiveCfg = Debug|Win32
+		{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}.PS2 Standalone Consumer Demo EE Debug|x86.Build.0 = Debug|Win32
+		{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}.PS2 Standalone Consumer Demo EE Release|x86.ActiveCfg = Release|Win32
+		{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}.PS2 Standalone Consumer Demo EE Release|x86.Build.0 = Release|Win32
+		{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}.Pseudo Release|x86.ActiveCfg = Release|Win32
+		{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}.Pseudo Release|x86.Build.0 = Release|Win32
+		{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}.Release Consumer Demo|x86.ActiveCfg = Release Consumer Demo|Win32
+		{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}.Release Consumer Demo|x86.Build.0 = Release Consumer Demo|Win32
+		{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}.Release|x86.ActiveCfg = Release|Win32
+		{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}.Release|x86.Build.0 = Release|Win32
+		{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}.Template|x86.ActiveCfg = Debug|Win32
+		{281CFCC4-49FC-490B-86C2-A0E0AAE0FF95}.Template|x86.Build.0 = Debug|Win32
+		{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}.Consumer Demo|x86.ActiveCfg = PS2 Consumer Demo EE Release|Win32
+		{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}.Consumer Demo|x86.Build.0 = PS2 Consumer Demo EE Release|Win32
+		{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}.Debug Consumer Demo|x86.ActiveCfg = Debug|Win32
+		{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}.Debug Consumer Demo|x86.Build.0 = Debug|Win32
+		{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}.Debug|x86.ActiveCfg = Debug|Win32
+		{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}.Debug|x86.Build.0 = Debug|Win32
+		{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}.PS2 Consumer Demo EE Debug|x86.ActiveCfg = PS2 Consumer Demo EE Debug|Win32
+		{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}.PS2 Consumer Demo EE Debug|x86.Build.0 = PS2 Consumer Demo EE Debug|Win32
+		{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}.PS2 Consumer Demo EE Release|x86.ActiveCfg = PS2 Consumer Demo EE Release|Win32
+		{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}.PS2 Consumer Demo EE Release|x86.Build.0 = PS2 Consumer Demo EE Release|Win32
+		{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}.PS2 EE Debug CD|x86.ActiveCfg = PS2 EE Debug CD|Win32
+		{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}.PS2 EE Debug CD|x86.Build.0 = PS2 EE Debug CD|Win32
+		{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}.PS2 EE Debug|x86.ActiveCfg = PS2 EE Debug|Win32
+		{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}.PS2 EE Debug|x86.Build.0 = PS2 EE Debug|Win32
+		{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}.PS2 EE Release|x86.ActiveCfg = PS2 EE Release|Win32
+		{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}.PS2 EE Release|x86.Build.0 = PS2 EE Release|Win32
+		{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}.PS2 Rolling Demo EE Release|x86.ActiveCfg = PS2 Rolling Demo EE Release|Win32
+		{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}.PS2 Rolling Demo EE Release|x86.Build.0 = PS2 Rolling Demo EE Release|Win32
+		{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}.PS2 Standalone Consumer Demo EE Debug|x86.ActiveCfg = PS2 Standalone Consumer Demo EE Debug|Win32
+		{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}.PS2 Standalone Consumer Demo EE Debug|x86.Build.0 = PS2 Standalone Consumer Demo EE Debug|Win32
+		{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}.PS2 Standalone Consumer Demo EE Release|x86.ActiveCfg = PS2 Standalone Consumer Demo EE Release|Win32
+		{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}.PS2 Standalone Consumer Demo EE Release|x86.Build.0 = PS2 Standalone Consumer Demo EE Release|Win32
+		{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}.Pseudo Release|x86.ActiveCfg = Release|Win32
+		{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}.Pseudo Release|x86.Build.0 = Release|Win32
+		{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}.Release Consumer Demo|x86.ActiveCfg = Release|Win32
+		{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}.Release Consumer Demo|x86.Build.0 = Release|Win32
+		{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}.Release|x86.ActiveCfg = Release|Win32
+		{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}.Release|x86.Build.0 = Release|Win32
+		{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}.Template|x86.ActiveCfg = Template|Win32
+		{EEA68D72-3C2F-46AA-9E3C-CF35DB595285}.Template|x86.Build.0 = Template|Win32
+		{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}.Consumer Demo|x86.ActiveCfg = Consumer Demo|Win32
+		{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}.Consumer Demo|x86.Build.0 = Consumer Demo|Win32
+		{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}.Debug Consumer Demo|x86.ActiveCfg = Consumer Demo|Win32
+		{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}.Debug Consumer Demo|x86.Build.0 = Consumer Demo|Win32
+		{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}.Debug|x86.ActiveCfg = Debug|Win32
+		{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}.Debug|x86.Build.0 = Debug|Win32
+		{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}.PS2 Consumer Demo EE Debug|x86.ActiveCfg = Consumer Demo|Win32
+		{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}.PS2 Consumer Demo EE Debug|x86.Build.0 = Consumer Demo|Win32
+		{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}.PS2 Consumer Demo EE Release|x86.ActiveCfg = Consumer Demo|Win32
+		{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}.PS2 Consumer Demo EE Release|x86.Build.0 = Consumer Demo|Win32
+		{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}.PS2 EE Debug CD|x86.ActiveCfg = Debug|Win32
+		{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}.PS2 EE Debug CD|x86.Build.0 = Debug|Win32
+		{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}.PS2 EE Debug|x86.ActiveCfg = Debug|Win32
+		{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}.PS2 EE Debug|x86.Build.0 = Debug|Win32
+		{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}.PS2 EE Release|x86.ActiveCfg = Release|Win32
+		{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}.PS2 EE Release|x86.Build.0 = Release|Win32
+		{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}.PS2 Rolling Demo EE Release|x86.ActiveCfg = Release|Win32
+		{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}.PS2 Rolling Demo EE Release|x86.Build.0 = Release|Win32
+		{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}.PS2 Standalone Consumer Demo EE Debug|x86.ActiveCfg = Consumer Demo|Win32
+		{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}.PS2 Standalone Consumer Demo EE Debug|x86.Build.0 = Consumer Demo|Win32
+		{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}.PS2 Standalone Consumer Demo EE Release|x86.ActiveCfg = Consumer Demo|Win32
+		{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}.PS2 Standalone Consumer Demo EE Release|x86.Build.0 = Consumer Demo|Win32
+		{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}.Pseudo Release|x86.ActiveCfg = Pseudo Release|Win32
+		{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}.Pseudo Release|x86.Build.0 = Pseudo Release|Win32
+		{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}.Release Consumer Demo|x86.ActiveCfg = Consumer Demo|Win32
+		{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}.Release Consumer Demo|x86.Build.0 = Consumer Demo|Win32
+		{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}.Release|x86.ActiveCfg = Release|Win32
+		{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}.Release|x86.Build.0 = Release|Win32
+		{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}.Template|x86.ActiveCfg = Template|Win32
+		{2D3B43CA-06EE-4520-A954-78A7E60DA8F0}.Template|x86.Build.0 = Template|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F8E1E1BC-BF5A-4B7C-91D9-D419599E7148}
+	EndGlobalSection
+EndGlobal
