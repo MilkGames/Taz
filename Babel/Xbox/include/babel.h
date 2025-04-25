@@ -58,7 +58,7 @@
 #define GAMECUBE	5
 
 // define our babel-wide platform symbol.  This is used to identify the platform being compiled for.
-#define BPLATFORM	PC
+#define BPLATFORM	XBOX
 
 // global success/failure constants
 #define OK			1
