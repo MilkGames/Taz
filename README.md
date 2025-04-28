@@ -54,9 +54,10 @@ To compile the build you need to use:
      Taz: `C/Documents and Settings/[username]/Desktop/[any folder]/Taz`
      
      Babel: `C/Documents and Settings/[username]/Desktop/Babel`
-4. Open tazXBox.dsw in `Taz/source`, click `Build -> Set Active Configuration...`, choose whatever you like.
-5. Click Build -> Build .xbe.
-6. After a while VS will ask you for a remote executable path and file name, ignore that, you already have your .xbe file.
+4. Remove mentions of binkxbox.lib everywhere inside tazXBox.dsw file.
+5. Open tazXBox.dsw in `Taz/source`, click `Build -> Set Active Configuration...`, choose whatever you like.
+6. Click Build -> Build .xbe.
+7. After a while VS will ask you for a remote executable path and file name, ignore that, you already have your .xbe file.
 
 ### Creating your own Taz: Wanted Xbox iso
 1. Download [extract-iso](https://github.com/XboxDev/extract-xiso)
