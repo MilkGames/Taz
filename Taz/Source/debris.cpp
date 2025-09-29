@@ -940,7 +940,7 @@ void SmokeExtraRenderCallback(TBExtraSystem *eSystem, int noofInstances, uchar *
 		{
 			// PP: REMOUT: safer to use DISABLE_FRAMEWRITE (main.h)		bdSetRenderState(BDRENDERSTATE_FRAMEWRITE, 0, 0);
 			disabledFramewrite=true;// PP: so's we know to run REENABLE_FRAMEWRITE at the end
-			DISABLE_FRAMEWRITE;
+			// DISABLE_FRAMEWRITE; MG: FIX IT ASAP!!!
 		}
 	}
 	bdSetTexture(0, data->texture);

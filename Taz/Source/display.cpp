@@ -189,21 +189,33 @@ void initDisplay(void)
 
 // PP: XBOX TCR SAYS NO WIDESCREEN AND NO HDTV IN A CONSUMER DEMO
 #ifndef CONSUMERDEMO
-// PP: REMOUT: unable to test it since I don't have an HDTV		#define XBOX_SUPPORT_HDTV
+	// PP: REMOUT: unable to test it since I don't have an HDTV		
+	//#define XBOX_SUPPORT_HDTV // MG: I gotcha, PP, I have an HDTV, come on, it's 2025 lmao
+	//#define XBOX_EXTENDED_RAM // MG: If you have more than 64 MB of RAM you can define this, see the codebase below
 #endif// PP: ndef CONSUMERDEMO
 
 #ifdef XBOX_SUPPORT_HDTV
 
-	if(videoFlags & XC_VIDEO_FLAGS_HDTV_480p)
+	if(videoFlags)
 	{
 		// PP: TODO: use D3DPRESENTFLAG_PROGRESSIVE
+		videoMode.bppScreen = 16;
+		videoMode.zScreen = 8;
+		videoMode.nearPlane = 50;
 
-		videoMode.xScreen=720;
-		videoMode.yScreen=480;
+		videoMode.flags |= BDISPLAYFLAG_NTSC;
+		videoMode.flags |= BDISPLAYFLAG_ANTIALIASED;
 
-		videoMode.safeHeightPortion=XBOX_HDTV_SAFE_AREA;
-		videoMode.safeWidthPortion=XBOX_HDTV_SAFE_AREA;
+		videoMode.xScreen=1280;
+		videoMode.yScreen=720;
+
+		videoMode.safeHeightPortion=XBOX_NON_HDTV_SAFE_AREA;
+		videoMode.safeWidthPortion=XBOX_NON_HDTV_SAFE_AREA;
 	}
+
+#ifdef XBOX_EXTENDED_RAM
+	// MG: so basically 64 MB RAM isn't enough for everything below
+	// MG: to-do: test the following settings on an emulator
 	else if(videoFlags & XC_VIDEO_FLAGS_HDTV_720p)
 	{
 		// PP: TODO: use D3DPRESENTFLAG_PROGRESSIVE
@@ -214,7 +226,7 @@ void initDisplay(void)
 		videoMode.safeHeightPortion=XBOX_HDTV_SAFE_AREA;
 		videoMode.safeWidthPortion=XBOX_HDTV_SAFE_AREA;
 	}
-	else if(videoFlags & XC_VIDEO_FLAGS_HDTV_1080i)
+	else if(videoFlags & XC_VIDEO_FLAGS_HDTV_1080i & 0)
 	{
 		// PP: TODO: use D3DPRESENTFLAG_INTERLACED
 
@@ -224,13 +236,11 @@ void initDisplay(void)
 		videoMode.safeHeightPortion=XBOX_HDTV_SAFE_AREA;
 		videoMode.safeWidthPortion=XBOX_HDTV_SAFE_AREA;
 	}
+#endif // MG: def XBOX_EXTENDED_RAM
 	else
-
 #endif// PP: def XBOX_SUPPORT_HDTV
-
 	{
 		// PP: NORMAL TELLY
-
 		videoMode.safeHeightPortion=XBOX_NON_HDTV_SAFE_AREA;
 		videoMode.safeWidthPortion=XBOX_NON_HDTV_SAFE_AREA;
 

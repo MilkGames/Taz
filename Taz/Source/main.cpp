@@ -97,11 +97,11 @@ extern uint _end;
 #include "subtitle.h"
 
 #if(BPLATFORM == PC)
-#include "binkVideo.h"				// NH: Bink video routines
+//#include "binkVideo.h"				// NH: Bink video routines
 #endif
 
 #if(BPLATFORM == PC)
-#include "binkVideo.h"				// NH: Bink video routines
+//#include "binkVideo.h"				// NH: Bink video routines
 #endif
 
 #if(BPLATFORM == PS2)
@@ -3315,7 +3315,8 @@ void doCorporateStuff()
 		for (vidNo=0;vidNo<numVideos;vidNo++)
 		{
 			// NH: Play the bink video
-			if (!binkPlayVideo(videos[vidNo], bDisplayInfo.backBuffer))
+			// MG: don't have bink libs :(
+			//if (!binkPlayVideo(videos[vidNo], bDisplayInfo.backBuffer))
 				bkPrintf("*** ERROR *** There was an error in displaying the \"%s\" Bink video\n", videos[vidNo]);
 		}
 	}

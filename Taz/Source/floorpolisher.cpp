@@ -1112,7 +1112,7 @@ void POLISHERINFO::drawTrailPart(const uchar part, const FPTrailDrawPass drawPas
 	// PP: if there's a trailing edge on this part
 	if(trailPart.firstVert != trailPart.firstVertTruncated)
 	{
-		PREPARE_FOR_EDGE;
+		// PREPARE_FOR_EDGE; MG: FIX IT ASAP!
 
 		for(int k=0; k<4; k++)
 		{
@@ -1136,7 +1136,7 @@ void POLISHERINFO::drawTrailPart(const uchar part, const FPTrailDrawPass drawPas
 	{
 		if(!gotEdge)
 		{
-			PREPARE_FOR_EDGE;
+			// PREPARE_FOR_EDGE; // MG: FIX IT ASAP!!!
 		}
 
 		for(int k=0; k<4; k++)
@@ -1230,7 +1230,7 @@ mainTrailPartDraw:
 void POLISHERINFO::drawTrailZTemplate(void)
 {
 	// PP: only draw to the z-buffer
-	DISABLE_FRAMEWRITE;
+	// DISABLE_FRAMEWRITE; // MG: FIX IT ASAP!!!
 
 	// PP: turn off filtering so's the zmask/ztemplate texture's hatching detail doesn't get buggered
 	SETFILTERING(POINT);

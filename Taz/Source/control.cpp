@@ -6425,10 +6425,10 @@ int DIKToBabel(int DIKCode)
 {
 	int enumeratedKey = BIINPUT_NULL;
 
-#if BPLATFORM==PC
+#if 0//BPLATFORM!=PC // MG: == IS CORRECT!!! FIX IT!!!
 	
 	// Search for DIKCode in lookup table
-	while((enumeratedKey<BDIRECTINPUTKEYMAPSIZE) && (bDirectInputKeyMap[enumeratedKey] != DIKCode))
+	while((enumeratedKey<BDIRECTINPUTKEYMAPSIZE) && (bDirectInputKeyMap[enumeratedKey] != DIKCode)) // MG: IMPLEMENT bDirectInputKeyMap!!!!
 		enumeratedKey++;
 
 	if (bDirectInputKeyMap[enumeratedKey] != DIKCode)

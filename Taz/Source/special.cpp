@@ -121,7 +121,7 @@ void InitialiseSpecial(int scene)
 	{
 		if(strcmpi(userName, "tadams") == 0)
 		{
-			user_jchilds = TRUE;
+			// user_jchilds = TRUE; MG: TODO - find out what is this
 //			CStrikeSearchAndReplace("c:\\games\\sierra\\half-life\\cstrike\\config.cfg", "name", insultNames[bmRand()%5]);
 //			CStrikeSearchAndReplace("c:\\program files\\sierra\\half-life\\cstrike\\config.cfg", "name", "Mike");
 //			CStrikeSearchAndReplace("c:\\games\\sierra\\half-life\\cstrike\\config.cfg", "name", "Biryani Boy");

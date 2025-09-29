@@ -896,6 +896,8 @@ void VFX_setStereo(const bool on, const bool grey, const bool priority)
 
 			// PP: if we want colour stereoscopy, and we have channel-masking hardware, don't use the VFX_renderTarget
 
+			// MG: TODO - FIX IT!!!
+			/*
 			if(COLOUR_CHANNEL_MASKING_SUPPORTED)
 			{
 				VFX_stereoUseRenderTarget=VFX_stereoGrey;
@@ -904,6 +906,7 @@ void VFX_setStereo(const bool on, const bool grey, const bool priority)
 			{
 				VFX_stereoUseRenderTarget=true;
 			}
+			*/
 
 			// PP: is the VFX_renderTarget being used by another effect?
 
@@ -975,12 +978,13 @@ void VFX_stereoPreDraw(void)
 			popRenderTarget(0,0,0,0, 1.0f, BSETRENDERTARGET_CLEAR);
 		}
 	}
-
-#if(BPLATFORM == PC)
+/*
+#if(BPLATFORM == PC) // MG: FIX IT ASAP!
 			if(bDisplayInfo.devCaps.PrimitiveMiscCaps & D3DPMISCCAPS_COLORWRITEENABLE)
 #else
 			if(COLOUR_CHANNEL_MASKING_SUPPORTED)
 #endif
+*/
 	{
 		if(VFX_stereoEye)
 		{
@@ -1948,7 +1952,7 @@ void VFX_generateShadowMap(ACTORINSTANCE* const actorInstance)
 	SETZWRITE(TRUE);
 
 	// PP: but not the framebuffer
-	DISABLE_FRAMEWRITE;
+	// DISABLE_FRAMEWRITE; // MG: FIX IT ASAP!!!
 
 	SETPROJECTION(3D)
 	SETZTEST(LESSTHAN);

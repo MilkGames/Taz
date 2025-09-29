@@ -16,17 +16,15 @@
 //#define AMERICAN
 #endif
 
-#define INFOGRAMES
+//#define INFOGRAMES
 
 // NH: For master releases with absolutely NO debug, testing or infogrames stuff included (ie. GUI and screenshots)
-#define _MASTER
+//#define _MASTER
 
 #ifdef CONSUMERDEMO
 	#define INFOGRAMES
 	#define _MASTER			// PP: makes sense no?
 #endif
-
-
 
 #ifdef CONSOLEDEBUG
 	void PrintDebugVal(char *info, ...);

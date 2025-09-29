@@ -43,24 +43,24 @@ CPP=cl.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "_XBOX" /D "NDEBUG" /YX /FD /G6 /Zvc6 /c
-# ADD CPP /nologo /W3 /GX /Zi /O2 /I "C:\babel\xbox\include" /D "WIN32" /D "_XBOX" /D "NDEBUG" /YX /FD /G6 /Ztmp /c
+# ADD CPP /nologo /W3 /GX /Zi /O2 /I "C:\taz\babel\xbox\include" /D "WIN32" /D "_XBOX" /D "NDEBUG" /YX /FD /G6 /Ztmp /c
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 xapilib.lib d3d8.lib d3dx8.lib xgraphics.lib dsound.lib dmusic.lib xnet.lib xboxkrnl.lib /nologo /machine:I386 /subsystem:xbox /fixed:no /debugtype:vc6 /OPT:REF
-# ADD LINK32 xapilib.lib d3d8.lib d3dx8.lib xgraphics.lib dsound.lib dmusic.lib xnet.lib xboxkrnl.lib "C:\program files\microsoft xbox sdk\xbox\lib\wmvdec.lib" "C:\binkxbox\binkxbox.lib" /nologo /incremental:yes /map /machine:I386 /out:"Release/tazXBoxR.exe" /subsystem:xbox /fixed:no /tmp /OPT:REF
+# ADD LINK32 xapilib.lib d3d8.lib d3dx8.lib xgraphics.lib dsound.lib dmusic.lib xnet.lib xboxkrnl.lib "C:\program files\microsoft xbox sdk\xbox\lib\wmvdec.lib" /nologo /incremental:yes /map /machine:I386 /out:"Release/tazXBoxR.exe" /subsystem:xbox /fixed:no /tmp /OPT:REF
 # SUBTRACT LINK32 /pdb:none /debug
 XBE=imagebld.exe
 # ADD BASE XBE /nologo /stack:0x10000
-# ADD XBE /nologo /testid:"0x4947000D" /testname:"Taz: Wanted" /stack:0x40000 /initflags:0x0 /debug /out:"Release/tazXBoxR.xbe" /limitmem /titleinfo:"C:\taz\xboxinfo.txt" /titleimage:"C:\taz\xboxtitle.bmp" /testratings:4 /defaultsaveimage:"C:\taz\xboxsave.bmp"
+# ADD XBE /nologo /testid:"0x4947000D" /testname:"Taz: Wanted" /stack:0x40000 /initflags:0x0 /debug /out:"Release/tazXBoxR.xbe" /limitmem /titleinfo:"C:\taz\taz\xboxinfo.txt" /titleimage:"C:\taz\taz\xboxtitle.bmp" /testratings:4 /defaultsaveimage:"C:\taz\taz\xboxsave.bmp"
 XBCP=xbecopy.exe
 # ADD BASE XBCP /NOLOGO
 # ADD XBCP /NOLOGO
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Desc=Copying packages
-PostBuild_Cmds=xbcp /d /y c:\taz\paks\*.xbp  xe:\xdemos\application	xbcp /d /y c:\taz\source\streams.xbp  xe:\xdemos\application	xbcp /d /y c:\taz\source\splshscr.xbp  xe:\xdemos\application	xbcp /d /y c:\taz\source\text.xbp  xe:\xdemos\application
+PostBuild_Cmds=xbcp /d /y c:\taz\taz\paks\*.xbp  xe:\xdemos\application	xbcp /d /y c:\taz\taz\source\streams.xbp  xe:\xdemos\application	xbcp /d /y c:\taz\taz\source\splshscr.xbp  xe:\xdemos\application	xbcp /d /y c:\taz\taz\source\text.xbp  xe:\xdemos\application
 # End Special Build Tool
 
 !ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
@@ -77,7 +77,7 @@ PostBuild_Cmds=xbcp /d /y c:\taz\paks\*.xbp  xe:\xdemos\application	xbcp /d /y c
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_XBOX" /D "_DEBUG" /YX /FD /G6 /Zvc6 /c
-# ADD CPP /nologo /W3 /Gm /Gi /GX /Zi /Od /I "C:\babel\xbox\include" /D "WIN32" /D "_XBOX" /D "_DEBUG" /D "_TAZDEBUG" /YX /FD /G6 /Ztmp /c
+# ADD CPP /nologo /W3 /Gm /Gi /GX /Zi /Od /I "C:\taz\babel\xbox\include" /D "WIN32" /D "_XBOX" /D "_DEBUG" /D "_TAZDEBUG" /FR /YX /FD /G6 /Ztmp /c
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -87,14 +87,14 @@ LINK32=link.exe
 # SUBTRACT LINK32 /pdb:none
 XBE=imagebld.exe
 # ADD BASE XBE /nologo /stack:0x10000 /debug
-# ADD XBE /nologo /testid:"0x4947000D" /testname:"Taz: Wanted [debug]" /stack:0x40000 /initflags:0x0 /debug /out:"Debug/tazXBoxD.xbe" /limitmem /titleinfo:"C:\taz\xboxinfo.txt" /titleimage:"C:\taz\xboxtitle.bmp" /testratings:4 /defaultsaveimage:"C:\taz\xboxsave.bmp"
+# ADD XBE /nologo /testid:"0x4947000D" /testname:"Taz: Wanted [debug]" /stack:0x40000 /initflags:0x0 /debug /out:"Debug/tazXBoxD.xbe" /limitmem /titleinfo:"C:\taz\taz\xboxinfo.txt" /titleimage:"C:\taz\taz\xboxtitle.bmp" /testratings:4 /defaultsaveimage:"C:\taz\taz\xboxsave.bmp"
 XBCP=xbecopy.exe
 # ADD BASE XBCP /NOLOGO
 # ADD XBCP /NOLOGO
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Desc=Copyin pakijes!
-PostBuild_Cmds=xbcp /d /y c:\taz\paks\*.xbp  xe:\xdemos\application	xbcp /d /y c:\taz\source\streams.xbp  xe:\xdemos\application	xbcp /d /y c:\taz\source\splshscr.xbp  xe:\xdemos\application	xbcp /d /y c:\taz\source\text.xbp  xe:\xdemos\application
+PostBuild_Cmds=xbcp /d /y c:\taz\taz\paks\*.xbp  xe:\xdemos\application	xbcp /d /y c:\taz\taz\source\streams.xbp  xe:\xdemos\application	xbcp /d /y c:\taz\taz\source\splshscr.xbp  xe:\xdemos\application	xbcp /d /y c:\taz\taz\source\text.xbp  xe:\xdemos\application
 # End Special Build Tool
 
 !ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
@@ -183,294 +183,6 @@ PostBuild_Cmds=xbcp /d /y c:\taz\source\text.xbp  xe:\xdemos\application
 # Begin Group "Resource Files"
 
 # PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
-# End Group
-# Begin Group "Babel Debug"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=..\..\..\Babel\Xbox\lib\debug\bActor\bActor.lib
-
-!IF  "$(CFG)" == "tazXBox - Xbox Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\Babel\Xbox\lib\debug\bGui\bGui.lib
-
-!IF  "$(CFG)" == "tazXBox - Xbox Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\Babel\Xbox\lib\debug\bDisplay\bDisplay.lib
-
-!IF  "$(CFG)" == "tazXBox - Xbox Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\Babel\Xbox\lib\debug\bKernel\bKernel.lib
-
-!IF  "$(CFG)" == "tazXBox - Xbox Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\Babel\Xbox\lib\debug\bInput\bInput.lib
-
-!IF  "$(CFG)" == "tazXBox - Xbox Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\Babel\Xbox\lib\debug\bMaths\bMaths.lib
-
-!IF  "$(CFG)" == "tazXBox - Xbox Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\Babel\Xbox\lib\debug\bSound\bSound.lib
-
-!IF  "$(CFG)" == "tazXBox - Xbox Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# End Group
-# Begin Group "Babel Release"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=..\..\..\Babel\Xbox\lib\release\bActor\bActor.lib
-
-!IF  "$(CFG)" == "tazXBox - Xbox Release"
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\Babel\Xbox\lib\release\bDisplay\bDisplay.lib
-
-!IF  "$(CFG)" == "tazXBox - Xbox Release"
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\Babel\Xbox\lib\release\bGui\bGui.lib
-
-!IF  "$(CFG)" == "tazXBox - Xbox Release"
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\Babel\Xbox\lib\release\bInput\bInput.lib
-
-!IF  "$(CFG)" == "tazXBox - Xbox Release"
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\Babel\Xbox\lib\release\bKernel\bKernel.lib
-
-!IF  "$(CFG)" == "tazXBox - Xbox Release"
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\Babel\Xbox\lib\release\bMaths\bMaths.lib
-
-!IF  "$(CFG)" == "tazXBox - Xbox Release"
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\..\Babel\Xbox\lib\release\bSound\bSound.lib
-
-!IF  "$(CFG)" == "tazXBox - Xbox Release"
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
-
-# PROP BASE Exclude_From_Build 1
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
-
-!ENDIF 
-
-# End Source File
 # End Group
 # Begin Group "Source Files"
 
@@ -2572,6 +2284,976 @@ SOURCE=.\thwap.h
 # End Source File
 # End Group
 # End Group
+# Begin Group "Babel"
+
+# PROP Default_Filter ""
+# Begin Group "Original Libs"
+
+# PROP Default_Filter ".lib"
+# Begin Group "Babel Release"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\..\..\Babel\Xbox\lib\release\bActor\bActor.lib
+
+!IF  "$(CFG)" == "tazXBox - Xbox Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\Babel\Xbox\lib\release\bDisplay\bDisplay.lib
+
+!IF  "$(CFG)" == "tazXBox - Xbox Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\Babel\Xbox\lib\release\bGui\bGui.lib
+
+!IF  "$(CFG)" == "tazXBox - Xbox Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\Babel\Xbox\lib\release\bInput\bInput.lib
+
+!IF  "$(CFG)" == "tazXBox - Xbox Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\Babel\Xbox\lib\release\bKernel\bKernel.lib
+
+!IF  "$(CFG)" == "tazXBox - Xbox Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\Babel\Xbox\lib\release\bMaths\bMaths.lib
+
+!IF  "$(CFG)" == "tazXBox - Xbox Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\..\Babel\Xbox\lib\release\bSound\bSound.lib
+
+!IF  "$(CFG)" == "tazXBox - Xbox Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
+
+!ENDIF 
+
+# End Source File
+# End Group
+# Begin Group "Babel Debug"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bActor\bActor.lib
+
+!IF  "$(CFG)" == "tazXBox - Xbox Release"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bGui\bGui.lib
+
+!IF  "$(CFG)" == "tazXBox - Xbox Release"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bDisplay\bDisplay.lib
+
+!IF  "$(CFG)" == "tazXBox - Xbox Release"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bKernel\bKernel.lib
+
+!IF  "$(CFG)" == "tazXBox - Xbox Release"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bInput\bInput.lib
+
+!IF  "$(CFG)" == "tazXBox - Xbox Release"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bMaths\bMaths.lib
+
+!IF  "$(CFG)" == "tazXBox - Xbox Release"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bSound\bSound.lib
+
+!IF  "$(CFG)" == "tazXBox - Xbox Release"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
+
+# PROP BASE Exclude_From_Build 1
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
+# End Source File
+# End Group
+# End Group
+# Begin Group "Debug Objects"
+
+# PROP Default_Filter ".obj"
+# Begin Group "bActor Debug"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bActor\actor.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bActor\actors.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bActor\camera.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bActor\extras.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bActor\meshHelper.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bActor\pcxbActor.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bActor\pcxbAnim.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bActor\pcxbSet.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bActor\pcxbShaderSelector.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bActor\set.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bActor\stockExtras.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bActor\xbActor.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bActor\xbShaderSelector.obj
+# End Source File
+# End Group
+# Begin Group "bDisplay Debug"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bDisplay\consoleWindow.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bDisplay\display.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bDisplay\font.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bDisplay\frametimegraph.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bDisplay\render.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bDisplay\texture.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bDisplay\viewport.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bDisplay\xbDisplay.obj
+
+!IF  "$(CFG)" == "tazXBox - Xbox Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bDisplay\xbDrawprim.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bDisplay\xbDxdebug.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bDisplay\xbFont.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bDisplay\xbRender.obj
+
+!IF  "$(CFG)" == "tazXBox - Xbox Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bDisplay\xbSplash.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bDisplay\xbTexture.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bDisplay\xbVideo.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bDisplay\xbViewport.obj
+# End Source File
+# End Group
+# Begin Group "bGui Debug"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bGui\gui.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bGui\xbGui.obj
+# End Source File
+# End Group
+# Begin Group "bInput Debug"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bInput\gamesave.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bInput\input.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bInput\xbHAL.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bInput\xbSave.obj
+# End Source File
+# End Group
+# Begin Group "bKernel Debug"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bKernel\bassert.obj
+
+!IF  "$(CFG)" == "tazXBox - Xbox Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bKernel\bkgload.obj
+
+!IF  "$(CFG)" == "tazXBox - Xbox Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bKernel\debug.obj
+
+!IF  "$(CFG)" == "tazXBox - Xbox Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bKernel\event.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bKernel\file.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bKernel\kernel.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bKernel\package.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bKernel\profile.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bKernel\resources.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bKernel\stringtable.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bKernel\timer.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bKernel\xbBabel.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bKernel\xbBkgload.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bKernel\xbCache.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bKernel\xbClock.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bKernel\xbDebug.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bKernel\xbEncryption.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bKernel\xbFile.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bKernel\xbHeap.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bKernel\xbKernel.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bKernel\xbPackage.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bKernel\xbTimer.obj
+# End Source File
+# End Group
+# Begin Group "bMaths Debug"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bMaths\animatingCollision.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bMaths\collision2d.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bMaths\collision.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bMaths\geometry.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bMaths\maths.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bMaths\matrix.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bMaths\pcxbCollision.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bMaths\pcxbGeometry.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bMaths\physics.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bMaths\quaternion.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bMaths\vector.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bMaths\xbbMaths.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bMaths\xbMaths.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bMaths\xbMatrix.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bMaths\xbQuaternion.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bMaths\xbVector.obj
+# End Source File
+# End Group
+# Begin Group "bSound Debug"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bSound\bSound.pch
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bSound\bSound.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bSound\lipSync.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bSound\wave.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bSound\xbAudioStream.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bSound\xbAudioStreamADPCM.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bSound\xbAudioStreamWMA.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bSound\xbDSPDefault.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bSound\xbPlayList.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\bSound\xbWave.obj
+# End Source File
+# End Group
+# Begin Group "fCamera Debug"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\fCamera\CBCameraBase.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\fCamera\CBFlyAroundCamera.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\fCamera\CBPivotCamera.obj
+# End Source File
+# End Group
+# Begin Group "fEffects Debug"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\fEffects\CBAnimSplashRenderer.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\fEffects\CBCloth.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\fEffects\CBProjector.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\fEffects\CBShadowProjector.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\fEffects\CBTargetProjector.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\fEffects\CBTextureProjector.obj
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\lib\debug\fEffects\CBAnimSplash.obj
+# End Source File
+# End Group
+# End Group
+# Begin Group "Reversed Sources"
+
+# PROP Default_Filter ""
+# Begin Group "bActor"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\..\Babel\Source\bActor\lights.cpp
+# PROP Intermediate_Dir "Babel_Debug"
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Source\bActor\pcxbLights.cpp
+# End Source File
+# End Group
+# Begin Group "bDisplay"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\..\Babel\Source\bDisplay\display.cpp
+
+!IF  "$(CFG)" == "tazXBox - Xbox Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
+
+# PROP Intermediate_Dir "Babel_Debug"
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Source\bDisplay\xbDisplay.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Source\bDisplay\xbRender.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Source\bDisplay\xbViewport.cpp
+
+!IF  "$(CFG)" == "tazXBox - Xbox Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
+
+!ENDIF 
+
+# End Source File
+# End Group
+# Begin Group "bGui"
+
+# PROP Default_Filter ""
+# End Group
+# Begin Group "bInput"
+
+# PROP Default_Filter ""
+# End Group
+# Begin Group "bKernel"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\..\Babel\Source\bKernel\bassert.cpp
+
+!IF  "$(CFG)" == "tazXBox - Xbox Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
+
+# PROP Intermediate_Dir "Babel_Debug"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Source\bKernel\bkgload.cpp
+
+!IF  "$(CFG)" == "tazXBox - Xbox Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
+
+# PROP Intermediate_Dir "Babel_Debug"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Source\bKernel\debug.cpp
+
+!IF  "$(CFG)" == "tazXBox - Xbox Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
+
+# PROP Intermediate_Dir "Babel_Debug"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Source\bKernel\event.cpp
+
+!IF  "$(CFG)" == "tazXBox - Xbox Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
+
+# PROP Intermediate_Dir "Babel_Debug"
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
+
+!ENDIF 
+
+# End Source File
+# End Group
+# Begin Group "bMaths"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\..\Babel\Source\bMaths\xbMatrix.cpp
+
+!IF  "$(CFG)" == "tazXBox - Xbox Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Pseudo Release"
+
+!ELSEIF  "$(CFG)" == "tazXBox - Xbox Consumer Demo"
+
+!ENDIF 
+
+# End Source File
+# End Group
+# Begin Group "bSound"
+
+# PROP Default_Filter ""
+# End Group
+# Begin Group "fCamera"
+
+# PROP Default_Filter ""
+# End Group
+# Begin Group "fEffects"
+
+# PROP Default_Filter ""
+# End Group
+# End Group
+# End Group
+# Begin Source File
+
+SOURCE=.\d3dshim.cpp
+# End Source File
 # Begin Source File
 
 SOURCE=.\HealthBar.h

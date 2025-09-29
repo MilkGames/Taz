@@ -1,7 +1,7 @@
 #ifndef __H_TAZ
 #define __H_TAZ
 
-#include "c:\windows\me.h"
+//#include "c:\windows\me.h"
 
 #include "babel.h"
 #include "bgui.h"
@@ -68,7 +68,6 @@
 #include "vehicles.h"
 #include "invisibleobjects.h"
 #include "trigger.h"
-#include "taztoproulette.h"
 #include "cartoonscaling.h"
 #include "electrocution.h"
 

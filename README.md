@@ -1,3 +1,4 @@
+### THE INFORMATION PROVIDED HERE IS HEAVILY OUTDATED! WAIT FOR README.MD UPDATE!
 # Taz: Wanted Xbox Source Code
 This repository doesn't include game packages, you need to have them from your game CD or download the original DVD with the game source code [here](https://archive.org/details/redump-id-123502).
 
