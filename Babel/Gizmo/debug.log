@@ -1,0 +1,51 @@
+WSAStartup OK
+  version 2.2
+  description 'WinSock 2.0'
+  system status 'Running'
+CGNet::Server socket 0x000000f0
+CGNet::Server(), SO_MAX_MSG_SIZE = -1
+CGNet::Server(), SO_RCVBUF = 8192
+CGNet::Server(), SO_SNDBUF = 8192
+CGNet::TCPServer OK
+dummy 1.00
+Opening command line 'start="packager" src="v:\teamphoenix\fairly odd parents\Game\graphics\final" packdir="c:\fairly odd parents\packages"'...
+Opening command file 'C:\Babel\Gizmo\Config\AutoExec.cmd'...
+Opening command line '%"C:\Babel\Gizmo\Config\AutoExec.cmd"'...
+CGNet::Connect - 'connect' failure 'WSAECONNREFUSED'
+CNameServer::Login failed
+Installing plugins from 'C:\Babel\Gizmo\Plugins'
+CApplication::ValidateClasses: could not validate class 'CGelf3' {02157620-16bc-11d3-a2c4-005004070a9a} (this is normal during startup)
+CApplication::ValidateClasses: could not validate class 'COBEMesh' {c82ce400-6f7c-11d4-adc9-00a0c9e084da} (this is normal during startup)
+CApplication::ValidateClasses: could not validate class 'CToolBar' {f62436c4-728d-11d3-a847-000000000000} (this is normal during startup)
+CApplication::ValidateClasses: could not validate class 'CWindowsMDI' {a7200580-16bd-11d3-a2c4-005004070a9a} (this is normal during startup)
+CApplication::ValidateClasses: could not validate class 'CScrollPane' {ae8f3180-6779-11d3-a2c4-005004070a9a} (this is normal during startup)
+CApplication::ValidateClasses: could not validate class 'CToolBar' {f62436c4-728d-11d3-a847-000000000000} (this is normal during startup)
+CApplication::ValidateClasses: could not validate class 'CWindowsMDI' {a7200580-16bd-11d3-a2c4-005004070a9a} (this is normal during startup)
+RegisterFileTypes: file types registered OK
+CVersionControl::SaveSettings - *** COULD NOT READ FILE 'C:\Babel\Gizmo\Config\VersionControl.cfg' ***
+SetAppMenu: 0x607dd
+CTools::ActivateTool - 'Packager' is now active
+CPlugin::CallCommand 0 bytes of parms
+CCoreCom_Exit::Command
+PreExitShutdownPre
+PreExitShutdownPost
+App WM_DESTROY Pre
+::DestroyApp Pre (return code 0)
+::DestroyApp Post
+App WM_DESTROY Post
+Calling Plugins_Shutdown
+CTools::DeactivatePrimary - 'Packager' is now inactive
+CToolTips class destroyed
+Plugins_Shutdown FINISHED
+Calling App_Shutdown
+App_Shutdown Pre
+::~CApplication #1
+::~CApplication #2
+::~CApplication #3
+::~CApplication FINISHED
+App_Shutdown Post
+DumpMemoryLeaks...
+Close instance mutex...
+************************************
+*** Gizmo is now officially dead ***
+************************************
