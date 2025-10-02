@@ -166,7 +166,7 @@ extern uint _end;
 	#ifndef START_SCENE
 		#if(BPLATFORM == XBOX)
 			// PP: NOTE: lanugage select scene gets skipped so we actually appear to start on the main game intro
-			#define START_SCENE				SCENE_LANGUAGESELECT
+			#define START_SCENE				SCENE_ZOOBOSS
 		#elif(BPLATFORM == PC)
 			#define START_SCENE				SCENE_LANGUAGESELECT
 		#else
@@ -309,7 +309,6 @@ void rollMain(void *context);
    Returns : 
    Info : 
 */
-
 void Main(void *context)
 {
 #ifdef SUGAR_COATED_CRASHES

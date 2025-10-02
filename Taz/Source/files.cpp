@@ -1489,16 +1489,16 @@ void LoadTazDataPC()
 	{
 		// NH: If controller 1 GUID exists set up the joystick 1
 		if (memcmp(&tazData.player1.controllerGUID, &nullGuid, sizeof(GUID)) != 0)
-			//bJoystickInstanceGuid[0] = &tazData.player1.controllerGUID; // MG: bJoystickInstanceGuid DOESN'T EXIST! FIX!!!
+			bJoystickInstanceGuid[0] = &tazData.player1.controllerGUID;
 
 		// NH: If controller 2 GUID exists set up the joystick 2
 		if (memcmp(&tazData.player2.controllerGUID, &nullGuid, sizeof(GUID)) != 0)
-			//bJoystickInstanceGuid[1] = &tazData.player2.controllerGUID;
+			bJoystickInstanceGuid[1] = &tazData.player2.controllerGUID;
 
 		// NH: If Display Driver GUID exists set up the Display Adapter
 		if (memcmp(&tazData.graphicsDetails.deviceIdentifier, &nullGuid, sizeof(GUID)) != 0)
 		{
-			//bDisplayAdapterGuid = &tazData.graphicsDetails.deviceIdentifier; // MG: bDisplayAdapterGuid DOESN'T EXIST! FIX!!!
+			bDisplayAdapterGuid = &tazData.graphicsDetails.deviceIdentifier;
 
 			// NH: Set Draw Distance
 			videoMode.farPlane = METERTOUNIT(tazData.graphicsDetails.drawDist);
@@ -1522,7 +1522,7 @@ void LoadTazDataPC()
 
 		// NH: If Sound Driver GUID exists set up the Sound Adapter
 		if (memcmp(&tazData.soundDetails.soundDriverGUID, &nullGuid, sizeof(GUID)) != 0)
-			//bSoundHardwareGuid = &tazData.soundDetails.soundDriverGUID; // MG: bSoundHardwareGuid DOESN'T EXIST!!! FIX!!!
+			bSoundHardwareGuid = &tazData.soundDetails.soundDriverGUID;
 
 		// NH: Set Cartoon Lighting
 		if (tazData.graphicsDetails.cartoonLighting)

@@ -2561,7 +2561,7 @@ void ApplyDecalZMask(TBActorInstance* const actorInstance, const float yOffset)
 	SETZWRITE(TRUE);
 
 	// PP: but not the framebuffer
-	//DISABLE_FRAMEWRITE; // MG: FIX IT!!!
+	DISABLE_FRAMEWRITE;
 
 	// PP: mask at reduced depth
 #if(BPLATFORM == PS2)

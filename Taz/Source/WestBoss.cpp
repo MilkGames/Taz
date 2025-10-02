@@ -3670,7 +3670,7 @@ void WESTBOSSGAME::updateCamera(void)
 
 #ifdef WB_SPINOFF
 				if((this->camShot == WBCAM_TAZWIN)// PP: could be WBCAM_TAZLOSE
-	#if 0//(BPLATFORM != PC) // MG: == IN ORIGINAL! FIX (not asap :3)
+	#if (BPLATFORM == PC)
 					&&(!VOODOO)// PP: no ORTs, hence no spinoffs, in PC compatibility mode
 	#endif// PP: pc
 					&&(videoMode.numDraws == 1))// PP: no spinoff in stereoscopic mode; don't have time to get it working
@@ -3688,7 +3688,7 @@ void WESTBOSSGAME::updateCamera(void)
 			{
 #ifdef WB_SPINOFF
 				if(	(videoMode.numDraws==1)// PP: no spinoff in stereoscopic mode; don't have time to get it working
-	#if 0//(BPLATFORM != PC) // MG: == IN ORIGINAL! FIX (not asap :3)
+	#if (BPLATFORM == PC)
 					&&(!VOODOO)// PP: no ORTs, hence no spinoffs, in PC compatibility mode
 	#endif// PP: pc
 					&&VFX_spinoffNewlyPrepared)
@@ -3702,8 +3702,8 @@ void WESTBOSSGAME::updateCamera(void)
 #ifdef WB_SPINOFF
 
 					if(	(videoMode.numDraws==1)
-	#if 0//(BPLATFORM != PC) // MG: == IN ORIGINAL! FIX (not asap :3)
-						&&(!VOODOO)// PP: no ORTs, hence no spinoffs, in PC compatibility mode
+	#if (BPLATFORM == PC)
+					&&(!VOODOO)// PP: no ORTs, hence no spinoffs, in PC compatibility mode
 	#endif// PP: pc
 						)
 					{

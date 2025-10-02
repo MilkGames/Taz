@@ -881,7 +881,6 @@ void checkCheats(PLAYERSTATS *stats)
 		// PP: set the cyan-red anaglyph type
 		VFX_stereoAnaglyphType=ANAGLYPH_CYAN_RED;
 
-		/* MG: TODO - FIX IT!
 		if(COLOUR_CHANNEL_MASKING_SUPPORTED)
 		{
 			ToggleCheat(CHEAT_COLOURSTEREOSCOPIC, true);// PP: true = sound or that
@@ -891,7 +890,6 @@ void checkCheats(PLAYERSTATS *stats)
 			// PP: sorry, no stereoscopy if you have a shit graphics card - too much hassle for me in the time remaining (none)
 			PlaySample("pickupbadfood1.wav");// PP: "uh-oh!"
 		}
-		*/
 	}
 	// PP: Red-Cyan Anaglyphic Stereoscopy
 	else if (letters[0] == 'R'				// PP: red
@@ -911,7 +909,6 @@ void checkCheats(PLAYERSTATS *stats)
 
 		// PP: duplicated from above.  Do we care? ...
 
-		/* MG: TODO - FIX IT!
 		if(COLOUR_CHANNEL_MASKING_SUPPORTED)
 		{
 			ToggleCheat(CHEAT_COLOURSTEREOSCOPIC, true);// PP: true = sound or that
@@ -921,7 +918,6 @@ void checkCheats(PLAYERSTATS *stats)
 			// PP: sorry, no stereoscopy if you have a shit graphics card - too much hassle for me in the time remaining (none)
 			PlaySample("pickupbadfood1.wav");// PP: "uh-oh!"
 		}
-		*/
 	}
 /*
 

@@ -1,0 +1,180 @@
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// This file is part of Babel Project, (c) 2000 Blitz Games Ltd.
+//
+//      File : pcxbActor.cpp
+//   Purpose : platform specific primary actor functions
+// Component : Xbox Actor
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#include <babel.h>
+
+// ********************************************************************************
+// Function Implementations
+
+/*	--------------------------------------------------------------------------------
+	Function : bFixupAsyncMesh
+	Purpose : fixup async mesh
+	Parameters : asyncMesh, basePtr
+	Returns : 
+	Info : 
+*/
+void bFixupAsyncMesh(TBAsyncMesh *asyncMesh, uchar *basePtr)
+{
+    return;
+}
+
+/*	--------------------------------------------------------------------------------
+	Function : bDrawMesh
+	Purpose : draw mesh
+	Parameters : mesh, actorInstance, alpha, nodeInstance
+	Returns : 
+	Info : 
+*/
+void bDrawMesh(TBMesh *mesh, struct _TBActorInstance *actorInstance, int alpha, struct _TBActorNodeInstance *nodeInstance)
+{
+    return;
+}
+
+/*	--------------------------------------------------------------------------------
+	Function : bInitActorPlatformSpecific
+	Purpose : initialise actor platform specific
+	Parameters : 
+	Returns : OK/FAIL
+	Info : 
+*/
+int bInitActorPlatformSpecific()
+{
+    return 0;
+}
+
+/*	--------------------------------------------------------------------------------
+	Function : bShutdownActorPlatformSpecific
+	Purpose : shutdown actor platform specific
+	Parameters : 
+	Returns : 
+	Info : 
+*/
+void bShutdownActorPlatformSpecific()
+{
+    return;
+}
+
+/*	--------------------------------------------------------------------------------
+	Function : bSetupActorNodeList
+	Purpose : setup actor node list
+	Parameters : rootNode, actorInstance, alpha
+	Returns : 
+	Info : 
+*/
+void bSetupActorNodeList(struct _TBActorNodeInstance *rootNode, struct _TBActorInstance *actorInstance, int alpha)
+{
+    return;
+}
+
+/*	--------------------------------------------------------------------------------
+	Function : bFixupSoftSkin
+	Purpose : fixup soft skin
+	Parameters : actor
+	Returns : 
+	Info : 
+*/
+void bFixupSoftSkin(struct _TBActor *actor)
+{
+    return;
+}
+
+/*	--------------------------------------------------------------------------------
+	Function : bMatMultiplyTranspose
+	Purpose : matrix multiply transpose
+	Parameters : dest, src1, src2, rows
+	Returns : 
+	Info : 
+*/
+void bMatMultiplyTranspose(float *dest, const TBMatrix src1, const TBMatrix src2, int rows)
+{
+    return;
+}
+
+/*	--------------------------------------------------------------------------------
+	Function : bSetMatrixPaletteEntry
+	Purpose : set matrix palette entry
+	Parameters : actorInstance, nodeInstance
+	Returns : 
+	Info : 
+*/
+void bSetMatrixPaletteEntry(struct _TBActorInstance *actorInstance, struct _TBActorNodeInstance *nodeInstance)
+{
+    return;
+}
+
+/*	--------------------------------------------------------------------------------
+	Function : bFixupMesh
+	Purpose : fixup mesh
+	Parameters : basePtr, node, actor
+	Returns : 
+	Info : 
+*/
+void bFixupMesh(uchar *basePtr, struct _TBActorNode *node, struct _TBActor *actor)
+{
+    return;
+}
+
+/*	--------------------------------------------------------------------------------
+	Function : bPrepActorNodeList
+	Purpose : prep actor node list
+	Parameters : rootNode, parentXForm, parentScale, actorInstance
+	Returns : 
+	Info : 
+*/
+void bPrepActorNodeList(struct _TBActorNodeInstance *rootNode, TBMatrix parentXForm, TBVector parentScale, struct _TBActorInstance *actorInstance)
+{
+    return;
+}
+
+/*	--------------------------------------------------------------------------------
+	Function : bDeleteMesh
+	Purpose : delete mesh
+	Parameters : meshNode
+	Returns : 
+	Info : 
+*/
+void bDeleteMesh(struct _TBActorNode *meshNode)
+{
+    return;
+}
+
+/*	--------------------------------------------------------------------------------
+	Function : bDeleteAsyncMesh
+	Purpose : delete async mesh
+	Parameters : meshNode
+	Returns : 
+	Info : 
+*/
+void bDeleteAsyncMesh(struct _TBActorNode *meshNode)
+{
+    return;
+}
+
+/*	--------------------------------------------------------------------------------
+	Function : bDeleteSoftSkin
+	Purpose : delete soft skin
+	Parameters : actor
+	Returns : 
+	Info : 
+*/
+void bDeleteSoftSkin(struct _TBActor *actor)
+{
+    return;
+}
+
+/*	--------------------------------------------------------------------------------
+	Function : baSetActorRenderCallbacks
+	Purpose : set actor render callbacks
+	Parameters : meshDraw, softSkinDraw
+	Returns : OK/FAIL
+	Info : 
+*/
+int baSetActorRenderCallbacks(TBDrawMeshCallback meshDraw, TBDrawSoftSkinCallback softSkinDraw)
+{
+    return 0;
+}

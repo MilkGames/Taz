@@ -1451,7 +1451,7 @@ void UpdatePhilScene(int scene)
 	if((controller2.selectDebounceChannel->value != 0)
 		||(controller1.selectDebounceChannel->value != 0))
 	{
-					biZeroMap(controller1.inputMap);
+			biZeroMap(controller1.inputMap);
 			UpdateGuiItems();
 			bgEnterGui(GuiCallback);
 	}

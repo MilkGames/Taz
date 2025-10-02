@@ -199,15 +199,15 @@ void initDisplay(void)
 	if(videoFlags)
 	{
 		// PP: TODO: use D3DPRESENTFLAG_PROGRESSIVE
-		videoMode.bppScreen = 16;
-		videoMode.zScreen = 8;
+		videoMode.bppScreen = 32;
+		videoMode.zScreen = 32;
 		videoMode.nearPlane = 50;
 
 		videoMode.flags |= BDISPLAYFLAG_NTSC;
 		videoMode.flags |= BDISPLAYFLAG_ANTIALIASED;
 
-		videoMode.xScreen=1280;
-		videoMode.yScreen=720;
+		videoMode.xScreen=720;
+		videoMode.yScreen=576;
 
 		videoMode.safeHeightPortion=XBOX_NON_HDTV_SAFE_AREA;
 		videoMode.safeWidthPortion=XBOX_NON_HDTV_SAFE_AREA;
@@ -249,7 +249,7 @@ void initDisplay(void)
 		if(videoStandard == XC_VIDEO_STANDARD_PAL_I)
 		{
 			// PP: PAL
-
+			bkPrintf("------------------ PAL ------------------");
 			videoMode.flags |= BDISPLAYFLAG_PAL;
 
 			videoMode.xScreen=720;
@@ -266,7 +266,7 @@ void initDisplay(void)
 		else
 		{
 			// PP: NTSC
-
+			bkPrintf("------------------ NTSC ------------------");
 			videoMode.flags |= BDISPLAYFLAG_NTSC;
 			videoMode.flags |= BDISPLAYFLAG_ANTIALIASED;
 
@@ -276,7 +276,7 @@ void initDisplay(void)
 
 			// PP: NOTE: 640x480 is too low a res not to use antialiasing, it'd look nasty
 
-			videoMode.xScreen=640;
+			videoMode.xScreen=720;
 			videoMode.yScreen=480;
 		}
 	}

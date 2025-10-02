@@ -2753,10 +2753,6 @@ SOURCE=..\..\Babel\Xbox\lib\debug\bDisplay\xbViewport.obj
 
 SOURCE=..\..\Babel\Xbox\lib\debug\bGui\gui.obj
 # End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Xbox\lib\debug\bGui\xbGui.obj
-# End Source File
 # End Group
 # Begin Group "bInput Debug"
 
@@ -3078,13 +3074,12 @@ SOURCE=..\..\Babel\Xbox\lib\debug\fEffects\CBAnimSplash.obj
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=..\..\Babel\Source\bActor\lights.cpp
+SOURCE=..\..\Babel\Xbox\src\bActor\lights.cpp
 # PROP Intermediate_Dir "Babel_Debug"
-
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\Babel\Source\bActor\pcxbLights.cpp
+SOURCE=..\..\Babel\Xbox\src\bActor\pcxbLights.cpp
 # End Source File
 # End Group
 # Begin Group "bDisplay"
@@ -3092,7 +3087,7 @@ SOURCE=..\..\Babel\Source\bActor\pcxbLights.cpp
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=..\..\Babel\Source\bDisplay\display.cpp
+SOURCE=..\..\Babel\Xbox\src\bDisplay\display.cpp
 
 !IF  "$(CFG)" == "tazXBox - Xbox Release"
 
@@ -3110,15 +3105,15 @@ SOURCE=..\..\Babel\Source\bDisplay\display.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\Babel\Source\bDisplay\xbDisplay.cpp
+SOURCE=..\..\Babel\Xbox\src\bDisplay\xbDisplay.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\Babel\Source\bDisplay\xbRender.cpp
+SOURCE=..\..\Babel\Xbox\src\bDisplay\xbRender.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\Babel\Source\bDisplay\xbViewport.cpp
+SOURCE=..\..\Babel\Xbox\src\bDisplay\xbViewport.cpp
 
 !IF  "$(CFG)" == "tazXBox - Xbox Release"
 
@@ -3137,6 +3132,10 @@ SOURCE=..\..\Babel\Source\bDisplay\xbViewport.cpp
 # Begin Group "bGui"
 
 # PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\..\Babel\Xbox\src\bGui\xbGui.cpp
+# End Source File
 # End Group
 # Begin Group "bInput"
 
@@ -3147,7 +3146,7 @@ SOURCE=..\..\Babel\Source\bDisplay\xbViewport.cpp
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=..\..\Babel\Source\bKernel\bassert.cpp
+SOURCE=..\..\Babel\Xbox\src\bKernel\bassert.cpp
 
 !IF  "$(CFG)" == "tazXBox - Xbox Release"
 
@@ -3164,7 +3163,7 @@ SOURCE=..\..\Babel\Source\bKernel\bassert.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\Babel\Source\bKernel\bkgload.cpp
+SOURCE=..\..\Babel\Xbox\src\bKernel\bkgload.cpp
 
 !IF  "$(CFG)" == "tazXBox - Xbox Release"
 
@@ -3181,7 +3180,7 @@ SOURCE=..\..\Babel\Source\bKernel\bkgload.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\Babel\Source\bKernel\debug.cpp
+SOURCE=..\..\Babel\Xbox\src\bKernel\debug.cpp
 
 !IF  "$(CFG)" == "tazXBox - Xbox Release"
 
@@ -3198,7 +3197,7 @@ SOURCE=..\..\Babel\Source\bKernel\debug.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\Babel\Source\bKernel\event.cpp
+SOURCE=..\..\Babel\Xbox\src\bKernel\event.cpp
 
 !IF  "$(CFG)" == "tazXBox - Xbox Release"
 
@@ -3220,7 +3219,7 @@ SOURCE=..\..\Babel\Source\bKernel\event.cpp
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=..\..\Babel\Source\bMaths\xbMatrix.cpp
+SOURCE=..\..\Babel\Xbox\src\bMaths\xbMatrix.cpp
 
 !IF  "$(CFG)" == "tazXBox - Xbox Release"
 
