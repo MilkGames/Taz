@@ -18,7 +18,7 @@
 // include all headers from bGui/
 
 #include "bGui/gui.h"
-#include "bGui/defFont.h"
+//#include "bGui/defFont.h"
 #include "bGui/guiHal.h"
 #include "bGui/pcGui.h"
 

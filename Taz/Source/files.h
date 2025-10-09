@@ -416,6 +416,18 @@ void CheckCD();
 bool ValidCD();
 
 /*  --------------------------------------------------------------------------------
+	Function	: LaunchThroughLauncher
+	Purpose		: see function name
+	Parameters	: 
+	Returns		: 
+	Info		: If in command line we don't have "Launched" we find
+				  and open the game's launcher TazLauncher.exe
+	Author      : MilkGames (reversed from Taz.exe)
+*/
+
+void LaunchThroughLauncher();
+
+/*  --------------------------------------------------------------------------------
 	Function	: CheckForOtherTazInstances
 	Purpose		: 
 	Parameters	: 

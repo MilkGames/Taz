@@ -32,7 +32,20 @@ int bInitSet()
 */
 void bShutdownSet()
 {
-    return;
+    return; // empty, confirmed
+}
+
+/*	--------------------------------------------------------------------------------
+	Function : bLoadSetByCRC
+	Purpose : load a set from storage
+	Parameters : package index, crc
+	Returns : ptr to set or NULL for failure
+	Info : 
+*/
+
+TBSet *bLoadSetByCRC(TBPackageIndex *index, uint32 crc)
+{
+	return NULL;
 }
 
 /*	--------------------------------------------------------------------------------
@@ -57,4 +70,17 @@ void bDeleteSet(TBSet *actor)
 void baDrawSet(TBSet *set, int alpha)
 {
     return;
+}
+
+/*	--------------------------------------------------------------------------------
+	Function : baGetSetGeometry
+	Purpose : retrieve the stored geometry from a set
+	Parameters : set, stream number (0..3), ptr to fill with #vertices (or NULL), ptr to fill with #tris (or NULL)
+	Returns : ptr to stream data
+	Info : 
+*/
+
+void *baGetSetGeometry(TBSet *set, int stream, int *noofVertices, int *noofTris)
+{
+	return NULL;
 }

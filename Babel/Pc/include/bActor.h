@@ -31,6 +31,5 @@
 #include "bActor/pcxbShaderSelector.h"
 #include "bActor/pcxbShaderSelectorInternal.h"
 #include "bActor/pcxbStockExtras.h"
-#include "bActor/stockExtras.h"
 
 #endif		// __BACTOR_H__

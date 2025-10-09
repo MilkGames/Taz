@@ -9,6 +9,21 @@
 #include <babel.h>
 
 // ********************************************************************************
+// Globals
+
+// MG: TEMP LINKING CODE
+uint bRColLUT[256], bGColLUT[256], bBColLUT[256], bAColLUT[256];
+uint bRGBInvColLUT[256], bAInvColLUT[256];
+TBDisplayInfo bDisplayInfo;
+GUID *bDisplayAdapterGuid = NULL;
+GUID *bSoundHardwareGuid = NULL;               
+unsigned char bDirectInputKeyMap[256];    
+TBInputInfo bInputInfo;                   
+TBExtraSystem bExtraSystemList;
+__int64 bTimerFrequency = 0;
+float bFPS = 0.0f;
+
+// ********************************************************************************
 // Function Implementations
 
 /* --------------------------------------------------------------------------------

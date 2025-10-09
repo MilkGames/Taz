@@ -44,7 +44,7 @@ void bDrawMesh(TBMesh *mesh, struct _TBActorInstance *actorInstance, int alpha, 
 */
 int bInitActorPlatformSpecific()
 {
-    return 0;
+    return OK; // empty, confirmed
 }
 
 /*	--------------------------------------------------------------------------------
@@ -56,7 +56,7 @@ int bInitActorPlatformSpecific()
 */
 void bShutdownActorPlatformSpecific()
 {
-    return;
+    return; // empty, confirmed
 }
 
 /*	--------------------------------------------------------------------------------

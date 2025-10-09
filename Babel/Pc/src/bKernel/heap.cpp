@@ -7,26 +7,198 @@
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include <babel.h>
+#include <malloc.h>
+
+// ********************************************************************************
+// Locals
+
+typedef struct _THeapBlock {
+	uint32      offset;     // +0x00  Offset from bHeapBase to start of this block (i.e., header)
+	uint32      size;       // +0x04  Total block size INCLUDING header
+	ushort      used;       // +0x08  1 = allocated, 0 = free (uint16)
+	ushort      flags;      // +0x0A  High bits hold BALLOC_* flags, low byte holds module id (uint16)
+	uint32      group;      // +0x0C  0xDEFA = "Default"; otherwise pointer to C-string
+	_THeapBlock *freePrev;  // +0x10  Free-list prev (if free) or Used-list prev (if used)
+	_THeapBlock *freeNext;  // +0x14  Free-list next (if free) or Used-list next (if used)
+	_THeapBlock *orderPrev; // +0x18  Previous block in physical-address order
+	_THeapBlock *orderNext; // +0x1C  Next block in physical-address order
+} THeapBlock;
+
+// Default "group" marker used by original PC build
+static const uint32 kDefaultGroup = 0xDEFA;
+
+// Minimum leftover size after a split to form a valid free block (incl. header).
+static const uint32 kMinSplit = 0x40;
+
+// Align to 16 bytes (the original code aligned sizes and base to 16).
+static inline uint32 Align16(uint32 v) { return (v + 0x0F) & ~0x0F; }
+
+static UINT8      *bHeapBase      = 0;     // aligned heap start (== (UINT8*)bFirstBlock)
+static LPVOID      bRealHeapBase  = 0;     // pointer returned by VirtualAlloc or provided base
+static uint        bHeapSize      = 0;     // total size of the managed heap region
+static uint        bBytesAllocated= 0;     // sum of all allocated block sizes (incl. headers)
+static uint        bHeapPeakUsage = 0;     // high-water mark (incl. headers)
+static int         bIsDynamicHeap = 0;     // 1 if VirtualAlloc was used
+static uint        bSmallBlockThreshold = 1024 * 1024; // default 1MB (tunable)
+
+// Physical order list anchor: first block (points to itself at init)
+static THeapBlock *bFirstBlock    = 0;
+
+// Free-list sentinel (used==0); head/tail via freeNext/freePrev
+static THeapBlock  bFreeRoot;
+
+// Used-list sentinel (used==1); head/tail via freeNext/freePrev (repurposed links)
+static THeapBlock  bUsedSentinel;
+
+// Group stack (top used for bkHeapAlloc, etc.). Stores either 0xDEFA or (uint32)char*.
+static uint32      bGroupStack[64];
+static int         bGroupSP = 0;
+
+// ********************************************************************************
+// Local Helpers
+
+// Insert a FREE block into the free-list sorted by ascending offset.
+/* Derived from original ConnectFreeBlock implementation. */
+/* :contentReference[oaicite:0]{index=0} */
+static void ConnectFreeBlock(THeapBlock *blk)
+{
+	THeapBlock *tail = bFreeRoot.freePrev;
+
+	if (tail == &bFreeRoot)
+	{
+		// First free block in the list
+		bFreeRoot.freeNext = blk;
+		bFreeRoot.freePrev = blk;
+		blk->freeNext = &bFreeRoot;
+		blk->freePrev = &bFreeRoot;
+		return;
+	}
+
+	// Walk backwards until we find prev < blk <= curr by offset, or we wrap
+	THeapBlock *cur = bFreeRoot.freePrev;
+	while ( !( ( (int)cur->offset <  (int)blk->offset ) &&
+	           ( (cur->freeNext == &bFreeRoot) || ((int)blk->offset <= (int)cur->freeNext->offset) ) ) )
+	{
+		cur = cur->freePrev;
+		if (cur == &bFreeRoot)
+		{
+			// Insert at tail
+			blk->freePrev = bFreeRoot.freePrev;
+			blk->freeNext = &bFreeRoot;
+			bFreeRoot.freePrev->freeNext = blk;
+			blk->freeNext->freePrev = blk;
+			return;
+		}
+	}
+
+	// Insert between cur and cur->freeNext
+	THeapBlock *prev = cur;
+	THeapBlock *next = cur->freeNext;
+	blk->freePrev = prev;
+	blk->freeNext = next;
+	prev->freeNext = blk;
+	next->freePrev = blk;
+}
+
+// Unlink a block (free or used) from whichever list its freePrev/freeNext currently reference.
+static inline void UnlinkListNode(THeapBlock *blk)
+{
+	blk->freePrev->freeNext = blk->freeNext;
+	blk->freeNext->freePrev = blk->freePrev;
+}
+
+// Coalesce with previous physical neighbor if it is FREE. Returns the (possibly new) block.
+static THeapBlock* TryCoalescePrev(THeapBlock *blk)
+{
+	THeapBlock *prev = blk->orderPrev;
+	if (prev != bFirstBlock && prev->used == 0)
+	{
+		// Merge prev into blk
+		UnlinkListNode(prev);                 // remove prev from free-list
+		blk->size += prev->size;              // grow blk
+		blk->orderPrev = prev->orderPrev;     // bypass prev in physical order
+		prev->orderPrev->orderNext = blk;
+
+		// Keep free-list link stable by stealing prev’s position
+		blk->freePrev = prev->freePrev;
+		blk->freePrev->freeNext = blk;
+	}
+	return blk;
+}
+
+// Coalesce with next physical neighbor if it is FREE. Returns the (possibly new) block.
+static THeapBlock* TryCoalesceNext(THeapBlock *blk)
+{
+	THeapBlock *next = blk->orderNext;
+	if (next != bFirstBlock && next->used == 0)
+	{
+		UnlinkListNode(next);
+		blk->size += next->size;
+		blk->orderNext = next->orderNext;
+		next->orderNext->orderPrev = blk;
+	}
+	return blk;
+}
+
+// Insert an ALLOCATED block into the used-list in a way that mirrors the original:
+// - First block is a special-case: appended to the tail.
+// - Small blocks are linked near their orderNext neighbor.
+// - Large blocks are linked near their orderPrev neighbor.
+/* Behavior mirrored from bkHeapAllocEx epilogue. */
+/* :contentReference[oaicite:1]{index=1} */
+static void LinkUsedBlock(THeapBlock *blk, uint userSizeAligned)
+{
+	THeapBlock *tail = bUsedSentinel.freePrev;
+
+	if (blk == bFirstBlock)
+	{
+		blk->freeNext = &bUsedSentinel;
+		blk->freePrev = tail;
+		tail->freeNext = blk;
+		blk->freeNext->freePrev = blk;
+		return;
+	}
+
+	THeapBlock *anchor;
+	if (userSizeAligned < bSmallBlockThreshold)
+	{
+		// Link before orderNext’s insertion point
+		anchor = blk->orderNext;
+		blk->freePrev = anchor->freePrev;
+	}
+	else
+	{
+		// Link after orderPrev’s insertion point
+		blk->freePrev = blk->orderPrev;
+		anchor = blk->orderPrev->freeNext;
+	}
+	blk->freeNext = anchor;
+	blk->freePrev->freeNext = blk;
+	blk->freeNext->freePrev = blk;
+}
+
+// Create a system block for CRT malloc/realloc path (when heap isn’t initialised).
+static void* MakeSystemAlloc(uint sizeAligned, ushort flags)
+{
+	size_t total = sizeAligned + sizeof(THeapBlock);
+	void *mem = malloc(total);
+	if (!mem) return 0;
+
+	THeapBlock *b = (THeapBlock*)mem;
+	b->offset    = 0;                 // not used for system blocks
+	b->size      = (uint32)total;
+	b->used      = 1;
+	b->flags     = flags;
+	b->group     = kDefaultGroup;
+	b->freePrev  = 0;
+	b->freeNext  = 0;
+	b->orderPrev = 0;                 // orderPrev == NULL => not managed by Babel heap
+	b->orderNext = 0;
+	return (void*)(b + 1);
+}
 
 // ********************************************************************************
 // Function Implementations
-
-void *bkHeapAlloc(uint size, char *file, int line, ushort flags)
-{
-    return NULL;
-}
-
-void *bkHeapAllocEx(uint size, char *file, int line, ushort flags, uint32 group, int alignment)
-{
-    return NULL;
-}
-
-void bkHeapFree(void *blk)
-{
-    return;
-}
-
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 /* --------------------------------------------------------------------------------
    Function : bInitHeap
@@ -38,7 +210,74 @@ void bkHeapFree(void *blk)
 
 int bInitHeap(uint base, uint size)
 {
-    return 0;
+	_MEMORYSTATUS memStatus;
+
+	// Optional heuristic: ensure a decent dynamic heap for tools/debug builds
+	if ( ((bBkInitFlags & 0x04) != 0) )
+	{
+		GlobalMemoryStatus(&memStatus);
+		if (memStatus.dwTotalPhys != 0xFFFFFFFF)
+		{
+			uint half = (uint)(memStatus.dwTotalPhys >> 1);
+			if (size < half) size = half;
+		}
+	}
+
+	bHeapSize = Align16(size);
+
+	LPVOID heapBase = (LPVOID)base;
+	if (base == 0)
+		heapBase = VirtualAlloc(NULL, bHeapSize, MEM_RESERVE|MEM_COMMIT, PAGE_READWRITE);
+
+	bRealHeapBase = heapBase;
+	if (!heapBase)
+		return 0;
+
+	bIsDynamicHeap = (base == 0);
+
+	// Basic logging (the original printed "Allocated %d Kb %s heap @ %p")
+	bkPrintf("bInitHeap: Allocated %d Kb %s heap @ %p\n",
+		(int)(bHeapSize >> 10),
+		bIsDynamicHeap ? "DYNAMIC" : "STATIC",
+		heapBase);
+
+	// Align the first block start to 16, but keep offset of first block == 0
+	bFirstBlock  = (THeapBlock*)(((DWORD)bRealHeapBase + 0x0F) & ~0x0F);
+	bHeapBase    = (UINT8*)bFirstBlock;
+
+	// Init sentinels
+	memset(&bFreeRoot, 0, sizeof(bFreeRoot));
+	memset(&bUsedSentinel, 0, sizeof(bUsedSentinel));
+	bFreeRoot.used       = 0;
+	bUsedSentinel.used   = 1;
+	bUsedSentinel.freeNext = &bUsedSentinel;
+	bUsedSentinel.freePrev = &bUsedSentinel;
+
+	// Build a single large free block covering the region
+	bFirstBlock->offset    = 0;
+	bFirstBlock->size      = bHeapSize;
+	bFirstBlock->used      = 0;
+	bFirstBlock->flags     = 0;
+	bFirstBlock->group     = 0;
+
+	// Physical order points to itself
+	bFirstBlock->orderNext = bFirstBlock;
+	bFirstBlock->orderPrev = bFirstBlock;
+
+	// Free list: root <-> firstBlock
+	bFirstBlock->freeNext  = &bFreeRoot;
+	bFirstBlock->freePrev  = &bFreeRoot;
+	bFreeRoot.freeNext     = bFirstBlock;
+	bFreeRoot.freePrev     = bFirstBlock;
+
+	// Stats & group stack
+	bBytesAllocated = 0;
+	bHeapPeakUsage  = 0;
+
+	bGroupSP = 0;
+	bGroupStack[0] = kDefaultGroup;
+
+	return 1;
 }
 
 
@@ -52,7 +291,50 @@ int bInitHeap(uint base, uint size)
 
 void bShutdownHeap()
 {
-    return;
+	// Leak report
+	if (bUsedSentinel.freePrev == &bUsedSentinel)
+	{
+		bkPrintf("Heap is clean (usage peaked at %d Kb)\n", (int)(bHeapPeakUsage >> 10));
+	}
+	else
+	{
+		bkPrintf("Memory leaks detected!\n");
+		for (THeapBlock *it = bUsedSentinel.freePrev; it != &bUsedSentinel; it = it->freePrev)
+		{
+			const char *groupStr = (it->group == kDefaultGroup) ? "Default" : (const char*)it->group;
+
+			// Build a short data preview
+			char preview[32] = {0};
+			bkDataToSafeString((unsigned char*)(it + 1), (int)it->size - (int)sizeof(THeapBlock), preview, sizeof(preview));
+
+			const char *by = (it->flags & BALLOC_MALLOC) ? "Malloc"
+			                  : (it->flags & BALLOC_NEW) ? "New"
+			                  : "";
+
+			bkPrintf("%s 0x%08X, %8d bytes [%s %s]\n    \"%s\"\n",
+				by,
+				(unsigned long)(it + 1),
+				(int)it->size - (int)sizeof(THeapBlock),
+				groupStr, "(module)",
+				preview);
+		}
+		bkPrintf("Heap usage peaked at %d Kb.\n", (int)(bHeapPeakUsage >> 10));
+	}
+
+	// Release dynamic heap region
+	if (bIsDynamicHeap)
+	{
+		VirtualFree(bRealHeapBase, 0, MEM_RELEASE);
+	}
+
+	// Reset globals (safety)
+	bHeapBase = 0;
+	bRealHeapBase = 0;
+	bFirstBlock = 0;
+	bHeapSize = 0;
+	bBytesAllocated = 0;
+	bHeapPeakUsage = 0;
+	bIsDynamicHeap = 0;
 }
 
 
@@ -77,13 +359,11 @@ void bkHeapReset()
    Returns : ptr to block or NULL for failure
    Info : 
 */
-/* // MG: already has a body? what?
+
 void *bkHeapAlloc(uint size, char *file, int line, ushort flags)
 {
-    return NULL;
+	return bkHeapAllocEx(size, file, line, flags, bGroupStack[bGroupSP]);
 }
-*/
-
 
 /*	--------------------------------------------------------------------------------
 	Function : bkHeapAllocEx
@@ -92,12 +372,154 @@ void *bkHeapAlloc(uint size, char *file, int line, ushort flags)
 	Returns : 
 	Info : 
 */
-/* // MG: already has a body? what?
-void *bkHeapAllocEx(uint size, char *file, int line, ushort flags, uint32 group, int alignment)
+
+void *bkHeapAllocEx(uint size, char *file, int line, ushort flags, uint32 group, int)
 {
-    return NULL;
+	// If heap is not initialised, fall back to CRT
+	if (bHeapSize == 0)
+	{
+		return MakeSystemAlloc(Align16(size), flags);
+	}
+
+	uint userSize = Align16(size);
+	uint need     = userSize + sizeof(THeapBlock);
+
+	// Free-list walk: small blocks from tail backwards, large from head forwards
+	THeapBlock *fit = 0;
+	if (userSize < bSmallBlockThreshold)
+	{
+		for (THeapBlock *p = bFreeRoot.freePrev; p != &bFreeRoot; p = p->freePrev)
+		{
+			if (p->size >= need) { fit = p; break; }
+		}
+	}
+	else
+	{
+		for (THeapBlock *p = bFreeRoot.freeNext; p != &bFreeRoot; p = p->freeNext)
+		{
+			if (p->size >= need) { fit = p; break; }
+		}
+	}
+
+	if (!fit)
+	{
+		// Debug info, mirroring the original two-line out-of-memory report
+		int largest = 0;
+		for (THeapBlock *p = bFreeRoot.freePrev; p != &bFreeRoot; p = p->freePrev)
+		{
+			int avail = (int)p->size - (int)sizeof(THeapBlock);
+			if (avail > largest) largest = avail;
+		}
+		int totalFree = (int)bHeapSize - (int)bBytesAllocated - (int)sizeof(THeapBlock);
+		bkPrintf("%s(%d): bkHeapAlloc: Out of memory asking for %u\n", file ? file : "?", line, (unsigned)userSize);
+		bkPrintf("bkHeapAlloc: (only %d bytes free; short by %d) (largest %d; short by %d)\n",
+			totalFree, (int)userSize - totalFree, largest, (int)userSize - largest); /* :contentReference[oaicite:8]{index=8} */
+		return 0;
+	}
+
+	THeapBlock *blk = fit;
+
+	// If big enough, split according to policy
+	if (fit->size >= need + kMinSplit)
+	{
+		if (userSize < bSmallBlockThreshold)
+		{
+			// SMALL: allocate from FRONT -> remainder placed AFTER
+			THeapBlock *rem = (THeapBlock*)(bHeapBase + fit->offset + need);
+			rem->offset = fit->offset + need;
+			rem->size   = fit->size - need;
+			rem->used   = 0;
+			rem->flags  = 0;
+			rem->group  = group;
+
+			// Insert remainder in physical order between fit->orderPrev and fit
+			THeapBlock *op = fit->orderPrev;
+			rem->orderPrev = op;
+			rem->orderNext = fit;
+			op->orderNext  = rem;
+			fit->orderPrev = rem;
+
+			// Shrink the allocated part to the exact size
+			fit->size = need;
+
+			// Link new remainder into free-list and try coalescing with previous
+			ConnectFreeBlock(rem);                  /* :contentReference[oaicite:9]{index=9} */
+			THeapBlock *prev = rem->orderPrev;
+			if (prev != bFirstBlock && prev->used == 0)
+			{
+				// Merge remainder with previous free block
+				prev = prev->freePrev;
+				rem->freePrev = prev;
+				prev->freeNext = rem;
+				rem->size += rem->orderPrev->size;
+				THeapBlock *opp = rem->orderPrev->orderPrev;
+				rem->orderPrev = opp;
+				opp->orderNext = rem;              /* :contentReference[oaicite:10]{index=10} */
+			}
+			blk = fit;
+		}
+		else
+		{
+			// LARGE: allocate from END -> remainder stays BEFORE
+			int prefix = (int)fit->size - (int)need;
+			THeapBlock *take = (THeapBlock*)(bHeapBase + fit->offset + prefix);
+
+			// Copy list/flags/group from the old node to the allocated tail node
+			take->offset   = fit->offset + prefix;
+			take->size     = need;
+			take->used     = fit->used;
+			take->flags    = fit->flags;
+			take->group    = fit->group;
+
+			// Preserve position in free/used list while we relink
+			take->freePrev = fit->freePrev;
+			take->freeNext = fit->freeNext;
+			take->freePrev->freeNext = take;
+			take->freeNext->freePrev = take;
+
+			// Insert in physical order between fit->orderPrev and fit
+			THeapBlock *op = fit->orderPrev;
+			take->orderPrev = op;
+			take->orderNext = fit;
+			op->orderNext   = take;
+			fit->orderPrev  = take;
+
+			// The leftover prefix becomes the free block
+			fit->size  = (uint32)prefix;
+			fit->used  = 0;
+			fit->flags = 0;
+			fit->group = group;
+			ConnectFreeBlock(fit);
+
+			// Try coalescing with next free neighbor
+			if (fit->orderNext != bFirstBlock && fit->orderNext->used == 0)
+			{
+				// Merge fit with its next neighbor
+				UnlinkListNode(fit);
+				fit->orderNext->size += fit->size;
+				fit->orderNext->orderPrev = fit->orderPrev;
+				fit->orderPrev->orderNext = fit->orderNext;   /* :contentReference[oaicite:11]{index=11} */
+			}
+			blk = take;
+		}
+	}
+
+	// Account & move chosen block to used-list
+	bBytesAllocated += blk->size;
+	if (bBytesAllocated > bHeapPeakUsage) bHeapPeakUsage = bBytesAllocated;
+
+	// Remove from free-list (if we didn’t allocate from the tail case above, it still sits there)
+	UnlinkListNode(blk);
+
+	blk->group = group;
+	blk->used  = 1;
+	blk->flags = flags;
+
+	LinkUsedBlock(blk, userSize); /* :contentReference[oaicite:12]{index=12} */
+
+	return (void*)(blk + 1);
 }
-*/
+
 
 /* --------------------------------------------------------------------------------
    Function : bkHeapCalloc
@@ -135,9 +557,61 @@ void *bkHeapCallocEx(uint size, int32 value, char *file, int line, ushort flags,
    Info : 
 */
 
-void *bkHeapFree(void *blk, char *name)
+void bkHeapFree(void* user)
 {
-    return NULL;
+    if (!user) return;
+
+    THeapBlock* blk = (THeapBlock*)user - 1;
+
+	if (blk->orderPrev == 0) {
+		free(blk);
+		return;
+	}
+
+    // Bookkeeping
+    if (blk->used) {
+        if (bBytesAllocated >= blk->size) bBytesAllocated -= blk->size;
+        else bBytesAllocated = 0;
+    }
+
+    // Remove from used-list
+    UnlinkListNode(blk);
+
+    // Mark free and insert into free list
+    blk->used  = 0;
+    blk->flags = 0;
+    blk->group = 0;
+
+    ConnectFreeBlock(blk);
+
+    // Try to coalesce with right neighbor
+    THeapBlock* right = blk->orderNext;
+    if (right && right->used == 0) {
+        // Remove right from free list
+        right->freePrev->freeNext = right->freeNext;
+        right->freeNext->freePrev = right->freePrev;
+
+        // Merge sizes and order-links
+        blk->size += right->size;
+        blk->orderNext = right->orderNext;
+        if (right->orderNext) right->orderNext->orderPrev = blk;
+    }
+
+    // Try to coalesce with left neighbor
+    THeapBlock* left = blk->orderPrev;
+    if (left && left->used == 0) {
+        // Remove left from free list
+        left->freePrev->freeNext = left->freeNext;
+        left->freeNext->freePrev = left->freePrev;
+
+        // Merge into left
+        left->size += blk->size;
+        left->orderNext = blk->orderNext;
+        if (blk->orderNext) blk->orderNext->orderPrev = left;
+
+        // Re-insert the merged left (already in free list position logically)
+        blk = left;
+    }
 }
 
 
@@ -152,7 +626,135 @@ void *bkHeapFree(void *blk, char *name)
 
 void *bkHeapRealloc(void *ptr, int32 newSize)
 {
-    return NULL;
+	if (ptr == 0)
+		bkHeapAllocEx((uint)newSize, (char*)"C:\\Babel\\PC\\Src\\bKernel\\heap.cpp", 0x427,
+                     (ushort)(BALLOC_MALLOC | bUserModule), bGroupStack[bGroupSP], (int)0);
+
+	if (newSize == 0)
+	{
+		bkHeapFree(ptr);
+		return 0;
+	}
+
+	THeapBlock *_Memory = (THeapBlock*)((UINT8*)ptr - sizeof(THeapBlock));
+	THeapBlock *orderPrev = _Memory->orderPrev;
+	uint userNew = Align16((uint)newSize);
+	uint needNew = userNew + sizeof(THeapBlock);
+
+	// System block => CRT path
+	if (orderPrev == NULL)
+	{
+		void *r = realloc(_Memory, needNew);
+		return r;
+	}
+
+	uint curSize = _Memory->size;
+
+	if (curSize == needNew)
+		return ptr;
+
+	if (curSize < needNew)
+	{
+		// Try to grow backward using previous physical neighbor if it is FREE
+		if (orderPrev->used == 0 && (needNew - curSize) <= orderPrev->size)
+		{
+			THeapBlock *pprev = orderPrev->orderPrev;
+			int remainder = (int)(curSize + orderPrev->size) - (int)needNew;
+			if (remainder < (int)kMinSplit)
+			{
+				// Absorb previous entirely
+				_Memory->size = curSize + orderPrev->size;
+				pprev->orderNext = _Memory;
+				_Memory->orderPrev = pprev;
+
+				// Unlink previous from free-list
+				orderPrev->freePrev->freeNext = orderPrev->freeNext;
+				orderPrev->freeNext->freePrev = orderPrev->freePrev;
+				return ptr;
+			}
+
+			// Split previous: leave a small free block before our current
+			THeapBlock *split = (THeapBlock*)(bHeapBase + _Memory->offset + userNew);
+			THeapBlock *fp = orderPrev->freePrev;
+			THeapBlock *fn = orderPrev->freeNext;
+
+			// Install the new free block (replacing the old previous)
+			split->freePrev = fp;
+			split->freeNext = fn;
+			fp->freeNext = split;
+			fn->freePrev = split;
+
+			// Insert split in physical order between pprev and _Memory
+			split->orderPrev = pprev;
+			split->orderNext = _Memory;
+			pprev->orderNext = split;
+
+			// Update our back link & size/offset of split remainder
+			_Memory->orderPrev = split;
+			split->offset = _Memory->offset + userNew;
+			split->size   = (uint32)remainder;
+			split->used   = 0;
+			split->flags  = 0;
+			split->group  = 0;
+
+			_Memory->size = needNew;
+			return ptr;
+		}
+
+		// Could not grow in place: allocate+copy
+		void *np = bkHeapAllocEx(userNew, (char*)"C:\\Babel\\PC\\Src\\bKernel\\heap.cpp", 0x495,
+                         (ushort)_Memory->flags, _Memory->group, (int)0);
+		if (np)
+		{
+			uint toCopy = _Memory->size - sizeof(THeapBlock);
+			memcpy(np, ptr, toCopy);
+			bkHeapFree(ptr);
+			return np;
+		}
+		return 0;
+	}
+	else
+	{
+		// Shrink: if prev is used OR remainder is sizable, create trailing free block
+		uint remainder = curSize - needNew;
+		if (orderPrev->used == 0 || remainder > 0x20)
+		{
+			THeapBlock *blk = (THeapBlock*)(bHeapBase + _Memory->offset + userNew);
+			blk->used   = 0;
+			blk->group  = 0;
+			blk->flags  = 0;
+			blk->offset = _Memory->offset + userNew;
+			blk->size   = remainder;
+
+			THeapBlock *prev = _Memory->orderPrev;
+			if (prev->used == 0)
+			{
+				// Merge new trailing free block with previous free
+				blk->size += prev->size;
+				blk->orderPrev = prev->orderPrev;
+
+				// Remove prev from free-list
+				prev->freePrev->freeNext = prev->freeNext;
+				prev->freeNext->freePrev = prev->freePrev;
+			}
+			else
+			{
+				blk->orderPrev = prev;
+			}
+
+			// Stitch blk into physical order before _Memory
+			_Memory->orderPrev = blk;
+			blk->orderNext = _Memory;
+			blk->orderPrev->orderNext = blk;
+
+			// Shrink current
+			_Memory->size = needNew;
+
+			// Link new free space
+			ConnectFreeBlock(blk);              /* :contentReference[oaicite:18]{index=18} */
+		}
+		return ptr;
+	}
 }
 
 
@@ -315,11 +917,20 @@ int bkHeapGroupPop(void)
 	Info : 
 */
 
-int bkHeapFreeSpace(int *largestFreeBlock)
+int bkHeapFreeSpace(int *largestFreeBlock /*=NULL*/)
 {
-    return 0;
+	if (largestFreeBlock)
+	{
+		int largest = 0;
+		for (THeapBlock *p = bFreeRoot.freePrev; p != &bFreeRoot; p = p->freePrev)
+		{
+			int avail = (int)p->size - (int)sizeof(THeapBlock);
+			if (avail > largest) largest = avail;
+		}
+		*largestFreeBlock = largest;
+	}
+	return (int)bHeapSize - (int)bBytesAllocated - (int)sizeof(THeapBlock);
 }
-
 
 /*	--------------------------------------------------------------------------------
 	Function : bGetCurrentGroup
@@ -389,7 +1000,6 @@ void bkHeapSetLargeBlockThreshold(uint value)
 {
     return;
 }
-
 
 /*	--------------------------------------------------------------------------------
 	Function : bkHeapGetLargeBlockThreshold

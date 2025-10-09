@@ -38,6 +38,7 @@
 typedef struct _TBDebugStream {
 	char			logFile[256];								// filename of log file
 	uint32			flags;										// flags (see BDEBUGSTREAMFLAG_)
+	FILE            *file;                                      // MG: pointer to log file
 } TBDebugStream;
 
 

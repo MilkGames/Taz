@@ -12,34 +12,6 @@
 // Function Implementations
 
 /* --------------------------------------------------------------------------------
-   Function : bkPrintf
-   Purpose : print a string to the debug stream
-   Parameters : as for printf
-   Returns : 
-   Info : 
-*/
-
-void bkPrintf(char *format, ...)
-{
-    return;
-}
-
-
-/* --------------------------------------------------------------------------------
-   Function : bkCreateDebugStream
-   Purpose : create a new debug stream
-   Parameters : ptr to stream block or NULL for dynamic, log filename, flags (see BDEBUGSTREAMFLAG_)
-   Returns : ptr to stream block
-   Info : 
-*/
-
-TBDebugStream *bkCreateDebugStream(TBDebugStream *stream, char *filename, uint32 flags)
-{
-    return NULL;
-}
-
-
-/* --------------------------------------------------------------------------------
    Function : bkDeleteDebugStream
    Purpose : delete a debug stream
    Parameters : ptr to stream block

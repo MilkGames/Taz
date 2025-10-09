@@ -23,7 +23,7 @@
 #define BNOOFRUMBLEMOTORS	2
 
 // maximum number of pads this platform supports
-#define BMAXPADS			4
+#define BMAXPADS			2
 
 
 // ********************************************************************************

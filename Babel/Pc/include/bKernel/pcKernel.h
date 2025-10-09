@@ -5,6 +5,7 @@
 //   Purpose : kernel functions
 // Component : Xbox Kernel
 //   Comment : EXPECTED TO BE THE SAME AS xbKernel.h, DIRECT REWRITE!
+//             Reversing status: 3/21 functions + 1 local
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #ifndef __BKERNEL_PCKERNEL_H__
@@ -19,6 +20,9 @@
 // maximum number of entries in the OS event queue
 #define BMAXOSEVENTS		16
 
+// app-private messages (live in WM_APP range)
+#define BK_WM_QUIT     (WM_APP + 0)   // 0x8000
+#define BK_WM_SUSPEND  (WM_APP + 2)   // 0x8002
 
 // ********************************************************************************
 // Types, structures and classes
@@ -58,11 +62,10 @@ typedef struct _TBOSEvent {
 
 #include "kernel.h"
 
-
 // ********************************************************************************
 // Globals
 
-extern HWND         bMainWindow;
+extern HWND         bMainWindow;                    // main window handle (defined in pcKernel.cpp)
 extern char			bHomeDirectory[256];			// project home directory (where the EXE lives)
 extern char			bHomeSuffix[8];					// No used on XBOX
 extern TBOSEvent	bOSEvents[BMAXOSEVENTS];		// OS event list
@@ -75,6 +78,11 @@ extern int			bForceUseSystemHeap;			// set to force use of system heap
 
 extern int			bForceStandardMallocFree;		// set to force use of standard malloc and free
 
+// NEW GLOBALS
+
+extern int			bActive;						// 1 = Running, 0 = Suspended
+extern int			bFocus;							// 1 = allow auto-suspend on focus loss
+extern char         bAppPath[256];                  // path to .exe
 
 // ********************************************************************************
 // Prototypes

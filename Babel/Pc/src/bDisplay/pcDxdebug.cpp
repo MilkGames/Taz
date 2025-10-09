@@ -22,3 +22,15 @@ char *bDXErrorToString(HRESULT err)
 {
     return NULL;
 }
+
+/* --------------------------------------------------------------------------------
+   Function : bDXRuntimeLogInfo
+   Purpose : dumps information about DX libraries into log file
+   Parameters :
+   Returns :
+   Info : 
+*/
+void bDXRuntimeLogInfo()
+{
+	return;
+}

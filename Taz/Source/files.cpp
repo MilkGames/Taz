@@ -31,15 +31,15 @@
 #ifndef CONSUMERDEMO
 
 #ifdef _MASTER
-	#define REG_KEY "Software\\Infogrames\\TazWanted\\Release"
+	#define REG_KEY "Software\\Infogrames Interactive\\TazWanted\\Release"
 #endif // NH: #ifdef _MASTER
 
 #ifndef _MASTER
-	#define REG_KEY "Software\\Infogrames\\TazWanted\\Pre-release"
+	#define REG_KEY "Software\\Infogrames Interactive\\TazWanted\\Pre-release"
 #endif // NH: #ifndef _MASTER
 
 #else // NH: #ifndef CONSUMERDEMO
-	#define REG_KEY "Software\\Infogrames\\TazWanted Demo\\Demo"
+	#define REG_KEY "Software\\Infogrames Interactive\\TazWanted Demo\\Demo"
 #endif // NH: #ifndef CONSUMERDEMO (else)
 
 #endif // NH: #if BPLATFORM == PC
@@ -1778,6 +1778,48 @@ bool ValidCD()
 	}
 
 	return cdInDrive;
+}
+
+/*  --------------------------------------------------------------------------------
+	Function	: LaunchThroughLauncher
+	Purpose		: see function name
+	Parameters	: 
+	Returns		: 
+	Info		: If in command line we don't have "Launched" we find
+				  and open the game's launcher TazLauncher.exe
+	Author      : MilkGames (reversed from Taz.exe)
+*/
+
+void LaunchThroughLauncher()
+{
+    CHAR  path[80];
+    DWORD cb = sizeof(path);
+    HKEY  hKey;
+
+    path[0] = '\0';
+
+    if (RegOpenKeyExA(HKEY_LOCAL_MACHINE,
+                      REG_KEY,
+                      0, KEY_READ, &hKey) == ERROR_SUCCESS)
+    {
+        if (RegQueryValueExA(hKey, "Location", NULL, NULL, (LPBYTE)path, &cb) == ERROR_SUCCESS)
+        {
+            RegCloseKey(hKey);
+
+            size_t len = lstrlenA(path);
+            if (len < sizeof(path) - 1 && (len == 0 || path[len - 1] != '\\')) {
+                path[len++] = '\\';
+                path[len]   = '\0';
+            }
+
+            lstrcpynA(path + len, "TazLauncher.exe", (int)(sizeof(path) - len));
+
+            ShellExecuteA(NULL, "open", path, "Forced", NULL, SW_SHOWDEFAULT);
+        }
+        else {
+            RegCloseKey(hKey);
+        }
+    }
 }
 
 /*  --------------------------------------------------------------------------------

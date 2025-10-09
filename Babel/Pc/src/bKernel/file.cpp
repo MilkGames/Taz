@@ -418,6 +418,7 @@ TBFileIndex *bFindIndexFileByCRC(TBPackageIndex *index, uint32 crc)
 
 void bkSetLanguage(EBLanguageID languageId)
 {
+	bLanguage = languageId;
     return;
 }
 

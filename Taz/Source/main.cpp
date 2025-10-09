@@ -323,11 +323,6 @@ void Main(void *context)
 #endif// PP: def _MASTER
 #endif// PP: def SUGAR_COATED_CRASHES
 
-#if BPLATFORM == PC
-	// TP: move to files to tidy up main
-	if (CheckForOtherTazInstances()) exit(true);
-#endif
-
 	bool exitGameIntro=false;
 	int initState;
 	int i;
@@ -2650,12 +2645,14 @@ void SetGameState(GAMESTATUS *gameStatus, EGameState state, ESubGameState subSta
 		{
 			if(parm1 != 0)
 			{
-				bkPrintf("WARNING! WARNING! DANGER! DANGER! *************** SetGameState called with un-handled parameter 1 value of %d for state %d.\n", parm1, state);
+				//bkPrintf("WARNING! WARNING! DANGER! DANGER! *************** SetGameState called with un-handled parameter 1 value of %d for state %d.\n", parm1, state);
+				// MG: Phil, for god's sake! You can't use bkPrint before bkInit!
 			}
 
 			if(parm2 != 0)
 			{
-				bkPrintf("WARNING! WARNING! DANGER! DANGER! *************** SetGameState called with un-handled parameter 2 value of %d for state %d.\n", parm2, state);
+				//bkPrintf("WARNING! WARNING! DANGER! DANGER! *************** SetGameState called with un-handled parameter 2 value of %d for state %d.\n", parm2, state);
+				// MG: Phil, for god's sake! You can't use bkPrint before bkInit!
 			}
 		}
 		break;
@@ -3159,7 +3156,19 @@ BDECLAREMAIN
 		#endif
 	#endif
 #else
-
+	#if (BPLATFORM == PC)
+	#ifndef SKIPLAUNCHER
+			if (strcmp(lpCmdLine, "Launched") != 0) {
+				LaunchThroughLauncher();
+				BabelHasShutdown = true;
+				exit(1);
+			}
+	#endif
+			if (CheckForOtherTazInstances()) {
+				BabelHasShutdown = true;
+				exit(1);
+			}
+	#endif
 	#if (BPLATFORM == PS2)
 		// TP: Note this should be changed to BMEDIA_DVD or CD for final build
 		bkSetMediaType(BMEDIA_AUTOSELECT);

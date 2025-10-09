@@ -9,6 +9,11 @@
 #include <babel.h>
 
 // ********************************************************************************
+// Globals
+
+uint32 bBkInitFlags = 0; // set your flags here
+
+// ********************************************************************************
 // Function Implementations
 
 /* --------------------------------------------------------------------------------
@@ -21,7 +26,46 @@
 
 int bkInit(uint base, uint size, uint32 flags)
 {
+  bBkInitFlags = flags;
+
+  bInitMaths();
+  if (!bInitKernel()) {
     return 0;
+  }
+
+  if (!bInitHeap(base,size)) {
+    bShutdownKernel();
+    return 0;
+  }
+
+  bInitCommandLine();
+  bDXRuntimeLogInfo();
+  if (!bInitDisplay()) {
+    bDXRuntimeLogInfo();
+    bShutdownHeap();
+    bShutdownKernel();
+  }
+
+  if (!bInitActor()) {
+    bDXRuntimeLogInfo();
+    bShutdownHeap();
+    bShutdownInput();
+    bShutdownDisplay();
+    bShutdownKernel();
+    return 0;
+  }
+
+  if (!bInitSound()) {
+    bDXRuntimeLogInfo();
+    bShutdownActor();
+    bShutdownHeap();
+    bShutdownInput();
+    bShutdownDisplay();
+    bShutdownKernel();
+    return 0;
+  }
+
+  return 1;
 }
 
 

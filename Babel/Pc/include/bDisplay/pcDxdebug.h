@@ -29,4 +29,13 @@
 
 char *bDXErrorToString(HRESULT err);
 
+/* --------------------------------------------------------------------------------
+   Function : bDXRuntimeLogInfo
+   Purpose : dumps information about DX libraries into log file
+   Parameters :
+   Returns :
+   Info : 
+*/
+void bDXRuntimeLogInfo();
+
 #endif		// __BDISPLAY_PCDXDEBUG_H__

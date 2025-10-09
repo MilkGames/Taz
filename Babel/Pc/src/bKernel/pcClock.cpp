@@ -20,6 +20,17 @@
 */
 
 int bkReadClock(TBClock *clock)
+
 {
-    return 0;
+  _SYSTEMTIME systemTime;
+  
+  GetLocalTime(&systemTime);
+  clock->minute = (uchar)systemTime.wMinute;
+  clock->second = (uchar)systemTime.wSecond;
+  clock->day = (uchar)systemTime.wDay;
+  clock->hour = (uchar)systemTime.wHour;
+  clock->month = (uchar)systemTime.wMonth;
+  clock->year = (uchar)(systemTime.wYear % 100);
+  
+  return OK;
 }

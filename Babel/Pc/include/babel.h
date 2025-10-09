@@ -93,7 +93,7 @@
 #define BKINITFLAG_NODEBUGOUTPUT	0x00000008			// No debugger output
 #define BKINITFLAG_INITCALLED		0x00000010			// Init has been called
 
-#define BDECLAREMAIN	int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
+#define BDECLAREMAIN	int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 
 // main function return statement (infinite loop as we should never return)
 #define BMAINRETURN		{ while (1); }
@@ -131,6 +131,9 @@ typedef unsigned char		uchar;
 
 // ********************************************************************************
 // Babel headers
+
+// MG: include global.h for some defines that I wanna use
+#include "global.h"
 
 // define the build number
 #include "buildNumber.h"

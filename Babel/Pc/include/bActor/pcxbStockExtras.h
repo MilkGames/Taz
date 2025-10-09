@@ -6,8 +6,8 @@
 // Component : PC/Xbox Actor
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#ifndef __BACTOR_PCSTOCKEXTRAS_H__
-#define __BACTOR_PCSTOCKEXTRAS_H__
+#ifndef __BACTOR_PCXBSTOCKEXTRAS_H__
+#define __BACTOR_PCXBSTOCKEXTRAS_H__
 
 
 // *********************************************************************************

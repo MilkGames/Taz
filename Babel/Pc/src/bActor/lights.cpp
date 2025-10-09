@@ -32,7 +32,7 @@ int bInitLights()
 */
 void bShutdownLights()
 {
-    return;
+    return; // empty, confirmed
 }
 
 /*	--------------------------------------------------------------------------------
@@ -72,97 +72,121 @@ void baSetLightFlags(TBLightsource *lightPtr, uint32 flags)
 }
 
 /*	--------------------------------------------------------------------------------
-	Function : baClearLightFlags
-	Purpose : clear light flags
-	Parameters : light ptr, flags
+	Function : baSetDirectionalLight
+	Purpose : setup/update a lightsource as a directional light
+	Parameters : light ptr to set, direction light is coming from
 	Returns : 
 	Info : 
 */
-void baClearLightFlags(TBLightsource *lightPtr, uint32 flags)
+
+void baSetDirectionalLight(TBLightsource *lightPtr, TBVector lightVec)
 {
-    return;
+	return;
 }
 
-/*	--------------------------------------------------------------------------------
-	Function : baSetLightPosition
-	Purpose : set light position
-	Parameters : light ptr, position
-	Returns : 
-	Info : 
-*/
-void baSetLightPosition(TBLightsource *lightPtr, TBVector position)
-{
-    return;
-}
+
 
 /*	--------------------------------------------------------------------------------
-	Function : baSetLightDirection
-	Purpose : set light direction
-	Parameters : light ptr, direction
+	Function : baSetPointLight
+	Purpose : setup/update a lightsource as a point light
+	Parameters : light ptr to set, position, attenuation factor
 	Returns : 
 	Info : 
 */
-void baSetLightDirection(TBLightsource *lightPtr, TBVector direction)
+
+void baSetPointLight(TBLightsource *lightPtr, TBVector position, float attenuation)
 {
-    return;
+	return;
 }
+
+
+
+/*	--------------------------------------------------------------------------------
+	Function : baSetSpotLight
+	Purpose : setup/update a lightsource as a spot light
+	Parameters : light ptr to set, position, focus, attenuation factor, inner cone radians, cone angle in radians
+	Returns : 
+	Info : 
+*/
+
+void baSetSpotLight(TBLightsource *lightPtr, TBVector position, TBVector focus, float attenuation, float coneAngle)
+{
+	return;
+}
+
+
+
+/*	--------------------------------------------------------------------------------
+	Function : baEnableLight
+	Purpose : enable/disable a lightsource
+	Parameters : light ptr to change, new state
+	Returns : 
+	Info : 
+*/
+
+void baEnableLight(TBLightsource *lightPtr, int newState)
+{
+	return;
+}
+
+
+
+/*	--------------------------------------------------------------------------------
+	Function : baSetAmbientLight
+	Purpose : set the ambient light level
+	Parameters : red, green, blue
+	Returns : 
+	Info : 
+*/
+
+void baSetAmbientLight(int red, int green, int blue)
+{
+	return;
+}
+
+
 
 /*	--------------------------------------------------------------------------------
 	Function : baSetLightColour
-	Purpose : set light colour
-	Parameters : light ptr, red, green, blue
+	Purpose : set the colour of a lightsource
+	Parameters : lightsource, red, green, blue
 	Returns : 
 	Info : 
 */
-void baSetLightColour(TBLightsource *lightPtr, int red, int green, int blue)
+
+void baSetLightColour(TBLightsource *light, int red, int green, int blue)
 {
-    return;
+	return;
 }
 
-/*	--------------------------------------------------------------------------------
-	Function : baSetLightRange
-	Purpose : set light range
-	Parameters : light ptr, range
-	Returns : 
-	Info : 
-*/
-void baSetLightRange(TBLightsource *lightPtr, float range)
-{
-    return;
-}
+
 
 /*	--------------------------------------------------------------------------------
-	Function : baSetLightAttenuation
-	Purpose : set light attenuation
-	Parameters : light ptr, constant, linear, quadratic
+	Function : baSetSpecularIntensity
+	Purpose : set the specular intensity of a lightsource
+	Parameters : lightsource, intensity (0 to 1)
 	Returns : 
-	Info : 
+	Info : Note the BLIGHTFLAG_SPECULAR flag must be set for this to have any effect
 */
-void baSetLightAttenuation(TBLightsource *lightPtr, float constant, float linear, float quadratic)
+
+void baSetSpecularIntensity(TBLightsource *light, float intensity)
 {
-    return;
+	return;
 }
 
-/*	--------------------------------------------------------------------------------
-	Function : baSetLightCone
-	Purpose : set light cone
-	Parameters : light ptr, inner cone, outer cone
-	Returns : 
-	Info : 
-*/
-void baSetLightCone(TBLightsource *lightPtr, float innerCone, float outerCone)
-{
-    return;
-}
+
 
 /*	--------------------------------------------------------------------------------
-	Function : baEvalLightAtPoint
-	Purpose : evaluate light at point
-	Parameters : light ptr, point, colour
+	Function : baEvaluateLightAtPoint
+	Purpose : Evaluate a point in 3D space with respect to the light sources in its vicinity.
+	Parameters : [in] point to evaluate.
+				[in] the unit-normal that we use for the reflection factor.
+				[out] array representing the R, G and B components at that point.
 	Returns : 
-	Info : 
+	Info : Since we are only evaluating a POINT, the normal is ignored. Treat this as a "best case" test.
 */
-void baEvalLightAtPoint(TBLightsource *lightPtr, TBVector point, TBVector colour)
+
+void baEvaluateLightAtPoint(const TBVector point, const TBVector normal, int32 colour[3])
 {
-    return;
+	return;
 }

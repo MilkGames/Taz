@@ -35,7 +35,7 @@ void bInitTimer()
 
 void bShutdownTimer()
 {
-    return;
+    return; // empty, confirmed
 }
 
 
@@ -116,5 +116,6 @@ TBTimerValue bkTimerDelta(TBTimerValue startValue, TBTimerValue endValue)
 
 void bkSleep(int miliseconds)
 {
+	Sleep(miliseconds);
     return;
 }

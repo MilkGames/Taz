@@ -20,7 +20,7 @@
 */
 int bInitLightsPlatformSpecific()
 {
-    return 0;
+    return OK; // empty, confirmed
 }
 
 /*	--------------------------------------------------------------------------------

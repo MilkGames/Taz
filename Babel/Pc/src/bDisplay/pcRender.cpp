@@ -11,134 +11,170 @@
 // ********************************************************************************
 // Function Implementations
 
-/*	--------------------------------------------------------------------------------
-	Function : bdSetRenderState
-	Purpose : set render state
-	Parameters : renderState, value1, value2
-	Returns : 
-	Info : 
+/* --------------------------------------------------------------------------------
+   Function : bdSetRenderState
+   Purpose : Set a render state
+   Parameters : render state to set, first value, second value
+   Returns : 
+   Info : 
 */
+
 void bdSetRenderState(uint32 renderState, uint32 value1, uint32 value2)
 {
-    return;
+	return;
 }
 
-/*	--------------------------------------------------------------------------------
-	Function : bSetDefaultRenderStates
-	Purpose : set default render states
-	Parameters : 
-	Returns : 
-	Info : 
+
+/* --------------------------------------------------------------------------------
+   Function : bSetDefaultRenderStates
+   Purpose : Set the default render states
+   Parameters : 
+   Returns : 
+   Info : 
 */
+
 void bSetDefaultRenderStates()
 {
-    return;
+	return;
 }
 
-/*	--------------------------------------------------------------------------------
-	Function : bdSetFogRange
-	Purpose : set fog range
-	Parameters : nearDist, farDist
-	Returns : 
-	Info : 
+
+/* --------------------------------------------------------------------------------
+   Function : bdSetFogRange
+   Purpose : Set the ranges for distance fog
+   Parameters : near distance, far distance
+   Returns : 
+   Info : 
 */
+
 void bdSetFogRange(float nearDist, float farDist)
 {
-    return;
+	return;
 }
 
-/*	--------------------------------------------------------------------------------
-	Function : bdSetFogColour
-	Purpose : set fog colour
-	Parameters : red, green, blue
-	Returns : 
-	Info : 
+
+/* --------------------------------------------------------------------------------
+   Function : bdSetFogColour
+   Purpose : Set the colour for distance fog
+   Parameters : red, green, blue (each 0..255)
+   Returns : 
+   Info : 
 */
+
 void bdSetFogColour(int red, int green, int blue)
 {
-    return;
+	return;
 }
+
 
 /*	--------------------------------------------------------------------------------
 	Function : bSetGlobalAlpha
-	Purpose : set global alpha
-	Parameters : newAlphaScale
+	Purpose : set the global alpha scale value for actor drawing
+	Parameters : new alpha scale value (256=solid)
 	Returns : 
-	Info : 
+	Info : platform specific code called from baSetGlobalAlpha
 */
+
 void bSetGlobalAlpha(int newAlphaScale)
 {
-    return;
+	return;
 }
+
+
+/*	--------------------------------------------------------------------------------
+	Function : bdCreateRenderTarget
+	Purpose : create an off-screen render target
+	Parameters : width in pixels, height in pixels, rgb depth in bits, Z depth in bits, flags (see BCREATERENDERTARGET_)
+	Returns : ptr to target or NULL for failure
+	Info : 
+*/
+
+TBRenderTarget *bdCreateRenderTarget(int width, int height, int rgbBits, int zBits, uint32 flags)
+{
+	return NULL;
+}
+
 
 /*	--------------------------------------------------------------------------------
 	Function : bdDeleteRenderTarget
-	Purpose : delete render target
-	Parameters : target
+	Purpose : delete an off-screen render target
+	Parameters : ptr to render target or NULL to delete all render targets
 	Returns : 
 	Info : 
 */
+
 void bdDeleteRenderTarget(TBRenderTarget *target)
 {
-    return;
+	return;
 }
+
 
 /*	--------------------------------------------------------------------------------
 	Function : bdSetRenderTarget
-	Purpose : set render target
-	Parameters : target, r, g, b, a, depth, flags
+	Purpose : set the current render target
+	Parameters : ptr to render target or NULL to use default screen, clear colour, clear depth,
+																						flags (see BSETRENDERTARGET_)
 	Returns : OK/FAIL
 	Info : 
 */
-int bdSetRenderTarget(TBRenderTarget *target, int r, int g, int b, int a, float depth, uint32 flags)
+
+int bdSetRenderTarget(TBRenderTarget *target, int r,int g,int b, int a,float depth, uint32 flags)
 {
-    return 0;
+	return 0;
 }
+
 
 /*	--------------------------------------------------------------------------------
 	Function : bdGetRenderTargetInfo
-	Purpose : get render target info
-	Parameters : target, width, height, rgbDepth, zDepth
+	Purpose : return information for a render target
+	Parameters : ptr to render target, ptr for width, ptr for height, ptr for RGB depth, ptr for Z depth
 	Returns : 
-	Info : 
+	Info : width, height or depth ptrs can be NULL
 */
+
 void bdGetRenderTargetInfo(TBRenderTarget *target, int *width, int *height, int *rgbDepth, int *zDepth)
 {
-    return;
+	return;
 }
+
 
 /*	--------------------------------------------------------------------------------
 	Function : bdSetRenderTargetAsTexture
-	Purpose : set render target as texture
-	Parameters : target, stage
+	Purpose : set a render target as a texture
+	Parameters : ptr to render target, zero-based texture stage
 	Returns : OK/FAIL
 	Info : 
 */
+
 int bdSetRenderTargetAsTexture(TBRenderTarget *target, int stage)
 {
-    return 0;
+	return 0;
 }
+
 
 /*	--------------------------------------------------------------------------------
 	Function : bdLockRenderState
-	Purpose : lock render state
-	Parameters : renderState
-	Returns : OK/FAIL
+	Purpose : increment the lock count on a render state
+	Parameters : render state
+	Returns : new lock count
 	Info : 
 */
+
 int bdLockRenderState(int renderState)
 {
-    return 0;
+	return 0;
 }
+
 
 /*	--------------------------------------------------------------------------------
 	Function : bdUnlockRenderState
-	Purpose : unlock render state
-	Parameters : renderState
-	Returns : OK/FAIL
+	Purpose : decrement the lock count on a render state
+	Parameters : render state
+	Returns : new lock count
 	Info : 
 */
+
 int bdUnlockRenderState(int renderState)
 {
-    return 0;
+	return 0;
 }

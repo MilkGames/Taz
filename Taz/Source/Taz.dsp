@@ -45,7 +45,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /YX /FD /c
-# ADD CPP /nologo /G6 /MT /W3 /GX /ZI /I "c:\taz\babel\pc\include" /I "c:\dxsdk\include" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /YX /FD /c
+# ADD CPP /nologo /G6 /MT /W3 /GX /ZI /I "c:\taz\babel\pc\include" /I "c:\dxsdk\include" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /FR /YX /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x809 /d "NDEBUG"
@@ -1159,6 +1159,10 @@ SOURCE=.\death.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\endgamecredits.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\frontendanimation.cpp
 # End Source File
 # Begin Source File
@@ -2239,6 +2243,10 @@ SOURCE=.\death.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\endgamecredits.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\frontendanimation.h
 # End Source File
 # Begin Source File
@@ -2800,23 +2808,6 @@ SOURCE=..\..\Babel\Pc\Include\bActor\pcxbStockExtras.h
 # Begin Source File
 
 SOURCE=..\..\Babel\Pc\Include\bActor\set.h
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\include\bActor\stockExtras.h
 
 !IF  "$(CFG)" == "Taz - Win32 Release"
 
@@ -4317,6 +4308,10 @@ SOURCE=..\..\Babel\Pc\Include\fScene.h
 !ENDIF 
 
 # End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Pc\include\global.h
+# End Source File
 # End Group
 # Begin Group "Babel Sources"
 
@@ -4633,23 +4628,6 @@ SOURCE=..\..\Babel\Pc\src\bActor\pcxbStockExtras.cpp
 # Begin Source File
 
 SOURCE=..\..\Babel\Pc\src\bActor\set.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\bActor\stockExtras.cpp
 
 !IF  "$(CFG)" == "Taz - Win32 Release"
 

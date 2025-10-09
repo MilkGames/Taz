@@ -17,6 +17,7 @@
 #endif
 
 //#define INFOGRAMES
+#define SKIPLAUNCHER
 
 // NH: For master releases with absolutely NO debug, testing or infogrames stuff included (ie. GUI and screenshots)
 //#define _MASTER
