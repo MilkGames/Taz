@@ -348,6 +348,7 @@ void bShutdownHeap()
 
 void bkHeapReset()
 {
+        bkPrintf("*** WARNING *** bkHeapReset was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -362,7 +363,7 @@ void bkHeapReset()
 
 void *bkHeapAlloc(uint size, char *file, int line, ushort flags)
 {
-	return bkHeapAllocEx(size, file, line, flags, bGroupStack[bGroupSP]);
+    return bkHeapAllocEx(size, file, line, flags, bGroupStack[bGroupSP]);
 }
 
 /*	--------------------------------------------------------------------------------
@@ -531,6 +532,7 @@ void *bkHeapAllocEx(uint size, char *file, int line, ushort flags, uint32 group,
 
 void *bkHeapCalloc(uint size, int32 value, char *file, int line, ushort flags)
 {
+        bkPrintf("*** WARNING *** bkHeapCalloc was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -545,6 +547,7 @@ void *bkHeapCalloc(uint size, int32 value, char *file, int line, ushort flags)
 
 void *bkHeapCallocEx(uint size, int32 value, char *file, int line, ushort flags, uint32 group)
 {
+        bkPrintf("*** WARNING *** bkHeapCallocEx was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -768,6 +771,7 @@ void *bkHeapRealloc(void *ptr, int32 newSize)
 
 int bkHeapGetBlockSize(void *ptr)
 {
+        bkPrintf("*** WARNING *** bkHeapGetBlockSize was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -782,6 +786,7 @@ int bkHeapGetBlockSize(void *ptr)
 
 void bkHeapShow(uint32 group, int pause)
 {
+        bkPrintf("*** WARNING *** bkHeapShow was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -796,6 +801,7 @@ void bkHeapShow(uint32 group, int pause)
 
 void bkHeapShowGraphical(uint32 group=BALLGROUPS, float zoom = 0.0f, const struct _TBFont *font=0)
 {
+        bkPrintf("*** WARNING *** bkHeapShowGraphical was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -832,6 +838,7 @@ void bkHeapShowGraphical(uint32 group=BALLGROUPS, float zoom = 0.0f, const struc
 
 void bkHeapFreeGroup(uint32 group)
 {
+        bkPrintf("*** WARNING *** bkHeapFreeGroup was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -845,6 +852,7 @@ void bkHeapFreeGroup(uint32 group)
 
 void bkHeapSetBreakAlloc(uint32 blockId)
 {
+        bkPrintf("*** WARNING *** bkHeapSetBreakAlloc was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -891,6 +899,7 @@ void bkHeapSetBreakAlloc(uint32 blockId)
 
 int bkHeapGroupPush(const char * const group)
 {
+        bkPrintf("*** WARNING *** bkHeapGroupPush was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -905,6 +914,7 @@ int bkHeapGroupPush(const char * const group)
 
 int bkHeapGroupPop(void)
 {
+        bkPrintf("*** WARNING *** bkHeapGroupPop was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -942,6 +952,7 @@ int bkHeapFreeSpace(int *largestFreeBlock /*=NULL*/)
 
 uint32 bGetCurrentGroup(void)
 {
+        bkPrintf("*** WARNING *** bGetCurrentGroup was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -956,6 +967,7 @@ uint32 bGetCurrentGroup(void)
 
 void bkShowHeapStructure()
 {
+        bkPrintf("*** WARNING *** bkShowHeapStructure was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -970,6 +982,7 @@ void bkShowHeapStructure()
 
 int bkIsHeapBlock(void *ptr)
 {
+        bkPrintf("*** WARNING *** bkIsHeapBlock was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -984,6 +997,7 @@ int bkIsHeapBlock(void *ptr)
 
 int bkGetSystemFreeMemory()
 {
+        bkPrintf("*** WARNING *** bkGetSystemFreeMemory was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -998,6 +1012,7 @@ int bkGetSystemFreeMemory()
 
 void bkHeapSetLargeBlockThreshold(uint value)
 {
+        bkPrintf("*** WARNING *** bkHeapSetLargeBlockThreshold was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -1011,5 +1026,6 @@ void bkHeapSetLargeBlockThreshold(uint value)
 
 uint bkHeapGetLargeBlockThreshold()
 {
+        bkPrintf("*** WARNING *** bkHeapGetLargeBlockThreshold was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }

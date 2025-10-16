@@ -28,7 +28,8 @@ char		   _debugBuffer[1024];
 
 void bInitDbgHelp()
 {
-	return;
+        bkPrintf("*** WARNING *** bInitDbgHelp was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 // ********************************************************************************
@@ -286,6 +287,7 @@ void bInitDebug(void)
 
 void bShutdownDebug()
 {
+        bkPrintf("*** WARNING *** bShutdownDebug was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -299,6 +301,8 @@ void bShutdownDebug()
 
 void bkAlert(char *message)
 {
+    bkPrintf("bkAlert: %s", message);
+    MessageBoxA(NULL, message, "Alert", MB_ICONHAND /* 0x10 */);
     return;
 }
 
@@ -313,5 +317,6 @@ void bkAlert(char *message)
 
 void bVPrintf(char *format, va_list argp)
 {
+        bkPrintf("*** WARNING *** bVPrintf was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

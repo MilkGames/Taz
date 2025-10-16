@@ -29,7 +29,8 @@ float bIdentityMatrix[4][4] = {
 
 void bmMatXRotation(TBMatrix mat, const float radians)
 {
-	return;
+        bkPrintf("*** WARNING *** bmMatXRotation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -43,7 +44,8 @@ void bmMatXRotation(TBMatrix mat, const float radians)
 
 void bmMatYRotation(TBMatrix mat, const float radians)
 {
-	return;
+        bkPrintf("*** WARNING *** bmMatYRotation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -57,7 +59,8 @@ void bmMatYRotation(TBMatrix mat, const float radians)
 
 void bmMatZRotation(TBMatrix mat, const float radians)
 {
-	return;
+        bkPrintf("*** WARNING *** bmMatZRotation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -71,7 +74,8 @@ void bmMatZRotation(TBMatrix mat, const float radians)
 
 void bmMatTranslate(TBMatrix mat, const float x, const float y, const float z)
 {
-	return;
+        bkPrintf("*** WARNING *** bmMatTranslate was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -85,7 +89,8 @@ void bmMatTranslate(TBMatrix mat, const float x, const float y, const float z)
 
 void bmMatScale(TBMatrix mat, const float x, const float y, const float z)
 {
-	return;
+        bkPrintf("*** WARNING *** bmMatScale was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -99,7 +104,8 @@ void bmMatScale(TBMatrix mat, const float x, const float y, const float z)
 
 void bmMatMultiplyAligned(TBMatrix dest, const TBMatrix src1, const TBMatrix src2)
 {
-	return;
+        bkPrintf("*** WARNING *** bmMatMultiplyAligned was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -113,7 +119,8 @@ void bmMatMultiplyAligned(TBMatrix dest, const TBMatrix src1, const TBMatrix src
 
 void bmMatMultiplyUnaligned(TBMatrix dest, const TBMatrix src1, const TBMatrix src2)
 {
-	return;
+        bkPrintf("*** WARNING *** bmMatMultiplyUnaligned was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -138,7 +145,8 @@ void bmMatMultiplyUnaligned(TBMatrix dest, const TBMatrix src1, const TBMatrix s
 
 char *bmMatShow(const TBMatrix mat, char * const buf)
 {
-	return NULL;
+        bkPrintf("*** WARNING *** bmMatShow was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return NULL;
 }
 
 
@@ -152,7 +160,8 @@ char *bmMatShow(const TBMatrix mat, char * const buf)
 
 void bmMatXYRotation(TBMatrix dest, const float x, const float y)
 {
-	return;
+        bkPrintf("*** WARNING *** bmMatXYRotation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -166,7 +175,8 @@ void bmMatXYRotation(TBMatrix dest, const float x, const float y)
 
 void bmMatYXRotation(TBMatrix dest, const float x, const float y)
 {
-	return;
+        bkPrintf("*** WARNING *** bmMatYXRotation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -180,7 +190,8 @@ void bmMatYXRotation(TBMatrix dest, const float x, const float y)
 
 void bmMatXZRotation(TBMatrix dest, const float x, const float z)
 {
-	return;
+        bkPrintf("*** WARNING *** bmMatXZRotation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -194,7 +205,8 @@ void bmMatXZRotation(TBMatrix dest, const float x, const float z)
 
 void bmMatZXRotation(TBMatrix dest, const float x, const float z)
 {
-	return;
+        bkPrintf("*** WARNING *** bmMatZXRotation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -208,7 +220,8 @@ void bmMatZXRotation(TBMatrix dest, const float x, const float z)
 
 void bmMatYZRotation(TBMatrix dest, const float y, const float z)
 {
-	return;
+        bkPrintf("*** WARNING *** bmMatYZRotation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -222,7 +235,8 @@ void bmMatYZRotation(TBMatrix dest, const float y, const float z)
 
 void bmMatZYRotation(TBMatrix dest, const float y, const float z)
 {
-	return;
+        bkPrintf("*** WARNING *** bmMatZYRotation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -236,7 +250,8 @@ void bmMatZYRotation(TBMatrix dest, const float y, const float z)
 
 void bmMatXYZRotation(TBMatrix dest, const float xRadians, const float yRadians, const float zRadians)
 {
-	return;
+        bkPrintf("*** WARNING *** bmMatXYZRotation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -250,7 +265,8 @@ void bmMatXYZRotation(TBMatrix dest, const float xRadians, const float yRadians,
 
 void bmMatXZYRotation(TBMatrix dest, const float x, const float y, const float z)
 {
-	return;
+        bkPrintf("*** WARNING *** bmMatXZYRotation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -264,7 +280,8 @@ void bmMatXZYRotation(TBMatrix dest, const float x, const float y, const float z
 
 void bmMatYXZRotation(TBMatrix dest, const float x, const float y, const float z)
 {
-	return;
+        bkPrintf("*** WARNING *** bmMatYXZRotation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -278,7 +295,8 @@ void bmMatYXZRotation(TBMatrix dest, const float x, const float y, const float z
 
 void bmMatYZXRotation(TBMatrix dest, const float x, const float y, const float z)
 {
-	return;
+        bkPrintf("*** WARNING *** bmMatYZXRotation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -292,7 +310,8 @@ void bmMatYZXRotation(TBMatrix dest, const float x, const float y, const float z
 
 void bmMatZXYRotation(TBMatrix dest, const float x, const float y, const float z)
 {
-	return;
+        bkPrintf("*** WARNING *** bmMatZXYRotation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -306,7 +325,8 @@ void bmMatZXYRotation(TBMatrix dest, const float x, const float y, const float z
 
 void bmMatZYXRotation(TBMatrix dest, const float x, const float y, const float z)
 {
-	return;
+        bkPrintf("*** WARNING *** bmMatZYXRotation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -320,7 +340,8 @@ void bmMatZYXRotation(TBMatrix dest, const float x, const float y, const float z
 
 int bmMatInverse(TBMatrix dest, const TBMatrix in)
 {
-	return 0;
+        bkPrintf("*** WARNING *** bmMatInverse was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return 0;
 }
 
 
@@ -334,7 +355,8 @@ int bmMatInverse(TBMatrix dest, const TBMatrix in)
 
 void bmMatMultiplyVector(const TBMatrix mat, TBVector vec)
 {
-	return;
+        bkPrintf("*** WARNING *** bmMatMultiplyVector was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -348,7 +370,8 @@ void bmMatMultiplyVector(const TBMatrix mat, TBVector vec)
 
 void bmMatMultiplyVector2(TBVector dest, const TBMatrix mat, const TBVector vec)
 {
-	return;
+        bkPrintf("*** WARNING *** bmMatMultiplyVector2 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -362,7 +385,8 @@ void bmMatMultiplyVector2(TBVector dest, const TBMatrix mat, const TBVector vec)
 
 void bmMatTranspose(TBMatrix dest, const TBMatrix src)
 {
-	return;
+        bkPrintf("*** WARNING *** bmMatTranspose was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 /*	--------------------------------------------------------------------------------
@@ -375,7 +399,8 @@ void bmMatTranspose(TBMatrix dest, const TBMatrix src)
 
 void bmMatDecompose(TBMatrix mat, TBVector pos, TBVector scale, TBQuaternion orientation)
 {
-	return;
+        bkPrintf("*** WARNING *** bmMatDecompose was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 /*	--------------------------------------------------------------------------------
@@ -389,7 +414,8 @@ void bmMatDecompose(TBMatrix mat, TBVector pos, TBVector scale, TBQuaternion ori
 void bmMatTransOrScale(TBMatrix dest, float xTrans,float yTrans,float zTrans, TBMatrix orientation,
 																				float xScale,float yScale,float zScale)
 {
-	return;
+        bkPrintf("*** WARNING *** bmMatTransOrScale was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -403,7 +429,8 @@ void bmMatTransOrScale(TBMatrix dest, float xTrans,float yTrans,float zTrans, TB
 
 void bmMatTransOr(TBMatrix dest, float xTrans,float yTrans,float zTrans, TBMatrix orientation)
 {
-	return;
+        bkPrintf("*** WARNING *** bmMatTransOr was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -417,5 +444,6 @@ void bmMatTransOr(TBMatrix dest, float xTrans,float yTrans,float zTrans, TBMatri
 
 void bmMatLookAt(TBMatrix mat, TBVector from, TBVector at, float rollRadians)
 {
-	return;
+        bkPrintf("*** WARNING *** bmMatLookAt was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }

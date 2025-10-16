@@ -21,6 +21,7 @@
 
 void bInitEvents()
 {
+        bkPrintf("*** WARNING *** bInitEvents was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -35,6 +36,7 @@ void bInitEvents()
 
 void bShutdownEvents()
 {
+        bkPrintf("*** WARNING *** bShutdownEvents was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -49,6 +51,7 @@ void bShutdownEvents()
 
 TBEvent *bFindEvent(uint32 crc)
 {
+        bkPrintf("*** WARNING *** bFindEvent was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -63,6 +66,7 @@ TBEvent *bFindEvent(uint32 crc)
 
 int bkCreateEvent(char *eventName)
 {
+        bkPrintf("*** WARNING *** bkCreateEvent was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -77,6 +81,7 @@ int bkCreateEvent(char *eventName)
 
 TBEventClient *bkTrapEventCallback(char *eventName, TBEventCallback callback, void *context)
 {
+        bkPrintf("*** WARNING *** bkTrapEventCallback was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -91,6 +96,7 @@ TBEventClient *bkTrapEventCallback(char *eventName, TBEventCallback callback, vo
 
 TBEventClient *bkTrapEventQueue(char *eventName, int queueSize, uint32 flags)
 {
+        bkPrintf("*** WARNING *** bkTrapEventQueue was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -105,6 +111,7 @@ TBEventClient *bkTrapEventQueue(char *eventName, int queueSize, uint32 flags)
 
 int bkPopEvent(TBEventClient *client, char *parmBuffer, void *data)
 {
+        bkPrintf("*** WARNING *** bkPopEvent was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -119,6 +126,7 @@ int bkPopEvent(TBEventClient *client, char *parmBuffer, void *data)
 
 void bkDeleteEvent(char *eventName)
 {
+        bkPrintf("*** WARNING *** bkDeleteEvent was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -133,6 +141,7 @@ void bkDeleteEvent(char *eventName)
 
 void bkDeleteEventClient(TBEventClient *client)
 {
+        bkPrintf("*** WARNING *** bkDeleteEventClient was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -147,6 +156,7 @@ void bkDeleteEventClient(TBEventClient *client)
 
 int bkGenerateEvent(char *eventName, char *parmString, void *data, int takeMutex)
 {
+        bkPrintf("*** WARNING *** bkGenerateEvent was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -161,6 +171,7 @@ int bkGenerateEvent(char *eventName, char *parmString, void *data, int takeMutex
 
 void bkFlushEventQueue(TBEventClient *queue, int takeMutex)
 {
+        bkPrintf("*** WARNING *** bkFlushEventQueue was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -175,6 +186,7 @@ void bkFlushEventQueue(TBEventClient *queue, int takeMutex)
 
 void bkFlushAllEventQueues(char *eventName)
 {
+        bkPrintf("*** WARNING *** bkFlushAllEventQueues was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -189,6 +201,7 @@ void bkFlushAllEventQueues(char *eventName)
 
 uint32 bkHexToInt32(char *string)
 {
+        bkPrintf("*** WARNING *** bkHexToInt32 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -203,5 +216,6 @@ uint32 bkHexToInt32(char *string)
 
 void bkDeleteEventTraps(char *eventName)
 {
+        bkPrintf("*** WARNING *** bkDeleteEventTraps was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

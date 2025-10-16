@@ -20,6 +20,7 @@
 */
 void bFixupAsyncMesh(TBAsyncMesh *asyncMesh, uchar *basePtr)
 {
+        bkPrintf("*** WARNING *** bFixupAsyncMesh was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -32,6 +33,7 @@ void bFixupAsyncMesh(TBAsyncMesh *asyncMesh, uchar *basePtr)
 */
 void bDrawMesh(TBMesh *mesh, struct _TBActorInstance *actorInstance, int alpha, struct _TBActorNodeInstance *nodeInstance)
 {
+        bkPrintf("*** WARNING *** bDrawMesh was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -68,6 +70,7 @@ void bShutdownActorPlatformSpecific()
 */
 void bSetupActorNodeList(struct _TBActorNodeInstance *rootNode, struct _TBActorInstance *actorInstance, int alpha)
 {
+        bkPrintf("*** WARNING *** bSetupActorNodeList was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -80,6 +83,7 @@ void bSetupActorNodeList(struct _TBActorNodeInstance *rootNode, struct _TBActorI
 */
 void bFixupSoftSkin(struct _TBActor *actor)
 {
+        bkPrintf("*** WARNING *** bFixupSoftSkin was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -92,6 +96,7 @@ void bFixupSoftSkin(struct _TBActor *actor)
 */
 void bMatMultiplyTranspose(float *dest, const TBMatrix src1, const TBMatrix src2, int rows)
 {
+        bkPrintf("*** WARNING *** bMatMultiplyTranspose was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -104,6 +109,7 @@ void bMatMultiplyTranspose(float *dest, const TBMatrix src1, const TBMatrix src2
 */
 void bSetMatrixPaletteEntry(struct _TBActorInstance *actorInstance, struct _TBActorNodeInstance *nodeInstance)
 {
+        bkPrintf("*** WARNING *** bSetMatrixPaletteEntry was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -116,6 +122,7 @@ void bSetMatrixPaletteEntry(struct _TBActorInstance *actorInstance, struct _TBAc
 */
 void bFixupMesh(uchar *basePtr, struct _TBActorNode *node, struct _TBActor *actor)
 {
+        bkPrintf("*** WARNING *** bFixupMesh was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -128,6 +135,7 @@ void bFixupMesh(uchar *basePtr, struct _TBActorNode *node, struct _TBActor *acto
 */
 void bPrepActorNodeList(struct _TBActorNodeInstance *rootNode, TBMatrix parentXForm, TBVector parentScale, struct _TBActorInstance *actorInstance)
 {
+        bkPrintf("*** WARNING *** bPrepActorNodeList was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -140,6 +148,7 @@ void bPrepActorNodeList(struct _TBActorNodeInstance *rootNode, TBMatrix parentXF
 */
 void bDeleteMesh(struct _TBActorNode *meshNode)
 {
+        bkPrintf("*** WARNING *** bDeleteMesh was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -152,6 +161,7 @@ void bDeleteMesh(struct _TBActorNode *meshNode)
 */
 void bDeleteAsyncMesh(struct _TBActorNode *meshNode)
 {
+        bkPrintf("*** WARNING *** bDeleteAsyncMesh was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -164,6 +174,7 @@ void bDeleteAsyncMesh(struct _TBActorNode *meshNode)
 */
 void bDeleteSoftSkin(struct _TBActor *actor)
 {
+        bkPrintf("*** WARNING *** bDeleteSoftSkin was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -176,5 +187,6 @@ void bDeleteSoftSkin(struct _TBActor *actor)
 */
 int baSetActorRenderCallbacks(TBDrawMeshCallback meshDraw, TBDrawSoftSkinCallback softSkinDraw)
 {
+        bkPrintf("*** WARNING *** baSetActorRenderCallbacks was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }

@@ -21,6 +21,7 @@
 
 TBPackageIndex *bkOpenPackage(char *filename)
 {
+        bkPrintf("*** WARNING *** bkOpenPackage was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -35,6 +36,7 @@ TBPackageIndex *bkOpenPackage(char *filename)
 
 TBPackageIndex *bkLoadPackage(TBPackageIndex *parentIndex, char *filename, uchar *dataPtr)
 {
+        bkPrintf("*** WARNING *** bkLoadPackage was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -49,6 +51,7 @@ TBPackageIndex *bkLoadPackage(TBPackageIndex *parentIndex, char *filename, uchar
 
 int bkFreePackageMemory(TBPackageIndex **index)
 {
+        bkPrintf("*** WARNING *** bkFreePackageMemory was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -63,5 +66,6 @@ int bkFreePackageMemory(TBPackageIndex **index)
 
 void bkClosePackage(TBPackageIndex *indexPtr)
 {
+        bkPrintf("*** WARNING *** bkClosePackage was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

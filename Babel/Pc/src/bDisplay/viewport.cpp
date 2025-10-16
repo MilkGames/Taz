@@ -20,6 +20,7 @@
 */
 void bdPushProjectionMode(const uint32 mode)
 {
+        bkPrintf("*** WARNING *** bdPushProjectionMode was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -32,5 +33,6 @@ void bdPushProjectionMode(const uint32 mode)
 */
 void bdPopProjectionMode()
 {
+        bkPrintf("*** WARNING *** bdPopProjectionMode was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

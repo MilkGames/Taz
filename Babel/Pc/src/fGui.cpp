@@ -20,6 +20,7 @@
 */
 int fgInitialise()
 {
+        bkPrintf("*** WARNING *** fgInitialise was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -32,6 +33,7 @@ int fgInitialise()
 */
 int fgInitSpecific()
 {
+        bkPrintf("*** WARNING *** fgInitSpecific was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -44,6 +46,7 @@ int fgInitSpecific()
 */
 void fgShutdown()
 {
+        bkPrintf("*** WARNING *** fgShutdown was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -56,6 +59,7 @@ void fgShutdown()
 */
 void fgShutdownSpecific()
 {
+        bkPrintf("*** WARNING *** fgShutdownSpecific was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -68,6 +72,7 @@ void fgShutdownSpecific()
 */
 void fgPoll()
 {
+        bkPrintf("*** WARNING *** fgPoll was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -80,6 +85,7 @@ void fgPoll()
 */
 void fgRender()
 {
+        bkPrintf("*** WARNING *** fgRender was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -92,6 +98,7 @@ void fgRender()
 */
 void fgSetFont(TBFont *font)
 {
+        bkPrintf("*** WARNING *** fgSetFont was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -104,6 +111,7 @@ void fgSetFont(TBFont *font)
 */
 void fgSetPointer(TBTexture *texture)
 {
+        bkPrintf("*** WARNING *** fgSetPointer was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -116,6 +124,7 @@ void fgSetPointer(TBTexture *texture)
 */
 void fgSetViewport(int x1, int y1, int x2, int y2)
 {
+        bkPrintf("*** WARNING *** fgSetViewport was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -128,6 +137,7 @@ void fgSetViewport(int x1, int y1, int x2, int y2)
 */
 void fgDrawRect(int topLeftX, int topLeftY, int width, int height, int colour, TBTexture *texture)
 {
+        bkPrintf("*** WARNING *** fgDrawRect was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -140,6 +150,7 @@ void fgDrawRect(int topLeftX, int topLeftY, int width, int height, int colour, T
 */
 void fgDrawRect2(int topLeftX, int topLeftY, int width, int height, int colour1, int colour2, TBTexture *texture)
 {
+        bkPrintf("*** WARNING *** fgDrawRect2 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -152,6 +163,7 @@ void fgDrawRect2(int topLeftX, int topLeftY, int width, int height, int colour1,
 */
 void fgDrawLine(int x1, int y1, int x2, int y2, int colour)
 {
+        bkPrintf("*** WARNING *** fgDrawLine was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -164,6 +176,7 @@ void fgDrawLine(int x1, int y1, int x2, int y2, int colour)
 */
 void fgDrawText(ushort *text, int x, int y, int width, int height, int colour)
 {
+        bkPrintf("*** WARNING *** fgDrawText was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -176,6 +189,7 @@ void fgDrawText(ushort *text, int x, int y, int width, int height, int colour)
 */
 void fgTextExtent(ushort *text, float *width, float *height)
 {
+        bkPrintf("*** WARNING *** fgTextExtent was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -188,6 +202,7 @@ void fgTextExtent(ushort *text, float *width, float *height)
 */
 void fgDrawPointer()
 {
+        bkPrintf("*** WARNING *** fgDrawPointer was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -200,5 +215,6 @@ void fgDrawPointer()
 */
 int fgColourDelta(int colour, int delta)
 {
+        bkPrintf("*** WARNING *** fgColourDelta was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }

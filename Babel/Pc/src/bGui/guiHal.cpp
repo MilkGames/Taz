@@ -21,6 +21,7 @@
 */
 void bGuiLockScreen()
 {
+        bkPrintf("*** WARNING *** bGuiLockScreen was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -33,6 +34,7 @@ void bGuiLockScreen()
 */
 void bGuiUnlockScreen()
 {
+        bkPrintf("*** WARNING *** bGuiUnlockScreen was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -45,6 +47,7 @@ void bGuiUnlockScreen()
 */
 void bGuiPrintText(struct _TBGuiFont *font, int xPos, int yPos, char *text)
 {
+        bkPrintf("*** WARNING *** bGuiPrintText was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -57,6 +60,7 @@ void bGuiPrintText(struct _TBGuiFont *font, int xPos, int yPos, char *text)
 */
 void bInitGuiHAL()
 {
+        bkPrintf("*** WARNING *** bInitGuiHAL was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -69,6 +73,7 @@ void bInitGuiHAL()
 */
 void bShutdownGuiHAL()
 {
+        bkPrintf("*** WARNING *** bShutdownGuiHAL was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -81,6 +86,7 @@ void bShutdownGuiHAL()
 */
 void bGuiFillRect(int xPos, int yPos, int width, int height, int r, int g, int b)
 {
+        bkPrintf("*** WARNING *** bGuiFillRect was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -93,6 +99,7 @@ void bGuiFillRect(int xPos, int yPos, int width, int height, int r, int g, int b
 */
 void bGuiDrawFrame(int xPos, int yPos, int width, int height, enum EBGuiFrameStyle style, int r, int g, int b)
 {
+        bkPrintf("*** WARNING *** bGuiDrawFrame was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -105,6 +112,7 @@ void bGuiDrawFrame(int xPos, int yPos, int width, int height, enum EBGuiFrameSty
 */
 void bGuiDrawHBar(int xPos, int yPos, int width, int r, int g, int b)
 {
+        bkPrintf("*** WARNING *** bGuiDrawHBar was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -117,6 +125,7 @@ void bGuiDrawHBar(int xPos, int yPos, int width, int r, int g, int b)
 */
 void bGuiDrawVBar(int xPos, int yPos, int height, int r, int g, int b)
 {
+        bkPrintf("*** WARNING *** bGuiDrawVBar was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -129,5 +138,6 @@ void bGuiDrawVBar(int xPos, int yPos, int height, int r, int g, int b)
 */
 void bGuiPrintIcon(enum EBGuiIcons icon, int xPos, int yPos)
 {
+        bkPrintf("*** WARNING *** bGuiPrintIcon was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

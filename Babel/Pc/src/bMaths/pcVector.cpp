@@ -22,7 +22,18 @@
 
 float bmVectorNorm(TBVector dest, const TBVector src)
 {
-    return 0;
+    const float x = src[0];
+    const float y = src[1];
+    const float z = src[2];
+
+    const float len = bmSqrt(x*x + y*y + z*z);
+    if (len != 0.0f) {
+        const float inv = 1.0f / len;
+        dest[0] = x * inv;
+        dest[1] = y * inv;
+        dest[2] = z * inv;
+    }
+    return len;
 }
 
 
@@ -36,6 +47,7 @@ float bmVectorNorm(TBVector dest, const TBVector src)
 
 float bmVectorNorm4(TBVector dest, const TBVector src)
 {
+        bkPrintf("*** WARNING *** bmVectorNorm4 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -49,6 +61,7 @@ float bmVectorNorm4(TBVector dest, const TBVector src)
 
 float bmVectorDistance(const TBVector src1, const TBVector src2)
 {
+        bkPrintf("*** WARNING *** bmVectorDistance was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -63,6 +76,7 @@ float bmVectorDistance(const TBVector src1, const TBVector src2)
 
 float bmVectorDistanceApprox(const TBVector src1, const TBVector src2)
 {
+        bkPrintf("*** WARNING *** bmVectorDistanceApprox was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -77,6 +91,7 @@ float bmVectorDistanceApprox(const TBVector src1, const TBVector src2)
 
 float bmVectorDistance4(const TBVector src1, const TBVector src2)
 {
+        bkPrintf("*** WARNING *** bmVectorDistance4 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -91,6 +106,7 @@ float bmVectorDistance4(const TBVector src1, const TBVector src2)
 
 float bmVectorSquaredDistance(const TBVector src1, const TBVector src2)
 {
+        bkPrintf("*** WARNING *** bmVectorSquaredDistance was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -105,6 +121,7 @@ float bmVectorSquaredDistance(const TBVector src1, const TBVector src2)
 
 float bmVectorSquaredDistance4(const TBVector src1, const TBVector src2)
 {
+        bkPrintf("*** WARNING *** bmVectorSquaredDistance4 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -118,6 +135,7 @@ float bmVectorSquaredDistance4(const TBVector src1, const TBVector src2)
 
 void bmVectorScaleToLength(TBVector dest, const TBVector src, const float length)
 {
+        bkPrintf("*** WARNING *** bmVectorScaleToLength was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -132,6 +150,7 @@ void bmVectorScaleToLength(TBVector dest, const TBVector src, const float length
 
 void bmVectorScaleToLength4(TBVector dest, const TBVector src, const float length)
 {
+        bkPrintf("*** WARNING *** bmVectorScaleToLength4 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -146,6 +165,7 @@ void bmVectorScaleToLength4(TBVector dest, const TBVector src, const float lengt
 
 void bmVectorLerp(TBVector dest, const TBVector src1, const TBVector src2, const float t)
 {
+        bkPrintf("*** WARNING *** bmVectorLerp was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -160,6 +180,7 @@ void bmVectorLerp(TBVector dest, const TBVector src1, const TBVector src2, const
 
 void bmVectorLerp4(TBVector dest, const TBVector src1, const TBVector src2, const float t)
 {
+        bkPrintf("*** WARNING *** bmVectorLerp4 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -174,6 +195,7 @@ void bmVectorLerp4(TBVector dest, const TBVector src1, const TBVector src2, cons
 
 void bmVectorCombine(TBVector dest, const TBVector src1, const float factor1, const TBVector src2, const float factor2)
 {
+        bkPrintf("*** WARNING *** bmVectorCombine was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -188,6 +210,7 @@ void bmVectorCombine(TBVector dest, const TBVector src1, const float factor1, co
 
 void bmVectorCombine4(TBVector dest, const TBVector src1, const float factor1, const TBVector src2, const float factor2)
 {
+        bkPrintf("*** WARNING *** bmVectorCombine4 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -202,6 +225,7 @@ void bmVectorCombine4(TBVector dest, const TBVector src1, const float factor1, c
 
 void bmVectorCalcNormal(TBVector dest, const TBVector src1, const TBVector src2, const TBVector src3)
 {
+        bkPrintf("*** WARNING *** bmVectorCalcNormal was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -215,6 +239,7 @@ void bmVectorCalcNormal(TBVector dest, const TBVector src1, const TBVector src2,
 
 void bmVectorRotateX(TBVector dest, const TBVector src, const float rads)
 {
+        bkPrintf("*** WARNING *** bmVectorRotateX was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -229,6 +254,7 @@ void bmVectorRotateX(TBVector dest, const TBVector src, const float rads)
 
 void bmVectorRotateY(TBVector dest, const TBVector src, const float rads)
 {
+        bkPrintf("*** WARNING *** bmVectorRotateY was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -243,6 +269,7 @@ void bmVectorRotateY(TBVector dest, const TBVector src, const float rads)
 
 void bmVectorRotateZ(TBVector dest, const TBVector src, const float rads)
 {
+        bkPrintf("*** WARNING *** bmVectorRotateZ was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -257,6 +284,7 @@ void bmVectorRotateZ(TBVector dest, const TBVector src, const float rads)
 
 void bmVectorRotateXY(TBVector dest, const TBVector src, const float xrads, const float yrads)
 {
+        bkPrintf("*** WARNING *** bmVectorRotateXY was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -271,6 +299,7 @@ void bmVectorRotateXY(TBVector dest, const TBVector src, const float xrads, cons
 
 void bmVectorRotateXZ(TBVector dest, const TBVector src, const float xrads, const float zrads)
 {
+        bkPrintf("*** WARNING *** bmVectorRotateXZ was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -285,6 +314,7 @@ void bmVectorRotateXZ(TBVector dest, const TBVector src, const float xrads, cons
 
 void bmVectorRotateYX(TBVector dest, const TBVector src, const float yrads, const float xrads)
 {
+        bkPrintf("*** WARNING *** bmVectorRotateYX was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -299,6 +329,7 @@ void bmVectorRotateYX(TBVector dest, const TBVector src, const float yrads, cons
 
 void bmVectorRotateYZ(TBVector dest, const TBVector src, const float yrads, const float zrads)
 {
+        bkPrintf("*** WARNING *** bmVectorRotateYZ was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -313,6 +344,7 @@ void bmVectorRotateYZ(TBVector dest, const TBVector src, const float yrads, cons
 
 void bmVectorRotateZX(TBVector dest, const TBVector src, const float zrads, const float xrads)
 {
+        bkPrintf("*** WARNING *** bmVectorRotateZX was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -327,6 +359,7 @@ void bmVectorRotateZX(TBVector dest, const TBVector src, const float zrads, cons
 
 void bmVectorRotateZY(TBVector dest, const TBVector src, const float zrads, const float yrads)
 {
+        bkPrintf("*** WARNING *** bmVectorRotateZY was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -341,6 +374,7 @@ void bmVectorRotateZY(TBVector dest, const TBVector src, const float zrads, cons
 
 void bmVectorRotateXYZ(TBVector dest, const TBVector src, const float xrads, const float yrads, const float zrads)
 {
+        bkPrintf("*** WARNING *** bmVectorRotateXYZ was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -355,6 +389,7 @@ void bmVectorRotateXYZ(TBVector dest, const TBVector src, const float xrads, con
 
 void bmVectorRotateXZY(TBVector dest, const TBVector src, const float xrads, const float zrads, const float yrads)
 {
+        bkPrintf("*** WARNING *** bmVectorRotateXZY was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -369,6 +404,7 @@ void bmVectorRotateXZY(TBVector dest, const TBVector src, const float xrads, con
 
 void bmVectorRotateYXZ(TBVector dest, const TBVector src, const float yrads, const float xrads, const float zrads)
 {
+        bkPrintf("*** WARNING *** bmVectorRotateYXZ was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -383,6 +419,7 @@ void bmVectorRotateYXZ(TBVector dest, const TBVector src, const float yrads, con
 
 void bmVectorRotateYZX(TBVector dest, const TBVector src, const float yrads, const float zrads, const float xrads)
 {
+        bkPrintf("*** WARNING *** bmVectorRotateYZX was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -397,6 +434,7 @@ void bmVectorRotateYZX(TBVector dest, const TBVector src, const float yrads, con
 
 void bmVectorRotateZXY(TBVector dest, const TBVector src, const float zrads, const float xrads, const float yrads)
 {
+        bkPrintf("*** WARNING *** bmVectorRotateZXY was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -411,5 +449,6 @@ void bmVectorRotateZXY(TBVector dest, const TBVector src, const float zrads, con
 
 void bmVectorRotateZYX(TBVector dest, const TBVector src, const float zrads, const float yrads, const float xrads)
 {
+        bkPrintf("*** WARNING *** bmVectorRotateZYX was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

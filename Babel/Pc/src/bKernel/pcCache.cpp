@@ -21,6 +21,7 @@
 
 void bInitCache()
 {
+        bkPrintf("*** WARNING *** bInitCache was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -35,6 +36,7 @@ void bInitCache()
 
 void bShutdownCache()
 {
+        bkPrintf("*** WARNING *** bShutdownCache was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -49,6 +51,7 @@ void bShutdownCache()
 
 void bCacheUpdate()
 {
+        bkPrintf("*** WARNING *** bCacheUpdate was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -63,6 +66,7 @@ void bCacheUpdate()
 
 void bkCacheFlush(int flushEverything)
 {
+        bkPrintf("*** WARNING *** bkCacheFlush was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -77,6 +81,7 @@ void bkCacheFlush(int flushEverything)
 
 int bkCacheFileListAdd(char *filename, int priority, int groupId, int flags)
 {
+        bkPrintf("*** WARNING *** bkCacheFileListAdd was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -91,6 +96,7 @@ int bkCacheFileListAdd(char *filename, int priority, int groupId, int flags)
 
 void bkCacheFileListRemove(char *filename)
 {
+        bkPrintf("*** WARNING *** bkCacheFileListRemove was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -105,6 +111,7 @@ void bkCacheFileListRemove(char *filename)
 
 int bkCacheFileListAddGroup(int priority, int groupId, int noofFiles, char **fileList)
 {
+        bkPrintf("*** WARNING *** bkCacheFileListAddGroup was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -119,6 +126,7 @@ int bkCacheFileListAddGroup(int priority, int groupId, int noofFiles, char **fil
 
 void bkCacheFileListRemoveGroup(int groupId)
 {
+        bkPrintf("*** WARNING *** bkCacheFileListRemoveGroup was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -133,6 +141,7 @@ void bkCacheFileListRemoveGroup(int groupId)
 
 void bkCacheEnable(int state)
 {
+        bkPrintf("*** WARNING *** bkCacheEnable was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -147,6 +156,7 @@ void bkCacheEnable(int state)
 
 int bkCacheIsEnabled()
 {
+        bkPrintf("*** WARNING *** bkCacheIsEnabled was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -161,6 +171,7 @@ int bkCacheIsEnabled()
 
 int bkCacheIsLoading()
 {
+        bkPrintf("*** WARNING *** bkCacheIsLoading was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -175,6 +186,7 @@ int bkCacheIsLoading()
 
 ulong bkCacheFreeSpace()
 {
+        bkPrintf("*** WARNING *** bkCacheFreeSpace was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -189,6 +201,7 @@ ulong bkCacheFreeSpace()
 
 int bkCacheFindFile(char *filename)
 {
+        bkPrintf("*** WARNING *** bkCacheFindFile was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return -1;
 }
 
@@ -203,6 +216,7 @@ int bkCacheFindFile(char *filename)
 
 void bCacheLoadingFileNotification(char *fname)
 {
+        bkPrintf("*** WARNING *** bCacheLoadingFileNotification was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -217,5 +231,6 @@ void bCacheLoadingFileNotification(char *fname)
 
 int bCacheOpenFileFromCache(char *filename, TBFileHandle *fp, char *fullpath, int fpLen)
 {
+        bkPrintf("*** WARNING *** bCacheOpenFileFromCache was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }

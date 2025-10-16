@@ -20,6 +20,7 @@
 */
 int bdGetTextureFrameByTime(struct _TBTexture *texturePtr, int milliseconds)
 {
+        bkPrintf("*** WARNING *** bdGetTextureFrameByTime was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -32,6 +33,7 @@ int bdGetTextureFrameByTime(struct _TBTexture *texturePtr, int milliseconds)
 */
 int bdSetTextureFrameByTime(struct _TBTexture *texturePtr, int milliseconds)
 {
+        bkPrintf("*** WARNING *** bdSetTextureFrameByTime was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -44,5 +46,6 @@ int bdSetTextureFrameByTime(struct _TBTexture *texturePtr, int milliseconds)
 */
 void bdSetTextureCallback(struct _TBTexture *texture, EBTextureCallback cbType, TBTextureCallback callback, void *context)
 {
+        bkPrintf("*** WARNING *** bdSetTextureCallback was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

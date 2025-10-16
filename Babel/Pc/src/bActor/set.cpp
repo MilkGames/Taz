@@ -20,6 +20,7 @@
 */
 int bInitSet()
 {
+        bkPrintf("*** WARNING *** bInitSet was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -45,7 +46,8 @@ void bShutdownSet()
 
 TBSet *bLoadSetByCRC(TBPackageIndex *index, uint32 crc)
 {
-	return NULL;
+        bkPrintf("*** WARNING *** bLoadSetByCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return NULL;
 }
 
 /*	--------------------------------------------------------------------------------
@@ -57,6 +59,7 @@ TBSet *bLoadSetByCRC(TBPackageIndex *index, uint32 crc)
 */
 void bDeleteSet(TBSet *actor)
 {
+        bkPrintf("*** WARNING *** bDeleteSet was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -69,6 +72,7 @@ void bDeleteSet(TBSet *actor)
 */
 void baDrawSet(TBSet *set, int alpha)
 {
+        bkPrintf("*** WARNING *** baDrawSet was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -82,5 +86,6 @@ void baDrawSet(TBSet *set, int alpha)
 
 void *baGetSetGeometry(TBSet *set, int stream, int *noofVertices, int *noofTris)
 {
-	return NULL;
+        bkPrintf("*** WARNING *** baGetSetGeometry was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return NULL;
 }

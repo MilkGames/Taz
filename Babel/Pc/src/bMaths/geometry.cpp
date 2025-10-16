@@ -23,6 +23,7 @@
 
 extern int bmGeomWindingOrder2D(const TBVector2D point0, const TBVector2D point1, const TBVector2D point2)
 {
+        bkPrintf("*** WARNING *** bmGeomWindingOrder2D was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -39,6 +40,7 @@ extern int bmGeomWindingOrder2D(const TBVector2D point0, const TBVector2D point1
 
 extern float bmGeomDistanceFromLine2D(const TBCollisionLine2D * const line, const TBVector2D point, TBVector2D closestPoint)
 {
+        bkPrintf("*** WARNING *** bmGeomDistanceFromLine2D was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -54,6 +56,7 @@ extern float bmGeomDistanceFromLine2D(const TBCollisionLine2D * const line, cons
 
 float bmGeomLengthAlongVector(const TBVector basis, const TBVector test)
 {
+        bkPrintf("*** WARNING *** bmGeomLengthAlongVector was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -70,6 +73,7 @@ float bmGeomLengthAlongVector(const TBVector basis, const TBVector test)
 
 extern float bmGeomDistanceFromLine(const TBCollisionLine * const line, const TBVector point, TBVector closestPoint)
 {
+        bkPrintf("*** WARNING *** bmGeomDistanceFromLine was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -86,6 +90,7 @@ extern float bmGeomDistanceFromLine(const TBCollisionLine * const line, const TB
 
 float bmGeomDistanceFromInfiniteLine(const TBCollisionLine * const line, const TBVector point, TBVector closestPoint)
 {
+        bkPrintf("*** WARNING *** bmGeomDistanceFromInfiniteLine was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -104,5 +109,6 @@ float bmGeomDistanceFromInfiniteLine(const TBCollisionLine * const line, const T
 
 int bmGeomIntersectLines(const TBCollisionLine * const line1, const TBCollisionLine * const line2, float * const t, float * const s)
 {
+        bkPrintf("*** WARNING *** bmGeomIntersectLines was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }

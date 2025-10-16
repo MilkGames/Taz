@@ -21,6 +21,7 @@
 
 uint32 bkFixStringTableCRC(uint32 crc)
 {
+        bkPrintf("*** WARNING *** bkFixStringTableCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -35,6 +36,7 @@ uint32 bkFixStringTableCRC(uint32 crc)
 
 TBStringTable *bLoadStringTableByCRC(TBPackageIndex *pakIndex, uint32 crc)
 {
+        bkPrintf("*** WARNING *** bLoadStringTableByCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -49,6 +51,7 @@ TBStringTable *bLoadStringTableByCRC(TBPackageIndex *pakIndex, uint32 crc)
 
 void bDeleteStringTable(TBStringTable *tablePtr)
 {
+        bkPrintf("*** WARNING *** bDeleteStringTable was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -63,6 +66,7 @@ void bDeleteStringTable(TBStringTable *tablePtr)
 
 char *bkString16to8(char *dest, const ushort *src)
 {
+        bkPrintf("*** WARNING *** bkString16to8 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -77,11 +81,13 @@ char *bkString16to8(char *dest, const ushort *src)
 
 ushort *bkString8to16(ushort *dest, const char * src)
 {
+        bkPrintf("*** WARNING *** bkString8to16 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
 ushort *bkString8to16(ushort *dest, const uchar * src)
 {
+        bkPrintf("*** WARNING *** bkString8to16 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -96,6 +102,7 @@ ushort *bkString8to16(ushort *dest, const uchar * src)
 
 int bkStringLength16(const ushort *str)
 {
+        bkPrintf("*** WARNING *** bkStringLength16 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -110,6 +117,7 @@ int bkStringLength16(const ushort *str)
 
 ushort *bkStringCopy16(ushort *dst, const ushort *src)
 {
+        bkPrintf("*** WARNING *** bkStringCopy16 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -124,6 +132,7 @@ ushort *bkStringCopy16(ushort *dst, const ushort *src)
 
 int bkStringCompare16(const ushort *src, const ushort *dst, int length)
 {
+        bkPrintf("*** WARNING *** bkStringCompare16 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -138,6 +147,7 @@ int bkStringCompare16(const ushort *src, const ushort *dst, int length)
 
 int bkStringVSprintf16(ushort *target, const ushort *format, va_list argp)
 {
+        bkPrintf("*** WARNING *** bkStringVSprintf16 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -155,6 +165,7 @@ int bkStringVSprintf16(ushort *target, const ushort *format, va_list argp)
 
 int bkStringSprintf16(ushort *target, const ushort *format, ...)
 {
+        bkPrintf("*** WARNING *** bkStringSprintf16 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -169,6 +180,7 @@ int bkStringSprintf16(ushort *target, const ushort *format, ...)
 
 int bkStringVSprintf16(ushort *target, const char *format, va_list argp)
 {
+        bkPrintf("*** WARNING *** bkStringVSprintf16 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -186,6 +198,7 @@ int bkStringVSprintf16(ushort *target, const char *format, va_list argp)
 
 int bkStringSprintf16(ushort *target, const char *format, ...)
 {
+        bkPrintf("*** WARNING *** bkStringSprintf16 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -200,6 +213,7 @@ int bkStringSprintf16(ushort *target, const char *format, ...)
 
 struct _TBSample *bkGetStringSample(TBStringTable *strTable, int strId)
 {
+        bkPrintf("*** WARNING *** bkGetStringSample was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -213,6 +227,7 @@ struct _TBSample *bkGetStringSample(TBStringTable *strTable, int strId)
 
 void bkGetStringSampleFileName(TBStringTable *strTable, int strId, char *filename, int maxlen)
 {
+        bkPrintf("*** WARNING *** bkGetStringSampleFileName was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -227,6 +242,7 @@ void bkGetStringSampleFileName(TBStringTable *strTable, int strId, char *filenam
 
 void bStringTableInit()
 {
+        bkPrintf("*** WARNING *** bStringTableInit was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -241,6 +257,7 @@ void bStringTableInit()
 
 void bStringTableShutdown()
 {
+        bkPrintf("*** WARNING *** bStringTableShutdown was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -255,6 +272,7 @@ void bStringTableShutdown()
 
 ushort *bkStringFindLetter16(const ushort *src, ushort letter)
 {
+        bkPrintf("*** WARNING *** bkStringFindLetter16 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -268,5 +286,6 @@ ushort *bkStringFindLetter16(const ushort *src, ushort letter)
 
 ushort *bkStringFindLetterReverse16(const ushort *src, ushort letter)
 {
+        bkPrintf("*** WARNING *** bkStringFindLetterReverse16 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }

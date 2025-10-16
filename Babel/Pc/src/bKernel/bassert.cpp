@@ -21,5 +21,6 @@
 */
 void bkAssert(int errorno, int test, char *format, ...)
 {
+        bkPrintf("*** WARNING *** bkAssert was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

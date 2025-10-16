@@ -27,5 +27,5 @@ void CBGuiButton::ClearButtonFlag(int iFlag) {}
 
 void CBGuiButton::Activate() {}
 
-int CBGuiButton::SetButtonText(ushort *pText) { return 0; }
+ return 0; }
 

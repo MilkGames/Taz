@@ -20,6 +20,7 @@
 */
 void biGameSaveStart(EBGameSaveMode loadSave, void *saveData, ushort *saveNamePrefix, int saveSize, int flags)
 {
+        bkPrintf("*** WARNING *** biGameSaveStart was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -32,6 +33,7 @@ void biGameSaveStart(EBGameSaveMode loadSave, void *saveData, ushort *saveNamePr
 */
 EBGameSaveStatus biGameSaveGetStatus(TBGameSaveDirEntry *dirEntries, int numDirEntries, int *numFiles, struct _TBGameSaveInfo *saveInfo)
 {
+        bkPrintf("*** WARNING *** biGameSaveGetStatus was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return BGAMESAVE_NOSTATE;
 }
 
@@ -44,6 +46,7 @@ EBGameSaveStatus biGameSaveGetStatus(TBGameSaveDirEntry *dirEntries, int numDirE
 */
 void biGameSaveSetStatus(EBGameSaveResponse response, ushort *saveName, int deleteFile, struct _TBGameSaveInfo *saveInfo)
 {
+        bkPrintf("*** WARNING *** biGameSaveSetStatus was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -56,5 +59,6 @@ void biGameSaveSetStatus(EBGameSaveResponse response, ushort *saveName, int dele
 */
 void biGameSaveEnd()
 {
+        bkPrintf("*** WARNING *** biGameSaveEnd was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

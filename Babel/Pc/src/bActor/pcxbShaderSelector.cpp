@@ -20,6 +20,7 @@
 */
 void bInitShaderSelector(void)
 {
+        bkPrintf("*** WARNING *** bInitShaderSelector was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -32,6 +33,7 @@ void bInitShaderSelector(void)
 */
 void bShutdownShaderSelector(void)
 {
+        bkPrintf("*** WARNING *** bShutdownShaderSelector was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -44,6 +46,7 @@ void bShutdownShaderSelector(void)
 */
 int baShaderSelect(TBActorInstance * const instance, const int modeNum, TBMesh *mesh)
 {
+        bkPrintf("*** WARNING *** baShaderSelect was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -56,6 +59,7 @@ int baShaderSelect(TBActorInstance * const instance, const int modeNum, TBMesh *
 */
 void baShaderDeselect(TBActorInstance * const instance, const int modeNum)
 {
+        bkPrintf("*** WARNING *** baShaderDeselect was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -68,5 +72,6 @@ void baShaderDeselect(TBActorInstance * const instance, const int modeNum)
 */
 int baShaderEvaluateLightingState(void)
 {
+        bkPrintf("*** WARNING *** baShaderEvaluateLightingState was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }

@@ -21,6 +21,7 @@
 
 int bInitSpecificMusic()
 {
+        bkPrintf("*** WARNING *** bInitSpecificMusic was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -35,6 +36,7 @@ int bInitSpecificMusic()
 
 TBAudioStream *bLoadAudioStreamByCRC(TBPackageIndex *index, uint32 crc)
 {
+        bkPrintf("*** WARNING *** bLoadAudioStreamByCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -49,6 +51,7 @@ TBAudioStream *bLoadAudioStreamByCRC(TBPackageIndex *index, uint32 crc)
 
 void bDeleteAudioStream(TBAudioStream *stream)
 {
+        bkPrintf("*** WARNING *** bDeleteAudioStream was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -63,6 +66,7 @@ void bDeleteAudioStream(TBAudioStream *stream)
 
 int bsPlayAudioStream(TBAudioStream *stream, uint flags, uint volume, int pan, uint frequency, TBAudioStreamCallback callback, HANDLE fileHandle)
 {
+        bkPrintf("*** WARNING *** bsPlayAudioStream was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -77,6 +81,7 @@ int bsPlayAudioStream(TBAudioStream *stream, uint flags, uint volume, int pan, u
 
 void bsStopAudioStream(TBAudioStream *stream)
 {
+        bkPrintf("*** WARNING *** bsStopAudioStream was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -91,6 +96,7 @@ void bsStopAudioStream(TBAudioStream *stream)
 
 int bsSetAudioStreamVolume(TBAudioStream *stream, uint volume, int pan, int subStream)
 {
+        bkPrintf("*** WARNING *** bsSetAudioStreamVolume was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -105,6 +111,7 @@ int bsSetAudioStreamVolume(TBAudioStream *stream, uint volume, int pan, int subS
 
 void bsSetGlobalAudioStreamVolume(int volume)
 {
+        bkPrintf("*** WARNING *** bsSetGlobalAudioStreamVolume was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -119,6 +126,7 @@ void bsSetGlobalAudioStreamVolume(int volume)
 
 int bsGetGlobalAudioStreamVolume()
 {
+        bkPrintf("*** WARNING *** bsGetGlobalAudioStreamVolume was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -133,6 +141,7 @@ int bsGetGlobalAudioStreamVolume()
 
 int bsSetAudioStreamFrequency(TBAudioStream *stream, uint frequency)
 {
+        bkPrintf("*** WARNING *** bsSetAudioStreamFrequency was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -147,6 +156,7 @@ int bsSetAudioStreamFrequency(TBAudioStream *stream, uint frequency)
 
 int bsSetAudioStreamFlags(TBAudioStream *stream, uint flags)
 {
+        bkPrintf("*** WARNING *** bsSetAudioStreamFlags was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -161,6 +171,7 @@ int bsSetAudioStreamFlags(TBAudioStream *stream, uint flags)
 
 int bsClearAudioStreamFlags(TBAudioStream *stream, uint flags)
 {
+        bkPrintf("*** WARNING *** bsClearAudioStreamFlags was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -175,6 +186,7 @@ int bsClearAudioStreamFlags(TBAudioStream *stream, uint flags)
 
 int bsGetAudioStreamFlags(TBAudioStream *stream, uint flags)
 {
+        bkPrintf("*** WARNING *** bsGetAudioStreamFlags was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -189,6 +201,7 @@ int bsGetAudioStreamFlags(TBAudioStream *stream, uint flags)
 
 int bsGetAudioStreamPosition(TBAudioStream *stream)
 {
+        bkPrintf("*** WARNING *** bsGetAudioStreamPosition was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -206,6 +219,7 @@ void bsGetAudioStreamInfo(TBAudioStream *stream,
 						  int *origFrequency, int *noofSamples, int *bitDepth, 
 						  int *compressionRatio, int *noofMarkers, int **markers)
 {
+        bkPrintf("*** WARNING *** bsGetAudioStreamInfo was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -222,6 +236,7 @@ void bsGetAudioStreamInfo(TBAudioStream *stream,
 EBSoundStreamStatus bsGetAudioStreamStatus(TBAudioStream *stream,
 										   int *volume, int *pan, int *frequency)
 {
+        bkPrintf("*** WARNING *** bsGetAudioStreamStatus was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return BSSHSTATUS_IDLE;
 }
 
@@ -236,6 +251,7 @@ EBSoundStreamStatus bsGetAudioStreamStatus(TBAudioStream *stream,
 
 int bsFindAudioStreamMarker(TBAudioStream *stream, int sampleOffset)
 {
+        bkPrintf("*** WARNING *** bsFindAudioStreamMarker was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return -1;
 }
 
@@ -250,6 +266,7 @@ int bsFindAudioStreamMarker(TBAudioStream *stream, int sampleOffset)
 
 void bHandleFillAudioStreams()
 {
+        bkPrintf("*** WARNING *** bHandleFillAudioStreams was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -264,6 +281,7 @@ void bHandleFillAudioStreams()
 
 int bsAllocAudioStreamData(TBAudioStream *stream)
 {
+        bkPrintf("*** WARNING *** bsAllocAudioStreamData was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -278,6 +296,7 @@ int bsAllocAudioStreamData(TBAudioStream *stream)
 
 void bsFreeAudioStreamData(TBAudioStream *stream)
 {
+        bkPrintf("*** WARNING *** bsFreeAudioStreamData was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -300,6 +319,7 @@ void bGetAudioStreamBufferInfo(TBAudioStream *stream,
 						  int *diskPos, int *memPos, int *soundPos,
 						  int *loading)
 {
+        bkPrintf("*** WARNING *** bGetAudioStreamBufferInfo was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -314,5 +334,6 @@ void bGetAudioStreamBufferInfo(TBAudioStream *stream,
 
 void bUpdateSound()
 {
+        bkPrintf("*** WARNING *** bUpdateSound was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

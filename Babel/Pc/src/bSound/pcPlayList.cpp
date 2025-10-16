@@ -21,6 +21,7 @@
 
 void bPlayListUpdate()
 {
+        bkPrintf("*** WARNING *** bPlayListUpdate was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -35,6 +36,7 @@ void bPlayListUpdate()
 
 int bsPlayListEnum(TBPlayListEnumCallback callback, void *context)
 {
+        bkPrintf("*** WARNING *** bsPlayListEnum was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -49,6 +51,7 @@ int bsPlayListEnum(TBPlayListEnumCallback callback, void *context)
 
 TBPlayList *bsPlayListSelect(int list, TBPlayList *buffer)
 {
+        bkPrintf("*** WARNING *** bsPlayListSelect was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -65,6 +68,7 @@ TBPlayList *bsPlayListSelect(int list, TBPlayList *buffer)
 int bsPlayListPlay(TBPlayList *playlist, int song,
 				   uint flags, uint volume, int pan, uint frequency)
 {
+        bkPrintf("*** WARNING *** bsPlayListPlay was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -78,6 +82,7 @@ int bsPlayListPlay(TBPlayList *playlist, int song,
 */
 void bsPlayListStop(TBPlayList *playlist)
 {
+        bkPrintf("*** WARNING *** bsPlayListStop was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -91,6 +96,7 @@ void bsPlayListStop(TBPlayList *playlist)
 */
 void bsPlayListDelete(TBPlayList *playlist)
 {
+        bkPrintf("*** WARNING *** bsPlayListDelete was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -105,6 +111,7 @@ void bsPlayListDelete(TBPlayList *playlist)
 
 int bsPlayListSetVolume(TBPlayList *playlist, uint volume, int pan)
 {
+        bkPrintf("*** WARNING *** bsPlayListSetVolume was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -119,6 +126,7 @@ int bsPlayListSetVolume(TBPlayList *playlist, uint volume, int pan)
 
 int bsPlayListSetFrequency(TBPlayList *playlist, uint frequency)
 {
+        bkPrintf("*** WARNING *** bsPlayListSetFrequency was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -132,6 +140,7 @@ int bsPlayListSetFrequency(TBPlayList *playlist, uint frequency)
 
 int bsPlayListFlagsSet(TBPlayList *playlist, uint flags)
 {
+        bkPrintf("*** WARNING *** bsPlayListFlagsSet was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -146,6 +155,7 @@ int bsPlayListFlagsSet(TBPlayList *playlist, uint flags)
 
 int bsPlayListFlagsClear(TBPlayList *playlist, uint flags)
 {
+        bkPrintf("*** WARNING *** bsPlayListFlagsClear was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -160,6 +170,7 @@ int bsPlayListFlagsClear(TBPlayList *playlist, uint flags)
 
 int bsPlayListFlagsGet(TBPlayList *playlist, uint flag)
 {
+        bkPrintf("*** WARNING *** bsPlayListFlagsGet was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -174,6 +185,7 @@ int bsPlayListFlagsGet(TBPlayList *playlist, uint flag)
 
 int bsPlayListGetNumberOfSongs(TBPlayList *playlist)
 {
+        bkPrintf("*** WARNING *** bsPlayListGetNumberOfSongs was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -188,6 +200,7 @@ int bsPlayListGetNumberOfSongs(TBPlayList *playlist)
 
 ushort *bsPlayListGetSongName(TBPlayList *playlist, int song)
 {
+        bkPrintf("*** WARNING *** bsPlayListGetSongName was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -202,6 +215,7 @@ ushort *bsPlayListGetSongName(TBPlayList *playlist, int song)
 
 ushort *bsPlayListGetName(TBPlayList *playlist)
 {
+        bkPrintf("*** WARNING *** bsPlayListGetName was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -217,5 +231,6 @@ ushort *bsPlayListGetName(TBPlayList *playlist)
 
 EBPlayListStatus bsPlayListGetStatus(TBPlayList *playlist, int *volume, int *pan, int *frequency)
 {
+        bkPrintf("*** WARNING *** bsPlayListGetStatus was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return BPLAYLISTSTATUS_IDLE;
 }

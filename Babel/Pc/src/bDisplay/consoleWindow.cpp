@@ -20,6 +20,7 @@
 */
 void bdEnableConsoleWindow(int enable)
 {
+        bkPrintf("*** WARNING *** bdEnableConsoleWindow was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -32,6 +33,7 @@ void bdEnableConsoleWindow(int enable)
 */
 void bdConsoleWindowPrintf(char *format, ...)
 {
+        bkPrintf("*** WARNING *** bdConsoleWindowPrintf was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -44,6 +46,7 @@ void bdConsoleWindowPrintf(char *format, ...)
 */
 void bdResetConsoleWindow()
 {
+        bkPrintf("*** WARNING *** bdResetConsoleWindow was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -56,6 +59,7 @@ void bdResetConsoleWindow()
 */
 void bdFormatConsoleWindow(int xp, int yp, int height)
 {
+        bkPrintf("*** WARNING *** bdFormatConsoleWindow was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -68,6 +72,7 @@ void bdFormatConsoleWindow(int xp, int yp, int height)
 */
 void bdSetConsoleWindowFont(TBFont *font, float scaler, int r, int g, int b, int a)
 {
+        bkPrintf("*** WARNING *** bdSetConsoleWindowFont was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -80,6 +85,7 @@ void bdSetConsoleWindowFont(TBFont *font, float scaler, int r, int g, int b, int
 */
 void bdShowConsoleWindow(int show)
 {
+        bkPrintf("*** WARNING *** bdShowConsoleWindow was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -92,5 +98,6 @@ void bdShowConsoleWindow(int show)
 */
 void bRenderConsoleWindow()
 {
+        bkPrintf("*** WARNING *** bRenderConsoleWindow was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

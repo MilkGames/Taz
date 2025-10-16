@@ -79,6 +79,7 @@ int bkInit(uint base, uint size, uint32 flags)
 
 void bkShutdown()
 {
+        bkPrintf("*** WARNING *** bkShutdown was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -93,5 +94,6 @@ void bkShutdown()
 
 void bkUpdate(int modules)
 {
+        bkPrintf("*** WARNING *** bkUpdate was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

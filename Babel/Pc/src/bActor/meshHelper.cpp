@@ -20,6 +20,7 @@
 */
 void baDrawCollisionMeshCell(const TBCollisionMesh * const mesh, const TBCollisionMeshCell * const cell, const TBMeshColour col)
 {
+        bkPrintf("*** WARNING *** baDrawCollisionMeshCell was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -32,6 +33,7 @@ void baDrawCollisionMeshCell(const TBCollisionMesh * const mesh, const TBCollisi
 */
 void baDrawCollisionMesh(const TBCollisionMesh * const mesh, const TBMeshColour col)
 {
+        bkPrintf("*** WARNING *** baDrawCollisionMesh was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -44,6 +46,7 @@ void baDrawCollisionMesh(const TBCollisionMesh * const mesh, const TBMeshColour 
 */
 void baDrawCollisionMeshWireframe(const TBCollisionMesh * const mesh, const TBMeshColour col)
 {
+        bkPrintf("*** WARNING *** baDrawCollisionMeshWireframe was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -56,6 +59,7 @@ void baDrawCollisionMeshWireframe(const TBCollisionMesh * const mesh, const TBMe
 */
 void baDrawCollisionMeshNormals(const TBCollisionMesh * const mesh, const TBMeshColour col, float scale)
 {
+        bkPrintf("*** WARNING *** baDrawCollisionMeshNormals was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -68,6 +72,7 @@ void baDrawCollisionMeshNormals(const TBCollisionMesh * const mesh, const TBMesh
 */
 void baDrawCollisionMeshVertices(const TBCollisionMesh * const mesh, const TBMeshColour col, float size)
 {
+        bkPrintf("*** WARNING *** baDrawCollisionMeshVertices was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -80,6 +85,7 @@ void baDrawCollisionMeshVertices(const TBCollisionMesh * const mesh, const TBMes
 */
 void baDrawCollisionMeshFaces(const TBCollisionMesh * const mesh, const TBMeshColour col)
 {
+        bkPrintf("*** WARNING *** baDrawCollisionMeshFaces was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -92,6 +98,7 @@ void baDrawCollisionMeshFaces(const TBCollisionMesh * const mesh, const TBMeshCo
 */
 void baDrawCollisionMeshEdges(const TBCollisionMesh * const mesh, const TBMeshColour col)
 {
+        bkPrintf("*** WARNING *** baDrawCollisionMeshEdges was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -104,6 +111,7 @@ void baDrawCollisionMeshEdges(const TBCollisionMesh * const mesh, const TBMeshCo
 */
 void baDrawCollisionMeshBoundingBox(const TBCollisionMesh * const mesh, const TBMeshColour col)
 {
+        bkPrintf("*** WARNING *** baDrawCollisionMeshBoundingBox was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -116,6 +124,7 @@ void baDrawCollisionMeshBoundingBox(const TBCollisionMesh * const mesh, const TB
 */
 void baDrawCollisionMeshBoundingSphere(const TBCollisionMesh * const mesh, const TBMeshColour col)
 {
+        bkPrintf("*** WARNING *** baDrawCollisionMeshBoundingSphere was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -128,5 +137,6 @@ void baDrawCollisionMeshBoundingSphere(const TBCollisionMesh * const mesh, const
 */
 void baDrawCollisionMeshAABB(const TBCollisionMesh * const mesh, const TBMeshColour col)
 {
+        bkPrintf("*** WARNING *** baDrawCollisionMeshAABB was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

@@ -20,6 +20,7 @@
 */
 int bInitSound()
 {
+        bkPrintf("*** WARNING *** bInitSound was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -32,5 +33,6 @@ int bInitSound()
 */
 void bShutdownSound()
 {
+        bkPrintf("*** WARNING *** bShutdownSound was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

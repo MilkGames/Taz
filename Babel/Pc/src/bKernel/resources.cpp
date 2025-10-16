@@ -21,6 +21,7 @@
 
 void bInitResources()
 {
+        bkPrintf("*** WARNING *** bInitResources was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -35,6 +36,7 @@ void bInitResources()
 
 void bAddGlobalResource(TBResourceInfo *resPtr, TBPackageIndex *pakSrc, int type, int groupID)
 {
+        bkPrintf("*** WARNING *** bAddGlobalResource was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -49,6 +51,7 @@ void bAddGlobalResource(TBResourceInfo *resPtr, TBPackageIndex *pakSrc, int type
 
 void bDeleteGlobalResource(void *resPtr)
 {
+        bkPrintf("*** WARNING *** bDeleteGlobalResource was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -63,6 +66,7 @@ void bDeleteGlobalResource(void *resPtr)
 
 void bkListResources(uint typeMask)
 {
+        bkPrintf("*** WARNING *** bkListResources was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -77,6 +81,7 @@ void bkListResources(uint typeMask)
 
 int bLoadPackageResources(TBPackageIndex *pak, uint typeMask, int groupId, uint32 tagMatch)
 {
+        bkPrintf("*** WARNING *** bLoadPackageResources was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -91,6 +96,7 @@ int bLoadPackageResources(TBPackageIndex *pak, uint typeMask, int groupId, uint3
 
 void bDeletePackageResources(TBPackageID packageId, uint typeMask)
 {
+        bkPrintf("*** WARNING *** bDeletePackageResources was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -104,6 +110,7 @@ void bDeletePackageResources(TBPackageID packageId, uint typeMask)
 
 void bDeleteResourceGroup(uint typeMask, uint groupID)
 {
+        bkPrintf("*** WARNING *** bDeleteResourceGroup was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -117,6 +124,7 @@ void bDeleteResourceGroup(uint typeMask, uint groupID)
 
 void bDeleteAllResources()
 {
+        bkPrintf("*** WARNING *** bDeleteAllResources was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -130,6 +138,7 @@ void bDeleteAllResources()
 
 void bDeleteResource(void *resPtr)
 {
+        bkPrintf("*** WARNING *** bDeleteResource was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -143,6 +152,7 @@ void bDeleteResource(void *resPtr)
 
 TBResourceInfo *bLoadResource(TBPackageIndex *index, char *filename, EBResourceType resType, int groupID)
 {
+        bkPrintf("*** WARNING *** bLoadResource was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -156,6 +166,7 @@ TBResourceInfo *bLoadResource(TBPackageIndex *index, char *filename, EBResourceT
 
 TBResourceInfo *bLoadResourceByCRC(TBPackageIndex *index, uint crc, EBResourceType resType, int groupID)
 {
+        bkPrintf("*** WARNING *** bLoadResourceByCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -169,6 +180,7 @@ TBResourceInfo *bLoadResourceByCRC(TBPackageIndex *index, uint crc, EBResourceTy
 
 TBResourceInfo *bkFindResourceByCRC(EBResourceType resType, uint32 crc, TBPackageID packageId, uint32 groupId, uint32 flags)
 {
+        bkPrintf("*** WARNING *** bkFindResourceByCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -183,6 +195,7 @@ TBResourceInfo *bkFindResourceByCRC(EBResourceType resType, uint32 crc, TBPackag
 
 TBResourceInfo *bkWalkResourceList(EBResourceType resType, TBResourceInfo *resource)
 {
+        bkPrintf("*** WARNING *** bkWalkResourceList was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -197,6 +210,7 @@ TBResourceInfo *bkWalkResourceList(EBResourceType resType, TBResourceInfo *resou
 
 TBResourceInfo *bkWalkGlobalResourceList(TBResourceInfo *resource)
 {
+        bkPrintf("*** WARNING *** bkWalkGlobalResourceList was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -211,6 +225,7 @@ TBResourceInfo *bkWalkGlobalResourceList(TBResourceInfo *resource)
 
 TBResourceSnapshot *bkTakeResourceSnapshot(uint typeMask)
 {
+        bkPrintf("*** WARNING *** bkTakeResourceSnapshot was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -225,6 +240,7 @@ TBResourceSnapshot *bkTakeResourceSnapshot(uint typeMask)
 
 void bkDeleteResourceSnapshot(TBResourceSnapshot *snapshot)
 {
+        bkPrintf("*** WARNING *** bkDeleteResourceSnapshot was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -239,6 +255,7 @@ void bkDeleteResourceSnapshot(TBResourceSnapshot *snapshot)
 
 int bkCompareResourceSnapshot(TBResourceSnapshot *snap)
 {
+        bkPrintf("*** WARNING *** bkCompareResourceSnapshot was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -253,5 +270,6 @@ int bkCompareResourceSnapshot(TBResourceSnapshot *snap)
 
 int bkIsResource(EBResourceType resType, void *ptr)
 {
+        bkPrintf("*** WARNING *** bkIsResource was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }

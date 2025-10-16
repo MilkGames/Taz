@@ -20,6 +20,7 @@
 */
 void bdSetGraphMarker(int r, int g, int b)
 {
+        bkPrintf("*** WARNING *** bdSetGraphMarker was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -32,6 +33,7 @@ void bdSetGraphMarker(int r, int g, int b)
 */
 void bdEnableFrameTimeGraph(int enable)
 {
+        bkPrintf("*** WARNING *** bdEnableFrameTimeGraph was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -44,6 +46,7 @@ void bdEnableFrameTimeGraph(int enable)
 */
 void bdEnableMemoryGraph(int enable, EBMemoryGraphType graphType, int markerKb, int baselineKb)
 {
+        bkPrintf("*** WARNING *** bdEnableMemoryGraph was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -56,5 +59,6 @@ void bdEnableMemoryGraph(int enable, EBMemoryGraphType graphType, int markerKb, 
 */
 void bRenderGraphs()
 {
+        bkPrintf("*** WARNING *** bRenderGraphs was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

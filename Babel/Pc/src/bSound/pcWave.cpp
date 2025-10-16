@@ -22,6 +22,7 @@
 
 int bInitSpecificWave()
 {
+        bkPrintf("*** WARNING *** bInitSpecificWave was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -36,6 +37,7 @@ int bInitSpecificWave()
 
 void bShutdownSpecificWave()
 {
+        bkPrintf("*** WARNING *** bShutdownSpecificWave was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -50,6 +52,7 @@ void bShutdownSpecificWave()
 
 int bPlaySample(struct _TBSample *sample, int volume, int pan, int frequency, uint flags, int channel)
 {
+        bkPrintf("*** WARNING *** bPlaySample was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -64,6 +67,7 @@ int bPlaySample(struct _TBSample *sample, int volume, int pan, int frequency, ui
 
 void bUpdateChannelVolume(int channel)
 {
+        bkPrintf("*** WARNING *** bUpdateChannelVolume was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -78,6 +82,7 @@ void bUpdateChannelVolume(int channel)
 
 void bStopChannel(int channel)
 {
+        bkPrintf("*** WARNING *** bStopChannel was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -92,6 +97,7 @@ void bStopChannel(int channel)
 
 struct _TBSample *bLoadSampleByCRC(TBPackageIndex *index, uint32 crc)
 {
+        bkPrintf("*** WARNING *** bLoadSampleByCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -106,6 +112,7 @@ struct _TBSample *bLoadSampleByCRC(TBPackageIndex *index, uint32 crc)
 
 void bDeleteSample(struct _TBSample *sample)
 {
+        bkPrintf("*** WARNING *** bDeleteSample was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -120,6 +127,7 @@ void bDeleteSample(struct _TBSample *sample)
 
 void bUpdateSoundChannelStatus(int channelId)
 {
+        bkPrintf("*** WARNING *** bUpdateSoundChannelStatus was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -134,6 +142,7 @@ void bUpdateSoundChannelStatus(int channelId)
 
 void bPauseChannel(int channel, int pauseStatus)
 {
+        bkPrintf("*** WARNING *** bPauseChannel was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -148,6 +157,7 @@ void bPauseChannel(int channel, int pauseStatus)
 
 int bPlaySample3D(struct _TBSample *sample, TBVector pos, int volume, int frequency, uint flags, int channel, float minDistance, float maxDistance)
 {
+        bkPrintf("*** WARNING *** bPlaySample3D was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -162,6 +172,7 @@ int bPlaySample3D(struct _TBSample *sample, TBVector pos, int volume, int freque
 
 void bUpdate3DSoundPosition(int channel, TBVector oldPos, TBVector newPos)
 {
+        bkPrintf("*** WARNING *** bUpdate3DSoundPosition was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -176,6 +187,7 @@ void bUpdate3DSoundPosition(int channel, TBVector oldPos, TBVector newPos)
 
 void bFinaliseUpdated3DSounds()
 {
+        bkPrintf("*** WARNING *** bFinaliseUpdated3DSounds was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -190,6 +202,7 @@ void bFinaliseUpdated3DSounds()
 
 int bsSetSoundMode(EBSoundMode soundMode)
 {
+        bkPrintf("*** WARNING *** bsSetSoundMode was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -204,5 +217,6 @@ int bsSetSoundMode(EBSoundMode soundMode)
 
 EBSoundMode bsGetSoundMode()
 {
+        bkPrintf("*** WARNING *** bsGetSoundMode was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return BSSOUNDMODE_STEREO;
 }

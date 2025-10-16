@@ -28,6 +28,7 @@
 
 char *bkGenerateUniqueFilename(char *filename, const char *prefix, const char *ext)
 {
+        bkPrintf("*** WARNING *** bkGenerateUniqueFilename was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 

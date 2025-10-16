@@ -20,6 +20,7 @@
 */
 int bInitGameSave()
 {
+        bkPrintf("*** WARNING *** bInitGameSave was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -32,6 +33,7 @@ int bInitGameSave()
 */
 void bShutdownGameSave()
 {
+        bkPrintf("*** WARNING *** bShutdownGameSave was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -46,6 +48,7 @@ void bShutdownGameSave()
 
 void bGameSavePoll(void *saveDataPtr, ushort *saveNamePrefix, ushort *saveDataName, int saveDataSize, TBGameSaveDirEntry *dirEntries, int noofDirEntries, int *noofFiles, TBGameSaveInfo *saveInfo, int deleteFile)
 {
+        bkPrintf("*** WARNING *** bGameSavePoll was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -60,6 +63,7 @@ void bGameSavePoll(void *saveDataPtr, ushort *saveNamePrefix, ushort *saveDataNa
 
 void bGameSaveReset()
 {
+        bkPrintf("*** WARNING *** bGameSaveReset was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -74,6 +78,7 @@ void bGameSaveReset()
 
 EBGameSaveSlotStatus biGameSaveGetCardSlotStatus(int slot, long *size, long *free)
 {
+        bkPrintf("*** WARNING *** biGameSaveGetCardSlotStatus was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return BGAMESAVE_SLOT_NOMEDIA;
 }
 
@@ -88,6 +93,7 @@ EBGameSaveSlotStatus biGameSaveGetCardSlotStatus(int slot, long *size, long *fre
 
 int biGameSaveGetPercentComplete()
 {
+        bkPrintf("*** WARNING *** biGameSaveGetPercentComplete was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -102,6 +108,7 @@ int biGameSaveGetPercentComplete()
 
 int biGameSaveSetActiveCardSlot(int slot)
 {
+        bkPrintf("*** WARNING *** biGameSaveSetActiveCardSlot was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -116,5 +123,6 @@ int biGameSaveSetActiveCardSlot(int slot)
 
 int biGameSaveGetActiveCardSlot()
 {
+        bkPrintf("*** WARNING *** biGameSaveGetActiveCardSlot was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }

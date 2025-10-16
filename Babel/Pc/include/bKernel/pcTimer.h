@@ -27,6 +27,7 @@ typedef __int64 TBTimerValue;
 // Globals
 
 extern TBTimerValue		bTimerFrequency;	// the timer frequency, or zero for no timer
+extern int				bTimerType;			// 0 = TSC, 1 = QPC, 2 = Ticker
 
 
 // ********************************************************************************

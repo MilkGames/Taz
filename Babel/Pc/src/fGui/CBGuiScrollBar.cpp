@@ -19,9 +19,9 @@ CBGuiScrollBar::~CBGuiScrollBar() {}
 
 void CBGuiScrollBar::SetPosition(int iX, int iY, int iWidth, int iHeight) {}
 
-CBGuiObject* CBGuiScrollBar::HitTest(int iX, int iY) { return nullptr; }
+ return nullptr; }
 
-int CBGuiScrollBar::CanDrag() { return 0; }
+ return 0; }
 
 void CBGuiScrollBar::MoveObject(int iX, int iY, int iDx, int iDy) {}
 

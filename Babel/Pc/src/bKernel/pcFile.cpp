@@ -21,6 +21,7 @@
 
 void bPrepareDiskEvents()
 {
+        bkPrintf("*** WARNING *** bPrepareDiskEvents was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -35,5 +36,6 @@ void bPrepareDiskEvents()
 
 int bGetFreePhysicalMemory()
 {
+        bkPrintf("*** WARNING *** bGetFreePhysicalMemory was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }

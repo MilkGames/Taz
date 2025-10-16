@@ -20,6 +20,7 @@
 */
 int bInitActor()
 {
+        bkPrintf("*** WARNING *** bInitActor was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -32,6 +33,7 @@ int bInitActor()
 */
 void bShutdownActor()
 {
+        bkPrintf("*** WARNING *** bShutdownActor was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -44,6 +46,7 @@ void bShutdownActor()
 */
 TBActorInstance *bInitActorInstance(TBActorInstance *actorInstance, TBActor *actor, int queueSize, char *file, int line)
 {
+        bkPrintf("*** WARNING *** bInitActorInstance was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -56,6 +59,7 @@ TBActorInstance *bInitActorInstance(TBActorInstance *actorInstance, TBActor *act
 */
 void baFreeActorInstance(TBActorInstance *actorInstance)
 {
+        bkPrintf("*** WARNING *** baFreeActorInstance was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -68,6 +72,7 @@ void baFreeActorInstance(TBActorInstance *actorInstance)
 */
 void baPrepActorInstance(TBActorInstance *actorInstance, int flags)
 {
+        bkPrintf("*** WARNING *** baPrepActorInstance was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -80,6 +85,7 @@ void baPrepActorInstance(TBActorInstance *actorInstance, int flags)
 */
 int baDrawActorInstance(TBActorInstance *actorInstance, int alpha, int flags)
 {
+        bkPrintf("*** WARNING *** baDrawActorInstance was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -92,6 +98,7 @@ int baDrawActorInstance(TBActorInstance *actorInstance, int alpha, int flags)
 */
 void bDeleteActor(TBActor *actor)
 {
+        bkPrintf("*** WARNING *** bDeleteActor was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -104,6 +111,7 @@ void bDeleteActor(TBActor *actor)
 */
 void baSetNodeFrame(TBActorInstance *actorInstance, TBActorNodeInstance *nodeInstance, uint32 frame, int recurse)
 {
+        bkPrintf("*** WARNING *** baSetNodeFrame was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -116,6 +124,7 @@ void baSetNodeFrame(TBActorInstance *actorInstance, TBActorNodeInstance *nodeIns
 */
 void baSetNodeBlend(TBActorInstance *actorInstance, TBActorNodeInstance *nodeInstance, uint32 frame1, uint32 frame2, float t, int recurse)
 {
+        bkPrintf("*** WARNING *** baSetNodeBlend was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -128,6 +137,7 @@ void baSetNodeBlend(TBActorInstance *actorInstance, TBActorNodeInstance *nodeIns
 */
 void baSetNodeBlendTarget(TBActorInstance *actorInstance, TBActorNodeInstance *nodeInstance, uint32 frame, int recurse)
 {
+        bkPrintf("*** WARNING *** baSetNodeBlendTarget was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -140,6 +150,7 @@ void baSetNodeBlendTarget(TBActorInstance *actorInstance, TBActorNodeInstance *n
 */
 void baSetNodeBlendValue(TBActorInstance *actorInstance, TBActorNodeInstance *nodeInstance, float t, int recurse)
 {
+        bkPrintf("*** WARNING *** baSetNodeBlendValue was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -152,6 +163,7 @@ void baSetNodeBlendValue(TBActorInstance *actorInstance, TBActorNodeInstance *no
 */
 void baSetNodeBlendTargetValue(TBActorInstance *actorInstance, TBActorNodeInstance *nodeInstance, uint32 frame, float t, int recurse)
 {
+        bkPrintf("*** WARNING *** baSetNodeBlendTargetValue was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -164,6 +176,7 @@ void baSetNodeBlendTargetValue(TBActorInstance *actorInstance, TBActorNodeInstan
 */
 int baUpdateNodes(TBActorInstance *actorInstance, TBActorNodeInstance *nodeInstance, float timeDelta, TBVector motionVector)
 {
+        bkPrintf("*** WARNING *** baUpdateNodes was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -176,6 +189,7 @@ int baUpdateNodes(TBActorInstance *actorInstance, TBActorNodeInstance *nodeInsta
 */
 void baFlushNodeQueue(TBActorInstance *actorInstance, TBActorNodeInstance *nodeInstance, int flushChildren, int flushFrom)
 {
+        bkPrintf("*** WARNING *** baFlushNodeQueue was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -188,6 +202,7 @@ void baFlushNodeQueue(TBActorInstance *actorInstance, TBActorNodeInstance *nodeI
 */
 void baRetargetActorAnimation(TBActor *source, TBActorInstance *dest)
 {
+        bkPrintf("*** WARNING *** baRetargetActorAnimation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -200,6 +215,7 @@ void baRetargetActorAnimation(TBActor *source, TBActorInstance *dest)
 */
 void baHideNode(TBActorNodeInstance *nodeInstance, int recurse)
 {
+        bkPrintf("*** WARNING *** baHideNode was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -212,6 +228,7 @@ void baHideNode(TBActorNodeInstance *nodeInstance, int recurse)
 */
 void baShowNode(TBActorNodeInstance *nodeInstance, int recurse)
 {
+        bkPrintf("*** WARNING *** baShowNode was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -224,6 +241,7 @@ void baShowNode(TBActorNodeInstance *nodeInstance, int recurse)
 */
 void baSetActorRenderMode(TBActorInstance *actorInstance, int stage, EBActRenderMode mode, void *parms)
 {
+        bkPrintf("*** WARNING *** baSetActorRenderMode was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -236,6 +254,7 @@ void baSetActorRenderMode(TBActorInstance *actorInstance, int stage, EBActRender
 */
 void baGetNodesWorldPosition(TBActorInstance *actorInstance, TBActorNodeInstance *nodeInstance, TBVector pos, TBVector offset)
 {
+        bkPrintf("*** WARNING *** baGetNodesWorldPosition was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -248,6 +267,7 @@ void baGetNodesWorldPosition(TBActorInstance *actorInstance, TBActorNodeInstance
 */
 void baGetPositionInNodeSpace(TBActorInstance *actorInstance, TBActorNodeInstance *nodeInstance, TBVector pos)
 {
+        bkPrintf("*** WARNING *** baGetPositionInNodeSpace was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -264,6 +284,7 @@ void baSetNodeBlendMulti(TBActorInstance *actorInstance, TBActorNodeInstance *no
 					int frame3,float t3,
 					int recurse)
 {
+        bkPrintf("*** WARNING *** baSetNodeBlendMulti was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -274,6 +295,7 @@ void baSetNodeBlendMulti(TBActorInstance *actorInstance, TBActorNodeInstance *no
 					int frame4,float t4,
 					int recurse)
 {
+        bkPrintf("*** WARNING *** baSetNodeBlendMulti was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -289,6 +311,7 @@ void baQueueNodeAnim(TBActorInstance *actorInstance, TBActorNodeInstance *nodeIn
 					 TBActorAnimSegment *anim2Seg, int32 anim1Delta, int32 anim2Delta, int32 startFrame1, int32 startFrame2,
 					 float deltaT, uint32 flags, TBQueuedAnimCallback callback, void *context, int32 repeatCount)
 {
+        bkPrintf("*** WARNING *** baQueueNodeAnim was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -302,6 +325,7 @@ void baQueueNodeAnim(TBActorInstance *actorInstance, TBActorNodeInstance *nodeIn
 void baQueueNodeAnimNormal(TBActorInstance *actorInstance, TBActorNodeInstance *nodeInstance, TBActorAnimSegment *animSeg, 
 						   int32 animDelta, int32 startFrame, uint32 flags, TBQueuedAnimCallback callback, void *context, int32 repeatCount)
 {
+        bkPrintf("*** WARNING *** baQueueNodeAnimNormal was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -317,6 +341,7 @@ void baQueueNodeAnimBlend(TBActorInstance *actorInstance, TBActorNodeInstance *n
 						  TBActorAnimSegment *anim2Seg, int32 anim1Delta, int32 anim2Delta, int32 startFrame1, int32 startFrame2,
 						  float deltaT, uint32 flags, TBQueuedAnimCallback callback, void *context, int32 repeatCount)
 {
+        bkPrintf("*** WARNING *** baQueueNodeAnimBlend was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -332,6 +357,7 @@ void baQueueNodeAnimBlendNormalised(TBActorInstance *actorInstance, TBActorNodeI
 									TBActorAnimSegment *anim2Seg, int32 animDelta, int32 startFrame1, int32 startFrame2, uint32 flags,
 									TBQueuedAnimCallback callback, void *context, int32 repeatCount)
 {
+        bkPrintf("*** WARNING *** baQueueNodeAnimBlendNormalised was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -345,6 +371,7 @@ void baQueueNodeAnimBlendNormalised(TBActorInstance *actorInstance, TBActorNodeI
 void baQueueNodeAnimBlendState(TBActorInstance *actorInstance, TBActorNodeInstance *nodeInstance, TBActorAnimSegment *animSeg,
 							   int32 animDelta, int32 startFrame, float deltaT, uint32 flags, TBQueuedAnimCallback callback, void *context, int32 repeatCount)
 {
+        bkPrintf("*** WARNING *** baQueueNodeAnimBlendState was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -358,6 +385,7 @@ void baQueueNodeAnimBlendState(TBActorInstance *actorInstance, TBActorNodeInstan
 void baSetAnimSpeed(TBActorNodeInstance *node, int recurse, int32 anim1Delta, int32 anim2Delta, float deltaT,
 																		float t, uint32 flags)
 {
+        bkPrintf("*** WARNING *** baSetAnimSpeed was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -370,6 +398,7 @@ void baSetAnimSpeed(TBActorNodeInstance *node, int recurse, int32 anim1Delta, in
 */
 TBActorNodeInstance *baFindNodeByCRC(TBActorNodeInstance *nodeInstance, uint32 crc)
 {
+        bkPrintf("*** WARNING *** baFindNodeByCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -382,6 +411,7 @@ TBActorNodeInstance *baFindNodeByCRC(TBActorNodeInstance *nodeInstance, uint32 c
 */
 TBActorNodeInstance *baFindNode(TBActorNodeInstance *nodeInstance, char *nodeName)
 {
+        bkPrintf("*** WARNING *** baFindNode was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -394,6 +424,7 @@ TBActorNodeInstance *baFindNode(TBActorNodeInstance *nodeInstance, char *nodeNam
 */
 TBActorAnimSegment *baFindAnimSegmentByCRC(TBActorInstance *actorInstance, uint32 crc)
 {
+        bkPrintf("*** WARNING *** baFindAnimSegmentByCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -406,6 +437,7 @@ TBActorAnimSegment *baFindAnimSegmentByCRC(TBActorInstance *actorInstance, uint3
 */
 TBActorAnimSegment *baFindAnimSegment(TBActorInstance *actorInstance, char *segName)
 {
+        bkPrintf("*** WARNING *** baFindAnimSegment was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -418,6 +450,7 @@ TBActorAnimSegment *baFindAnimSegment(TBActorInstance *actorInstance, char *segN
 */
 TBActorAnimSegment *baFindAnimSegmentByCRC(TBActor *actor, uint32 crc)
 {
+        bkPrintf("*** WARNING *** baFindAnimSegmentByCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -430,6 +463,7 @@ TBActorAnimSegment *baFindAnimSegmentByCRC(TBActor *actor, uint32 crc)
 */
 TBActorAnimSegment *baFindAnimSegment(TBActor *actor, char *segName)
 {
+        bkPrintf("*** WARNING *** baFindAnimSegment was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -442,6 +476,7 @@ TBActorAnimSegment *baFindAnimSegment(TBActor *actor, char *segName)
 */
 void baGetNodesLocalPosition(TBActorInstance *actorInstance, TBActorNodeInstance *nodeInstance, TBVector pos)
 {
+        bkPrintf("*** WARNING *** baGetNodesLocalPosition was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -457,6 +492,7 @@ void baNodeLookAt(TBActorInstance *actorInstance, TBActorNodeInstance *nodeInsta
 				  float xConstraintNeg,	float xConstraintPos, float xAngleOffset,
 				  float yConstraintNeg,  float yConstraintPos, float yAngleOffset, float t, uint32 flags)
 {
+        bkPrintf("*** WARNING *** baNodeLookAt was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -469,6 +505,7 @@ void baNodeLookAt(TBActorInstance *actorInstance, TBActorNodeInstance *nodeInsta
 */
 void baSetGlobalAlpha(int newAlphaScale)
 {
+        bkPrintf("*** WARNING *** baSetGlobalAlpha was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -483,6 +520,7 @@ void baSetGlobalAlpha(int newAlphaScale)
 void baNodeLookAtUnconstrained(TBActorInstance *actorInstance, TBActorNodeInstance *nodeInstance, TBVector worldFocusPoint,
 							   TBVector refVector, float t, float maxAngleFactor, uint32 flags)
 {
+        bkPrintf("*** WARNING *** baNodeLookAtUnconstrained was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -503,6 +541,7 @@ void baNodeLookAtUnconstrained(TBActorInstance *actorInstance, TBActorNodeInstan
 */
 void baNodeLookAtAdditional(TBActorInstance *instance, TBActorNodeInstance *nodeInstance, TBVector worldFocus, float xConstraintNeg, float xConstraintPos, float yConstraintNeg, float yConstraintPos, float t, uint32 flags)
 {
+        bkPrintf("*** WARNING *** baNodeLookAtAdditional was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -519,6 +558,7 @@ void baNodeLookAtAdditional(TBActorInstance *instance, TBActorNodeInstance *node
 */
 void baNodeLookAtAdditionalUnconstrained(TBActorInstance *instance, TBActorNodeInstance *nodeInstance, TBVector worldFocus, float t, uint32 flags)
 {
+        bkPrintf("*** WARNING *** baNodeLookAtAdditionalUnconstrained was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -532,6 +572,7 @@ void baNodeLookAtAdditionalUnconstrained(TBActorInstance *instance, TBActorNodeI
 */
 void *baGetActorNodeGeometry(TBActorNode *actorNode, int stream, int *noofVertices, int *noofTris)
 {
+        bkPrintf("*** WARNING *** baGetActorNodeGeometry was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -548,6 +589,7 @@ void *baGetActorNodeGeometry(TBActorNode *actorNode, int stream, int *noofVertic
 void *baGetActorGeometry(TBActorInstance *actorInstance, TBActorNodeInstance *rootNode, int stream, int *noofVerticesPtr,
 						 int *noofTrisPtr, int *bufSize, void *buffer, uint32 flags)
 {
+        bkPrintf("*** WARNING *** baGetActorGeometry was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -560,6 +602,7 @@ void *baGetActorGeometry(TBActorInstance *actorInstance, TBActorNodeInstance *ro
 */
 void baSetActorTextureFrames(TBActor *actor, int frame)
 {
+        bkPrintf("*** WARNING *** baSetActorTextureFrames was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -572,6 +615,7 @@ void baSetActorTextureFrames(TBActor *actor, int frame)
 */
 void baSetActorTextureFramesByTime(TBActor *actor, int time)
 {
+        bkPrintf("*** WARNING *** baSetActorTextureFramesByTime was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -586,6 +630,7 @@ void baSetActorTextureFramesByTime(TBActor *actor, int time)
 TBShadowVolume *baCreateShadowVolume(TBActorInstance *actorInstance, TBShadowVolume *shadowVolume, TBVector lightPos,
 																					float extrudeDist, uint32 flags)
 {
+        bkPrintf("*** WARNING *** baCreateShadowVolume was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -598,6 +643,7 @@ TBShadowVolume *baCreateShadowVolume(TBActorInstance *actorInstance, TBShadowVol
 */
 void baDeleteShadowVolume(TBShadowVolume *shadowVolume)
 {
+        bkPrintf("*** WARNING *** baDeleteShadowVolume was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -610,6 +656,7 @@ void baDeleteShadowVolume(TBShadowVolume *shadowVolume)
 */
 void baRenderShadowVolume(TBShadowVolume *shadowVolume)
 {
+        bkPrintf("*** WARNING *** baRenderShadowVolume was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -622,6 +669,7 @@ void baRenderShadowVolume(TBShadowVolume *shadowVolume)
 */
 void baFillStencilShadows(int r, int g, int b, int a)
 {
+        bkPrintf("*** WARNING *** baFillStencilShadows was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -635,6 +683,7 @@ void baFillStencilShadows(int r, int g, int b, int a)
 void baSetActorNodeFlags(TBActorInstance *actorInstance, TBActorNodeInstance *nodeInstance, uint32 flagValues,
 																							uint32 flagMask, int recurse)
 {
+        bkPrintf("*** WARNING *** baSetActorNodeFlags was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -648,6 +697,7 @@ void baSetActorNodeFlags(TBActorInstance *actorInstance, TBActorNodeInstance *no
 */
 int baIsActorAnimPlaying(TBActorInstance *actorInstance, TBActorNodeInstance *nodeInstance, int recurse, TBActorAnimSegment **anim)
 {
+        bkPrintf("*** WARNING *** baIsActorAnimPlaying was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -663,6 +713,7 @@ void baQueueNodeAnimBlendToNode(TBActorInstance *actorInstance, TBActorNodeInsta
 													TBActorNodeInstance *srcNodeInstance, float tDelta, uint32 flags,
 													TBQueuedAnimCallback callback, void *context)
 {
+        bkPrintf("*** WARNING *** baQueueNodeAnimBlendToNode was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -677,6 +728,7 @@ void baQueueNodeAnimBlendToNode(TBActorInstance *actorInstance, TBActorNodeInsta
 void baCopyAnimQueue(TBActorInstance *destActorInstance, TBActorNodeInstance *destNodeInstance,
 								TBActorInstance *srcActorInstance, TBActorNodeInstance *srcNodeInstance, int recurse)
 {
+        bkPrintf("*** WARNING *** baCopyAnimQueue was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -690,6 +742,7 @@ void baCopyAnimQueue(TBActorInstance *destActorInstance, TBActorNodeInstance *de
 */
 void baSetAdditionalNodePosition(TBActorNodeInstance * const node, const TBVector pos)
 {
+        bkPrintf("*** WARNING *** baSetAdditionalNodePosition was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -703,6 +756,7 @@ void baSetAdditionalNodePosition(TBActorNodeInstance * const node, const TBVecto
 */
 void baSetAdditionalNodeOrientation(TBActorNodeInstance * const node, const TBQuaternion orientation)
 {
+        bkPrintf("*** WARNING *** baSetAdditionalNodeOrientation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -715,6 +769,7 @@ void baSetAdditionalNodeOrientation(TBActorNodeInstance * const node, const TBQu
 */
 void baDrawActorBoundingBox(TBActorInstance *actInstance, int r, int g, int b, int a)
 {
+        bkPrintf("*** WARNING *** baDrawActorBoundingBox was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -734,6 +789,7 @@ void baSetAnimQueueCallback(TBActorInstance *actorInstance,
 							uint32 flags,
 							int setFrom)
 {
+        bkPrintf("*** WARNING *** baSetAnimQueueCallback was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -748,6 +804,7 @@ void baSetAnimQueueCallback(TBActorInstance *actorInstance,
 void baSetAnimQueueFlags(TBActorInstance *actorInstance, TBActorNodeInstance *nodeInstance,
 												uint32 flagMask, uint32 newFlagValues, int setFrom, int recurse)
 {
+        bkPrintf("*** WARNING *** baSetAnimQueueFlags was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -760,6 +817,7 @@ void baSetAnimQueueFlags(TBActorInstance *actorInstance, TBActorNodeInstance *no
 */
 void baSetActorNodeController(TBActorNodeInstance *node, TBNodeController controller, void *context)
 {
+        bkPrintf("*** WARNING *** baSetActorNodeController was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -772,5 +830,6 @@ void baSetActorNodeController(TBActorNodeInstance *node, TBNodeController contro
 */
 int bActorCountNoofVerts(TBActor *actor)
 {
+        bkPrintf("*** WARNING *** bActorCountNoofVerts was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }

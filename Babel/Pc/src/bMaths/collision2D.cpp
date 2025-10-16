@@ -23,6 +23,7 @@
 
 extern int bmCollideLineCircle2D(const TBCollisionLine2D * const line, const TBCollisionCircle2D * const circle, TBCollisionInfo2D * const collisionInfo)
 {
+        bkPrintf("*** WARNING *** bmCollideLineCircle2D was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -40,6 +41,7 @@ extern int bmCollideLineCircle2D(const TBCollisionLine2D * const line, const TBC
 
 extern int bmCollideLineLine2D(const TBCollisionLine2D * const line1, const TBCollisionLine2D * const line2, TBCollisionInfo2D * const collisionInfo)
 {
+        bkPrintf("*** WARNING *** bmCollideLineLine2D was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -58,6 +60,7 @@ extern int bmCollideLineLine2D(const TBCollisionLine2D * const line1, const TBCo
 
 extern int bmCollideCircleLine2D(const TBCollisionCircle2D * const circle, const TBCollisionLine2D * const line, const TBVector2D movementVector, TBCollisionInfo2D * const collisionInfo)
 {
+        bkPrintf("*** WARNING *** bmCollideCircleLine2D was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -75,6 +78,7 @@ extern int bmCollideCircleLine2D(const TBCollisionCircle2D * const circle, const
 
 extern int bmCollideLinePolygon2D(const TBCollisionLine2D * const line, const TBCollisionPolygon2D * const poly, TBCollisionInfo2D * const collisionInfo)
 {
+        bkPrintf("*** WARNING *** bmCollideLinePolygon2D was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -93,5 +97,6 @@ extern int bmCollideLinePolygon2D(const TBCollisionLine2D * const line, const TB
 
 extern int bmCollideCirclePolygon2D(const TBCollisionCircle2D * const circle, const TBCollisionPolygon2D * const poly, const TBVector2D movementVector, TBCollisionInfo2D * const collisionInfo)
 {
+        bkPrintf("*** WARNING *** bmCollideCirclePolygon2D was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }

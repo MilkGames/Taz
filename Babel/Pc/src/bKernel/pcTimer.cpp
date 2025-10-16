@@ -9,6 +9,17 @@
 #include <babel.h>
 
 // ********************************************************************************
+// Globals
+
+TBTimerValue		bTimerFrequency;
+int					bTimerType;
+
+// ********************************************************************************
+// Locals
+
+
+
+// ********************************************************************************
 // Function Implementations
 
 /* --------------------------------------------------------------------------------
@@ -21,6 +32,7 @@
 
 void bInitTimer()
 {
+        bkPrintf("*** WARNING *** bInitTimer was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -35,7 +47,7 @@ void bInitTimer()
 
 void bShutdownTimer()
 {
-    return; // empty, confirmed
+    return; // MG: empty, confirmed
 }
 
 
@@ -49,6 +61,7 @@ void bShutdownTimer()
 
 TBTimerValue bkTimerRead()
 {
+        bkPrintf("*** WARNING *** bkTimerRead was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -74,6 +87,7 @@ TBTimerValue bkTimerRead()
 
 float bkTimerToFPS(TBTimerValue timerValue)
 {
+        bkPrintf("*** WARNING *** bkTimerToFPS was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -88,6 +102,7 @@ float bkTimerToFPS(TBTimerValue timerValue)
 
 float bkTimerToScanlines(TBTimerValue timerValue, int frequency, int yRes)
 {
+        bkPrintf("*** WARNING *** bkTimerToScanlines was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -102,6 +117,7 @@ float bkTimerToScanlines(TBTimerValue timerValue, int frequency, int yRes)
 
 TBTimerValue bkTimerDelta(TBTimerValue startValue, TBTimerValue endValue)
 {
+        bkPrintf("*** WARNING *** bkTimerDelta was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 

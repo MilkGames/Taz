@@ -32,6 +32,7 @@ int bInitLightsPlatformSpecific()
 */
 void bShutdownLightsPlatformSpecific()
 {
+        bkPrintf("*** WARNING *** bShutdownLightsPlatformSpecific was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -44,6 +45,7 @@ void bShutdownLightsPlatformSpecific()
 */
 void bInitSpecLightsource(struct _TBLightsource *lightPtr)
 {
+        bkPrintf("*** WARNING *** bInitSpecLightsource was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -56,6 +58,7 @@ void bInitSpecLightsource(struct _TBLightsource *lightPtr)
 */
 void bSetSpecLightInfo(struct _TBLightsource *lightPtr)
 {
+        bkPrintf("*** WARNING *** bSetSpecLightInfo was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -68,6 +71,7 @@ void bSetSpecLightInfo(struct _TBLightsource *lightPtr)
 */
 void bEnableSpecLight(struct _TBLightsource *lightPtr)
 {
+        bkPrintf("*** WARNING *** bEnableSpecLight was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -80,6 +84,7 @@ void bEnableSpecLight(struct _TBLightsource *lightPtr)
 */
 void bSetAmbientSpecLight()
 {
+        bkPrintf("*** WARNING *** bSetAmbientSpecLight was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -92,6 +97,7 @@ void bSetAmbientSpecLight()
 */
 void bUpdateLightColour(struct _TBLightsource *light)
 {
+        bkPrintf("*** WARNING *** bUpdateLightColour was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -104,5 +110,6 @@ void bUpdateLightColour(struct _TBLightsource *light)
 */
 void bRestoreLights()
 {
+        bkPrintf("*** WARNING *** bRestoreLights was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

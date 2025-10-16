@@ -20,6 +20,7 @@
 */
 char *bDXErrorToString(HRESULT err)
 {
+        bkPrintf("*** WARNING *** bDXErrorToString was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -32,5 +33,6 @@ char *bDXErrorToString(HRESULT err)
 */
 void bDXRuntimeLogInfo()
 {
-	return;
+        bkPrintf("*** WARNING *** bDXRuntimeLogInfo was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }

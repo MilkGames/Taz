@@ -208,6 +208,7 @@ int bInitKernel()
 
 void bShutdownKernel()
 {
+        bkPrintf("*** WARNING *** bShutdownKernel was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -222,6 +223,7 @@ void bShutdownKernel()
 
 HANDLE bAddOSEvent(TBOSEventCallback callback, void *context, char *description)
 {
+        bkPrintf("*** WARNING *** bAddOSEvent was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -236,6 +238,7 @@ HANDLE bAddOSEvent(TBOSEventCallback callback, void *context, char *description)
 
 void bDeleteOSEvent(HANDLE event)
 {
+        bkPrintf("*** WARNING *** bDeleteOSEvent was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -250,6 +253,7 @@ void bDeleteOSEvent(HANDLE event)
 
 void bHandleOSEvents()
 {
+        bkPrintf("*** WARNING *** bHandleOSEvents was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -397,6 +401,7 @@ int bkDeleteMutex(TBMutex *mutex)
 
 int bInitCommandLine()
 {
+        bkPrintf("*** WARNING *** bInitCommandLine was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -411,6 +416,7 @@ int bInitCommandLine()
 
 void bShutdownCommandLine()
 {
+        bkPrintf("*** WARNING *** bShutdownCommandLine was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -425,6 +431,7 @@ void bShutdownCommandLine()
 
 void bkGetCommandLine(int *argc, char **argv[])
 {
+        bkPrintf("*** WARNING *** bkGetCommandLine was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -439,6 +446,7 @@ void bkGetCommandLine(int *argc, char **argv[])
 
 void bFlushCPUCache()
 {
+        bkPrintf("*** WARNING *** bFlushCPUCache was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -453,6 +461,7 @@ void bFlushCPUCache()
 
 void bFlushWrites(uint32 *ptr, int noofDwords)
 {
+        bkPrintf("*** WARNING *** bFlushWrites was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -483,6 +492,7 @@ void bkSetAppName(char *appName)
 
 int bCheckMemAgainstFile(void *ptr, char *fname, int noofBytes)
 {
+        bkPrintf("*** WARNING *** bCheckMemAgainstFile was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -497,6 +507,7 @@ int bCheckMemAgainstFile(void *ptr, char *fname, int noofBytes)
 
 int bCountSystemAllocs()
 {
+        bkPrintf("*** WARNING *** bCountSystemAllocs was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -511,6 +522,7 @@ int bCountSystemAllocs()
 
 void bDumpSystemAllocs()
 {
+        bkPrintf("*** WARNING *** bDumpSystemAllocs was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -525,6 +537,7 @@ void bDumpSystemAllocs()
 
 void bActivateHeapCheckerThread(int status)
 {
+        bkPrintf("*** WARNING *** bActivateHeapCheckerThread was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 

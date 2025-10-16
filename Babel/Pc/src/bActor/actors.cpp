@@ -20,6 +20,7 @@
 */
 TBActorGroup *baActorGroupCreate(int flags)
 {
+        bkPrintf("*** WARNING *** baActorGroupCreate was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -32,6 +33,7 @@ TBActorGroup *baActorGroupCreate(int flags)
 */
 void baActorGroupDelete(TBActorGroup *group)
 {
+        bkPrintf("*** WARNING *** baActorGroupDelete was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -44,6 +46,7 @@ void baActorGroupDelete(TBActorGroup *group)
 */
 void baActorGroupAddInstance(TBActorGroup *group, TBActorInstance *instance)
 {
+        bkPrintf("*** WARNING *** baActorGroupAddInstance was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -56,6 +59,7 @@ void baActorGroupAddInstance(TBActorGroup *group, TBActorInstance *instance)
 */
 int baActorGroupDeleteInstance(TBActorGroup *group, TBActorInstance *instance)
 {
+        bkPrintf("*** WARNING *** baActorGroupDeleteInstance was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -68,6 +72,7 @@ int baActorGroupDeleteInstance(TBActorGroup *group, TBActorInstance *instance)
 */
 void baActorGroupSort(TBActorGroup *group)
 {
+        bkPrintf("*** WARNING *** baActorGroupSort was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -80,6 +85,7 @@ void baActorGroupSort(TBActorGroup *group)
 */
 int baActorGroupUpdate(TBActorGroup *group, float timeDelta, TBVector motionVector)
 {
+        bkPrintf("*** WARNING *** baActorGroupUpdate was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -92,6 +98,7 @@ int baActorGroupUpdate(TBActorGroup *group, float timeDelta, TBVector motionVect
 */
 void baActorGroupPrep(TBActorGroup *group, int flags)
 {
+        bkPrintf("*** WARNING *** baActorGroupPrep was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -104,5 +111,6 @@ void baActorGroupPrep(TBActorGroup *group, int flags)
 */
 int baActorGroupDraw(TBActorGroup *group, int alpha, int flags)
 {
+        bkPrintf("*** WARNING *** baActorGroupDraw was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }

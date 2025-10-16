@@ -23,6 +23,7 @@
 
 TBACMeshInstance *bmInitACMeshInstance(TBACMeshInstance * const instancePtr, TBACMesh * const baseMesh, struct _TBActorInstance * const actorInstance)
 {
+        bkPrintf("*** WARNING *** bmInitACMeshInstance was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -37,6 +38,7 @@ TBACMeshInstance *bmInitACMeshInstance(TBACMeshInstance * const instancePtr, TBA
 
 void bmFreeACMeshInstance(TBACMeshInstance *instance)
 {
+        bkPrintf("*** WARNING *** bmFreeACMeshInstance was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -52,6 +54,7 @@ void bmFreeACMeshInstance(TBACMeshInstance *instance)
 
 TBACMesh *bLoadAnimatingCollisionMeshByCRC(TBPackageIndex *index, uint32 crc)
 {
+        bkPrintf("*** WARNING *** bLoadAnimatingCollisionMeshByCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -66,6 +69,7 @@ TBACMesh *bLoadAnimatingCollisionMeshByCRC(TBPackageIndex *index, uint32 crc)
 
 void bDeleteAnimatingCollisionMesh(TBACMesh *handle)
 {
+        bkPrintf("*** WARNING *** bDeleteAnimatingCollisionMesh was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -84,6 +88,7 @@ void bDeleteAnimatingCollisionMesh(TBACMesh *handle)
 
 int bmCollideRotTrianglePoint(const TBCollisionTriangle * const tri, const TBVector collisionPoint, const TBQuaternion startQuat, const TBQuaternion endQuat, TBCollisionInfo * const collisionInfo)
 {
+        bkPrintf("*** WARNING *** bmCollideRotTrianglePoint was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -102,6 +107,7 @@ int bmCollideRotTrianglePoint(const TBCollisionTriangle * const tri, const TBVec
 
 int bmCollideRotTriangleSphere(const TBCollisionTriangle * const tri, const TBCollisionSphere * const sphere, const TBQuaternion startQuat, const TBQuaternion endQuat, TBCollisionInfo * const collisionInfo)
 {
+        bkPrintf("*** WARNING *** bmCollideRotTriangleSphere was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -118,6 +124,7 @@ int bmCollideRotTriangleSphere(const TBCollisionTriangle * const tri, const TBCo
 
 TBCollisionType bmCollideACMeshInstanceSphere(const TBACMeshInstance * const mesh, const TBCollisionSphere * const sphere, TBAnimatingCollisionInfo * const collisionInfo)
 {
+        bkPrintf("*** WARNING *** bmCollideACMeshInstanceSphere was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return None;
 }
 
@@ -136,6 +143,7 @@ TBCollisionType bmCollideACMeshInstanceSphere(const TBACMeshInstance * const mes
 
 int bmCollideSphereACMeshInstance(const TBCollisionSphere * const sphere, const TBACMeshInstance * const mesh, const TBVector movementVector, int * const infoCount, TBAnimatingCollisionInfo * const collisionInfo)
 {
+        bkPrintf("*** WARNING *** bmCollideSphereACMeshInstance was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -164,6 +172,7 @@ int bmCollideRayACMeshInstance(const TBCollisionRay * const ray, const TBACMeshI
 
 void bmUpdateACMeshInstance(TBACMeshInstance * const mesh)
 {
+        bkPrintf("*** WARNING *** bmUpdateACMeshInstance was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -179,6 +188,7 @@ void bmUpdateACMeshInstance(TBACMeshInstance * const mesh)
 
 TBACMeshInstanceNode *bmFindACMeshNodeByCRC(TBACMeshInstanceNode * const node, const uint32 crc)
 {
+        bkPrintf("*** WARNING *** bmFindACMeshNodeByCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -193,5 +203,6 @@ TBACMeshInstanceNode *bmFindACMeshNodeByCRC(TBACMeshInstanceNode * const node, c
 
 TBACMeshInstanceNode *bmFindACMeshNode(TBACMeshInstanceNode * const node, const char * const nodeName)
 {
+        bkPrintf("*** WARNING *** bmFindACMeshNode was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }

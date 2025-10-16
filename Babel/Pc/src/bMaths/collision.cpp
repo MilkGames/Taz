@@ -24,6 +24,7 @@
 
 extern int bmCollideSphereSphere(const TBCollisionSphere * const movingSphere, const TBCollisionSphere * const staticSphere, const TBVector movementVector, TBCollisionInfo * const collisionInfo)
 {
+        bkPrintf("*** WARNING *** bmCollideSphereSphere was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -41,6 +42,7 @@ extern int bmCollideSphereSphere(const TBCollisionSphere * const movingSphere, c
 
 extern int bmCollideSphereSphere_Unit(const TBCollisionSphere * const movingSphere, const TBCollisionSphere * const staticSphere, const TBVector movementVector, const float movementVectorLen, TBCollisionInfo * const collisionInfo)
 {
+        bkPrintf("*** WARNING *** bmCollideSphereSphere_Unit was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -58,6 +60,7 @@ extern int bmCollideSphereSphere_Unit(const TBCollisionSphere * const movingSphe
 
 extern int bmCollideRaySphere(const TBCollisionRay * const ray, const TBCollisionSphere * const sphere, TBCollisionInfo * const collisionInfo)
 {
+        bkPrintf("*** WARNING *** bmCollideRaySphere was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -76,6 +79,7 @@ extern int bmCollideRaySphere(const TBCollisionRay * const ray, const TBCollisio
 
 extern int bmCollideRaySphere_Unit(const TBCollisionRay * const ray, const TBCollisionSphere * const sphere, TBCollisionInfo * const collisionInfo)
 {
+        bkPrintf("*** WARNING *** bmCollideRaySphere_Unit was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -93,6 +97,7 @@ extern int bmCollideRaySphere_Unit(const TBCollisionRay * const ray, const TBCol
 
 extern int bmCollideRayTriangle(const TBCollisionRay * const ray, const TBCollisionTriangle * const tri, TBCollisionInfo * const collisionInfo)
 {
+        bkPrintf("*** WARNING *** bmCollideRayTriangle was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -110,6 +115,7 @@ extern int bmCollideRayTriangle(const TBCollisionRay * const ray, const TBCollis
 
 extern int bmCollideRayAABB(const TBCollisionRay * const ray, const TBCollisionAABB * const box, TBCollisionInfo * const collisionInfo)
 {
+        bkPrintf("*** WARNING *** bmCollideRayAABB was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -127,6 +133,7 @@ extern int bmCollideRayAABB(const TBCollisionRay * const ray, const TBCollisionA
 
 extern int bmCollideSphereTriangle(const TBCollisionSphere * const sphere, const TBCollisionTriangle * const tri, const TBVector movementVector, TBCollisionInfo * const collisionInfo)
 {
+        bkPrintf("*** WARNING *** bmCollideSphereTriangle was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -144,6 +151,7 @@ extern int bmCollideSphereTriangle(const TBCollisionSphere * const sphere, const
 
 int bmCollideSphereLine(const TBCollisionSphere * const sphere, const TBCollisionLine * const line, const TBVector movementVector, TBCollisionInfo * const collisionInfo)
 {
+        bkPrintf("*** WARNING *** bmCollideSphereLine was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -162,6 +170,7 @@ int bmCollideSphereLine(const TBCollisionSphere * const sphere, const TBCollisio
 
 int bmCollideSphereMesh(const TBCollisionSphere * const sphere, const TBCollisionMesh * const mesh, const TBVector movementVector, int * const collisionInfoCount, TBCollisionInfo * const collisionInfo)
 {
+        bkPrintf("*** WARNING *** bmCollideSphereMesh was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -179,6 +188,7 @@ int bmCollideSphereMesh(const TBCollisionSphere * const sphere, const TBCollisio
 
 int bmCollideRayMesh(const TBCollisionRay * const ray, const TBCollisionMesh * const mesh, int * const collisionInfoCount, TBCollisionInfo * const collisionInfo)
 {
+        bkPrintf("*** WARNING *** bmCollideRayMesh was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -195,6 +205,7 @@ int bmCollideRayMesh(const TBCollisionRay * const ray, const TBCollisionMesh * c
 
 int bmCollideRayCylinder(const TBCollisionRay * const ray, const TBCollisionCylinder * const cylinder, TBCollisionInfo * const collisionInfo)
 {
+        bkPrintf("*** WARNING *** bmCollideRayCylinder was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -211,6 +222,7 @@ int bmCollideRayCylinder(const TBCollisionRay * const ray, const TBCollisionCyli
 
 int bmCollideRayBox(const TBCollisionRay * const ray, const TBCollisionBox * const box, TBCollisionInfo * const collInfo)
 {
+        bkPrintf("*** WARNING *** bmCollideRayBox was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -228,6 +240,7 @@ int bmCollideRayBox(const TBCollisionRay * const ray, const TBCollisionBox * con
 
 int bmCollideSphereAABB(const TBCollisionSphere * const movingSphere, const TBCollisionAABB * const box, const TBVector movementVector, TBCollisionInfo * const collisionInfo)
 {
+        bkPrintf("*** WARNING *** bmCollideSphereAABB was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -245,6 +258,7 @@ int bmCollideSphereAABB(const TBCollisionSphere * const movingSphere, const TBCo
 
 int bmCollideSphereBox(const TBCollisionSphere * const movingSphere, const TBCollisionBox * const box, const TBVector movementVector, TBCollisionInfo * const collisionInfo)
 {
+        bkPrintf("*** WARNING *** bmCollideSphereBox was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -259,6 +273,7 @@ int bmCollideSphereBox(const TBCollisionSphere * const movingSphere, const TBCol
 
 TBCollisionMesh *bLoadCollisionMeshByCRC(TBPackageIndex *index, uint32 crc)
 {
+        bkPrintf("*** WARNING *** bLoadCollisionMeshByCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -273,6 +288,7 @@ TBCollisionMesh *bLoadCollisionMeshByCRC(TBPackageIndex *index, uint32 crc)
 
 void bDeleteCollisionMesh(TBCollisionMesh *handle)
 {
+        bkPrintf("*** WARNING *** bDeleteCollisionMesh was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -290,6 +306,7 @@ void bDeleteCollisionMesh(TBCollisionMesh *handle)
 
 int bmCollideTriangleSphere(const TBCollisionTriangle * const tri, const TBCollisionSphere * const sphere, const TBVector movementVector, TBCollisionInfo * const collisionInfo)
 {
+        bkPrintf("*** WARNING *** bmCollideTriangleSphere was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -306,6 +323,7 @@ int bmCollideTriangleSphere(const TBCollisionTriangle * const tri, const TBColli
 
 int bIntersectSpherePlane(const TBCollisionSphere * const sphere, const TBVector movementVector, const TBVector plane)
 {
+        bkPrintf("*** WARNING *** bIntersectSpherePlane was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -321,6 +339,7 @@ int bIntersectSpherePlane(const TBCollisionSphere * const sphere, const TBVector
 
 int bIntersectRayPlane(const TBCollisionRay * const ray, const TBVector plane)
 {
+        bkPrintf("*** WARNING *** bIntersectRayPlane was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -336,6 +355,7 @@ int bIntersectRayPlane(const TBCollisionRay * const ray, const TBVector plane)
 
 int bIntersectRayPlane_Unit(const TBCollisionRay * const ray, const TBVector plane)
 {
+        bkPrintf("*** WARNING *** bIntersectRayPlane_Unit was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -351,6 +371,7 @@ int bIntersectRayPlane_Unit(const TBCollisionRay * const ray, const TBVector pla
 
 int bmIntersectRaySphere_Unit(const TBCollisionRay * const ray, const TBCollisionSphere * const sphere)
 {
+        bkPrintf("*** WARNING *** bmIntersectRaySphere_Unit was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -366,5 +387,6 @@ int bmIntersectRaySphere_Unit(const TBCollisionRay * const ray, const TBCollisio
 
 int bmIntersectRaySphere(const TBCollisionRay * const ray, const TBCollisionSphere * const sphere)
 {
+        bkPrintf("*** WARNING *** bmIntersectRaySphere was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }

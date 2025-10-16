@@ -21,6 +21,7 @@
 
 void bDeleteAudioStreamWMA(TBAudioStream *stream)
 {
+        bkPrintf("*** WARNING *** bDeleteAudioStreamWMA was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -36,6 +37,7 @@ void bDeleteAudioStreamWMA(TBAudioStream *stream)
 
 int bPlayAudioStreamWMA(TBAudioStream *stream, uint flags, uint volume, int pan, uint frequency, TBAudioStreamCallback callback, HANDLE wmaFileHandle)
 {
+        bkPrintf("*** WARNING *** bPlayAudioStreamWMA was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -50,6 +52,7 @@ int bPlayAudioStreamWMA(TBAudioStream *stream, uint flags, uint volume, int pan,
 
 void bStopAudioStreamWMA(TBAudioStream *stream)
 {
+        bkPrintf("*** WARNING *** bStopAudioStreamWMA was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -64,6 +67,7 @@ void bStopAudioStreamWMA(TBAudioStream *stream)
 
 void bStartWMAProcessor()
 {
+        bkPrintf("*** WARNING *** bStartWMAProcessor was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -78,5 +82,6 @@ void bStartWMAProcessor()
 
 void bDecodeWMA()
 {
+        bkPrintf("*** WARNING *** bDecodeWMA was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

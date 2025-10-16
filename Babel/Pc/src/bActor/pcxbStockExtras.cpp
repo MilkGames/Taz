@@ -20,6 +20,7 @@
 */
 void bCreateSparkle(TBExtraSystem *eSystem, uchar *vData, va_list parms)
 {
+        bkPrintf("*** WARNING *** bCreateSparkle was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -32,6 +33,7 @@ void bCreateSparkle(TBExtraSystem *eSystem, uchar *vData, va_list parms)
 */
 void bUpdateSparkle(TBExtraSystem *eSystem, int noofInstances, uchar **dataPtrs, float t)
 {
+        bkPrintf("*** WARNING *** bUpdateSparkle was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -44,6 +46,7 @@ void bUpdateSparkle(TBExtraSystem *eSystem, int noofInstances, uchar **dataPtrs,
 */
 void bRenderSparkle(TBExtraSystem *eSystem, int noofInstances, uchar **dataPtrs, void *context)
 {
+        bkPrintf("*** WARNING *** bRenderSparkle was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -56,5 +59,6 @@ void bRenderSparkle(TBExtraSystem *eSystem, int noofInstances, uchar **dataPtrs,
 */
 void bSysInitSparkle(TBExtraSystem *eSystem, int reason)
 {
+        bkPrintf("*** WARNING *** bSysInitSparkle was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

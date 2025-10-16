@@ -20,6 +20,7 @@
 */
 int bInitLights()
 {
+        bkPrintf("*** WARNING *** bInitLights was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -44,6 +45,7 @@ void bShutdownLights()
 */
 TBLightsource *baCreateLight(TBLightsource *lightPtr, uint32 flags)
 {
+        bkPrintf("*** WARNING *** baCreateLight was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -56,6 +58,7 @@ TBLightsource *baCreateLight(TBLightsource *lightPtr, uint32 flags)
 */
 void baDeleteLight(TBLightsource *lightPtr)
 {
+        bkPrintf("*** WARNING *** baDeleteLight was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -68,6 +71,7 @@ void baDeleteLight(TBLightsource *lightPtr)
 */
 void baSetLightFlags(TBLightsource *lightPtr, uint32 flags)
 {
+        bkPrintf("*** WARNING *** baSetLightFlags was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -81,7 +85,8 @@ void baSetLightFlags(TBLightsource *lightPtr, uint32 flags)
 
 void baSetDirectionalLight(TBLightsource *lightPtr, TBVector lightVec)
 {
-	return;
+        bkPrintf("*** WARNING *** baSetDirectionalLight was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -96,7 +101,8 @@ void baSetDirectionalLight(TBLightsource *lightPtr, TBVector lightVec)
 
 void baSetPointLight(TBLightsource *lightPtr, TBVector position, float attenuation)
 {
-	return;
+        bkPrintf("*** WARNING *** baSetPointLight was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -111,7 +117,8 @@ void baSetPointLight(TBLightsource *lightPtr, TBVector position, float attenuati
 
 void baSetSpotLight(TBLightsource *lightPtr, TBVector position, TBVector focus, float attenuation, float coneAngle)
 {
-	return;
+        bkPrintf("*** WARNING *** baSetSpotLight was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -126,7 +133,8 @@ void baSetSpotLight(TBLightsource *lightPtr, TBVector position, TBVector focus, 
 
 void baEnableLight(TBLightsource *lightPtr, int newState)
 {
-	return;
+        bkPrintf("*** WARNING *** baEnableLight was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -141,7 +149,8 @@ void baEnableLight(TBLightsource *lightPtr, int newState)
 
 void baSetAmbientLight(int red, int green, int blue)
 {
-	return;
+        bkPrintf("*** WARNING *** baSetAmbientLight was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -156,7 +165,8 @@ void baSetAmbientLight(int red, int green, int blue)
 
 void baSetLightColour(TBLightsource *light, int red, int green, int blue)
 {
-	return;
+        bkPrintf("*** WARNING *** baSetLightColour was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -171,7 +181,8 @@ void baSetLightColour(TBLightsource *light, int red, int green, int blue)
 
 void baSetSpecularIntensity(TBLightsource *light, float intensity)
 {
-	return;
+        bkPrintf("*** WARNING *** baSetSpecularIntensity was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -188,5 +199,6 @@ void baSetSpecularIntensity(TBLightsource *light, float intensity)
 
 void baEvaluateLightAtPoint(const TBVector point, const TBVector normal, int32 colour[3])
 {
-	return;
+        bkPrintf("*** WARNING *** baEvaluateLightAtPoint was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }

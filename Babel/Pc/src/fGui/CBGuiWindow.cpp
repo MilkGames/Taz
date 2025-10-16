@@ -25,15 +25,15 @@ void CBGuiWindow::Paint1() {}
 
 void CBGuiWindow::Paint2() {}
 
-CBGuiObject* CBGuiWindow::HitTest(int iX, int iY) { return nullptr; }
+ return nullptr; }
 
 void CBGuiWindow::SetWindowFlag(int iFlag) {}
 
 void CBGuiWindow::ClearWindowFlag(int iFlag) {}
 
-int CBGuiWindow::SetWindowText(ushort *pText) { return 0; }
+ return 0; }
 
-int CBGuiWindow::CanDrag() { return 0; }
+ return 0; }
 
 void CBGuiWindow::MoveObject(int iX, int iY, int iDx, int iDy) {}
 

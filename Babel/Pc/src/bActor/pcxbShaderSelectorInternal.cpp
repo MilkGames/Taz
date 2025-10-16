@@ -20,6 +20,7 @@
 */
 void bInitShaderSelectorPlatformSpecific(void)
 {
+        bkPrintf("*** WARNING *** bInitShaderSelectorPlatformSpecific was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -32,5 +33,6 @@ void bInitShaderSelectorPlatformSpecific(void)
 */
 void bShutdownShaderSelectorPlatformSpecific(void)
 {
+        bkPrintf("*** WARNING *** bShutdownShaderSelectorPlatformSpecific was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

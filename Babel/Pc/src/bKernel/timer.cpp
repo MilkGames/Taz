@@ -21,6 +21,7 @@
 
 void bkInitStopwatch(TBStopwatch *stop, int maxCount)
 {
+        bkPrintf("*** WARNING *** bkInitStopwatch was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -35,6 +36,7 @@ void bkInitStopwatch(TBStopwatch *stop, int maxCount)
 
 void bkStartStopwatch(TBStopwatch *stop)
 {
+        bkPrintf("*** WARNING *** bkStartStopwatch was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -49,5 +51,6 @@ void bkStartStopwatch(TBStopwatch *stop)
 
 int bkStopStopwatch(TBStopwatch *stop)
 {
+        bkPrintf("*** WARNING *** bkStopStopwatch was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }

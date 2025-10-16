@@ -21,6 +21,7 @@
 
 void bkDeleteDebugStream(TBDebugStream *stream)
 {
+        bkPrintf("*** WARNING *** bkDeleteDebugStream was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -35,6 +36,7 @@ void bkDeleteDebugStream(TBDebugStream *stream)
 
 void bkSetDebugStream(TBDebugStream *stream)
 {
+        bkPrintf("*** WARNING *** bkSetDebugStream was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -49,6 +51,7 @@ void bkSetDebugStream(TBDebugStream *stream)
 
 void bkSetDebugStreamFlags(TBDebugStream *stream, uint32 flagMask, uint32 newValues)
 {
+        bkPrintf("*** WARNING *** bkSetDebugStreamFlags was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -63,6 +66,7 @@ void bkSetDebugStreamFlags(TBDebugStream *stream, uint32 flagMask, uint32 newVal
 
 void bkStreamPrintf(TBDebugStream *stream, char *format, ...)
 {
+        bkPrintf("*** WARNING *** bkStreamPrintf was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -77,6 +81,7 @@ void bkStreamPrintf(TBDebugStream *stream, char *format, ...)
 
 void bkFlushDebugStreamToFile(TBDebugStream *stream)
 {
+        bkPrintf("*** WARNING *** bkFlushDebugStreamToFile was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -91,5 +96,6 @@ void bkFlushDebugStreamToFile(TBDebugStream *stream)
 
 char *bkDataToSafeString(uchar *data, int dataSize, char *buffer, int bufferSize)
 {
+        bkPrintf("*** WARNING *** bkDataToSafeString was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }

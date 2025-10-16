@@ -29,8 +29,8 @@ void CBCloth::SetParticleFlag(int x, int y, int flag) {}
 
 void CBCloth::SetAllParticleFlags(int flag) {}
 
-int CBCloth::CheckForCollisionsWithGround(float height) { return 0; }
+ return 0; }
 
-int CBCloth::CheckForCollisionsWithSphere(TBVector pos, float radius) { return 0; }
+ return 0; }
 
 void CBCloth::ResolveCollisions() {}

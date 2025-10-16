@@ -27,6 +27,7 @@ volatile int bLastBytesTransferred = 0;
 
 int bKernelInitBkgLoad()
 {
+        bkPrintf("*** WARNING *** bKernelInitBkgLoad was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -41,6 +42,7 @@ int bKernelInitBkgLoad()
 
 uchar *bkLoadFileBkg(TBPackageIndex *index, char *filename, uchar *dataPtr, int *retSize, TBFileTagInfo *tagInfo, char *eventName)
 {
+        bkPrintf("*** WARNING *** bkLoadFileBkg was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -55,6 +57,7 @@ uchar *bkLoadFileBkg(TBPackageIndex *index, char *filename, uchar *dataPtr, int 
 
 TBPackageIndex *bkLoadPackageBkg(TBPackageIndex *parentIndex, char *filename, char *eventName, int *retSize, uchar *dataPtr)
 {
+        bkPrintf("*** WARNING *** bkLoadPackageBkg was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -69,6 +72,7 @@ TBPackageIndex *bkLoadPackageBkg(TBPackageIndex *parentIndex, char *filename, ch
 
 void bkSetBkgLoadSpeed(int kbPerSec)
 {
+        bkPrintf("*** WARNING *** bkSetBkgLoadSpeed was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -83,6 +87,7 @@ void bkSetBkgLoadSpeed(int kbPerSec)
 
 int bIsBkgChannelBusy(EBBkgChannel channel)
 {
+        bkPrintf("*** WARNING *** bIsBkgChannelBusy was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -97,6 +102,7 @@ int bIsBkgChannelBusy(EBBkgChannel channel)
 
 void bBkgChannelCancelRequest(EBBkgChannel channel)
 {
+        bkPrintf("*** WARNING *** bBkgChannelCancelRequest was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -117,6 +123,7 @@ int bQueueBackgroundLoad(EBBkgChannel channel, char *dest, HANDLE fp,
 						 int offset, int noofBytes, int flags,
 						 char *event, int resType)
 {
+        bkPrintf("*** WARNING *** bQueueBackgroundLoad was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -134,6 +141,7 @@ int bQueueBackgroundLoad(EBBkgChannel channel, char *dest, HANDLE fp,
 int bQueueBackgroundWrite(EBBkgChannel channel, char *dest, HANDLE fp, int offset, int noofBytes, int flags,
 																								char *event, int resType)
 {
+        bkPrintf("*** WARNING *** bQueueBackgroundWrite was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -148,6 +156,7 @@ int bQueueBackgroundWrite(EBBkgChannel channel, char *dest, HANDLE fp, int offse
 
 int bIsBkgChannelQueueEmpty(EBBkgChannel channel)
 {
+        bkPrintf("*** WARNING *** bIsBkgChannelQueueEmpty was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -162,5 +171,6 @@ int bIsBkgChannelQueueEmpty(EBBkgChannel channel)
 
 int bPauseBackgroundFileAccess(int pause)
 {
+        bkPrintf("*** WARNING *** bPauseBackgroundFileAccess was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }

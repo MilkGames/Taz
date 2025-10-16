@@ -21,6 +21,7 @@
 
 int bmMatFactorXYZ(const TBMatrix mat,float *xRot,float *yRot,float *zRot)
 {
+        bkPrintf("*** WARNING *** bmMatFactorXYZ was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -35,6 +36,7 @@ int bmMatFactorXYZ(const TBMatrix mat,float *xRot,float *yRot,float *zRot)
 
 int bmMatFactorXZY(const TBMatrix mat,float *xRot,float *yRot,float *zRot)
 {
+        bkPrintf("*** WARNING *** bmMatFactorXZY was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -49,6 +51,7 @@ int bmMatFactorXZY(const TBMatrix mat,float *xRot,float *yRot,float *zRot)
 
 int bmMatFactorYXZ(const TBMatrix mat,float *xRot,float *yRot,float *zRot)
 {
+        bkPrintf("*** WARNING *** bmMatFactorYXZ was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -63,6 +66,7 @@ int bmMatFactorYXZ(const TBMatrix mat,float *xRot,float *yRot,float *zRot)
 
 int bmMatFactorYZX(const TBMatrix mat,float *xRot,float *yRot,float *zRot)
 {
+        bkPrintf("*** WARNING *** bmMatFactorYZX was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -77,6 +81,7 @@ int bmMatFactorYZX(const TBMatrix mat,float *xRot,float *yRot,float *zRot)
 
 int bmMatFactorZXY(const TBMatrix mat,float *xRot,float *yRot,float *zRot)
 {
+        bkPrintf("*** WARNING *** bmMatFactorZXY was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -91,5 +96,6 @@ int bmMatFactorZXY(const TBMatrix mat,float *xRot,float *yRot,float *zRot)
 
 int bmMatFactorZYX(const TBMatrix mat,float *xRot,float *yRot,float *zRot)
 {
+        bkPrintf("*** WARNING *** bmMatFactorZYX was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }

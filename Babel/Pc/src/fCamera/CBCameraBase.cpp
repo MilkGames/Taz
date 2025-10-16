@@ -17,6 +17,7 @@ CBCameraBase::~CBCameraBase() {}
 
 void CBCameraBase::Update(const float t)
 {
+        bkPrintf("*** WARNING *** CBCameraBase::Update was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return; 
 }
 

@@ -21,6 +21,7 @@
 
 TBPackageIndex *bOpenPackage(char *filename)
 {
+        bkPrintf("*** WARNING *** bOpenPackage was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -35,6 +36,7 @@ TBPackageIndex *bOpenPackage(char *filename)
 
 TBPackageIndex *bLoadPackage(TBPackageIndex *parentIndex, char *filename, uchar *dataPtr)
 {
+        bkPrintf("*** WARNING *** bLoadPackage was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -49,6 +51,7 @@ TBPackageIndex *bLoadPackage(TBPackageIndex *parentIndex, char *filename, uchar 
 
 void bClosePackage(TBPackageIndex *index, int flags)
 {
+        bkPrintf("*** WARNING *** bClosePackage was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -63,6 +66,7 @@ void bClosePackage(TBPackageIndex *index, int flags)
 
 int bkPackageFileLength(char *filename, int flags)
 {
+        bkPrintf("*** WARNING *** bkPackageFileLength was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -77,6 +81,7 @@ int bkPackageFileLength(char *filename, int flags)
 
 int bkPackageFileLength(TBPackageIndex *index, char *filename, int flags)
 {
+        bkPrintf("*** WARNING *** bkPackageFileLength was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -91,5 +96,6 @@ int bkPackageFileLength(TBPackageIndex *index, char *filename, int flags)
 
 TBPackageIndex *bFixupPackage(char *filename, int resType, uchar *dataPtr)
 {
+        bkPrintf("*** WARNING *** bFixupPackage was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }

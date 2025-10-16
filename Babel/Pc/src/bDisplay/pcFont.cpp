@@ -24,7 +24,8 @@
 
 void bInitFont()
 {
-	return;
+        bkPrintf("*** WARNING *** bInitFont was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -38,7 +39,8 @@ void bInitFont()
 
 void bShutdownFont()
 {
-	return;
+        bkPrintf("*** WARNING *** bShutdownFont was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -52,7 +54,8 @@ void bShutdownFont()
 
 void bDeleteFont(TBFont *font)
 {
-	return;
+        bkPrintf("*** WARNING *** bDeleteFont was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -66,7 +69,8 @@ void bDeleteFont(TBFont *font)
 
 TBFont *bLoadFontByCRC(TBPackageIndex *pakIndex, uint32 crc)
 {
-	return NULL;
+        bkPrintf("*** WARNING *** bLoadFontByCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return NULL;
 }
 
 
@@ -84,7 +88,8 @@ TBFont *bLoadFontByCRC(TBPackageIndex *pakIndex, uint32 crc)
 void bdPrintFont(const TBFont *font, const ushort *string, int strLen, const TBFontFormatting *formatting, int r,int g,int b, int a,
 																	TBPrintFontCallback callback, void *callbackContext)
 {
-	return;
+        bkPrintf("*** WARNING *** bdPrintFont was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -99,7 +104,8 @@ void bdPrintFont(const TBFont *font, const ushort *string, int strLen, const TBF
 void bdPrintFontLite(const TBFont *font, const ushort *string, int strLen, float x, float y, int r,int g,int b, int a,
 																	TBPrintFontCallback callback, void *callbackContext)
 {
-	return;
+        bkPrintf("*** WARNING *** bdPrintFontLite was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 /* --------------------------------------------------------------------------------
@@ -113,7 +119,8 @@ void bdPrintFontLite(const TBFont *font, const ushort *string, int strLen, float
 
 void bdFontExtent(const TBFont *font, const ushort *string, int strLen, float *width, float *height, TBPrintFontCallback callback, void *callbackContext)
 {
-	return;
+        bkPrintf("*** WARNING *** bdFontExtent was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -129,7 +136,8 @@ void bdFontExtent(const TBFont *font, const ushort *string, int strLen, float *w
 int bdFontFormattedRect(float *rect, const TBFont *font, const ushort *string, int strLen, const TBFontFormatting *formatting,
 																TBPrintFontCallback callback, void *callbackContext)
 {
-	return 0;
+        bkPrintf("*** WARNING *** bdFontFormattedRect was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return 0;
 }
 
 
@@ -145,7 +153,8 @@ int bPrintFontVerts(TBPrimVertex *vertBase, TBFontLineInfo *line, const TBFont *
 					 const TBFontFormatting *formatting, int r,int g,int b, int a, TBPrintFontCallback callback,
 					 void *callbackContext)
 {
-	return 0;
+        bkPrintf("*** WARNING *** bPrintFontVerts was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return 0;
 }
 
 
@@ -159,5 +168,6 @@ int bPrintFontVerts(TBPrimVertex *vertBase, TBFontLineInfo *line, const TBFont *
 
 void bdShowFont(const TBFont *font,float x, float y, float w, float h)
 {
-	return;
+        bkPrintf("*** WARNING *** bdShowFont was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }

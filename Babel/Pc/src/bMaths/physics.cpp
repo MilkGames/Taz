@@ -21,6 +21,7 @@ Info :
 
 void bmSetMomentOfInertia(TBMatrix moi, EBBodyType type, float mass, float w, float l, float h)
 {
+        bkPrintf("*** WARNING *** bmSetMomentOfInertia was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -37,6 +38,7 @@ Info : Also updates the positionRelativeToCG within the pointMasses
 void bmCalculateCombinedMass(TBPointMass *pointMasses, int points, 
 TBVector centerOfGravity, float *totalMass)
 {
+        bkPrintf("*** WARNING *** bmCalculateCombinedMass was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -53,6 +55,7 @@ Info :
 void bmCalculateCombinedMomentOfInertia(TBPointMass *pointMasses, int points, 
           TBMatrix momentOfInertia)
 {
+        bkPrintf("*** WARNING *** bmCalculateCombinedMomentOfInertia was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -68,6 +71,7 @@ Info :
 
 void bmCalculateRelativeVelocity(TBVector rv, TBVector v, TBVector w, TBVector r)
 {
+        bkPrintf("*** WARNING *** bmCalculateRelativeVelocity was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -83,6 +87,7 @@ Info :  {kS*(L-r)};
 
 void bmForceOfSpring3D(TBVector result, float kS, float r, TBVector pos1, TBVector pos2)
 {
+        bkPrintf("*** WARNING *** bmForceOfSpring3D was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -101,5 +106,6 @@ float kS, float r, float kD,
 TBVector pos1, TBVector pos2,
 TBVector v1, TBVector v2)
 {
+        bkPrintf("*** WARNING *** bmForceOfDampedSpring3D was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

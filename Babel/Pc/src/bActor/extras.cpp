@@ -21,7 +21,8 @@
 
 int bInitExtras()
 {
-	return FAIL;
+        bkPrintf("*** WARNING *** bInitExtras was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return FAIL;
 }
 
 
@@ -35,7 +36,8 @@ int bInitExtras()
 
 void bShutdownExtras()
 {
-	return;
+        bkPrintf("*** WARNING *** bShutdownExtras was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -52,6 +54,7 @@ TBExtraSystem *baCreateExtraSystem(char *ident, TBExtraCreateFunc create, TBExtr
 								   TBExtraRenderFunc render, TBExtraSystemInitFunc sysInit, int32 dataSize, int32 maxInstances,
 								   uint32 flags, int32 systemDataSize)
 {
+		bkPrintf("*** WARNING *** baCreateExtraSystem was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
 	TBExtraSystem *example;
 	return example;
 }
@@ -67,7 +70,8 @@ TBExtraSystem *baCreateExtraSystem(char *ident, TBExtraCreateFunc create, TBExtr
 
 void baDeleteExtraSystem(TBExtraSystem *eSystem)
 {
-	return;
+        bkPrintf("*** WARNING *** baDeleteExtraSystem was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -81,6 +85,7 @@ void baDeleteExtraSystem(TBExtraSystem *eSystem)
 
 TBExtraSystem *baFindExtraSystem(char *ident)
 {
+		bkPrintf("*** WARNING *** baFindExtraSystem was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
 	TBExtraSystem *example;
 	return example;
 }
@@ -96,7 +101,8 @@ TBExtraSystem *baFindExtraSystem(char *ident)
 
 uchar *baCreateExtra(TBExtraSystem *eSystem, ...)
 {
-	return NULL;
+        bkPrintf("*** WARNING *** baCreateExtra was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return NULL;
 }
 
 
@@ -110,7 +116,8 @@ uchar *baCreateExtra(TBExtraSystem *eSystem, ...)
 
 uchar *baCloneExtra(TBExtraSystem *eSystem, void *parmTemplate)
 {
-	return NULL;
+        bkPrintf("*** WARNING *** baCloneExtra was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return NULL;
 }
 
 
@@ -124,7 +131,8 @@ uchar *baCloneExtra(TBExtraSystem *eSystem, void *parmTemplate)
 
 void baResetExtraSystem(TBExtraSystem *eSystem)
 {
-	return;
+        bkPrintf("*** WARNING *** baResetExtraSystem was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -138,7 +146,8 @@ void baResetExtraSystem(TBExtraSystem *eSystem)
 
 void baUpdateExtraSystem(TBExtraSystem *eSystem, float t)
 {
-	return;
+        bkPrintf("*** WARNING *** baUpdateExtraSystem was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -152,7 +161,8 @@ void baUpdateExtraSystem(TBExtraSystem *eSystem, float t)
 
 void baRenderExtraSystem(TBExtraSystem *eSystem, void *context)
 {
-	return;
+        bkPrintf("*** WARNING *** baRenderExtraSystem was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -166,7 +176,8 @@ void baRenderExtraSystem(TBExtraSystem *eSystem, void *context)
 
 int baDeleteExtraInstance(TBExtraSystem *eSystem, int instanceIndex)
 {
-	return 0;
+        bkPrintf("*** WARNING *** baDeleteExtraInstance was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return 0;
 }
 
 
@@ -180,6 +191,7 @@ int baDeleteExtraInstance(TBExtraSystem *eSystem, int instanceIndex)
 
 TBExtraSystem *baSetExtraSystemLimit(TBExtraSystem *eSystem, int newMaxInstances)
 {
+		bkPrintf("*** WARNING *** baSetExtraSystemLimit was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
 	TBExtraSystem *example;
 	return example;
 }
@@ -195,7 +207,8 @@ TBExtraSystem *baSetExtraSystemLimit(TBExtraSystem *eSystem, int newMaxInstances
 
 void baSetExtraSystemPosition(TBExtraSystem *eSystem, float x, float y, float z)
 {
-	return;
+        bkPrintf("*** WARNING *** baSetExtraSystemPosition was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -209,7 +222,8 @@ void baSetExtraSystemPosition(TBExtraSystem *eSystem, float x, float y, float z)
 
 void baSetExtraSystemOrientation(TBExtraSystem *eSystem, TBQuaternion orientation)
 {
-	return;
+        bkPrintf("*** WARNING *** baSetExtraSystemOrientation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -223,5 +237,6 @@ void baSetExtraSystemOrientation(TBExtraSystem *eSystem, TBQuaternion orientatio
 
 void baSetExtraSystemAttachment(TBExtraSystem *eSystem, TBActorInstance *actInstance, TBActorNodeInstance *nodeInstance)
 {
-	return;
+        bkPrintf("*** WARNING *** baSetExtraSystemAttachment was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }

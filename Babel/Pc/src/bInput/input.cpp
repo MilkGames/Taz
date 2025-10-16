@@ -20,6 +20,7 @@
 */
 TBIChannelMap *biCreateMap(int maxChannels)
 {
+        bkPrintf("*** WARNING *** biCreateMap was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -32,6 +33,7 @@ TBIChannelMap *biCreateMap(int maxChannels)
 */
 void biDeleteMap(TBIChannelMap *map)
 {
+        bkPrintf("*** WARNING *** biDeleteMap was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -44,6 +46,7 @@ void biDeleteMap(TBIChannelMap *map)
 */
 void biDeleteAllMaps()
 {
+        bkPrintf("*** WARNING *** biDeleteAllMaps was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -56,6 +59,7 @@ void biDeleteAllMaps()
 */
 TBIInputChannel *biCreateChannel(TBIChannelMap *map, char *name, int32 type, uint32 flags, int32 maxValue, int accIncSpeed, int accDecSpeed)
 {
+        bkPrintf("*** WARNING *** biCreateChannel was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -68,6 +72,7 @@ TBIInputChannel *biCreateChannel(TBIChannelMap *map, char *name, int32 type, uin
 */
 int biGetChannelName(TBIChannelMap *map, int channelNumber, ushort *name, int *posInputID, int *negInputID)
 {
+        bkPrintf("*** WARNING *** biGetChannelName was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -80,6 +85,7 @@ int biGetChannelName(TBIChannelMap *map, int channelNumber, ushort *name, int *p
 */
 void biDeleteChannel(TBIInputChannel *channel)
 {
+        bkPrintf("*** WARNING *** biDeleteChannel was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -92,6 +98,7 @@ void biDeleteChannel(TBIInputChannel *channel)
 */
 int biBindInput(TBIInputChannel *channel, int32 posInputID, int32 negInputID)
 {
+        bkPrintf("*** WARNING *** biBindInput was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -104,6 +111,7 @@ int biBindInput(TBIInputChannel *channel, int32 posInputID, int32 negInputID)
 */
 int biBindMulti(TBIInputChannel *channel, int32 noofInputs, ...)
 {
+        bkPrintf("*** WARNING *** biBindMulti was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -116,6 +124,7 @@ int biBindMulti(TBIInputChannel *channel, int32 noofInputs, ...)
 */
 void biResetChannel(TBIInputChannel *channel)
 {
+        bkPrintf("*** WARNING *** biResetChannel was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -128,6 +137,7 @@ void biResetChannel(TBIInputChannel *channel)
 */
 void biResetMap(TBIChannelMap *map)
 {
+        bkPrintf("*** WARNING *** biResetMap was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -140,6 +150,7 @@ void biResetMap(TBIChannelMap *map)
 */
 int biReadDevices()
 {
+        bkPrintf("*** WARNING *** biReadDevices was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -152,6 +163,7 @@ int biReadDevices()
 */
 int biGetChar()
 {
+        bkPrintf("*** WARNING *** biGetChar was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -164,6 +176,7 @@ int biGetChar()
 */
 void biFlushKeyBuffer()
 {
+        bkPrintf("*** WARNING *** biFlushKeyBuffer was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -176,6 +189,7 @@ void biFlushKeyBuffer()
 */
 EBIDeviceType biQueryDevice(int portID, void *infoBuffer)
 {
+        bkPrintf("*** WARNING *** biQueryDevice was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return EBIDEVICETYPE_UNCONNECTED;
 }
 
@@ -188,6 +202,7 @@ EBIDeviceType biQueryDevice(int portID, void *infoBuffer)
 */
 void biZeroMap(TBIChannelMap *map)
 {
+        bkPrintf("*** WARNING *** biZeroMap was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -200,6 +215,7 @@ void biZeroMap(TBIChannelMap *map)
 */
 void biForceDebounce(TBIInputChannel *channelPtr)
 {
+        bkPrintf("*** WARNING *** biForceDebounce was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -212,6 +228,7 @@ void biForceDebounce(TBIInputChannel *channelPtr)
 */
 void biEnableMap(TBIChannelMap *map, int newState)
 {
+        bkPrintf("*** WARNING *** biEnableMap was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -224,6 +241,7 @@ void biEnableMap(TBIChannelMap *map, int newState)
 */
 TBInputRecording *biStartRecording(int clientContextSize)
 {
+        bkPrintf("*** WARNING *** biStartRecording was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -236,6 +254,7 @@ TBInputRecording *biStartRecording(int clientContextSize)
 */
 TBInputRecording *biRecordInputs(TBInputRecording *recInfo, void *clientContext)
 {
+        bkPrintf("*** WARNING *** biRecordInputs was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -248,6 +267,7 @@ TBInputRecording *biRecordInputs(TBInputRecording *recInfo, void *clientContext)
 */
 int biStopRecording(TBInputRecording *recInfo)
 {
+        bkPrintf("*** WARNING *** biStopRecording was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -260,6 +280,7 @@ int biStopRecording(TBInputRecording *recInfo)
 */
 void biStartPlayback(TBInputRecording *recInfo)
 {
+        bkPrintf("*** WARNING *** biStartPlayback was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -272,6 +293,7 @@ void biStartPlayback(TBInputRecording *recInfo)
 */
 int biPlaybackInputs(TBInputRecording *recInfo, void *contextBuffer)
 {
+        bkPrintf("*** WARNING *** biPlaybackInputs was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -284,6 +306,7 @@ int biPlaybackInputs(TBInputRecording *recInfo, void *contextBuffer)
 */
 int biFindPad(int index)
 {
+        bkPrintf("*** WARNING *** biFindPad was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -296,6 +319,7 @@ int biFindPad(int index)
 */
 int biFFSetParm(int devId, int parm, ...)
 {
+        bkPrintf("*** WARNING *** biFFSetParm was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -308,6 +332,7 @@ int biFFSetParm(int devId, int parm, ...)
 */
 void biSetMapPhysicalPort(TBIChannelMap *map, int physicalPortId)
 {
+        bkPrintf("*** WARNING *** biSetMapPhysicalPort was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -320,6 +345,7 @@ void biSetMapPhysicalPort(TBIChannelMap *map, int physicalPortId)
 */
 void biSetChannelPhysicalPort(TBIInputChannel *channel, int physicalPortId)
 {
+        bkPrintf("*** WARNING *** biSetChannelPhysicalPort was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -332,6 +358,7 @@ void biSetChannelPhysicalPort(TBIInputChannel *channel, int physicalPortId)
 */
 void biSwapMapPhysicalPort(TBIChannelMap *map, int oldPhysicalPortId, int newPhysicalPortId)
 {
+        bkPrintf("*** WARNING *** biSwapMapPhysicalPort was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -344,6 +371,7 @@ void biSwapMapPhysicalPort(TBIChannelMap *map, int oldPhysicalPortId, int newPhy
 */
 void biSwapChannelPhysicalPort(TBIInputChannel *channel, int oldPhysicalPortId, int newPhysicalPortId)
 {
+        bkPrintf("*** WARNING *** biSwapChannelPhysicalPort was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -356,6 +384,7 @@ void biSwapChannelPhysicalPort(TBIInputChannel *channel, int oldPhysicalPortId, 
 */
 void bInitInput(uint32 flags)
 {
+        bkPrintf("*** WARNING *** bInitInput was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -368,6 +397,7 @@ void bInitInput(uint32 flags)
 */
 void bShutdownInput()
 {
+        bkPrintf("*** WARNING *** bShutdownInput was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -380,6 +410,7 @@ void bShutdownInput()
 */
 void biFFStopAll()
 {
+        bkPrintf("*** WARNING *** biFFStopAll was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -392,6 +423,7 @@ void biFFStopAll()
 */
 void biFFStop(int padId)
 {
+        bkPrintf("*** WARNING *** biFFStop was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -404,6 +436,7 @@ void biFFStop(int padId)
 */
 int biAddRumbleEffect(int padId, int motorId, int amplitude, int duration, int attack, int sustain, int delay, EBRumbleStyle style)
 {
+        bkPrintf("*** WARNING *** biAddRumbleEffect was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -416,6 +449,7 @@ int biAddRumbleEffect(int padId, int motorId, int amplitude, int duration, int a
 */
 void biAddRumbleBatchEffect(int padId, int noofEffects, TBRumbleBatchEffect *effects)
 {
+        bkPrintf("*** WARNING *** biAddRumbleBatchEffect was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -428,6 +462,7 @@ void biAddRumbleBatchEffect(int padId, int noofEffects, TBRumbleBatchEffect *eff
 */
 int biPauseRumble()
 {
+        bkPrintf("*** WARNING *** biPauseRumble was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -440,6 +475,7 @@ int biPauseRumble()
 */
 int biResumeRumble()
 {
+        bkPrintf("*** WARNING *** biResumeRumble was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -452,6 +488,7 @@ int biResumeRumble()
 */
 void biStopRumble(int padId)
 {
+        bkPrintf("*** WARNING *** biStopRumble was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -464,6 +501,7 @@ void biStopRumble(int padId)
 */
 void biSetAutoRepeat(TBIInputChannel *channel, int startDelay, int repeatsPerSecond)
 {
+        bkPrintf("*** WARNING *** biSetAutoRepeat was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -476,6 +514,7 @@ void biSetAutoRepeat(TBIInputChannel *channel, int startDelay, int repeatsPerSec
 */
 void biSetAutoRepeatMS(TBIInputChannel *channel, int startDelay, int repeatDelay)
 {
+        bkPrintf("*** WARNING *** biSetAutoRepeatMS was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -488,6 +527,7 @@ void biSetAutoRepeatMS(TBIInputChannel *channel, int startDelay, int repeatDelay
 */
 void bProcessRumble()
 {
+        bkPrintf("*** WARNING *** bProcessRumble was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -500,6 +540,7 @@ void bProcessRumble()
 */
 EBPortStatus biGetPortStatus(int portId)
 {
+        bkPrintf("*** WARNING *** biGetPortStatus was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return EBPORTSTATUS_INVALIDPORT;
 }
 
@@ -512,5 +553,6 @@ EBPortStatus biGetPortStatus(int portId)
 */
 void bFixupPlayBackData(TBInputRecording *recInfo)
 {
+        bkPrintf("*** WARNING *** bFixupPlayBackData was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

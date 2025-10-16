@@ -26,6 +26,7 @@ TBQuaternion bIdentityQuaternion = {0.0f, 0.0f, 0.0f, 1.0f};
 
 void bmQuatToRotation(TBVector dest, const TBQuaternion src)
 {
+        bkPrintf("*** WARNING *** bmQuatToRotation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -40,6 +41,7 @@ void bmQuatToRotation(TBVector dest, const TBQuaternion src)
 
 void bmRotationToQuat(TBQuaternion dest, const TBVector src)
 {
+        bkPrintf("*** WARNING *** bmRotationToQuat was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -54,6 +56,7 @@ void bmRotationToQuat(TBQuaternion dest, const TBVector src)
 
 void bmQuatToDirection(TBVector dest, const TBQuaternion src, float *tilt)
 {
+        bkPrintf("*** WARNING *** bmQuatToDirection was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -70,6 +73,7 @@ void bmQuatToDirection(TBVector dest, const TBQuaternion src, float *tilt)
 
 void bmDirectionToQuat(TBQuaternion quat, const TBVector direction, const float tilt)
 {
+        bkPrintf("*** WARNING *** bmDirectionToQuat was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -84,6 +88,7 @@ void bmDirectionToQuat(TBQuaternion quat, const TBVector direction, const float 
 
 void bmQuatNorm(TBQuaternion dest, const TBQuaternion source)
 {
+        bkPrintf("*** WARNING *** bmQuatNorm was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -98,6 +103,7 @@ void bmQuatNorm(TBQuaternion dest, const TBQuaternion source)
 
 void bmEulerToQuatYXZ(TBQuaternion quat, float x, float y, float z)
 {
+        bkPrintf("*** WARNING *** bmEulerToQuatYXZ was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -112,6 +118,7 @@ void bmEulerToQuatYXZ(TBQuaternion quat, float x, float y, float z)
 
 void bmEulerToQuatYZX(TBQuaternion quat, float x, float y, float z)
 {
+        bkPrintf("*** WARNING *** bmEulerToQuatYZX was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -126,6 +133,7 @@ void bmEulerToQuatYZX(TBQuaternion quat, float x, float y, float z)
 
 void bmEulerToQuatXYZ(TBQuaternion quat, float x, float y, float z)
 {
+        bkPrintf("*** WARNING *** bmEulerToQuatXYZ was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -139,6 +147,7 @@ void bmEulerToQuatXYZ(TBQuaternion quat, float x, float y, float z)
 
 void bmEulerToQuatXZY(TBQuaternion quat, float x, float y, float z)
 {
+        bkPrintf("*** WARNING *** bmEulerToQuatXZY was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -153,6 +162,7 @@ void bmEulerToQuatXZY(TBQuaternion quat, float x, float y, float z)
 
 void bmEulerToQuatZXY(TBQuaternion quat, float x, float y, float z)
 {
+        bkPrintf("*** WARNING *** bmEulerToQuatZXY was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -167,6 +177,7 @@ void bmEulerToQuatZXY(TBQuaternion quat, float x, float y, float z)
 
 void bmEulerToQuatZYX(TBQuaternion quat, float x, float y, float z)
 {
+        bkPrintf("*** WARNING *** bmEulerToQuatZYX was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -181,6 +192,7 @@ void bmEulerToQuatZYX(TBQuaternion quat, float x, float y, float z)
 
 void bmQuatToEulerYXZ(TBQuaternion quat, float *x, float *y, float *z)
 {
+        bkPrintf("*** WARNING *** bmQuatToEulerYXZ was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -195,6 +207,7 @@ void bmQuatToEulerYXZ(TBQuaternion quat, float *x, float *y, float *z)
 
 void bmQuatToEulerYZX(TBQuaternion quat, float *x, float *y, float *z)
 {
+        bkPrintf("*** WARNING *** bmQuatToEulerYZX was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -209,6 +222,7 @@ void bmQuatToEulerYZX(TBQuaternion quat, float *x, float *y, float *z)
 
 void bmQuatToEulerXYZ(TBQuaternion quat, float *x, float *y, float *z)
 {
+        bkPrintf("*** WARNING *** bmQuatToEulerXYZ was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -223,6 +237,7 @@ void bmQuatToEulerXYZ(TBQuaternion quat, float *x, float *y, float *z)
 
 void bmQuatToEulerXZY(TBQuaternion quat, float *x, float *y, float *z)
 {
+        bkPrintf("*** WARNING *** bmQuatToEulerXZY was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -237,6 +252,7 @@ void bmQuatToEulerXZY(TBQuaternion quat, float *x, float *y, float *z)
 
 void bmQuatToEulerZXY(TBQuaternion quat, float *x, float *y, float *z)
 {
+        bkPrintf("*** WARNING *** bmQuatToEulerZXY was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -251,6 +267,7 @@ void bmQuatToEulerZXY(TBQuaternion quat, float *x, float *y, float *z)
 
 void bmQuatToEulerZYX(TBQuaternion quat, float *x, float *y, float *z)
 {
+        bkPrintf("*** WARNING *** bmQuatToEulerZYX was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -265,5 +282,6 @@ void bmQuatToEulerZYX(TBQuaternion quat, float *x, float *y, float *z)
 
 float bmQuatSlerpAtFixedSpeed(TBQuaternion dest, const TBQuaternion src1, const TBQuaternion src2, const float speed)
 {
+        bkPrintf("*** WARNING *** bmQuatSlerpAtFixedSpeed was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }

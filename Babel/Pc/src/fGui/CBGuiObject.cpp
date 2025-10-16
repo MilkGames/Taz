@@ -15,9 +15,9 @@ CBGuiObject::CBGuiObject() {}
 
 CBGuiObject::~CBGuiObject() {}
 
-int CBGuiObject::AddChild(CBGuiObject *pChild) { return 0; }
+ return 0; }
 
-int CBGuiObject::RemoveChild(CBGuiObject *pChild) { return 0; }
+ return 0; }
 
 void CBGuiObject::SetPosition(int iX, int iY, int iWidth, int iHeight) {}
 
@@ -31,9 +31,9 @@ void CBGuiObject::SetObjectFlag(int flag) {}
 
 void CBGuiObject::ClearObjectFlag(int flag) {}
 
-CBGuiObject* CBGuiObject::HitTest(int iX, int iY) { return nullptr; }
+ return nullptr; }
 
-int CBGuiObject::CanDrag() { return 0; }
+ return 0; }
 
 void CBGuiObject::BringToTop() {}
 

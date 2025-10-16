@@ -31,7 +31,7 @@ void CBGuiMenuItem::SetMenuItemFlag(int iFlag) {}
 
 void CBGuiMenuItem::ClearMenuItemFlag(int iFlag) {}
 
-int CBGuiMenuItem::SetMenuItemText(ushort *pText) { return 0; }
+ return 0; }
 
 void CBGuiMenuItem::BringToTop() {}
 

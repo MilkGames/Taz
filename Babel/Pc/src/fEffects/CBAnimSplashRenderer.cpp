@@ -17,7 +17,7 @@ CBAnimSplashRenderer::~CBAnimSplashRenderer() {}
 
 void CBAnimSplashRenderer::Render(CBAnimSplash *splash) {}
 
-int CBAnimSplashRenderer::Enter() { return 0; }
+ return 0; }
 
 void CBAnimSplashRenderer::Exit() {}
 

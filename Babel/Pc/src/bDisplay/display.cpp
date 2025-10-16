@@ -20,6 +20,7 @@
 */
 void bdRGBToHSV(int r, int g, int b, int *hp, int *sp, int *vp)
 {
+        bkPrintf("*** WARNING *** bdRGBToHSV was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -32,6 +33,7 @@ void bdRGBToHSV(int r, int g, int b, int *hp, int *sp, int *vp)
 */
 void bdHSVToRGB(int h, int s, int v, int *rp, int *gp, int *bp)
 {
+        bkPrintf("*** WARNING *** bdHSVToRGB was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -44,6 +46,7 @@ void bdHSVToRGB(int h, int s, int v, int *rp, int *gp, int *bp)
 */
 void bdRGBToYCbCr(int r, int g, int b, int *y, int *cb, int *cr)
 {
+        bkPrintf("*** WARNING *** bdRGBToYCbCr was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -56,5 +59,6 @@ void bdRGBToYCbCr(int r, int g, int b, int *y, int *cb, int *cr)
 */
 void bdYCbCrToRGB(int y, int cb, int cr, int *rp, int *gp, int *bp)
 {
+        bkPrintf("*** WARNING *** bdYCbCrToRGB was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

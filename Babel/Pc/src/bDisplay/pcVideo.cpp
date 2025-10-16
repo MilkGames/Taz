@@ -20,5 +20,6 @@
 */
 EBVideoPlayStream bdVideoPlayStream(char *filename, uint32 flags, TBVideoCallback callback, void *context)
 {
+        bkPrintf("*** WARNING *** bdVideoPlayStream was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return EBVIDEOPLAYSTREAM_FINISHED;
 }

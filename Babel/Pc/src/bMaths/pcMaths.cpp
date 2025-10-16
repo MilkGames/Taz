@@ -28,6 +28,7 @@ uint32 bHoldRand = 0x1234ABCD;
 
 void bmSRand(uint32 seed)
 {
+        bkPrintf("*** WARNING *** bmSRand was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -71,5 +72,6 @@ void bmSRand(uint32 seed)
 
 float bmSqrtApprox(float x)
 {
+        bkPrintf("*** WARNING *** bmSqrtApprox was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }

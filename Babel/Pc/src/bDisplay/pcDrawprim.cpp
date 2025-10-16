@@ -20,86 +20,103 @@
 */
 void bdDrawPrimitive(uint32 primType, void *vertices, int vertCount, uint vertType)
 {
+        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBPrimVertex *vertices, int vertCount)
 {
+        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBPrimVertex2D *vertices, int vertCount)
 {
+        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBDualPrimVertex *vertices, int vertCount)
 {
+        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBDualPrimVertex2D *vertices, int vertCount)
 {
+        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBTriPrimVertex *vertices, int vertCount)
 {
+        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBTriPrimVertex2D *vertices, int vertCount)
 {
+        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBQuadPrimVertex *vertices, int vertCount)
 {
+        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBQuadPrimVertex2D *vertices, int vertCount)
 {
+        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBSpecularPrimVertex *vertices, int vertCount)
 {
+        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBSpecularPrimVertex2D *vertices, int vertCount)
 {
+        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBSpecularDualPrimVertex *vertices, int vertCount)
 {
+        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBSpecularDualPrimVertex2D *vertices, int vertCount)
 {
+        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBSpecularTriPrimVertex *vertices, int vertCount)
 {
+        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBSpecularTriPrimVertex2D *vertices, int vertCount)
 {
+        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBSpecularQuadPrimVertex *vertices, int vertCount)
 {
+        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBSpecularQuadPrimVertex2D *vertices, int vertCount)
 {
+        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -113,7 +130,8 @@ void bdDrawPrimitive(uint32 primType, TBSpecularQuadPrimVertex2D *vertices, int 
 
 void bdDrawPrimitiveIndexed(uint32 primType, void *vertices, int vertCount, ushort *indices, int indexCount, uint vertType)
 {
-	return;
+        bkPrintf("*** WARNING *** bdDrawPrimitiveIndexed was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -127,7 +145,8 @@ void bdDrawPrimitiveIndexed(uint32 primType, void *vertices, int vertCount, usho
 
 void bdDrawPrimitiveVB(uint32 primType, TBVertexBuffer *vbPtr, int firstVertex, int vertCount)
 {
-	return;
+        bkPrintf("*** WARNING *** bdDrawPrimitiveVB was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -141,7 +160,8 @@ void bdDrawPrimitiveVB(uint32 primType, TBVertexBuffer *vbPtr, int firstVertex, 
 
 void bdDrawPrimitiveIndexedVB(uint32 primType, TBVertexBuffer *vbPtr, int firstVertex, int vertCount, ushort *indices, int indexCount)
 {
-	return;
+        bkPrintf("*** WARNING *** bdDrawPrimitiveIndexedVB was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -155,7 +175,8 @@ void bdDrawPrimitiveIndexedVB(uint32 primType, TBVertexBuffer *vbPtr, int firstV
 
 int bdVertexBufferCreate(TBVertexBuffer **vbPtr, int32 noofVertices, uint vertexType, uint32 flags, int noofBuffers)
 {
-	return 0;
+        bkPrintf("*** WARNING *** bdVertexBufferCreate was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return 0;
 }
 
 
@@ -169,7 +190,8 @@ int bdVertexBufferCreate(TBVertexBuffer **vbPtr, int32 noofVertices, uint vertex
 
 void bdVertexBufferDestroy(TBVertexBuffer *vbPtr)
 {
-	return;
+        bkPrintf("*** WARNING *** bdVertexBufferDestroy was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -183,7 +205,8 @@ void bdVertexBufferDestroy(TBVertexBuffer *vbPtr)
 
 void *bdVertexBufferLock(TBVertexBuffer *vbPtr, uint32 flags)
 {
-	return NULL;
+        bkPrintf("*** WARNING *** bdVertexBufferLock was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return NULL;
 }
 
 
@@ -197,7 +220,8 @@ void *bdVertexBufferLock(TBVertexBuffer *vbPtr, uint32 flags)
 
 void bdVertexBufferUnlock(TBVertexBuffer *vbPtr)
 {
-	return;
+        bkPrintf("*** WARNING *** bdVertexBufferUnlock was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -211,7 +235,8 @@ void bdVertexBufferUnlock(TBVertexBuffer *vbPtr)
 
 int bdVertexBufferGetSize(TBVertexBuffer *vbPtr)
 {
-	return 0;
+        bkPrintf("*** WARNING *** bdVertexBufferGetSize was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return 0;
 }
 
 
@@ -226,7 +251,8 @@ int bdVertexBufferGetSize(TBVertexBuffer *vbPtr)
 int bdDrawFlatSprite(TBVector centre, float xDim, float yDim, float ang, struct _TBTexture *texture, int32 uFlip, int32 vFlip,
 					 int r,int g,int b,int a, TBPrimVertex2D *destVerts, float zBias)
 {
-	return 0;
+        bkPrintf("*** WARNING *** bdDrawFlatSprite was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return 0;
 }
 
 
@@ -241,7 +267,8 @@ int bdDrawFlatSprite(TBVector centre, float xDim, float yDim, float ang, struct 
 int bdDrawGouraudSprite(TBVector centre, float xDim, float yDim, float ang, struct _TBTexture *texture, int32 uFlip, int32 vFlip,
 						int *colour, TBPrimVertex2D *destVerts, float zBias)
 {
-	return 0;
+        bkPrintf("*** WARNING *** bdDrawGouraudSprite was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return 0;
 }
 
 
@@ -255,7 +282,8 @@ int bdDrawGouraudSprite(TBVector centre, float xDim, float yDim, float ang, stru
 
 int bPrimCount(uint32 primType, int vertCount)
 {
-	return 0;
+        bkPrintf("*** WARNING *** bPrimCount was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return 0;
 }
 
 
@@ -270,7 +298,8 @@ int bPrimCount(uint32 primType, int vertCount)
 int bdDrawFixedFlatSprite(TBVector centre, float xDim, float yDim, float ang, struct _TBTexture *texture, int32 uFlip,
 						  int32 vFlip, int r,int g,int b,int a, TBPrimVertex2D *destVerts, float zBias)
 {
-	return 0;
+        bkPrintf("*** WARNING *** bdDrawFixedFlatSprite was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return 0;
 }
 
 
@@ -285,7 +314,8 @@ int bdDrawFixedFlatSprite(TBVector centre, float xDim, float yDim, float ang, st
 int bdDrawFixedGouraudSprite(TBVector centre, float xDim, float yDim, float ang, struct _TBTexture *texture, int32 uFlip,
 							 int32 vFlip, int *colour, TBPrimVertex2D *destVerts, float zBias)
 {
-	return 0;
+        bkPrintf("*** WARNING *** bdDrawFixedGouraudSprite was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return 0;
 }
 
 
@@ -302,7 +332,8 @@ int bdDrawStreak(TBVector startPos, float xStartDim, float yStartDim, int *start
 					  float xEndDim, float yEndDim, int *endColour, struct _TBTexture *texture, TBPrimVertex2D *destVerts,
 					  float zBias)
 {
-	return 0;
+        bkPrintf("*** WARNING *** bdDrawStreak was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return 0;
 }
 
 
@@ -319,7 +350,8 @@ int bdDrawStreakClipped(TBVector startPos, float xStartDim, float yStartDim, int
 					  float xEndDim, float yEndDim, int *endColour, struct _TBTexture *texture, TBPrimVertex2D *destVerts,
 					  float zBias)
 {
-	return 0;
+        bkPrintf("*** WARNING *** bdDrawStreakClipped was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return 0;
 }
 
 
@@ -336,7 +368,8 @@ int bdDrawFixedStreak(TBVector startPos, float xStartDim, float yStartDim, int *
 					  float xEndDim, float yEndDim, int *endColour, struct _TBTexture *texture, TBPrimVertex2D *destVerts,
 					  float zBias)
 {
-	return 0;
+        bkPrintf("*** WARNING *** bdDrawFixedStreak was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return 0;
 }
 
 
@@ -352,7 +385,8 @@ int bdDrawFixedStreak(TBVector startPos, float xStartDim, float yStartDim, int *
 int bdDrawMultiStreak(int noofPoints, TBVector pointArray, float *sizeArray, float *screenSizeArray,
 					  int *colourArray, TBPrimVertex2D *destVerts, float zBias)
 {
-	return 0;
+        bkPrintf("*** WARNING *** bdDrawMultiStreak was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return 0;
 }
 
 
@@ -367,7 +401,8 @@ int bdDrawMultiStreak(int noofPoints, TBVector pointArray, float *sizeArray, flo
 int bdDrawMultiStreakClipped(int noofPoints, TBVector pointArray, float *sizeArray, float *screenSizeArray, int *colourArray,
 					  TBPrimVertex2D *destVerts, float zBias)
 {
-	return 0;
+        bkPrintf("*** WARNING *** bdDrawMultiStreakClipped was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return 0;
 }
 
 
@@ -383,7 +418,8 @@ int bdDrawMultiStreakClipped(int noofPoints, TBVector pointArray, float *sizeArr
 int bdDrawFixedMultiStreak(int noofPoints, TBVector pointArray, float *sizeArray, int *colourArray,
 						   TBPrimVertex2D *destVerts, float zBias)
 {
-	return 0;
+        bkPrintf("*** WARNING *** bdDrawFixedMultiStreak was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return 0;
 }
 
 
@@ -397,7 +433,8 @@ int bdDrawFixedMultiStreak(int noofPoints, TBVector pointArray, float *sizeArray
 
 void bSetVertexShader(int type, TBVertexBuffer *vertexBuffer)
 {
-	return;
+        bkPrintf("*** WARNING *** bSetVertexShader was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -411,7 +448,8 @@ void bSetVertexShader(int type, TBVertexBuffer *vertexBuffer)
 
 int bdGetPolyCount()
 {
-	return 0;
+        bkPrintf("*** WARNING *** bdGetPolyCount was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return 0;
 }
 
 
@@ -425,7 +463,8 @@ int bdGetPolyCount()
 
 int bGetVertexSize(int vertType)
 {
-	return 0;
+        bkPrintf("*** WARNING *** bGetVertexSize was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return 0;
 }
 
 
@@ -439,7 +478,8 @@ int bGetVertexSize(int vertType)
 
 int bdIndexBufferCreate(TBIndexBuffer **ibPtr, int noofIndices, uint32 flags)
 {
-	return 0;
+        bkPrintf("*** WARNING *** bdIndexBufferCreate was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return 0;
 }
 
 
@@ -453,7 +493,8 @@ int bdIndexBufferCreate(TBIndexBuffer **ibPtr, int noofIndices, uint32 flags)
 
 void bdIndexBufferDestroy(TBIndexBuffer *ibPtr)
 {
-	return;
+        bkPrintf("*** WARNING *** bdIndexBufferDestroy was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -467,7 +508,8 @@ void bdIndexBufferDestroy(TBIndexBuffer *ibPtr)
 
 void *bdIndexBufferLock(TBIndexBuffer *ibPtr, uint32 flags)
 {
-	return NULL;
+        bkPrintf("*** WARNING *** bdIndexBufferLock was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return NULL;
 }
 
 
@@ -481,7 +523,8 @@ void *bdIndexBufferLock(TBIndexBuffer *ibPtr, uint32 flags)
 
 void bdIndexBufferUnlock(TBIndexBuffer *ibPtr)
 {
-	return;
+        bkPrintf("*** WARNING *** bdIndexBufferUnlock was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -495,7 +538,8 @@ void bdIndexBufferUnlock(TBIndexBuffer *ibPtr)
 
 int bdIndexBufferGetSize(TBIndexBuffer *ibPtr)
 {
-	return 0;
+        bkPrintf("*** WARNING *** bdIndexBufferGetSize was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return 0;
 }
 
 
@@ -512,7 +556,8 @@ int bdIndexBufferGetSize(TBIndexBuffer *ibPtr)
 
 void bdDrawPointSpriteVB(TBVertexBuffer *buffer, const int startVertex, const int vertexCount, const float pointSize)
 {
-	return;
+        bkPrintf("*** WARNING *** bdDrawPointSpriteVB was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -526,7 +571,8 @@ void bdDrawPointSpriteVB(TBVertexBuffer *buffer, const int startVertex, const in
 
 void bdSetIndexBuffer(TBIndexBuffer *ibPtr, int baseIndex)
 {
-	return;
+        bkPrintf("*** WARNING *** bdSetIndexBuffer was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -540,5 +586,6 @@ void bdSetIndexBuffer(TBIndexBuffer *ibPtr, int baseIndex)
 
 void bdSetVertexBuffer(TBVertexBuffer *vbPtr)
 {
-	return;
+        bkPrintf("*** WARNING *** bdSetVertexBuffer was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }

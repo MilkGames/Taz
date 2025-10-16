@@ -9,6 +9,11 @@
 #include <babel.h>
 
 // ********************************************************************************
+// Globals
+
+EBLanguageID bLanguage;
+
+// ********************************************************************************
 // Function Implementations
 
 /* --------------------------------------------------------------------------------
@@ -21,6 +26,7 @@
 
 void bkSetFileSearchPath(int flags, int noofPaths, ...)
 {
+        bkPrintf("*** WARNING *** bkSetFileSearchPath was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -34,6 +40,7 @@ void bkSetFileSearchPath(int flags, int noofPaths, ...)
 
 void bInitCRCTable()
 {
+        bkPrintf("*** WARNING *** bInitCRCTable was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -51,6 +58,7 @@ void bInitCRCTable()
 uchar *bkLoadFile(TBPackageIndex *indexPtr, char *filename, uchar *dataPtr, int *retPtr, TBFileTagInfo *tagInfo,
 																									int noofExtraBytes)
 {
+        bkPrintf("*** WARNING *** bkLoadFile was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -67,6 +75,7 @@ uchar *bkLoadFile(TBPackageIndex *indexPtr, char *filename, uchar *dataPtr, int 
 uchar *bkLoadFileByCRC(TBPackageIndex *index, uint32 crc, uchar *dataPtr, int *retSize, TBFileTagInfo *tagInfo,
 																									int noofExtraBytes)
 {
+        bkPrintf("*** WARNING *** bkLoadFileByCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -81,6 +90,7 @@ uchar *bkLoadFileByCRC(TBPackageIndex *index, uint32 crc, uchar *dataPtr, int *r
 
 uint32 bkCRC32(const uchar *data, int size, uint32 accum)
 {
+        bkPrintf("*** WARNING *** bkCRC32 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -95,6 +105,7 @@ uint32 bkCRC32(const uchar *data, int size, uint32 accum)
 
 uint32 bkStringCRC(const char *string)
 {
+        bkPrintf("*** WARNING *** bkStringCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -109,6 +120,7 @@ uint32 bkStringCRC(const char *string)
 
 uint32 bkStringLwrCRC(const char *data)
 {
+        bkPrintf("*** WARNING *** bkStringLwrCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -123,6 +135,7 @@ uint32 bkStringLwrCRC(const char *data)
 
 uint32 bkStringUprCRC(const char *data)
 {
+        bkPrintf("*** WARNING *** bkStringUprCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -137,6 +150,7 @@ uint32 bkStringUprCRC(const char *data)
 
 TBFileIndex *bGetPackageIndexEntry(TBPackageIndex *index, int ordinal)
 {
+        bkPrintf("*** WARNING *** bGetPackageIndexEntry was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -151,6 +165,7 @@ TBFileIndex *bGetPackageIndexEntry(TBPackageIndex *index, int ordinal)
 
 int bkGetPakFileTags(TBPackageIndex *index, char *filename, TBFileTagInfo *tagInfo)
 {
+        bkPrintf("*** WARNING *** bkGetPakFileTags was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -165,6 +180,7 @@ int bkGetPakFileTags(TBPackageIndex *index, char *filename, TBFileTagInfo *tagIn
 
 int bkGetPakFileTagsByCRC(TBPackageIndex *index, uint32 crc, TBFileTagInfo *tagInfo)
 {
+        bkPrintf("*** WARNING *** bkGetPakFileTagsByCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -179,6 +195,7 @@ int bkGetPakFileTagsByCRC(TBPackageIndex *index, uint32 crc, TBFileTagInfo *tagI
 
 TBPackageID bkGetPackageID(TBPackageIndex *index)
 {
+		bkPrintf("*** WARNING *** bkGetPackageID was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
 	TBPackageID id;
     return id;
 }
@@ -194,6 +211,7 @@ TBPackageID bkGetPackageID(TBPackageIndex *index)
 
 int32 bkEnumPackageContents(TBPackageIndex *index, int32 lastHandle, uint32 matchTag, uint32 *crc, TBFileTagInfo *tagInfo)
 {
+        bkPrintf("*** WARNING *** bkEnumPackageContents was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -208,6 +226,7 @@ int32 bkEnumPackageContents(TBPackageIndex *index, int32 lastHandle, uint32 matc
 
 int bkOpenFileReadOnlyWithSearch(char *filename, TBFileHandle *fpPtr, char *fullpath, int maxlen, int flags)
 {
+        bkPrintf("*** WARNING *** bkOpenFileReadOnlyWithSearch was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -222,6 +241,7 @@ int bkOpenFileReadOnlyWithSearch(char *filename, TBFileHandle *fpPtr, char *full
 
 int bkOpenFileReadOnly(char *filename, TBFileHandle *fpPtr)
 {
+        bkPrintf("*** WARNING *** bkOpenFileReadOnly was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -236,6 +256,7 @@ int bkOpenFileReadOnly(char *filename, TBFileHandle *fpPtr)
 
 int bkReadFromFile(TBFileHandle fp, void *data, int noofBytes)
 {
+        bkPrintf("*** WARNING *** bkReadFromFile was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -250,6 +271,7 @@ int bkReadFromFile(TBFileHandle fp, void *data, int noofBytes)
 
 void bkSeekFile(TBFileHandle fp, int position, EBHostSeekMode mode)
 {
+        bkPrintf("*** WARNING *** bkSeekFile was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -264,6 +286,7 @@ void bkSeekFile(TBFileHandle fp, int position, EBHostSeekMode mode)
 
 int bkTellFile(TBFileHandle fp)
 {
+        bkPrintf("*** WARNING *** bkTellFile was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -278,6 +301,7 @@ int bkTellFile(TBFileHandle fp)
 
 void bkCloseFile(TBFileHandle fp)
 {
+        bkPrintf("*** WARNING *** bkCloseFile was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -292,6 +316,7 @@ void bkCloseFile(TBFileHandle fp)
 
 int bFileLength(TBFileHandle fp)
 {
+        bkPrintf("*** WARNING *** bFileLength was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -306,6 +331,7 @@ int bFileLength(TBFileHandle fp)
 
 int bkHostOpenFileReadOnly(char *filename, TBHostFileHandle *fpPtr)
 {
+        bkPrintf("*** WARNING *** bkHostOpenFileReadOnly was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -320,6 +346,7 @@ int bkHostOpenFileReadOnly(char *filename, TBHostFileHandle *fpPtr)
 
 int bkHostCreateFile(char *filename, TBHostFileHandle *fpPtr)
 {
+        bkPrintf("*** WARNING *** bkHostCreateFile was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -334,6 +361,7 @@ int bkHostCreateFile(char *filename, TBHostFileHandle *fpPtr)
 
 int bkHostReadFromFile(TBHostFileHandle fp, void *data, int noofBytes)
 {
+        bkPrintf("*** WARNING *** bkHostReadFromFile was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -348,6 +376,7 @@ int bkHostReadFromFile(TBHostFileHandle fp, void *data, int noofBytes)
 
 int bkHostWriteToFile(TBHostFileHandle fp, void *data, int noofBytes)
 {
+        bkPrintf("*** WARNING *** bkHostWriteToFile was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -362,6 +391,7 @@ int bkHostWriteToFile(TBHostFileHandle fp, void *data, int noofBytes)
 
 void bkHostSeekFile(TBHostFileHandle fp, int position, EBHostSeekMode mode)
 {
+        bkPrintf("*** WARNING *** bkHostSeekFile was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -376,6 +406,7 @@ void bkHostSeekFile(TBHostFileHandle fp, int position, EBHostSeekMode mode)
 
 void bkHostCloseFile(TBHostFileHandle fp)
 {
+        bkPrintf("*** WARNING *** bkHostCloseFile was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -390,6 +421,7 @@ void bkHostCloseFile(TBHostFileHandle fp)
 
 TBFileIndex *bFindIndexFile(TBPackageIndex *index, char *filename)
 {
+        bkPrintf("*** WARNING *** bFindIndexFile was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -404,6 +436,7 @@ TBFileIndex *bFindIndexFile(TBPackageIndex *index, char *filename)
 
 TBFileIndex *bFindIndexFileByCRC(TBPackageIndex *index, uint32 crc)
 {
+        bkPrintf("*** WARNING *** bFindIndexFileByCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -433,6 +466,7 @@ void bkSetLanguage(EBLanguageID languageId)
 
 int bkLoadFilenameTable(TBPackageIndex *index, char *filename)
 {
+        bkPrintf("*** WARNING *** bkLoadFilenameTable was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -447,6 +481,7 @@ int bkLoadFilenameTable(TBPackageIndex *index, char *filename)
 
 int bkDeleteFilenameTable(TBPackageID id)
 {
+        bkPrintf("*** WARNING *** bkDeleteFilenameTable was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -461,6 +496,7 @@ int bkDeleteFilenameTable(TBPackageID id)
 
 int bkFilenameTableAddRef(TBPackageID id)
 {
+        bkPrintf("*** WARNING *** bkFilenameTableAddRef was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -476,6 +512,7 @@ int bkFilenameTableAddRef(TBPackageID id)
 
 char *bkFindFilenameByCRC(TBPackageID id, uint32 crc)
 {
+        bkPrintf("*** WARNING *** bkFindFilenameByCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -490,6 +527,7 @@ char *bkFindFilenameByCRC(TBPackageID id, uint32 crc)
 
 int bkFileLength(char *filename, int flags)
 {
+        bkPrintf("*** WARNING *** bkFileLength was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -504,6 +542,7 @@ int bkFileLength(char *filename, int flags)
 
 int bkFileLength(TBPackageIndex *index, char *filename, int flags)
 {
+        bkPrintf("*** WARNING *** bkFileLength was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -518,6 +557,7 @@ int bkFileLength(TBPackageIndex *index, char *filename, int flags)
 
 uchar *bLoadSingleFile(char *filename, uchar *dataPtr, int *retSize, int noofExtraBytes)
 {
+        bkPrintf("*** WARNING *** bLoadSingleFile was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -532,6 +572,7 @@ uchar *bLoadSingleFile(char *filename, uchar *dataPtr, int *retSize, int noofExt
 
 int bkFileFindFirst(TBFindFileInfo *info, char *dirname, char *filename, int maxlen)
 {
+        bkPrintf("*** WARNING *** bkFileFindFirst was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -546,6 +587,7 @@ int bkFileFindFirst(TBFindFileInfo *info, char *dirname, char *filename, int max
 
 int bkFileFindNext(TBFindFileInfo *info, char *filename, int maxlen)
 {
+        bkPrintf("*** WARNING *** bkFileFindNext was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -560,6 +602,7 @@ int bkFileFindNext(TBFindFileInfo *info, char *filename, int maxlen)
 
 int bkFileFindClose(TBFindFileInfo *info)
 {
+        bkPrintf("*** WARNING *** bkFileFindClose was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -574,5 +617,6 @@ int bkFileFindClose(TBFindFileInfo *info)
 
 EBLanguageID bkGetSystemLanguage()
 {
+        bkPrintf("*** WARNING *** bkGetSystemLanguage was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return BLANGUAGEID_UK;
 }

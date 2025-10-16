@@ -23,7 +23,7 @@ void CBGuiMenu::Paint1() {}
 
 void CBGuiMenu::Paint2() {}
 
-CBGuiObject* CBGuiMenu::HitTest(int iX, int iY) { return nullptr; }
+ return nullptr; }
 
 void CBGuiMenu::SetMenuFlag(int iFlag) {}
 

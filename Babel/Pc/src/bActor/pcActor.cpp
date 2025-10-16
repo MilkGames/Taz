@@ -21,6 +21,7 @@
 */
 void bDrawSoftSkin(struct _TBActorInstance *actorInstance, int alpha)
 {
+        bkPrintf("*** WARNING *** bDrawSoftSkin was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -33,6 +34,7 @@ void bDrawSoftSkin(struct _TBActorInstance *actorInstance, int alpha)
 */
 void baFlushVertexShaderCache()
 {
+        bkPrintf("*** WARNING *** baFlushVertexShaderCache was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -45,5 +47,6 @@ void baFlushVertexShaderCache()
 */
 int baOptimiseActorRenderModes(struct _TBActorInstance *actorInstance)
 {
+        bkPrintf("*** WARNING *** baOptimiseActorRenderModes was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }

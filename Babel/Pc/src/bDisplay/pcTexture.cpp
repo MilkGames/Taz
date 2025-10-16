@@ -32,6 +32,7 @@ int bTextureInit()
 */
 void bTextureShutdown()
 {
+        bkPrintf("*** WARNING *** bTextureShutdown was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -44,6 +45,7 @@ void bTextureShutdown()
 */
 int bdSetTexture(int stage, TBTexture *handle)
 {
+        bkPrintf("*** WARNING *** bdSetTexture was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -56,6 +58,7 @@ int bdSetTexture(int stage, TBTexture *handle)
 */
 int bdEnableTextureMatrix(int stage, EBTextureMatrixType type)
 {
+        bkPrintf("*** WARNING *** bdEnableTextureMatrix was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -68,6 +71,7 @@ int bdEnableTextureMatrix(int stage, EBTextureMatrixType type)
 */
 int bdDisableTextureMatrix(int stage)
 {
+        bkPrintf("*** WARNING *** bdDisableTextureMatrix was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -80,6 +84,7 @@ int bdDisableTextureMatrix(int stage)
 */
 int bdSetTextureMatrix(int stage, const TBMatrix m)
 {
+        bkPrintf("*** WARNING *** bdSetTextureMatrix was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -92,6 +97,7 @@ int bdSetTextureMatrix(int stage, const TBMatrix m)
 */
 int bdSetTextureLinearMatrix(int stage, const TBMatrix m)
 {
+        bkPrintf("*** WARNING *** bdSetTextureLinearMatrix was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -104,6 +110,7 @@ int bdSetTextureLinearMatrix(int stage, const TBMatrix m)
 */
 int bdDisableTextureLinearMatrix(int stage)
 {
+        bkPrintf("*** WARNING *** bdDisableTextureLinearMatrix was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -116,6 +123,7 @@ int bdDisableTextureLinearMatrix(int stage)
 */
 void bDeleteTexture(TBTexture *handle)
 {
+        bkPrintf("*** WARNING *** bDeleteTexture was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -128,6 +136,7 @@ void bDeleteTexture(TBTexture *handle)
 */
 void bdUnlockTexture(TBTexture *texture, int frame, uint32 flags)
 {
+        bkPrintf("*** WARNING *** bdUnlockTexture was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -140,6 +149,7 @@ void bdUnlockTexture(TBTexture *texture, int frame, uint32 flags)
 */
 int bMakeTextureSurface(TBTexture *handle, int xDim, int yDim, int format, int mipLevels, int noofFrames)
 {
+        bkPrintf("*** WARNING *** bMakeTextureSurface was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -152,6 +162,7 @@ int bMakeTextureSurface(TBTexture *handle, int xDim, int yDim, int format, int m
 */
 int bdSetTextureFrame(TBTexture *texturePtr, int frameNumber)
 {
+        bkPrintf("*** WARNING *** bdSetTextureFrame was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -164,6 +175,7 @@ int bdSetTextureFrame(TBTexture *texturePtr, int frameNumber)
 */
 LPDIRECT3DSURFACE8 bGetTextureSurface(LPDIRECT3DTEXTURE8 texture, int level)
 {
+        bkPrintf("*** WARNING *** bGetTextureSurface was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -176,6 +188,7 @@ LPDIRECT3DSURFACE8 bGetTextureSurface(LPDIRECT3DTEXTURE8 texture, int level)
 */
 void bdGetTextureInfo(TBTexture *texture, int *width, int *height, EBTextureFormat *format, int *noofFrames, int *currentFrame)
 {
+        bkPrintf("*** WARNING *** bdGetTextureInfo was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -188,6 +201,7 @@ void bdGetTextureInfo(TBTexture *texture, int *width, int *height, EBTextureForm
 */
 void bdSetNoTexture(int stage)
 {
+        bkPrintf("*** WARNING *** bdSetNoTexture was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -200,6 +214,7 @@ void bdSetNoTexture(int stage)
 */
 void bFixupTexture(TBTexture *texture)
 {
+        bkPrintf("*** WARNING *** bFixupTexture was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -212,5 +227,6 @@ void bFixupTexture(TBTexture *texture)
 */
 void bdScrollTexture(struct _TBTexture *sourTexture, struct _TBTexture *destTexture, float s, float t)
 {
+        bkPrintf("*** WARNING *** bdScrollTexture was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

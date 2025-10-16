@@ -21,6 +21,7 @@
 
 int bInitGenericWave()
 {
+        bkPrintf("*** WARNING *** bInitGenericWave was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -35,6 +36,7 @@ int bInitGenericWave()
 
 void bShutdownGenericWave()
 {
+        bkPrintf("*** WARNING *** bShutdownGenericWave was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -49,6 +51,7 @@ void bShutdownGenericWave()
 
 int bsPlaySample(TBSample *sample, int volume, int pan, int frequency, uint flags)
 {
+        bkPrintf("*** WARNING *** bsPlaySample was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -63,6 +66,7 @@ int bsPlaySample(TBSample *sample, int volume, int pan, int frequency, uint flag
 
 int bsPlayPositionalSample(TBSample *sample, TBVector pos, int volume, int frequency, uint flags, float minDistance, float maxDistance)
 {
+        bkPrintf("*** WARNING *** bsPlayPositionalSample was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -79,6 +83,7 @@ int bsPlayPositionalSample(TBSample *sample, TBVector pos, int volume, int frequ
 int bsPlayTrackingSample(TBSample *sample, TBVector pos, int volume, int frequency, uint flags, TBTrackingSampleCallback callback,
 																					void *context, float minDistance, float maxDistance)
 {
+        bkPrintf("*** WARNING *** bsPlayTrackingSample was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -93,6 +98,7 @@ int bsPlayTrackingSample(TBSample *sample, TBVector pos, int volume, int frequen
 
 int bsPlaySampleOnChannel(int channel, TBSample *sample, int volume, int pan, int frequency, uint flags)
 {
+        bkPrintf("*** WARNING *** bsPlaySampleOnChannel was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -108,6 +114,7 @@ int bsPlaySampleOnChannel(int channel, TBSample *sample, int volume, int pan, in
 int bsPlayPositionalSampleOnChannel(int channel, TBSample *sample, TBVector pos, int volume, int frequency, uint flags,
 																								float minDistance, float maxDistance)
 {
+        bkPrintf("*** WARNING *** bsPlayPositionalSampleOnChannel was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -123,6 +130,7 @@ int bsPlayPositionalSampleOnChannel(int channel, TBSample *sample, TBVector pos,
 int bsPlayTrackingSampleOnChannel(int channel, TBSample *sample, TBVector pos, int volume, int frequency, uint flags,
 												TBTrackingSampleCallback callback, void *context, float minDistance, float maxDistance)
 {
+        bkPrintf("*** WARNING *** bsPlayTrackingSampleOnChannel was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -137,6 +145,7 @@ int bsPlayTrackingSampleOnChannel(int channel, TBSample *sample, TBVector pos, i
 
 int bsGetMaxSampleChannel()
 {
+        bkPrintf("*** WARNING *** bsGetMaxSampleChannel was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -151,6 +160,7 @@ int bsGetMaxSampleChannel()
 
 void bsReserveChannel(int channel, int newState)
 {
+        bkPrintf("*** WARNING *** bsReserveChannel was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -165,6 +175,7 @@ void bsReserveChannel(int channel, int newState)
 
 void bsSetGlobalSampleVolume(int volume)
 {
+        bkPrintf("*** WARNING *** bsSetGlobalSampleVolume was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -179,6 +190,7 @@ void bsSetGlobalSampleVolume(int volume)
 
 void bsStopChannel(int channel)
 {
+        bkPrintf("*** WARNING *** bsStopChannel was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -193,6 +205,7 @@ void bsStopChannel(int channel)
 
 void bsStopAllChannels()
 {
+        bkPrintf("*** WARNING *** bsStopAllChannels was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -207,6 +220,7 @@ void bsStopAllChannels()
 
 void bsSetChannelVolume(int channel, int volume)
 {
+        bkPrintf("*** WARNING *** bsSetChannelVolume was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -221,6 +235,7 @@ void bsSetChannelVolume(int channel, int volume)
 
 void bsSetChannelPan(int channel, int pan)
 {
+        bkPrintf("*** WARNING *** bsSetChannelPan was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -235,6 +250,7 @@ void bsSetChannelPan(int channel, int pan)
 
 void bsSetChannelFrequency(int channel, int frequency)
 {
+        bkPrintf("*** WARNING *** bsSetChannelFrequency was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -249,6 +265,7 @@ void bsSetChannelFrequency(int channel, int frequency)
 
 void bsUpdate(int timeDelta)
 {
+        bkPrintf("*** WARNING *** bsUpdate was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -263,6 +280,7 @@ void bsUpdate(int timeDelta)
 
 int bsGetNoofActiveChannels()
 {
+        bkPrintf("*** WARNING *** bsGetNoofActiveChannels was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -277,6 +295,7 @@ int bsGetNoofActiveChannels()
 
 void bsSetChannelRange(int channel, float minDistance, float maxDistance)
 {
+        bkPrintf("*** WARNING *** bsSetChannelRange was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -291,6 +310,7 @@ void bsSetChannelRange(int channel, float minDistance, float maxDistance)
 
 EBSoundChannelStatus bsGetChannelStatus(int channel)
 {
+        bkPrintf("*** WARNING *** bsGetChannelStatus was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return BSCHSTATUS_IDLE;
 }
 
@@ -305,6 +325,7 @@ EBSoundChannelStatus bsGetChannelStatus(int channel)
 
 void bsStopSample(const TBSample * const sample)
 {
+        bkPrintf("*** WARNING *** bsStopSample was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -319,6 +340,7 @@ void bsStopSample(const TBSample * const sample)
 
 void bsStopSampleGroup(const ushort groupId)
 {
+        bkPrintf("*** WARNING *** bsStopSampleGroup was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -333,6 +355,7 @@ void bsStopSampleGroup(const ushort groupId)
 
 void bsPauseChannel(int channel, int pauseState)
 {
+        bkPrintf("*** WARNING *** bsPauseChannel was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -347,6 +370,7 @@ void bsPauseChannel(int channel, int pauseState)
 
 void bsPauseAllChannels(int pauseState)
 {
+        bkPrintf("*** WARNING *** bsPauseAllChannels was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -361,6 +385,7 @@ void bsPauseAllChannels(int pauseState)
 
 void bsPauseSample(TBSample *sample, int pauseState)
 {
+        bkPrintf("*** WARNING *** bsPauseSample was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -375,6 +400,7 @@ void bsPauseSample(TBSample *sample, int pauseState)
 
 void bsPauseSampleGroup(ushort groupId, int pauseState)
 {
+        bkPrintf("*** WARNING *** bsPauseSampleGroup was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -389,6 +415,7 @@ void bsPauseSampleGroup(ushort groupId, int pauseState)
 
 void bsSetSampleFlags(TBSample *sample, uint32 flagMask, uint32 newStates)
 {
+        bkPrintf("*** WARNING *** bsSetSampleFlags was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -403,5 +430,6 @@ void bsSetSampleFlags(TBSample *sample, uint32 flagMask, uint32 newStates)
 
 void bsSet3DDistanceFactor(float scaleToMeters)
 {
+        bkPrintf("*** WARNING *** bsSet3DDistanceFactor was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

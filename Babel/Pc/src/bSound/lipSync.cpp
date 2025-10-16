@@ -21,6 +21,7 @@
 
 TBLipSync *bLoadLipSyncByCRC(TBPackageIndex *index, uint32 crc)
 {
+        bkPrintf("*** WARNING *** bLoadLipSyncByCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -35,6 +36,7 @@ TBLipSync *bLoadLipSyncByCRC(TBPackageIndex *index, uint32 crc)
 
 void bDeleteLipSync(TBLipSync *stream)
 {
+        bkPrintf("*** WARNING *** bDeleteLipSync was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -53,6 +55,7 @@ void bsSetupLipSyncController(TBLipSyncController *controller, int flags, EBLipS
 							 float xMult, float yMult, float zMult,
 							 float xaThresh, float yaThresh, float zaThresh)
 {
+        bkPrintf("*** WARNING *** bsSetupLipSyncController was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -67,6 +70,7 @@ void bsSetupLipSyncController(TBLipSyncController *controller, int flags, EBLipS
 
 void bsAttachLipSyncToNode(TBLipSync *lipSync, TBActorNodeInstance *node, TBLipSyncController *controller)
 {
+        bkPrintf("*** WARNING *** bsAttachLipSyncToNode was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -81,6 +85,7 @@ void bsAttachLipSyncToNode(TBLipSync *lipSync, TBActorNodeInstance *node, TBLipS
 
 int bsRemoveLipSyncFromNode(TBActorNodeInstance *node, TBLipSyncController *controller)
 {
+        bkPrintf("*** WARNING *** bsRemoveLipSyncFromNode was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -95,6 +100,7 @@ int bsRemoveLipSyncFromNode(TBActorNodeInstance *node, TBLipSyncController *cont
 
 int bsPauseLipSync(TBLipSyncController *controller, int pauseStatus)
 {
+        bkPrintf("*** WARNING *** bsPauseLipSync was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -109,6 +115,7 @@ int bsPauseLipSync(TBLipSyncController *controller, int pauseStatus)
 
 int bsGetLipSyncPosition(TBLipSyncController *controller)
 {
+        bkPrintf("*** WARNING *** bsGetLipSyncPosition was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -123,5 +130,6 @@ int bsGetLipSyncPosition(TBLipSyncController *controller)
 
 int bLipSyncNodeController(TBActorNodeInstance *node, void *context)
 {
+        bkPrintf("*** WARNING *** bLipSyncNodeController was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }

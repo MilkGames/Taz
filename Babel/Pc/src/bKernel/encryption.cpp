@@ -20,5 +20,6 @@
 */
 void bCheckSignature()
 {
+        bkPrintf("*** WARNING *** bCheckSignature was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

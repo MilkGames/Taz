@@ -21,7 +21,8 @@
 
 void bdSetRenderState(uint32 renderState, uint32 value1, uint32 value2)
 {
-	return;
+        bkPrintf("*** WARNING *** bdSetRenderState was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -35,7 +36,8 @@ void bdSetRenderState(uint32 renderState, uint32 value1, uint32 value2)
 
 void bSetDefaultRenderStates()
 {
-	return;
+        bkPrintf("*** WARNING *** bSetDefaultRenderStates was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -49,7 +51,8 @@ void bSetDefaultRenderStates()
 
 void bdSetFogRange(float nearDist, float farDist)
 {
-	return;
+        bkPrintf("*** WARNING *** bdSetFogRange was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -63,7 +66,8 @@ void bdSetFogRange(float nearDist, float farDist)
 
 void bdSetFogColour(int red, int green, int blue)
 {
-	return;
+        bkPrintf("*** WARNING *** bdSetFogColour was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -77,7 +81,8 @@ void bdSetFogColour(int red, int green, int blue)
 
 void bSetGlobalAlpha(int newAlphaScale)
 {
-	return;
+        bkPrintf("*** WARNING *** bSetGlobalAlpha was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -91,7 +96,8 @@ void bSetGlobalAlpha(int newAlphaScale)
 
 TBRenderTarget *bdCreateRenderTarget(int width, int height, int rgbBits, int zBits, uint32 flags)
 {
-	return NULL;
+        bkPrintf("*** WARNING *** bdCreateRenderTarget was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return NULL;
 }
 
 
@@ -105,7 +111,8 @@ TBRenderTarget *bdCreateRenderTarget(int width, int height, int rgbBits, int zBi
 
 void bdDeleteRenderTarget(TBRenderTarget *target)
 {
-	return;
+        bkPrintf("*** WARNING *** bdDeleteRenderTarget was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -120,7 +127,8 @@ void bdDeleteRenderTarget(TBRenderTarget *target)
 
 int bdSetRenderTarget(TBRenderTarget *target, int r,int g,int b, int a,float depth, uint32 flags)
 {
-	return 0;
+        bkPrintf("*** WARNING *** bdSetRenderTarget was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return 0;
 }
 
 
@@ -134,7 +142,8 @@ int bdSetRenderTarget(TBRenderTarget *target, int r,int g,int b, int a,float dep
 
 void bdGetRenderTargetInfo(TBRenderTarget *target, int *width, int *height, int *rgbDepth, int *zDepth)
 {
-	return;
+        bkPrintf("*** WARNING *** bdGetRenderTargetInfo was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return;
 }
 
 
@@ -148,7 +157,8 @@ void bdGetRenderTargetInfo(TBRenderTarget *target, int *width, int *height, int 
 
 int bdSetRenderTargetAsTexture(TBRenderTarget *target, int stage)
 {
-	return 0;
+        bkPrintf("*** WARNING *** bdSetRenderTargetAsTexture was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return 0;
 }
 
 
@@ -162,7 +172,8 @@ int bdSetRenderTargetAsTexture(TBRenderTarget *target, int stage)
 
 int bdLockRenderState(int renderState)
 {
-	return 0;
+        bkPrintf("*** WARNING *** bdLockRenderState was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return 0;
 }
 
 
@@ -176,5 +187,6 @@ int bdLockRenderState(int renderState)
 
 int bdUnlockRenderState(int renderState)
 {
-	return 0;
+        bkPrintf("*** WARNING *** bdUnlockRenderState was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return 0;
 }

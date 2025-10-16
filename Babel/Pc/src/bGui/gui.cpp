@@ -21,6 +21,7 @@
 */
 int bGuiTextExtent(TBGuiFont *font, char *text)
 {
+        bkPrintf("*** WARNING *** bGuiTextExtent was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -33,6 +34,7 @@ int bGuiTextExtent(TBGuiFont *font, char *text)
 */
 void bGuiDeltaRGB(int r, int g, int b, int *rp, int *gp, int *bp, int delta)
 {
+        bkPrintf("*** WARNING *** bGuiDeltaRGB was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -45,6 +47,7 @@ void bGuiDeltaRGB(int r, int g, int b, int *rp, int *gp, int *bp, int delta)
 */
 void bGuiCentreText(TBGuiFont *font, int xMin, int xMax, int y, char *text)
 {
+        bkPrintf("*** WARNING *** bGuiCentreText was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -57,6 +60,7 @@ void bGuiCentreText(TBGuiFont *font, int xMin, int xMax, int y, char *text)
 */
 void bGuiRightText(TBGuiFont *font, int xMax, int y, char *text)
 {
+        bkPrintf("*** WARNING *** bGuiRightText was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -69,6 +73,7 @@ void bGuiRightText(TBGuiFont *font, int xMax, int y, char *text)
 */
 int bgInitGui()
 {
+        bkPrintf("*** WARNING *** bgInitGui was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -81,6 +86,7 @@ int bgInitGui()
 */
 void bgShutdownGui()
 {
+        bkPrintf("*** WARNING *** bgShutdownGui was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -93,6 +99,7 @@ void bgShutdownGui()
 */
 void bgPoll()
 {
+        bkPrintf("*** WARNING *** bgPoll was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -105,6 +112,7 @@ void bgPoll()
 */
 void bgEnterGui(TBGuiEventCallback callback)
 {
+        bkPrintf("*** WARNING *** bgEnterGui was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -117,6 +125,7 @@ void bgEnterGui(TBGuiEventCallback callback)
 */
 void bgExitGui()
 {
+        bkPrintf("*** WARNING *** bgExitGui was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -129,6 +138,7 @@ void bgExitGui()
 */
 TBGuiElement *bgCreateMenu(uint32 flags)
 {
+        bkPrintf("*** WARNING *** bgCreateMenu was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -141,6 +151,7 @@ TBGuiElement *bgCreateMenu(uint32 flags)
 */
 void bgDeleteElement(TBGuiElement *elementPtr)
 {
+        bkPrintf("*** WARNING *** bgDeleteElement was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -153,6 +164,7 @@ void bgDeleteElement(TBGuiElement *elementPtr)
 */
 void bgSetMainMenu(TBGuiElement *menuPtr)
 {
+        bkPrintf("*** WARNING *** bgSetMainMenu was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -165,6 +177,7 @@ void bgSetMainMenu(TBGuiElement *menuPtr)
 */
 TBGuiMenuItem *bgAddMenuItem(TBGuiElement *menuPtr, char *text, int32 id, TBGuiElement *subMenu, uint32 flags)
 {
+        bkPrintf("*** WARNING *** bgAddMenuItem was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -177,6 +190,7 @@ TBGuiMenuItem *bgAddMenuItem(TBGuiElement *menuPtr, char *text, int32 id, TBGuiE
 */
 TBGuiMenuItem *bgInsertMenuItem(TBGuiElement *menuPtr, TBGuiMenuItem *afterItem, char *text, int32 id, TBGuiElement *subMenu, uint32 flags)
 {
+        bkPrintf("*** WARNING *** bgInsertMenuItem was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -189,6 +203,7 @@ TBGuiMenuItem *bgInsertMenuItem(TBGuiElement *menuPtr, TBGuiMenuItem *afterItem,
 */
 int bgLoadElementFile(TBPackageIndex *pak, char *filename)
 {
+        bkPrintf("*** WARNING *** bgLoadElementFile was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -201,6 +216,7 @@ int bgLoadElementFile(TBPackageIndex *pak, char *filename)
 */
 TBGuiElement *bgFindElement(int type, int id)
 {
+        bkPrintf("*** WARNING *** bgFindElement was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -213,6 +229,7 @@ TBGuiElement *bgFindElement(int type, int id)
 */
 int bgCountMenuItems(TBGuiElement *menuPtr)
 {
+        bkPrintf("*** WARNING *** bgCountMenuItems was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -225,6 +242,7 @@ int bgCountMenuItems(TBGuiElement *menuPtr)
 */
 void bgDeleteMenuItem(TBGuiElement *menuPtr, TBGuiMenuItem *item)
 {
+        bkPrintf("*** WARNING *** bgDeleteMenuItem was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -237,6 +255,7 @@ void bgDeleteMenuItem(TBGuiElement *menuPtr, TBGuiMenuItem *item)
 */
 TBGuiMenuItem *bgFindMenuItemByIndex(TBGuiElement *menuPtr, int itemIndex)
 {
+        bkPrintf("*** WARNING *** bgFindMenuItemByIndex was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -249,6 +268,7 @@ TBGuiMenuItem *bgFindMenuItemByIndex(TBGuiElement *menuPtr, int itemIndex)
 */
 TBGuiMenuItem *bgFindMenuItemById(TBGuiElement *menuPtr, int itemId)
 {
+        bkPrintf("*** WARNING *** bgFindMenuItemById was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -261,6 +281,7 @@ TBGuiMenuItem *bgFindMenuItemById(TBGuiElement *menuPtr, int itemId)
 */
 void bgSetMenuItem(TBGuiMenuItem *itemPtr, char *text, int32 id, TBGuiElement *subMenu, uint32 flags, uint32 flagMask)
 {
+        bkPrintf("*** WARNING *** bgSetMenuItem was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -273,5 +294,6 @@ void bgSetMenuItem(TBGuiMenuItem *itemPtr, char *text, int32 id, TBGuiElement *s
 */
 void bgSetColour(EBGuiColourID colour, int r, int g, int b)
 {
+        bkPrintf("*** WARNING *** bgSetColour was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

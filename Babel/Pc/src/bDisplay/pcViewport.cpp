@@ -25,6 +25,7 @@ TBViewInfo bViewInfo;
 */
 void bdSetViewport(const int topLeftX, const int topLeftY, const int width, const int height)
 {
+        bkPrintf("*** WARNING *** bdSetViewport was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -37,6 +38,7 @@ void bdSetViewport(const int topLeftX, const int topLeftY, const int width, cons
 */
 void bdSetViewPosition(const float xPos, const float yPos, const float zPos)
 {
+        bkPrintf("*** WARNING *** bdSetViewPosition was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -49,6 +51,7 @@ void bdSetViewPosition(const float xPos, const float yPos, const float zPos)
 */
 void bdSetViewOrientation(const float xRot, const float yRot, const float zRot, const EBViewportRotationOrder order)
 {
+        bkPrintf("*** WARNING *** bdSetViewOrientation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -61,6 +64,7 @@ void bdSetViewOrientation(const float xRot, const float yRot, const float zRot, 
 */
 void bdSetViewOrientationFromQuaternion(const TBQuaternion quat)
 {
+        bkPrintf("*** WARNING *** bdSetViewOrientationFromQuaternion was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -73,6 +77,7 @@ void bdSetViewOrientationFromQuaternion(const TBQuaternion quat)
 */
 void bdSetViewMatrix(const TBMatrix m)
 {
+        bkPrintf("*** WARNING *** bdSetViewMatrix was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -85,6 +90,7 @@ void bdSetViewMatrix(const TBMatrix m)
 */
 void bdSetViewLookAt(const TBVector from, const TBVector at, const float rollRadians)
 {
+        bkPrintf("*** WARNING *** bdSetViewLookAt was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -97,6 +103,7 @@ void bdSetViewLookAt(const TBVector from, const TBVector at, const float rollRad
 */
 void bdSetViewIdentity()
 {
+        bkPrintf("*** WARNING *** bdSetViewIdentity was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -109,6 +116,7 @@ void bdSetViewIdentity()
 */
 void bdSetupView()
 {
+        bkPrintf("*** WARNING *** bdSetupView was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -121,6 +129,7 @@ void bdSetupView()
 */
 void bdSetViewClipPlanes(const float nearClip, const float farClip)
 {
+        bkPrintf("*** WARNING *** bdSetViewClipPlanes was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -133,6 +142,7 @@ void bdSetViewClipPlanes(const float nearClip, const float farClip)
 */
 void bdSetObjectMatrixCallback(TBObjectMatrixCallback callback, void *context)
 {
+        bkPrintf("*** WARNING *** bdSetObjectMatrixCallback was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -145,6 +155,7 @@ void bdSetObjectMatrixCallback(TBObjectMatrixCallback callback, void *context)
 */
 void bdSetObjectMatrix(const TBMatrix objMat)
 {
+        bkPrintf("*** WARNING *** bdSetObjectMatrix was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -157,6 +168,7 @@ void bdSetObjectMatrix(const TBMatrix objMat)
 */
 void bdSetViewLookPivot(const TBVector at, const float xRadians, const float yRadians, const float distance)
 {
+        bkPrintf("*** WARNING *** bdSetViewLookPivot was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -169,6 +181,7 @@ void bdSetViewLookPivot(const TBVector at, const float xRadians, const float yRa
 */
 void bdSetProjectionMode(const uint32 mode, int force)
 {
+        bkPrintf("*** WARNING *** bdSetProjectionMode was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -181,6 +194,7 @@ void bdSetProjectionMode(const uint32 mode, int force)
 */
 void bTransformVertices(struct _TBPrimVertex *dest, struct _TBPrimVertex *src, int noofVerts)
 {
+        bkPrintf("*** WARNING *** bTransformVertices was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -193,6 +207,7 @@ void bTransformVertices(struct _TBPrimVertex *dest, struct _TBPrimVertex *src, i
 */
 void bCalcOrthoProjectionMatrix()
 {
+        bkPrintf("*** WARNING *** bCalcOrthoProjectionMatrix was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -205,6 +220,7 @@ void bCalcOrthoProjectionMatrix()
 */
 void bCalcPerspProjectionMatrix()
 {
+        bkPrintf("*** WARNING *** bCalcPerspProjectionMatrix was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -217,6 +233,7 @@ void bCalcPerspProjectionMatrix()
 */
 void bdProjectClipVertices(TBVector dest, const TBVector src, int noofVerts, int * const andCode, int * const orCode)
 {
+        bkPrintf("*** WARNING *** bdProjectClipVertices was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -229,6 +246,7 @@ void bdProjectClipVertices(TBVector dest, const TBVector src, int noofVerts, int
 */
 void bdProjectVertices(TBVector dest, const TBVector src, int noofVerts)
 {
+        bkPrintf("*** WARNING *** bdProjectVertices was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -241,6 +259,7 @@ void bdProjectVertices(TBVector dest, const TBVector src, int noofVerts)
 */
 void bdXFormWorldToView(TBVector dest, const TBVector src, int noofVerts)
 {
+        bkPrintf("*** WARNING *** bdXFormWorldToView was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -253,6 +272,7 @@ void bdXFormWorldToView(TBVector dest, const TBVector src, int noofVerts)
 */
 void bdSetFOV(const float horzFOVRadians, const float vertFOVRadians)
 {
+        bkPrintf("*** WARNING *** bdSetFOV was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -265,6 +285,7 @@ void bdSetFOV(const float horzFOVRadians, const float vertFOVRadians)
 */
 int bdTestBBVisibility(const TBMatrix bbMatrix, const float xMin, const float xMax, const float yMin, const float yMax, const float zMin, const float zMax)
 {
+        bkPrintf("*** WARNING *** bdTestBBVisibility was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -277,6 +298,7 @@ int bdTestBBVisibility(const TBMatrix bbMatrix, const float xMin, const float xM
 */
 int bdTestSphereVisibility(TBVector centre, const float radius)
 {
+        bkPrintf("*** WARNING *** bdTestSphereVisibility was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -289,6 +311,7 @@ int bdTestSphereVisibility(TBVector centre, const float radius)
 */
 float bdWorldToScreenSizeXY(const TBVector basisPoint, const float xWorldLen, const float yWorldLen, float * const xScreenLen, float * const yScreenLen)
 {
+        bkPrintf("*** WARNING *** bdWorldToScreenSizeXY was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0.0f;
 }
 
@@ -301,6 +324,7 @@ float bdWorldToScreenSizeXY(const TBVector basisPoint, const float xWorldLen, co
 */
 float bdWorldToScreenSizeX(const TBVector basisPoint, const float xWorldLen, float * const xScreenLen)
 {
+        bkPrintf("*** WARNING *** bdWorldToScreenSizeX was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0.0f;
 }
 
@@ -313,6 +337,7 @@ float bdWorldToScreenSizeX(const TBVector basisPoint, const float xWorldLen, flo
 */
 float bdWorldToScreenSizeY(const TBVector basisPoint, const float yWorldLen, float * const yScreenLen)
 {
+        bkPrintf("*** WARNING *** bdWorldToScreenSizeY was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0.0f;
 }
 
@@ -325,6 +350,7 @@ float bdWorldToScreenSizeY(const TBVector basisPoint, const float yWorldLen, flo
 */
 void bdSetZBias(const float zBias)
 {
+        bkPrintf("*** WARNING *** bdSetZBias was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -337,6 +363,7 @@ void bdSetZBias(const float zBias)
 */
 void bdScreenToWorldPoint(float xScreen, float yScreen, TBVector worldPos)
 {
+        bkPrintf("*** WARNING *** bdScreenToWorldPoint was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -349,6 +376,7 @@ void bdScreenToWorldPoint(float xScreen, float yScreen, TBVector worldPos)
 */
 void bdScreenToWorldPointOffset(float xScreen, float yScreen, float zOffset, TBVector position)
 {
+        bkPrintf("*** WARNING *** bdScreenToWorldPointOffset was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -361,6 +389,7 @@ void bdScreenToWorldPointOffset(float xScreen, float yScreen, float zOffset, TBV
 */
 void bdGetObjectMatrix(TBMatrix dest)
 {
+        bkPrintf("*** WARNING *** bdGetObjectMatrix was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -373,6 +402,7 @@ void bdGetObjectMatrix(TBMatrix dest)
 */
 void bdSetClipRectangle(int topLeftX, int topLeftY, int width, int height)
 {
+        bkPrintf("*** WARNING *** bdSetClipRectangle was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -385,6 +415,7 @@ void bdSetClipRectangle(int topLeftX, int topLeftY, int width, int height)
 */
 float bdCalcVerticalFOV(float hFov, float vpWidth, float vpHeight)
 {
+        bkPrintf("*** WARNING *** bdCalcVerticalFOV was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0.0f;
 }
 
@@ -397,5 +428,6 @@ float bdCalcVerticalFOV(float hFov, float vpWidth, float vpHeight)
 */
 void bdSetIdentityObjectMatrix()
 {
+        bkPrintf("*** WARNING *** bdSetIdentityObjectMatrix was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

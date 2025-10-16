@@ -20,6 +20,7 @@
 */
 void bSetInitialRenderStates(int stages)
 {
+        bkPrintf("*** WARNING *** bSetInitialRenderStates was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -32,6 +33,7 @@ void bSetInitialRenderStates(int stages)
 */
 uint32 bdGetRenderState(uint32 renderState, uint32 *value2)
 {
+        bkPrintf("*** WARNING *** bdGetRenderState was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -44,6 +46,7 @@ uint32 bdGetRenderState(uint32 renderState, uint32 *value2)
 */
 void bdPushRenderState(uint32 state, uint32 value1, uint32 value2)
 {
+        bkPrintf("*** WARNING *** bdPushRenderState was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -56,6 +59,7 @@ void bdPushRenderState(uint32 state, uint32 value1, uint32 value2)
 */
 void bdPopRenderState(uint32 state)
 {
+        bkPrintf("*** WARNING *** bdPopRenderState was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -68,6 +72,7 @@ void bdPopRenderState(uint32 state)
 */
 void bdSaveRenderStates(TBSavedRenderStates *saveBlock)
 {
+        bkPrintf("*** WARNING *** bdSaveRenderStates was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -80,5 +85,6 @@ void bdSaveRenderStates(TBSavedRenderStates *saveBlock)
 */
 void bdRestoreRenderStates(TBSavedRenderStates *saveBlock)
 {
+        bkPrintf("*** WARNING *** bdRestoreRenderStates was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

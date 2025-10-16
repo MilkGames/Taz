@@ -35,6 +35,7 @@ float bFPS = 0.0f;
 */
 int bInitDisplay()
 {
+        bkPrintf("*** WARNING *** bInitDisplay was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -47,6 +48,7 @@ int bInitDisplay()
 */
 void bShutdownDisplay()
 {
+        bkPrintf("*** WARNING *** bShutdownDisplay was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -59,6 +61,7 @@ void bShutdownDisplay()
 */
 int bdOpenDisplay(int xRes, int yRes, int bpp, int zDepth, uint32 flags)
 {
+        bkPrintf("*** WARNING *** bdOpenDisplay was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -71,6 +74,7 @@ int bdOpenDisplay(int xRes, int yRes, int bpp, int zDepth, uint32 flags)
 */
 void bdCloseDisplay()
 {
+        bkPrintf("*** WARNING *** bdCloseDisplay was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -83,6 +87,7 @@ void bdCloseDisplay()
 */
 void bdGetDisplayInfo(int *xRes, int *yRes, int *bpp, int *zDepth)
 {
+        bkPrintf("*** WARNING *** bdGetDisplayInfo was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -95,6 +100,7 @@ void bdGetDisplayInfo(int *xRes, int *yRes, int *bpp, int *zDepth)
 */
 int bdSetVsyncCallback(TBVsyncCallback callback, void *context)
 {
+        bkPrintf("*** WARNING *** bdSetVsyncCallback was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -107,6 +113,7 @@ int bdSetVsyncCallback(TBVsyncCallback callback, void *context)
 */
 int bdSetPreFlipCallback(TBPreFlipCallback callback, void *context)
 {
+        bkPrintf("*** WARNING *** bdSetPreFlipCallback was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -119,6 +126,7 @@ int bdSetPreFlipCallback(TBPreFlipCallback callback, void *context)
 */
 void bdFlip(int red, int green, int blue, int alpha, int flags)
 {
+        bkPrintf("*** WARNING *** bdFlip was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -131,6 +139,7 @@ void bdFlip(int red, int green, int blue, int alpha, int flags)
 */
 int bdBeginScene()
 {
+        bkPrintf("*** WARNING *** bdBeginScene was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -143,6 +152,7 @@ int bdBeginScene()
 */
 void bdEndScene()
 {
+        bkPrintf("*** WARNING *** bdEndScene was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -155,6 +165,7 @@ void bdEndScene()
 */
 int bdGetScanline()
 {
+        bkPrintf("*** WARNING *** bdGetScanline was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -167,6 +178,7 @@ int bdGetScanline()
 */
 int bdScreenshot(char *filename)
 {
+        bkPrintf("*** WARNING *** bdScreenshot was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -179,6 +191,7 @@ int bdScreenshot(char *filename)
 */
 void bRestoreAllSurfaces()
 {
+        bkPrintf("*** WARNING *** bRestoreAllSurfaces was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -191,6 +204,7 @@ void bRestoreAllSurfaces()
 */
 int bStartDisplay()
 {
+        bkPrintf("*** WARNING *** bStartDisplay was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -203,6 +217,7 @@ int bStartDisplay()
 */
 void bStopDisplay(int shutdown)
 {
+        bkPrintf("*** WARNING *** bStopDisplay was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -215,6 +230,7 @@ void bStopDisplay(int shutdown)
 */
 uchar *bGrabScreen()
 {
+        bkPrintf("*** WARNING *** bGrabScreen was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -227,6 +243,7 @@ uchar *bGrabScreen()
 */
 void *bLockSurface(LPDIRECT3DSURFACE8 surf, int *xDim, int *yDim, int *bpp, int *rgb555, int *pitch)
 {
+        bkPrintf("*** WARNING *** bLockSurface was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -239,6 +256,7 @@ void *bLockSurface(LPDIRECT3DSURFACE8 surf, int *xDim, int *yDim, int *bpp, int 
 */
 void bUnlockSurface(LPDIRECT3DTEXTURE8 surf)
 {
+        bkPrintf("*** WARNING *** bUnlockSurface was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -251,6 +269,7 @@ void bUnlockSurface(LPDIRECT3DTEXTURE8 surf)
 */
 void bdSetScreenOffset(int x, int y)
 {
+        bkPrintf("*** WARNING *** bdSetScreenOffset was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -263,6 +282,7 @@ void bdSetScreenOffset(int x, int y)
 */
 void bdClear(int red, int green, int blue, int alpha, float z, int32 stencil, uint32 flags)
 {
+        bkPrintf("*** WARNING *** bdClear was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -275,6 +295,7 @@ void bdClear(int red, int green, int blue, int alpha, float z, int32 stencil, ui
 */
 int bGetDisplayFrequency()
 {
+        bkPrintf("*** WARNING *** bGetDisplayFrequency was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -287,5 +308,6 @@ int bGetDisplayFrequency()
 */
 void bdDoDummyPresent()
 {
+        bkPrintf("*** WARNING *** bdDoDummyPresent was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

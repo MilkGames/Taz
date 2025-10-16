@@ -22,6 +22,7 @@
 
 void bmQuatToMatrix(TBMatrix dest, const TBQuaternion src)
 {
+        bkPrintf("*** WARNING *** bmQuatToMatrix was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -36,6 +37,7 @@ void bmQuatToMatrix(TBMatrix dest, const TBQuaternion src)
 
 void bmQuatToMatrix33(TBMatrix dest, const TBQuaternion src)
 {
+        bkPrintf("*** WARNING *** bmQuatToMatrix33 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -50,6 +52,7 @@ void bmQuatToMatrix33(TBMatrix dest, const TBQuaternion src)
 
 void bmMatrixToQuat(TBQuaternion dest, const TBMatrix src)
 {
+        bkPrintf("*** WARNING *** bmMatrixToQuat was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -64,6 +67,7 @@ void bmMatrixToQuat(TBQuaternion dest, const TBMatrix src)
 
 void bmQuatSlerp(TBQuaternion dest, const TBQuaternion src1, const TBQuaternion src2, const float t)
 {
+        bkPrintf("*** WARNING *** bmQuatSlerp was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -78,6 +82,7 @@ void bmQuatSlerp(TBQuaternion dest, const TBQuaternion src1, const TBQuaternion 
 
 void bmQuatMultiply(TBQuaternion dest, const TBQuaternion src1, const TBQuaternion src2)
 {
+        bkPrintf("*** WARNING *** bmQuatMultiply was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -92,6 +97,7 @@ void bmQuatMultiply(TBQuaternion dest, const TBQuaternion src1, const TBQuaterni
 
 float bmQuatDot(const TBQuaternion src1, const TBQuaternion src2)
 {
+        bkPrintf("*** WARNING *** bmQuatDot was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -105,6 +111,7 @@ float bmQuatDot(const TBQuaternion src1, const TBQuaternion src2)
 
 void bmQuatSlerpLonger(TBQuaternion dest, const TBQuaternion src1, const TBQuaternion src2, const float t)
 {
+        bkPrintf("*** WARNING *** bmQuatSlerpLonger was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -119,6 +126,7 @@ void bmQuatSlerpLonger(TBQuaternion dest, const TBQuaternion src1, const TBQuate
 
 void bmQuatXRotation(TBQuaternion quat, const float radians)
 {
+        bkPrintf("*** WARNING *** bmQuatXRotation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -133,6 +141,7 @@ void bmQuatXRotation(TBQuaternion quat, const float radians)
 
 void bmQuatYRotation(TBQuaternion quat, const float radians)
 {
+        bkPrintf("*** WARNING *** bmQuatYRotation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -147,6 +156,7 @@ void bmQuatYRotation(TBQuaternion quat, const float radians)
 
 void bmQuatZRotation(TBQuaternion quat, const float radians)
 {
+        bkPrintf("*** WARNING *** bmQuatZRotation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 

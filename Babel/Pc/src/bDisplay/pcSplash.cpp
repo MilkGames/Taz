@@ -20,6 +20,7 @@
 */
 TBSplash *bLoadSplashByCRC(TBPackageIndex *index, uint32 crc)
 {
+        bkPrintf("*** WARNING *** bLoadSplashByCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return NULL;
 }
 
@@ -32,6 +33,7 @@ TBSplash *bLoadSplashByCRC(TBPackageIndex *index, uint32 crc)
 */
 void bDeleteSplash(TBSplash *splash)
 {
+        bkPrintf("*** WARNING *** bDeleteSplash was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -44,6 +46,7 @@ void bDeleteSplash(TBSplash *splash)
 */
 void bdDrawSplash(TBSplash *splash, int xPos, int yPos, int flags)
 {
+        bkPrintf("*** WARNING *** bdDrawSplash was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -56,5 +59,6 @@ void bdDrawSplash(TBSplash *splash, int xPos, int yPos, int flags)
 */
 uint32 bdFixSplashCRC(uint32 crc)
 {
+        bkPrintf("*** WARNING *** bdFixSplashCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }

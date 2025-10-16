@@ -20,6 +20,7 @@
 */
 void baEvalAnimTrack3(TBVector destVec, TBAnimTrack3 *track, int time)
 {
+        bkPrintf("*** WARNING *** baEvalAnimTrack3 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -32,5 +33,6 @@ void baEvalAnimTrack3(TBVector destVec, TBAnimTrack3 *track, int time)
 */
 void baEvalAnimTrack4(TBVector destVec, TBAnimTrack4 *track, int time)
 {
+        bkPrintf("*** WARNING *** baEvalAnimTrack4 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

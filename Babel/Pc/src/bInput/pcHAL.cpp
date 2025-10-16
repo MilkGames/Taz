@@ -11,7 +11,7 @@
 // ********************************************************************************
 // Globals
 
-GUID *bJoystickInstanceGuid[BMAXPADS] = { NULL, NULL, NULL, NULL };
+GUID *bJoystickInstanceGuid[BMAXPADS] = { NULL, NULL };
 
 // ********************************************************************************
 // Function Implementations
@@ -26,6 +26,7 @@ GUID *bJoystickInstanceGuid[BMAXPADS] = { NULL, NULL, NULL, NULL };
 
 void bInitInputHAL(uint32 flags) 
 {
+        bkPrintf("*** WARNING *** bInitInputHAL was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -40,6 +41,7 @@ void bInitInputHAL(uint32 flags)
 
 void bShutdownInputHAL()
 {
+        bkPrintf("*** WARNING *** bShutdownInputHAL was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -54,6 +56,7 @@ void bShutdownInputHAL()
 
 void bReadPhysicalInputDevices()
 {
+        bkPrintf("*** WARNING *** bReadPhysicalInputDevices was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -68,6 +71,7 @@ void bReadPhysicalInputDevices()
 
 int bReadInput(int inputID, int behaviour, int *valuePtr)
 {
+        bkPrintf("*** WARNING *** bReadInput was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -82,5 +86,6 @@ int bReadInput(int inputID, int behaviour, int *valuePtr)
 
 void bUpdateRumble()
 {
+        bkPrintf("*** WARNING *** bUpdateRumble was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

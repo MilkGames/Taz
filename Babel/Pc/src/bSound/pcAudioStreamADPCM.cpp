@@ -21,6 +21,7 @@
 
 void bDeleteAudioStreamADPCM(TBAudioStream *stream)
 {
+        bkPrintf("*** WARNING *** bDeleteAudioStreamADPCM was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -35,6 +36,7 @@ void bDeleteAudioStreamADPCM(TBAudioStream *stream)
 
 int bPlayAudioStreamADPCM(TBAudioStream *stream, uint flags, uint volume, int pan, uint frequency, TBAudioStreamCallback callback)
 {
+        bkPrintf("*** WARNING *** bPlayAudioStreamADPCM was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -49,6 +51,7 @@ int bPlayAudioStreamADPCM(TBAudioStream *stream, uint flags, uint volume, int pa
 
 void bStopAudioStreamADPCM(TBAudioStream *stream)
 {
+        bkPrintf("*** WARNING *** bStopAudioStreamADPCM was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -63,5 +66,6 @@ void bStopAudioStreamADPCM(TBAudioStream *stream)
 
 void bNotifyADPCM()
 {
+        bkPrintf("*** WARNING *** bNotifyADPCM was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }

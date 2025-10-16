@@ -20,6 +20,7 @@
 */
 int bInitCamera()
 {
+        bkPrintf("*** WARNING *** bInitCamera was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -32,6 +33,7 @@ int bInitCamera()
 */
 void bShutdownCamera()
 {
+        bkPrintf("*** WARNING *** bShutdownCamera was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -44,6 +46,7 @@ void bShutdownCamera()
 */
 int bUpdateViewFromCamera()
 {
+        bkPrintf("*** WARNING *** bUpdateViewFromCamera was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -56,6 +59,7 @@ int bUpdateViewFromCamera()
 */
 void baDeleteCameraInstance(TBCameraInstance *camera)
 {
+        bkPrintf("*** WARNING *** baDeleteCameraInstance was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -68,6 +72,7 @@ void baDeleteCameraInstance(TBCameraInstance *camera)
 */
 void baSetCameraInstanceSource(TBCameraInstance *camera, ...)
 {
+        bkPrintf("*** WARNING *** baSetCameraInstanceSource was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -80,5 +85,6 @@ void baSetCameraInstanceSource(TBCameraInstance *camera, ...)
 */
 void baSetCameraInstanceTarget(TBCameraInstance *camera, ...)
 {
+        bkPrintf("*** WARNING *** baSetCameraInstanceTarget was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
