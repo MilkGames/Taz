@@ -31,6 +31,19 @@ int bKernelInitBkgLoad()
     return 0;
 }
 
+/*	--------------------------------------------------------------------------------
+	Function : bKernelShutdownBkgLoad
+	Purpose : Shutdown background loading resources
+	Parameters : 
+	Returns : OK/FAIL
+	Info : 
+*/
+
+int bKernelShutdownBkgLoad()
+{
+		bkPrintf("*** WARNING *** bKernelShutdownBkgLoad was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+	return 0;
+}
 
 /* --------------------------------------------------------------------------------
    Function : bkLoadFileBkg

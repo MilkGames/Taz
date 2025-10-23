@@ -20,8 +20,7 @@
 */
 int bInitSetPlatformSpecific()
 {
-        bkPrintf("*** WARNING *** bInitSetPlatformSpecific was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    return OK; // confirmed
 }
 
 /*	--------------------------------------------------------------------------------
@@ -33,6 +32,5 @@ int bInitSetPlatformSpecific()
 */
 void bShutdownSetPlatformSpecific()
 {
-        bkPrintf("*** WARNING *** bShutdownSetPlatformSpecific was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    return; // again, disappeared without a trace
 }

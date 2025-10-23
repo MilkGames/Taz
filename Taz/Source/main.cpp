@@ -2645,14 +2645,12 @@ void SetGameState(GAMESTATUS *gameStatus, EGameState state, ESubGameState subSta
 		{
 			if(parm1 != 0)
 			{
-				//bkPrintf("WARNING! WARNING! DANGER! DANGER! *************** SetGameState called with un-handled parameter 1 value of %d for state %d.\n", parm1, state);
-				// MG: Phil, for god's sake! You can't use bkPrint before bkInit!
+				bkPrintf("WARNING! WARNING! DANGER! DANGER! *************** SetGameState called with un-handled parameter 1 value of %d for state %d.\n", parm1, state);
 			}
 
 			if(parm2 != 0)
 			{
-				//bkPrintf("WARNING! WARNING! DANGER! DANGER! *************** SetGameState called with un-handled parameter 2 value of %d for state %d.\n", parm2, state);
-				// MG: Phil, for god's sake! You can't use bkPrint before bkInit!
+				bkPrintf("WARNING! WARNING! DANGER! DANGER! *************** SetGameState called with un-handled parameter 2 value of %d for state %d.\n", parm2, state);
 			}
 		}
 		break;

@@ -32,8 +32,7 @@ int bInitLightsPlatformSpecific()
 */
 void bShutdownLightsPlatformSpecific()
 {
-        bkPrintf("*** WARNING *** bShutdownLightsPlatformSpecific was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    return; // maybe empty or even not called, confirmed by taz.exe and xbox babel
 }
 
 /*	--------------------------------------------------------------------------------

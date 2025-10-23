@@ -11,7 +11,15 @@
 // ********************************************************************************
 // Globals
 
+uint32       bCRCtable[256];
 EBLanguageID bLanguage;
+char        *bFileSearchPath[FILE_SEARCHPATH_MAXNO];
+int	         bFileSearchPaths;
+
+// ********************************************************************************
+// Locals
+
+int          bFileSearchFlags;
 
 // ********************************************************************************
 // Function Implementations
@@ -26,8 +34,21 @@ EBLanguageID bLanguage;
 
 void bkSetFileSearchPath(int flags, int noofPaths, ...)
 {
-        bkPrintf("*** WARNING *** bkSetFileSearchPath was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    // Store flags first
+    bFileSearchFlags = flags;
+
+    // Publish the count exactly as passed
+    bFileSearchPaths = noofPaths;
+
+    // Fill bFileSearchPath[0..noofPaths-1] from varargs (each arg is char*)
+    if (noofPaths > 0) {
+        va_list ap;
+        va_start(ap, noofPaths);
+        for (int i = 0; i < noofPaths; ++i) {
+            bFileSearchPath[i] = va_arg(ap, char*);
+        }
+        va_end(ap);
+    }
 }
 
 /*	--------------------------------------------------------------------------------
@@ -40,8 +61,26 @@ void bkSetFileSearchPath(int flags, int noofPaths, ...)
 
 void bInitCRCTable()
 {
-        bkPrintf("*** WARNING *** bInitCRCTable was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    for (int i = 0; i < 256; ++i) {
+        uint32 u = ((uint32)i) << 24;
+        for (int k = 0; k < 8; ++k) {
+            if (u & 0x80000000u) u = (u << 1) ^ 0x04C11DB7u;
+            else u <<= 1;
+        }
+        bCRCtable[i] = u;
+    }
+
+#ifdef PRINT_CRCTABLE
+	bkPrintf("Printing CRC table contents...\n");
+    bkPrintf("------------------------------\n");
+
+    for (int y = 0; y < 256; ++y) {
+        // Print the index and the hexadecimal value of each element
+        bkPrintf("bCRCtable[%d] = 0x%08X\n", y, bCRCtable[y]);
+    }
+
+    bkPrintf("------------------------------\n");
+#endif
 }
 
 
@@ -90,8 +129,11 @@ uchar *bkLoadFileByCRC(TBPackageIndex *index, uint32 crc, uchar *dataPtr, int *r
 
 uint32 bkCRC32(const uchar *data, int size, uint32 accum)
 {
-        bkPrintf("*** WARNING *** bkCRC32 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    while (size-- > 0) {
+        accum = (accum << 8) ^ bCRCtable[((accum >> 24) ^ *data) & 0xFF];
+        ++data;
+    }
+    return accum;
 }
 
 
@@ -105,8 +147,12 @@ uint32 bkCRC32(const uchar *data, int size, uint32 accum)
 
 uint32 bkStringCRC(const char *string)
 {
-        bkPrintf("*** WARNING *** bkStringCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    uint32 crc = 0;
+    while (*string) {
+        unsigned char b = (unsigned char)*string++;
+        crc = (crc << 8) ^ bCRCtable[((crc >> 24) ^ b) & 0xFF];
+    }
+    return crc;
 }
 
 

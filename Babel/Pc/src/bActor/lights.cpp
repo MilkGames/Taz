@@ -11,6 +11,12 @@
 // ********************************************************************************
 // Function Implementations
 
+TBLightsource	bActiveLights, bInactiveLights;
+int				bMaxActiveLights;
+
+// ********************************************************************************
+// Function Implementations
+
 /*	--------------------------------------------------------------------------------
 	Function : bInitLights
 	Purpose : initialise the lights submodule
@@ -20,8 +26,15 @@
 */
 int bInitLights()
 {
-        bkPrintf("*** WARNING *** bInitLights was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+	if (!bInitLightsPlatformSpecific()) {
+		return FAIL;
+	}
+
+	bActiveLights.prev = &bActiveLights;
+	bActiveLights.next = &bActiveLights;
+	bInactiveLights.prev = &bInactiveLights;
+	bInactiveLights.next = &bInactiveLights;
+	return OK;
 }
 
 /*	--------------------------------------------------------------------------------

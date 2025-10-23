@@ -690,20 +690,16 @@ typedef struct _TBPointSpritePrimVertex {
 
 // a permanent vertex buffer
 typedef struct _TBVertexBuffer {
-	//D3DVertexBuffer				*vertexBuffer[BMAXVIBBUFFERS];	// D3D vertex buffer object (follow struct in memory)
+	IDirect3DVertexBuffer8*		vertexBuffer;   // D3D vertex buffer object (MUST be first; CreateVertexBuffer writes here)
+	void*						shadowData;     // temporary system-memory shadow (saved on suspend, freed on resume/destroy)
 
-	int							noofVertices;					// #vertices
-	int							vertexSize;						// size of a vertex
-	uint32						flags;							// flags
-	int							vertexType;						// type of vertex
+	int							noofVertices;   // number of vertices
+	int							vertexSize;     // size of a single vertex (via bGetVertexSize)
+	uint32						flags;          // engine flags (bit 0x20 ? force SW processing; pool derives from (~flags>>6)&1)
+	int							vertexType;     // engine FVF preset (BVERTTYPE_* values)
 
-	struct _TBVertexBuffer		*next, *prev;					// list links
-	int							noofBuffers;					// how many buffers in this chain
-	int							nextLock;						// buffer to be locked next
-
-	int							lastLock;						// buffer that was locked last
-	void						*d3dData;						// D3D data block
-	void						*lastDataPtr;					// ptr from last lock
+	struct _TBVertexBuffer*		next;           // intrusive list: next
+	struct _TBVertexBuffer*		prev;           // intrusive list: prev
 } TBVertexBuffer;
 
 
@@ -843,6 +839,25 @@ void bdVertexBufferUnlock(TBVertexBuffer *vbPtr);
 
 int bdVertexBufferGetSize(TBVertexBuffer *vbPtr);
 
+/* --------------------------------------------------------------------------------
+   Function : bSuspendVertexBuffers
+   Purpose : suspend vertex buffers
+   Parameters : 
+   Returns : 
+   Info : 
+*/
+
+void bSuspendVertexBuffers();
+
+/* --------------------------------------------------------------------------------
+   Function : bResumeVertexBuffers
+   Purpose : resume vertex buffers
+   Parameters : 
+   Returns : 
+   Info : 
+*/
+
+void bResumeVertexBuffers();
 
 /* --------------------------------------------------------------------------------
    Function : bdDrawFlatSprite
@@ -1070,6 +1085,25 @@ void bdIndexBufferUnlock(TBIndexBuffer *ibPtr);
 
 int bdIndexBufferGetSize(TBIndexBuffer *ibPtr);
 
+/* --------------------------------------------------------------------------------
+   Function : bSuspendIndexBuffers
+   Purpose : suspend index buffers
+   Parameters : 
+   Returns : 
+   Info : 
+*/
+
+void bSuspendIndexBuffers();
+
+/* --------------------------------------------------------------------------------
+   Function : bResumeIndexBuffers
+   Purpose : resume index buffers
+   Parameters : 
+   Returns : 
+   Info : 
+*/
+
+void bResumeIndexBuffers();
 
 /*	--------------------------------------------------------------------------------
 	Function : bdDrawPointSpriteVB

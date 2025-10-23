@@ -9,6 +9,9 @@
 #include <babel.h>
 
 // ********************************************************************************
+// Globals
+
+// ********************************************************************************
 // Function Implementations
 
 /*	--------------------------------------------------------------------------------
@@ -20,8 +23,30 @@
 */
 int bInitActor()
 {
-        bkPrintf("*** WARNING *** bInitActor was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+	if (!bInitActorPlatformSpecific()) {
+		return FAIL;
+	}
+
+	if (!bInitLights()) {
+		bShutdownActorPlatformSpecific();
+		return FAIL;
+	}
+
+	if (!bInitSet()) {
+		bShutdownLights();
+		bShutdownActorPlatformSpecific();
+		return FAIL;
+	}
+
+	if (!bInitCamera()) {
+		bShutdownSet();
+		bShutdownLights();
+		bShutdownActorPlatformSpecific();
+		return FAIL;
+	}
+
+	bInitExtras();
+	return OK;
 }
 
 /*	--------------------------------------------------------------------------------
@@ -33,8 +58,11 @@ int bInitActor()
 */
 void bShutdownActor()
 {
-        bkPrintf("*** WARNING *** bShutdownActor was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+	bShutdownExtras();
+	bShutdownCamera();
+	bShutdownSet();
+	bShutdownLights();
+	bShutdownActorPlatformSpecific();
 }
 
 /*	--------------------------------------------------------------------------------

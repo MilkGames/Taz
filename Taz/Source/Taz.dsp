@@ -3520,6 +3520,10 @@ SOURCE=..\..\Babel\Pc\Include\bKernel\pcFile.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\Babel\Pc\include\bKernel\pcImagehlp.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\Babel\Pc\Include\bKernel\pcKernel.h
 
 !IF  "$(CFG)" == "Taz - Win32 Release"
@@ -5320,6 +5324,10 @@ SOURCE=..\..\Babel\Pc\src\bKernel\pcFile.cpp
 
 !ENDIF 
 
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Pc\src\bKernel\pcImagehlp.cpp
 # End Source File
 # Begin Source File
 

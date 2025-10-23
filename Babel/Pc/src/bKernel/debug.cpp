@@ -96,6 +96,24 @@ void bkFlushDebugStreamToFile(TBDebugStream *stream)
 
 char *bkDataToSafeString(uchar *data, int dataSize, char *buffer, int bufferSize)
 {
-        bkPrintf("*** WARNING *** bkDataToSafeString was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return NULL;
+    char *ret = buffer;
+
+    if (!buffer || bufferSize <= 0) {
+        return ret; // no where to write - leave
+    }
+
+    if (!data || dataSize <= 0) {
+        *buffer = '\0';
+        return ret;
+    }
+
+    int n = dataSize;
+    if (n >= bufferSize) n = bufferSize - 1; // space for '\0'
+
+    for (int i = 0; i < n; ++i) {
+        unsigned char c = data[i];
+        buffer[i] = (c < 0x20) ? '.' : (char)c;
+    }
+    buffer[n] = '\0';
+    return ret;
 }

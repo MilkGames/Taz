@@ -9,6 +9,12 @@
 #include <babel.h>
 
 // ********************************************************************************
+// Locals
+
+TBCameraInstance	bCameraList;
+TBCameraInstance   *bCurrentCamera;
+
+// ********************************************************************************
 // Function Implementations
 
 /*	--------------------------------------------------------------------------------
@@ -20,8 +26,9 @@
 */
 int bInitCamera()
 {
-        bkPrintf("*** WARNING *** bInitCamera was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+	bCameraList.prev = &bCameraList;
+	bCameraList.next = &bCameraList;
+	return OK;
 }
 
 /*	--------------------------------------------------------------------------------
@@ -33,8 +40,9 @@ int bInitCamera()
 */
 void bShutdownCamera()
 {
-        bkPrintf("*** WARNING *** bShutdownCamera was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    while (bCameraList.next != &bCameraList) {
+        baDeleteCameraInstance(bCameraList.next);
+    }
 }
 
 /*	--------------------------------------------------------------------------------
@@ -59,8 +67,27 @@ int bUpdateViewFromCamera()
 */
 void baDeleteCameraInstance(TBCameraInstance *camera)
 {
-        bkPrintf("*** WARNING *** baDeleteCameraInstance was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    if (camera == NULL) {
+		// deleting all cameras
+        while (bCameraList.next != &bCameraList) {
+            baDeleteCameraInstance(bCameraList.next);
+        }
+        return;
+    }
+
+    // if this is the current camera, clear the current pointer
+    if (camera == bCurrentCamera) {
+        bCurrentCamera = NULL;
+    }
+
+    // unlink from the global doubly-linked list
+    camera->next->prev = camera->prev;
+    camera->prev->next = camera->next;
+
+    // only free if it was dynamically allocated
+    if (camera->flags & BCAMERAFLAG_DYNAMIC) {
+        bkHeapFree(camera);
+    }
 }
 
 /*	--------------------------------------------------------------------------------

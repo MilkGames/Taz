@@ -12,8 +12,7 @@
 // ********************************************************************************
 // Globals
 
-// MG: TEMP LINKING CODE
-uint32 bHoldRand = 0x1234ABCD;
+uint32 bHoldRand;
 
 // ********************************************************************************
 // Function Implementations
@@ -28,7 +27,7 @@ uint32 bHoldRand = 0x1234ABCD;
 
 void bmSRand(uint32 seed)
 {
-        bkPrintf("*** WARNING *** bmSRand was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    bHoldRand = seed;
     return;
 }
 

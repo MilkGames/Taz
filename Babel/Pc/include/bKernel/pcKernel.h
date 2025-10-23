@@ -82,7 +82,6 @@ extern int			bForceStandardMallocFree;		// set to force use of standard malloc a
 
 extern int			bActive;						// 1 = Running, 0 = Suspended
 extern int			bFocus;							// 1 = allow auto-suspend on focus loss
-extern char         bAppPath[256];                  // path to .exe
 
 // ********************************************************************************
 // Prototypes

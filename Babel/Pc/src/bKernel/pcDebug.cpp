@@ -23,14 +23,81 @@ TBMutex        bDebugMutex;
 TBDebugStream  bDefaultDebugStream;
 char		   _debugBuffer[1024];
 
+static const char* months[13] =
+{ "", "Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec" };
+
+#ifdef FIX_PLATFORMINFO
+
+// Minimal RTL_OSVERSIONINFOEXW for RtlGetVersion
+typedef struct _RTL_OSVERSIONINFOEXW_ {
+    DWORD dwOSVersionInfoSize;
+    DWORD dwMajorVersion;
+    DWORD dwMinorVersion;
+    DWORD dwBuildNumber;
+    DWORD dwPlatformId;
+    WCHAR szCSDVersion[128];
+} RTL_OSVERSIONINFOEXW_;
+
+typedef LONG (WINAPI *PFN_RtlGetVersion)(RTL_OSVERSIONINFOEXW_*);
+
+#endif // FIX_PLATFORMINFO
+
 // ********************************************************************************
 // Helper Functions
 
-void bInitDbgHelp()
+#ifdef FIX_PLATFORMINFO
+
+// Try to get true version (Win10/11) even without manifest.
+static BOOL GetAccurateVersion(DWORD* maj, DWORD* min, DWORD* bld, DWORD* plat)
 {
-        bkPrintf("*** WARNING *** bInitDbgHelp was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    HMODULE hNt = GetModuleHandleA("ntdll.dll");
+    if (!hNt) return FALSE;
+    PFN_RtlGetVersion p = (PFN_RtlGetVersion)GetProcAddress(hNt, "RtlGetVersion");
+    if (!p) return FALSE;
+
+    RTL_OSVERSIONINFOEXW_ vi;
+    ZeroMemory(&vi, sizeof(vi));
+    vi.dwOSVersionInfoSize = sizeof(vi);
+    if (p(&vi) != 0) return FALSE;
+
+    if (maj)  *maj  = vi.dwMajorVersion;
+    if (min)  *min  = vi.dwMinorVersion;
+    if (bld)  *bld  = vi.dwBuildNumber;
+    if (plat) *plat = vi.dwPlatformId;
+    return TRUE;
 }
+
+static const char* NameForWindows(DWORD plat, DWORD maj, DWORD min, DWORD build)
+{
+    // Win9x line uses VER_PLATFORM_WIN32_WINDOWS (1)
+    if (plat == VER_PLATFORM_WIN32_WINDOWS) {
+        if (min >= 90) return "WinME";
+        if (min >= 10) return "Win98";
+        return "Win95";
+    }
+
+    // NT line
+    if (maj < 5)            return "NT4";
+    if (maj == 5 && min==0) return "Win2000";
+    if (maj == 5 && min==1) return "WinXP";
+    if (maj == 5 && min==2) return "Win2003";  // includes XP x64
+
+    if (maj == 6 && min==0) return "Vista";
+    if (maj == 6 && min==1) return "Win7";
+    if (maj == 6 && min==2) return "Win8";
+    if (maj == 6 && min==3) return "Win8.1";
+
+    // Windows 10/11 both report major==10; Win11 has build >= 22000
+    if (maj >= 10) {
+        if (build >= 22000) return "Win11";
+        return "Win10";
+    }
+
+    // Fallback
+    return "NT";
+}
+
+#endif // FIX_PLATFORMINFO
 
 // ********************************************************************************
 // Function Implementations
@@ -48,14 +115,14 @@ void bInitDbgHelp()
 
 TBDebugStream *bkCreateDebugStream(TBDebugStream *stream, char *filename, uint32 flags)
 {
-    // Allocate structure if not provided (matches original callsite: size 0x108 and flags 0x2006)
+    // Allocate structure if not provided (matches original callsite: size 0x108 and group 0x2006)
     if (stream == NULL)
     {
         stream = (_TBDebugStream*)bkHeapAlloc(
-            0x108,
-            "C:\\Babel\\PC\\Src\\bKernel\\pcDebug.cpp",
-            0xC6,
-            0x2006
+            0x108, // 264?
+            __FILE__,
+            __LINE__,
+            0x2006 // 8198???
         );
         if (stream == NULL)
             return NULL;
@@ -80,8 +147,8 @@ TBDebugStream *bkCreateDebugStream(TBDebugStream *stream, char *filename, uint32
     else
     {
         // Relative path prepend application path
-        // (Original used "%s%s" with &bAppPath; here just use bAppPath directly.)
-        _snprintf(stream->logFile, sizeof(stream->logFile), "%s%s", bAppPath, filename);
+        // (Original used "%s%s" with &bHomeDirectory; here just use bHomeDirectory directly.)
+        _snprintf(stream->logFile, sizeof(stream->logFile), "%s%s", bHomeDirectory, filename);
         stream->logFile[sizeof(stream->logFile) - 1] = '\0';
     }
 
@@ -200,7 +267,7 @@ void bInitDebug(void)
     bkPrintf("\n-----------------------------------------\n");
     bkPrintf("Babel Execution Log, (c) 2001 Blitz Games\n");
     bkPrintf("  Babel " BVERSION ", Wed Mar 20 15:46:19 2002\n");
-#ifdef DISCLAIMER
+#ifdef PRINT_DISCLAIMER
 	bkPrintf("-----------------------------------------\n");
 	bkPrintf("This Babel library was reverse engineered\n");
 	bkPrintf("by MilkGames in 2025 using Release version\n");
@@ -216,7 +283,7 @@ void bInitDebug(void)
     bkPrintf("We don't guarantee that this\n");
 	bkPrintf("software will work and that it won't\n");
 	bkPrintf("cause damage to your computer.\n");
-#ifdef SHOWREALBUILDDATE
+#ifdef PRINT_REALBUILDDATE
 	bkPrintf("-----------------------------------------\n");
 	bkPrintf("Real Babel build date:\n");
 	bkPrintf(__TIMESTAMP__"\n");
@@ -228,49 +295,93 @@ void bInitDebug(void)
     if (!bkReadClock(&clk)) {
         bkPrintf("Current time is unavailable\n");
     } else {
-        bkPrintf("Current time is %02u:%02u:%02u, %02u/%02u/%02u\n",
+        bkPrintf("Current time is %02d:%02d:%02d, %d %s 20%02d\n",
                  (unsigned)clk.hour,
                  (unsigned)clk.minute,
                  (unsigned)clk.second,
                  (unsigned)clk.day,
-                 (unsigned)clk.month,
+                 months[(unsigned)clk.month],
                  (unsigned)clk.year);
     }
 
     bkPrintf("Debugger %s present\n", bDebuggerPresent ? "is" : "is not");
 
-    const char* kOsNames[4] = { "Win95", "Win98", "NT4", "Win2000" };
+#ifndef FIX_PLATFORMINFO
+    // ----------------------- AUTHENTIC (original) -----------------------
+    // OS labels as in the original: Win95/Win98/NT4/Win2000
+    {
+        const char* kOsNames[4] = { "Win95", "Win98", "NT4", "Win2000" };
 
-    char computerName[256] = {0};
-    DWORD n = sizeof(computerName);
-    GetComputerNameA(computerName, &n);
+        char computerName[256] = {0};
+        DWORD n = sizeof(computerName);
+        GetComputerNameA(computerName, &n);
 
-    char userName[256] = {0};
-    n = sizeof(userName);
-    GetUserNameA(userName, &n);
+        char userName[256] = {0};
+        n = sizeof(userName);
+        GetUserNameA(userName, &n);
 
-    OSVERSIONINFOA vi; ZeroMemory(&vi, sizeof(vi));
-    vi.dwOSVersionInfoSize = sizeof(vi);
-    GetVersionExA(&vi);
+        OSVERSIONINFOA vi; ZeroMemory(&vi, sizeof(vi));
+        vi.dwOSVersionInfoSize = sizeof(vi);
+        GetVersionExA(&vi);
 
-    int bOSIndex = 0; // 0=95, 1=98, 2=NT4, 3=2000
-    if (vi.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS) {
-        if (vi.dwMinorVersion != 0) bOSIndex = 1;
-    } else if (vi.dwPlatformId == VER_PLATFORM_WIN32_NT) {
-        bOSIndex = (vi.dwMajorVersion == 5) ? 3 : 2;
+        int bOSIndex = 0; // 0=95, 1=98, 2=NT4, 3=2000
+        if (vi.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS) {
+            if (vi.dwMinorVersion != 0) bOSIndex = 1;
+        } else if (vi.dwPlatformId == VER_PLATFORM_WIN32_NT) {
+            bOSIndex = (vi.dwMajorVersion == 5) ? 3 : 2;
+        }
+
+        MEMORYSTATUS ms; GlobalMemoryStatus(&ms);
+        const DWORD physMB = ms.dwTotalPhys >> 20;
+
+        // build from LOWORD, "version" from HIWORD bytes -> matches release (v0.0 on NT)
+        const unsigned build  = (unsigned)(vi.dwBuildNumber & 0xFFFF);
+        const unsigned vMajor = (unsigned)((vi.dwBuildNumber >> 24) & 0xFF);
+        const unsigned vMinor = (unsigned)((vi.dwBuildNumber >> 16) & 0xFF);
+
+        bkPrintf("PlatformInfo: computer '%s', user '%s', OS %s build #%u (v%u.%u), physical memory %u Mb\n",
+                 computerName, userName,
+                 kOsNames[bOSIndex],
+                 build, vMajor, vMinor, (unsigned)physMB);
     }
+#else
+    // ----------------------- FIXED (modern-correct) ---------------------
+    {
+        char computerName[256] = {0};
+        DWORD n = sizeof(computerName);
+        GetComputerNameA(computerName, &n);
 
-    MEMORYSTATUS ms; GlobalMemoryStatus(&ms);
-    const DWORD physMB = ms.dwTotalPhys >> 20;
+        char userName[256] = {0};
+        n = sizeof(userName);
+        GetUserNameA(userName, &n);
 
-    bkPrintf("PlatformInfo: computer '%s', user '%s', %s build %u.%u.%u, %u MB RAM\n",
-             computerName,
-             userName,
-             kOsNames[bOSIndex],
-             (vi.dwBuildNumber & 0xffff),
-             (vi.dwBuildNumber >>  8) & 0xff,
-             (vi.dwBuildNumber >> 16) & 0xff,
-             physMB);
+        DWORD maj=0, min=0, bld=0, plat=0;
+
+        // Prefer accurate numbers (Win10/11)
+        if (!GetAccurateVersion(&maj, &min, &bld, &plat)) {
+            OSVERSIONINFOA vi; ZeroMemory(&vi, sizeof(vi));
+            vi.dwOSVersionInfoSize = sizeof(vi);
+            GetVersionExA(&vi);
+            maj  = vi.dwMajorVersion;
+            min  = vi.dwMinorVersion;
+            bld  = (vi.dwBuildNumber & 0xFFFF);
+            plat = vi.dwPlatformId;
+        }
+
+        // If fallback path returned build in LOWORD only, keep it; else bld is real build.
+        const char* osName = NameForWindows(plat, maj, min, bld);
+
+        MEMORYSTATUS ms; GlobalMemoryStatus(&ms);
+        const DWORD physMB = ms.dwTotalPhys >> 20;
+
+        bkPrintf("PlatformInfo: computer '%s', user '%s', OS %s build #%lu (v%lu.%lu), physical memory %lu Mb\n",
+                 computerName, userName,
+                 osName,
+                 (unsigned long)bld,
+                 (unsigned long)maj, (unsigned long)min,
+                 (unsigned long)physMB);
+    }
+#endif // FIX_PLATFORMINFO
 
     _controlfp(0, _MCW_EM);
 
@@ -287,8 +398,27 @@ void bInitDebug(void)
 
 void bShutdownDebug()
 {
-        bkPrintf("*** WARNING *** bShutdownDebug was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    // Shutdown DbgHelp bindings first
+    bShutdownDbgHelp();
+
+    // Release the debug mutex used by the logging system
+    bkDeleteMutex(&bDebugMutex);
+
+    // Keep the current stream pointer sane
+    if (bCurrentDebugStream == &bDefaultDebugStream) {
+        bCurrentDebugStream = &bDefaultDebugStream;
+    }
+
+    // Close the log file if it is open
+    if (bDefaultDebugStream.file != NULL) {
+        fclose(bDefaultDebugStream.file);
+        bDefaultDebugStream.file = NULL;
+    }
+
+    // If the default stream block was heap-allocated, free it
+    if ((bDefaultDebugStream.flags & BDEBUGSTREAMFLAG_DYNAMIC) != 0) { // flags per debug.h
+        bkHeapFree(&bDefaultDebugStream);
+    }
 }
 
 /* --------------------------------------------------------------------------------
@@ -301,8 +431,8 @@ void bShutdownDebug()
 
 void bkAlert(char *message)
 {
-    bkPrintf("bkAlert: %s", message);
-    MessageBoxA(NULL, message, "Alert", MB_ICONHAND /* 0x10 */);
+	bkPrintf("bkAlert: %s", message);
+    MessageBoxA(NULL, message, "Alert", MB_ICONHAND);
     return;
 }
 

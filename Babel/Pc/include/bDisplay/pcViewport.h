@@ -44,29 +44,31 @@ typedef enum EBViewportRotationOrder {
 
 // view information container
 typedef struct _TBViewInfo {
-	TBMatrix				rotMatrix;				// orientation matrix
-	TBMatrix				worldToView;			// world to view matrix
-	TBMatrix				worldToProjection;		// world to projection matrix (*** NOT ALWAYS VALID ***)
-	TBMatrix				objectMatrix;			// current object matrix (objectToWorld)
-	TBMatrix				objectToView;			// object->view matrix
-	TBMatrix				objectToProjection;		// object->projection matrix
-	TBMatrix				objectToScreen;			// object->screen matrix (*** NOT ALWAYS VALID! ***)
-	TBMatrix				viewportMatrix;			// viewport scale/translation matrix
-	TBMatrix				clipMatrix;				// matrix to convert projected verts into clip space
+	float		xPos, yPos, zPos;		  // view position (world space)
 
-	float					xPos, yPos, zPos;		// view position
-	int						projectionMode;			// current projection mode (see BDISPLAY_PROJECTIONMODE)
-	float					nearClip, farClip;		// clipping distances
-	float					xFov, yFov;				// field of view values
-	float					width,height;			// viewport dimensions
-	float					halfWidth, halfHeight;	// half viewport dimensions
-	float					xCentre, yCentre;		// centre position
-	float					xTopLeft, yTopLeft;		// top-left corner
-	float					zBias;					// offset on Z for polygon projection.
-	float					clipXPos, clipYPos;		// clip rectangle position
-	float					clipWidth, clipHeight;	// clip rectangle width and height
-	int						objectToScreenValid;	// TRUE if objectToScreen matrix is valid
-	int						worldToProjectionValid;	// TRUE if worldToProjection matrix is valid
+	TBMatrix	rotMatrix;				  // orientation matrix (object/world to view basis)
+
+	float		nearClip, farClip;		  // clipping distances
+	float		xFov, yFov;				  // field of view values (radians)
+	int			projectionMode;			  // current projection mode (see BDISPLAY_PROJECTIONMODE)
+	float		width, height;			  // viewport dimensions (pixels)
+	float		halfWidth, halfHeight;	  // half viewport dimensions (pixels)
+	float		xCentre, yCentre;		  // centre position (screen space, pixels)
+	float		xTopLeft, yTopLeft;		  // top-left corner (screen space, pixels)
+
+	TBMatrix	worldToView;			  // world to view matrix
+	TBMatrix	worldToProjection;		  // world to projection matrix (*** NOT ALWAYS VALID ***)
+	TBMatrix	objectMatrix;			  // current object matrix (object to world)
+	TBMatrix	objectToView;			  // object->view matrix
+	TBMatrix	objectToProjection;		  // object->projection matrix
+	TBMatrix	objectToScreen;			  // object->screen matrix (*** NOT ALWAYS VALID! ***)
+	TBMatrix	viewportMatrix;			  // viewport scale/translation matrix (to device coords)
+	TBMatrix	viewportProjectionMatrix; // viewportMatrix * projectionMatrix
+
+	float		projOffsetX, projOffsetY; // projection centre offsets (off-center / lens shift)
+	float		zBias;					  // depth bias injected into projection
+	uchar		pad[16];	              // reserved (kept for binary layout; observed unused)
+	TBMatrix	clipRectMatrix;	          // clip-rectangle matrix (Scale * Translate)
 } TBViewInfo;
 
 // callback when the object matrix is updated

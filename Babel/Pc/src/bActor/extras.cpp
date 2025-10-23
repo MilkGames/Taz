@@ -9,6 +9,11 @@
 #include <babel.h>
 
 // ********************************************************************************
+// Globals
+
+TBExtraSystem bExtraSystemList;
+
+// ********************************************************************************
 // Function Implementations
 
 /*	--------------------------------------------------------------------------------
@@ -21,8 +26,9 @@
 
 int bInitExtras()
 {
-        bkPrintf("*** WARNING *** bInitExtras was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return FAIL;
+	bExtraSystemList.prev = &bExtraSystemList;
+	bExtraSystemList.next = &bExtraSystemList;
+	return OK;
 }
 
 
@@ -36,8 +42,9 @@ int bInitExtras()
 
 void bShutdownExtras()
 {
-        bkPrintf("*** WARNING *** bShutdownExtras was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    while (bExtraSystemList.next != &bExtraSystemList) {
+        baDeleteExtraSystem(bExtraSystemList.next);
+    }
 }
 
 
@@ -70,8 +77,46 @@ TBExtraSystem *baCreateExtraSystem(char *ident, TBExtraCreateFunc create, TBExtr
 
 void baDeleteExtraSystem(TBExtraSystem *eSystem)
 {
-        bkPrintf("*** WARNING *** baDeleteExtraSystem was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    if (eSystem == NULL) {
+        // delete all systems
+        while (bExtraSystemList.next != &bExtraSystemList) {
+            baDeleteExtraSystem(bExtraSystemList.next);
+        }
+        return;
+    }
+
+    // if there are live instances, call the system’s deleteFunc on each one (last>first)
+    if (eSystem->noofInstances > 0 && eSystem->deleteFunc) {
+        while (eSystem->noofInstances > 0) {
+            const int idx = eSystem->noofInstances - 1;
+            eSystem->noofInstances = idx;
+            // deleteFunc(TBExtraSystem*, uchar* data)
+            eSystem->deleteFunc(eSystem, eSystem->dataPtrs[idx]);
+        }
+
+        // reset counters
+        eSystem->noofInstances = 0;
+        eSystem->nextInstance  = 0;
+
+        // clear active flags for the full capacity.
+        const int cap = (eSystem->maxInstances & 0x3fffffff);
+        for (int i = 0; i < cap; ++i) {
+            eSystem->activeFlags[i] = 0;
+        }
+        // the decompile had a second tiny loop for potential byte-tail; safe to ignore in C/C++
+    }
+
+    // call system init function with reason=1 (decompile passes 1 here)
+    if (eSystem->sysInitFunc) {
+        eSystem->sysInitFunc(eSystem, /*reason=*/1); // BEXSYSFLAG_NEWPRIORITY ??
+    }
+
+    // unlink from the global doubly-linked list
+    eSystem->next->prev = eSystem->prev;
+    eSystem->prev->next = eSystem->next;
+
+    // free the system itself
+    bkHeapFree(eSystem);
 }
 
 

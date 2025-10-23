@@ -29,6 +29,11 @@ typedef __int64 TBTimerValue;
 extern TBTimerValue		bTimerFrequency;	// the timer frequency, or zero for no timer
 extern int				bTimerType;			// 0 = TSC, 1 = QPC, 2 = Ticker
 
+enum {
+    BTIMER_TYPE_RDTSC = 1,
+    BTIMER_TYPE_QPC,
+    BTIMER_TYPE_MS
+}; // bTimerType types
 
 // ********************************************************************************
 // Prototypes

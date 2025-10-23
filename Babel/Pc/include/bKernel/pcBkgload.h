@@ -78,6 +78,16 @@ typedef struct _TBBkgLoadCmd {
 
 int bKernelInitBkgLoad();
 
+/*	--------------------------------------------------------------------------------
+	Function : bKernelShutdownBkgLoad
+	Purpose : Shutdown background loading resources
+	Parameters : 
+	Returns : OK/FAIL
+	Info : 
+*/
+
+int bKernelShutdownBkgLoad();
+
 
 /* --------------------------------------------------------------------------------
    Function : bkLoadFileBkg

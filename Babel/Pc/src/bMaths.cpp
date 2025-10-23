@@ -32,6 +32,5 @@ void bInitMaths()
 */
 void bShutdownMaths()
 {
-        bkPrintf("*** WARNING *** bShutdownMaths was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    return; // again, disappeared without a trace
 }

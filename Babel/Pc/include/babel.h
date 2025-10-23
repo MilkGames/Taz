@@ -21,7 +21,13 @@
 #include <CrtDbg.h>
 
 #include <windows.h>
-//#include <d3d8.h>
+#include <d3d8.h>
+
+#if !defined(D3D_SDK_VERSION) || (D3D_SDK_VERSION != 120)
+#error "This codebase must be built with DirectX 8.0 headers (D3D_SDK_VERSION==120)."
+#endif
+
+#include <dxerr8.h> // for DX errors
 
 #ifdef _DEBUG
 

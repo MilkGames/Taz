@@ -20,8 +20,21 @@
 */
 int bInitSound()
 {
-        bkPrintf("*** WARNING *** bInitSound was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+	if (!bInitSpecificWave()) {
+		return FAIL;
+	}
+
+	if (!bInitGenericWave()) {
+		bShutdownSpecificWave();
+		return FAIL;
+	}
+
+	if (!bInitSpecificMusic()) {
+		bShutdownGenericWave();
+		bShutdownSpecificWave();
+		return FAIL;
+	}
+	return OK;
 }
 
 /*	--------------------------------------------------------------------------------
@@ -33,6 +46,6 @@ int bInitSound()
 */
 void bShutdownSound()
 {
-        bkPrintf("*** WARNING *** bShutdownSound was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+	bShutdownGenericWave();
+	bShutdownSpecificWave();
 }

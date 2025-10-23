@@ -13,29 +13,19 @@
 // ********************************************************************************
 // Macros and constants
 
-#define DXGetErrorString8(ERR)		bDXErrorToString(ERR)
 
 
 // ********************************************************************************
 // Prototypes
 
 /* --------------------------------------------------------------------------------
-   Function : bDXErrorToString
-   Purpose : convert a DirectX error code to a string
-   Parameters : error code
+   Function : bDXFormatToString
+   Purpose : convert a DirectX format code to a string
+   Parameters : format code
    Returns : string
    Info : 
 */
 
-char *bDXErrorToString(HRESULT err);
-
-/* --------------------------------------------------------------------------------
-   Function : bDXRuntimeLogInfo
-   Purpose : dumps information about DX libraries into log file
-   Parameters :
-   Returns :
-   Info : 
-*/
-void bDXRuntimeLogInfo();
+char *bDXFormatToString(D3DFORMAT format);
 
 #endif		// __BDISPLAY_PCDXDEBUG_H__

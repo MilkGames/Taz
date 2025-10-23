@@ -51,7 +51,7 @@ static THeapBlock  bFreeRoot;
 static THeapBlock  bUsedSentinel;
 
 // Group stack (top used for bkHeapAlloc, etc.). Stores either 0xDEFA or (uint32)char*.
-static uint32      bGroupStack[64];
+static uint32      bGroupStack[32];
 static int         bGroupSP = 0;
 
 // ********************************************************************************
@@ -235,8 +235,8 @@ int bInitHeap(uint base, uint size)
 
 	bIsDynamicHeap = (base == 0);
 
-	// Basic logging (the original printed "Allocated %d Kb %s heap @ %p")
-	bkPrintf("bInitHeap: Allocated %d Kb %s heap @ %p\n",
+	// Basic logging
+	bkPrintf("bInitHeap: Allocated %d Kb %s heap at 0x%08x\n",
 		(int)(bHeapSize >> 10),
 		bIsDynamicHeap ? "DYNAMIC" : "STATIC",
 		heapBase);
@@ -305,7 +305,9 @@ void bShutdownHeap()
 
 			// Build a short data preview
 			char preview[32] = {0};
-			bkDataToSafeString((unsigned char*)(it + 1), (int)it->size - (int)sizeof(THeapBlock), preview, sizeof(preview));
+			bkDataToSafeString((unsigned char*)(it + 1),
+                   (int)it->size - (int)sizeof(THeapBlock),
+                   preview, sizeof(preview));
 
 			const char *by = (it->flags & BALLOC_MALLOC) ? "Malloc"
 			                  : (it->flags & BALLOC_NEW) ? "New"
@@ -630,8 +632,7 @@ void bkHeapFree(void* user)
 void *bkHeapRealloc(void *ptr, int32 newSize)
 {
 	if (ptr == 0)
-		bkHeapAllocEx((uint)newSize, (char*)"C:\\Babel\\PC\\Src\\bKernel\\heap.cpp", 0x427,
-                     (ushort)(BALLOC_MALLOC | bUserModule), bGroupStack[bGroupSP], (int)0);
+		return MALLOCEX((uint)newSize, bGroupStack[bGroupSP]);
 
 	if (newSize == 0)
 	{
@@ -705,8 +706,7 @@ void *bkHeapRealloc(void *ptr, int32 newSize)
 		}
 
 		// Could not grow in place: allocate+copy
-		void *np = bkHeapAllocEx(userNew, (char*)"C:\\Babel\\PC\\Src\\bKernel\\heap.cpp", 0x495,
-                         (ushort)_Memory->flags, _Memory->group, (int)0);
+		void *np = MALLOCEX(userNew, _Memory->group);
 		if (np)
 		{
 			uint toCopy = _Memory->size - sizeof(THeapBlock);

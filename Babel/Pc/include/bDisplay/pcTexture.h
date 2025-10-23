@@ -290,6 +290,25 @@ int bMakeTextureSurface(TBTexture *handle, int xDim, int yDim, int format, int m
 
 int bdSetTextureFrame(TBTexture *texturePtr, int frameNumber);
 
+/* --------------------------------------------------------------------------------
+   Function : bResumeTextures
+   Purpose : resume textures
+   Parameters : 
+   Returns : 
+   Info : 
+*/
+
+void bResumeTextures();
+
+/* --------------------------------------------------------------------------------
+   Function : bSuspendTextures
+   Purpose : suspend textures
+   Parameters : 
+   Returns : 
+   Info : 
+*/
+
+void bSuspendTextures();
 
 /* --------------------------------------------------------------------------------
    Function : bGetTextureSurface

@@ -74,8 +74,10 @@ void bmMatZRotation(TBMatrix mat, const float radians)
 
 void bmMatTranslate(TBMatrix mat, const float x, const float y, const float z)
 {
-        bkPrintf("*** WARNING *** bmMatTranslate was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    mat[0][0]=1.0f; mat[0][1]=0.0f; mat[0][2]=0.0f; mat[0][3]=0.0f;
+    mat[1][0]=0.0f; mat[1][1]=1.0f; mat[1][2]=0.0f; mat[1][3]=0.0f;
+    mat[2][0]=0.0f; mat[2][1]=0.0f; mat[2][2]=1.0f; mat[2][3]=0.0f;
+    mat[3][0]=x;    mat[3][1]=y;    mat[3][2]=z;    mat[3][3]=1.0f;
 }
 
 
@@ -104,8 +106,14 @@ void bmMatScale(TBMatrix mat, const float x, const float y, const float z)
 
 void bmMatMultiplyAligned(TBMatrix dest, const TBMatrix src1, const TBMatrix src2)
 {
-        bkPrintf("*** WARNING *** bmMatMultiplyAligned was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    for (int r = 0; r < 4; ++r) {
+        const float a0 = src1[r][0], a1 = src1[r][1], a2 = src1[r][2], a3 = src1[r][3];
+
+        dest[r][0] = a0*src2[0][0] + a1*src2[1][0] + a2*src2[2][0] + a3*src2[3][0];
+        dest[r][1] = a0*src2[0][1] + a1*src2[1][1] + a2*src2[2][1] + a3*src2[3][1];
+        dest[r][2] = a0*src2[0][2] + a1*src2[1][2] + a2*src2[2][2] + a3*src2[3][2];
+        dest[r][3] = a0*src2[0][3] + a1*src2[1][3] + a2*src2[2][3] + a3*src2[3][3];
+    }
 }
 
 
@@ -119,7 +127,7 @@ void bmMatMultiplyAligned(TBMatrix dest, const TBMatrix src1, const TBMatrix src
 
 void bmMatMultiplyUnaligned(TBMatrix dest, const TBMatrix src1, const TBMatrix src2)
 {
-        bkPrintf("*** WARNING *** bmMatMultiplyUnaligned was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    bkPrintf("*** WARNING *** *** WARNING *** *** DANGER *** *** DANGER *** bmMatMultiplyUnaligned was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING *** *** WARNING *** *** DANGER *** *** DANGER ***\n");
     return;
 }
 

@@ -9,6 +9,14 @@
 #include <babel.h>
 
 // ********************************************************************************
+// Globals
+
+TBVertexBuffer  bVertexBufferList;
+int				bCurrentVertexShader;
+TBVertexBuffer* bLastVertexBuffer = (TBVertexBuffer*)1;
+TBIndexBuffer   bIndexBufferList;
+
+// ********************************************************************************
 // Function Implementations
 
 /*	--------------------------------------------------------------------------------
@@ -20,103 +28,103 @@
 */
 void bdDrawPrimitive(uint32 primType, void *vertices, int vertCount, uint vertType)
 {
-        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+        bkPrintf("*** WARNING *** bdDrawPrimitive #1 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBPrimVertex *vertices, int vertCount)
 {
-        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+        bkPrintf("*** WARNING *** bdDrawPrimitive #2 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBPrimVertex2D *vertices, int vertCount)
 {
-        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+        bkPrintf("*** WARNING *** bdDrawPrimitive #3 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBDualPrimVertex *vertices, int vertCount)
 {
-        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+        bkPrintf("*** WARNING *** bdDrawPrimitive #4 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBDualPrimVertex2D *vertices, int vertCount)
 {
-        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+        bkPrintf("*** WARNING *** bdDrawPrimitive #5 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBTriPrimVertex *vertices, int vertCount)
 {
-        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+        bkPrintf("*** WARNING *** bdDrawPrimitive #6 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBTriPrimVertex2D *vertices, int vertCount)
 {
-        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+        bkPrintf("*** WARNING *** bdDrawPrimitive #7 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBQuadPrimVertex *vertices, int vertCount)
 {
-        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+        bkPrintf("*** WARNING *** bdDrawPrimitive #8 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBQuadPrimVertex2D *vertices, int vertCount)
 {
-        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+        bkPrintf("*** WARNING *** bdDrawPrimitive #9 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBSpecularPrimVertex *vertices, int vertCount)
 {
-        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+        bkPrintf("*** WARNING *** bdDrawPrimitive #10 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBSpecularPrimVertex2D *vertices, int vertCount)
 {
-        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+        bkPrintf("*** WARNING *** bdDrawPrimitive #11 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBSpecularDualPrimVertex *vertices, int vertCount)
 {
-        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+        bkPrintf("*** WARNING *** bdDrawPrimitive #12 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBSpecularDualPrimVertex2D *vertices, int vertCount)
 {
-        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+        bkPrintf("*** WARNING *** bdDrawPrimitive #13 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBSpecularTriPrimVertex *vertices, int vertCount)
 {
-        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+        bkPrintf("*** WARNING *** bdDrawPrimitive #14 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBSpecularTriPrimVertex2D *vertices, int vertCount)
 {
-        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+        bkPrintf("*** WARNING *** bdDrawPrimitive #15 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBSpecularQuadPrimVertex *vertices, int vertCount)
 {
-        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+        bkPrintf("*** WARNING *** bdDrawPrimitive #16 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
 void bdDrawPrimitive(uint32 primType, TBSpecularQuadPrimVertex2D *vertices, int vertCount)
 {
-        bkPrintf("*** WARNING *** bdDrawPrimitive was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+        bkPrintf("*** WARNING *** bdDrawPrimitive #17 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -175,8 +183,78 @@ void bdDrawPrimitiveIndexedVB(uint32 primType, TBVertexBuffer *vbPtr, int firstV
 
 int bdVertexBufferCreate(TBVertexBuffer **vbPtr, int32 noofVertices, uint vertexType, uint32 flags, int noofBuffers)
 {
-        bkPrintf("*** WARNING *** bdVertexBufferCreate was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    {
+    if (bDisplayInfo.started == 0) {
+        return 0;
+    }
+
+    if (noofVertices == 0) {
+        noofVertices = 1;
+    }
+
+    // Allocate TBVertexBuffer via engine heap (must use MALLOCEX).
+    // (0x65739C -> "Vertex Buffer")
+    _TBVertexBuffer *blk = (_TBVertexBuffer*)MALLOCEX(sizeof(_TBVertexBuffer), (uint32)"Vertex Buffer");
+    if (!blk) {
+        return 0;
+    }
+
+    // Initialize engine-side fields
+    blk->noofVertices = noofVertices;
+    blk->shadowData   = NULL;
+    blk->flags        = flags;
+    blk->vertexType   = (int)vertexType;
+
+    // Determine vertex size (mirrors the decompiled cascade)
+    int vsize = bGetVertexSize((int)vertexType);
+    blk->vertexSize = vsize;
+
+    // If certain vertex types are used, force SW processing flag (bit 0x20)
+    // Matches the decompiled if-chain:
+    //   types: 0x125C, 0x0042, 0x115C, 0x135C, 0x145C
+    if ((vertexType < 0x125D &&
+         (vertexType == 0x125C || vertexType == 0x0042 || vertexType == 0x115C)) ||
+        (vertexType == 0x135C || vertexType == 0x145C))
+    {
+        blk->flags = flags | 0x20; // BVERTBUF_NEEDVERTEXSHADER?? can't tell for sure
+    }
+
+    // Build D3D usage/pool from flags and device capabilities
+    DWORD usage = 0;
+    if (bDisplayInfo.hwVertexShaders == 0 && (blk->flags & 0x20)) {
+        usage |= D3DUSAGE_SOFTWAREPROCESSING; // (-cVar1 & 0x10) in the decompile
+    }
+
+    // Pool: (~flags >> 6) & 1 -> 0 (DEFAULT) or 1 (MANAGED)
+    const DWORD poolBit = ((~blk->flags) >> 6) & 1;
+    D3DPOOL pool = (poolBit != 0) ? D3DPOOL_MANAGED : D3DPOOL_DEFAULT;
+
+    // Create the D3D8 vertex buffer. Length = vertexSize * noofVertices
+    HRESULT hr = bDisplayInfo.d3dDevice->CreateVertexBuffer(
+        vsize * noofVertices,
+        usage,
+        vertexType,                // FVF
+        pool,
+        &blk->vertexBuffer
+    );
+
+    if (SUCCEEDED(hr)) {
+        // Insert into the global intrusive list
+        blk->prev = bVertexBufferList.prev;
+        blk->next = &bVertexBufferList;
+        bVertexBufferList.prev->next = blk;
+        bVertexBufferList.prev       = blk;
+
+        // Out parameter
+        *vbPtr = blk;
+        return 1;
+    }
+
+    // Error path: report and free
+    bkPrintf("bdVertexBufferCreate: *** ERROR : Failed to create vertex buffer (%s) ***\n", DXGetErrorString8A(hr));
+    bkHeapFree(blk);
     return 0;
+}
 }
 
 
@@ -237,6 +315,32 @@ int bdVertexBufferGetSize(TBVertexBuffer *vbPtr)
 {
         bkPrintf("*** WARNING *** bdVertexBufferGetSize was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
+}
+
+/* --------------------------------------------------------------------------------
+   Function : bSuspendVertexBuffers
+   Purpose : suspend vertex buffers
+   Parameters : 
+   Returns : 
+   Info : 
+*/
+
+void bSuspendVertexBuffers()
+{
+	bkPrintf("*** WARNING *** bSuspendVertexBuffers was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+}
+
+/* --------------------------------------------------------------------------------
+   Function : bResumeVertexBuffers
+   Purpose : resume vertex buffers
+   Parameters : 
+   Returns : 
+   Info : 
+*/
+
+void bResumeVertexBuffers()
+{
+	bkPrintf("*** WARNING *** bResumeVertexBuffers was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
 }
 
 
@@ -433,8 +537,75 @@ int bdDrawFixedMultiStreak(int noofPoints, TBVector pointArray, float *sizeArray
 
 void bSetVertexShader(int type, TBVertexBuffer *vertexBuffer)
 {
-        bkPrintf("*** WARNING *** bSetVertexShader was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    // If FVF changes, (re)configure HW/SW T&L and set the FVF.
+    if (type != bCurrentVertexShader)
+    {
+        bool forceHW = false;
+
+        // ---- decide whether to force HW T&L ----
+        if (type < 0x353) {
+            if (type == 0x352) {
+                forceHW = true;
+            } else if (type > 0x252) {
+                // 0x2C4
+                forceHW = (type == 0x2C4);
+            } else if (type == 0x252) {
+                forceHW = true;
+            } else if ((type - 0x152) == 0) { // 0x152
+                forceHW = true;
+            }
+        } else {
+            if (type == 0x3C4) {
+                forceHW = true;
+            } else {
+                const int delta = type - 0x452; // 0x452, 0x4C4 (= 0x452 + 0x72)
+                if (delta == 0 || delta == 0x72) {
+                    forceHW = true;
+                }
+            }
+        }
+
+        // ---- toggle SW/HW vertex processing exactly like decompiled branches ----
+        if (forceHW) {
+            if (bDisplayInfo.tnlHardware != 0 && bDisplayInfo.tnlActive == 0) {
+                bDisplayInfo.d3dDevice->SetRenderState(D3DRS_SOFTWAREVERTEXPROCESSING, FALSE);
+                bDisplayInfo.tnlActive = 1;
+                // force rebind of stream on next part (sentinel == 1)
+                bLastVertexBuffer = (TBVertexBuffer*)1;
+            }
+        } else {
+            if (bDisplayInfo.hwVertexShaders == 0 && bDisplayInfo.tnlActive != 0) {
+                bDisplayInfo.d3dDevice->SetRenderState(D3DRS_SOFTWAREVERTEXPROCESSING, TRUE);
+                bDisplayInfo.tnlActive = 0;
+                bLastVertexBuffer = (TBVertexBuffer*)1;
+            }
+        }
+
+        // Set the FVF (in D3D8 this is SetVertexShader with a DWORD FVF)
+        bDisplayInfo.d3dDevice->SetVertexShader((DWORD)type);
+        bCurrentVertexShader = type;
+    }
+
+    // Already bound? nothing to do
+    if (vertexBuffer == bLastVertexBuffer)
+        return;
+
+    if (vertexBuffer != NULL)
+    {
+        // Bind real buffer + stride from buffer
+        bDisplayInfo.d3dDevice->SetStreamSource(
+            /*Stream*/0,
+            vertexBuffer->vertexBuffer,
+            (UINT)vertexBuffer->vertexSize
+        );
+        bLastVertexBuffer = vertexBuffer;
+        return;
+    }
+
+    // vertexBuffer == nullptr -> match decompile: SetStreamSource(0, NULL, stride_for_type)
+    const int stride = bGetVertexSize(type);
+    bDisplayInfo.d3dDevice->SetStreamSource(/*Stream*/0, /*pVB*/NULL, (UINT)stride);
+    bLastVertexBuffer = NULL;
 }
 
 
@@ -463,8 +634,49 @@ int bdGetPolyCount()
 
 int bGetVertexSize(int vertType)
 {
-        bkPrintf("*** WARNING *** bGetVertexSize was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    if (vertType < 0x03C5)
+    {
+        if (vertType == 0x03C4)      /* BVERTTYPE_SPECULAR_TRI2D */
+            return 0x30;             /* 48 */
+        if (vertType < 0x0253)
+        {
+            if (vertType == 0x0252)  /* BVERTTYPE_DUAL */
+                return 0x2C;         /* 44 */
+            if (vertType == 0x0042)  /* BVERTTYPE_POINTSPRITE */
+                return 0x10;         /* 16 */
+            if (vertType == 0x0152)  /* BVERTTYPE_SINGLE */
+                return 0x24;         /* 36 */
+            if (vertType == 0x01C4)  /* BVERTTYPE_SPECULAR_SINGLE2D */
+                return 0x20;         /* 32 */
+        }
+        else
+        {
+            if (vertType == 0x02C4)  /* BVERTTYPE_SPECULAR_DUAL2D */
+                return 0x28;         /* 40 */
+            if (vertType == 0x0352)  /* BVERTTYPE_TRI */
+                return 0x34;         /* 52 */
+        }
+    }
+    else if (vertType < 0x125D)
+    {
+        if (vertType == 0x125C)      /* BVERTTYPE_BLENDEDDUAL (+0x1000 flag family) */
+            return 0x40;             /* 64 */
+        if (vertType == 0x0452)      /* BVERTTYPE_QUAD */
+            return 0x3C;             /* 60 */
+        if (vertType == 0x04C4)      /* BVERTTYPE_SPECULAR_QUAD2D */
+            return 0x38;             /* 56 */
+        if (vertType == 0x115C)      /* BVERTTYPE_BLENDEDSINGLE (+0x1000 flag family) */
+            return 0x34;             /* 52 */
+    }
+    else
+    {
+        if (vertType == 0x135C)      /* BVERTTYPE_BLENDEDTRI (+0x1000 flag family) */
+            return 0x48;             /* 72 */
+        if (vertType == 0x145C)      /* BVERTTYPE_BLENDEDQUAD (+0x1000 flag family) */
+            return 0x50;             /* 80 */
+    }
+
+    return 0;                         /* unknown/unsupported */
 }
 
 
@@ -542,6 +754,31 @@ int bdIndexBufferGetSize(TBIndexBuffer *ibPtr)
     return 0;
 }
 
+/* --------------------------------------------------------------------------------
+   Function : bSuspendIndexBuffers
+   Purpose : suspend index buffers
+   Parameters : 
+   Returns : 
+   Info : 
+*/
+
+void bSuspendIndexBuffers()
+{
+	bkPrintf("*** WARNING *** bSuspendIndexBuffers was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+}
+
+/* --------------------------------------------------------------------------------
+   Function : bResumeIndexBuffers
+   Purpose : resume index buffers
+   Parameters : 
+   Returns : 
+   Info : 
+*/
+
+void bResumeIndexBuffers()
+{
+	bkPrintf("*** WARNING *** bResumeIndexBuffers was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+}
 
 /*	--------------------------------------------------------------------------------
 	Function : bdDrawPointSpriteVB

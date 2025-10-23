@@ -20,8 +20,8 @@
 */
 int bInitSet()
 {
-        bkPrintf("*** WARNING *** bInitSet was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    const int ok = bInitSetPlatformSpecific();
+    return ok != 0;
 }
 
 /*	--------------------------------------------------------------------------------

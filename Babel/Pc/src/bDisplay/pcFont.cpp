@@ -9,6 +9,11 @@
 #include <babel.h>
 
 // ********************************************************************************
+// Locals
+
+TBVertexBuffer *bFontVertexBuffer;
+
+// ********************************************************************************
 // Function Implementations
 
 // ********************************************************************************
@@ -24,8 +29,7 @@
 
 void bInitFont()
 {
-        bkPrintf("*** WARNING *** bInitFont was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    bdVertexBufferCreate(&bFontVertexBuffer,0x1000,0x152,0x40,1);
 }
 
 
@@ -39,8 +43,10 @@ void bInitFont()
 
 void bShutdownFont()
 {
-        bkPrintf("*** WARNING *** bShutdownFont was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    if (bFontVertexBuffer != NULL) {
+		bdVertexBufferDestroy(bFontVertexBuffer);
+	}
+	bFontVertexBuffer = NULL;
 }
 
 

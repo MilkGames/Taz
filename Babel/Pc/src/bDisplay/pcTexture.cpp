@@ -166,6 +166,32 @@ int bdSetTextureFrame(TBTexture *texturePtr, int frameNumber)
     return 0;
 }
 
+/* --------------------------------------------------------------------------------
+   Function : bResumeTextures
+   Purpose : resume textures
+   Parameters : 
+   Returns : 
+   Info : 
+*/
+
+void bResumeTextures()
+{
+	bkPrintf("*** WARNING *** bResumeTextures was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+}
+
+/* --------------------------------------------------------------------------------
+   Function : bSuspendTextures
+   Purpose : suspend textures
+   Parameters : 
+   Returns : 
+   Info : 
+*/
+
+void bSuspendTextures()
+{
+	bkPrintf("*** WARNING *** bSuspendTextures was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+}
+
 /*	--------------------------------------------------------------------------------
 	Function : bGetTextureSurface
 	Purpose : get texture surface

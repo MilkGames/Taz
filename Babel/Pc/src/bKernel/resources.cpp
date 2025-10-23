@@ -9,6 +9,17 @@
 #include <babel.h>
 
 // ********************************************************************************
+// Globals
+
+TBResourceInfo	bGlobalResourceList;
+TBResourceInfo	bLocalResourceList[BNOOFRESTYPES];
+
+// ********************************************************************************
+// Locals
+
+
+
+// ********************************************************************************
 // Function Implementations
 
 /* --------------------------------------------------------------------------------
@@ -21,8 +32,17 @@
 
 void bInitResources()
 {
-        bkPrintf("*** WARNING *** bInitResources was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    // zero and init global anchor
+    memset(&bGlobalResourceList, 0, sizeof(TBResourceInfo));
+    bGlobalResourceList.globalPrev = &bGlobalResourceList;
+    bGlobalResourceList.globalNext = &bGlobalResourceList;
+
+    // zero and init each local anchor (one per resource type)
+    for (int i = 0; i < BNOOFRESTYPES; ++i) {
+        memset(&bLocalResourceList[i], 0, sizeof(TBResourceInfo));
+        bLocalResourceList[i].localPrev = &bLocalResourceList[i];
+        bLocalResourceList[i].localNext = &bLocalResourceList[i];
+    }
 }
 
 

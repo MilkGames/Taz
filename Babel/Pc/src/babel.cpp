@@ -39,15 +39,16 @@ int bkInit(uint base, uint size, uint32 flags)
   }
 
   bInitCommandLine();
-  bDXRuntimeLogInfo();
+  bDumpDXVersions();
   if (!bInitDisplay()) {
-    bDXRuntimeLogInfo();
+    bDumpDXVersions();
     bShutdownHeap();
     bShutdownKernel();
+	return 0; // they forgot to add this
   }
 
   if (!bInitActor()) {
-    bDXRuntimeLogInfo();
+    bDumpDXVersions();
     bShutdownHeap();
     bShutdownInput();
     bShutdownDisplay();
@@ -56,7 +57,7 @@ int bkInit(uint base, uint size, uint32 flags)
   }
 
   if (!bInitSound()) {
-    bDXRuntimeLogInfo();
+    bDumpDXVersions();
     bShutdownActor();
     bShutdownHeap();
     bShutdownInput();
@@ -79,7 +80,14 @@ int bkInit(uint base, uint size, uint32 flags)
 
 void bkShutdown()
 {
-        bkPrintf("*** WARNING *** bkShutdown was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    bKernelShutdownBkgLoad();
+	bShutdownSound();
+	bShutdownActor();
+	bShutdownInput();
+	bShutdownDisplay();
+	bShutdownKernel();
+	bShutdownCommandLine();
+	bShutdownHeap();
     return;
 }
 

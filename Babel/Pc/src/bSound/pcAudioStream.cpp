@@ -22,7 +22,7 @@
 int bInitSpecificMusic()
 {
         bkPrintf("*** WARNING *** bInitSpecificMusic was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    return OK;
 }
 
 

@@ -473,7 +473,7 @@ typedef struct _TBQueuedAnim {
 typedef int (*TBNodeController)(struct _TBActorNodeInstance *node, void *context);
 
 // actor nodes saved state
-typedef struct BXBALIGNVAR16 _TBActorNodeInstance {
+typedef struct _TBActorNodeInstance {
 	TBAnimTrack3				*position;					// position animation data
 	TBAnimTrack3				*scale;						// scale animation data
 	TBAnimTrack4				*orientation;				// orientation animation data
@@ -505,7 +505,7 @@ typedef struct BXBALIGNVAR16 _TBActorNodeInstance {
 
 
 // an actor instance - information that is local to each occurance of an actor
-typedef struct BXBALIGNVAR16 _TBActorInstance {
+typedef struct _TBActorInstance {
 	TBMatrix					objectToWorld;					// object->world matrix from instance PSO
 	TBMatrix					objectToWorldNoScale;			// object->world matrix from instance PO
 	TBMatrix					worldToObject;					// world->object matrix from instance PSO (must be validated with baValidateActorInstanceWorldToObject())

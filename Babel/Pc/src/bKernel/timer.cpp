@@ -21,8 +21,10 @@
 
 void bkInitStopwatch(TBStopwatch *stop, int maxCount)
 {
-        bkPrintf("*** WARNING *** bkInitStopwatch was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    stop->count    = 0;
+    stop->accum    = 0;
+    stop->value    = 0;
+    stop->maxCount = maxCount;
 }
 
 
@@ -36,8 +38,7 @@ void bkInitStopwatch(TBStopwatch *stop, int maxCount)
 
 void bkStartStopwatch(TBStopwatch *stop)
 {
-        bkPrintf("*** WARNING *** bkStartStopwatch was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    stop->start = bkTimerRead();
 }
 
 
@@ -51,6 +52,23 @@ void bkStartStopwatch(TBStopwatch *stop)
 
 int bkStopStopwatch(TBStopwatch *stop)
 {
-        bkPrintf("*** WARNING *** bkStopStopwatch was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    const TBTimerValue now = bkTimerRead();
+    const TBTimerValue dt  = bkTimerDelta(stop->start, now);
+
+    stop->accum += dt;
+
+    // increment sample count
+    const int cnt = ++stop->count;
+
+    // when enough samples gathered, compute average and reset
+    if (cnt == stop->maxCount) {
+        // signed 64-bit division
+        stop->value = stop->accum / (TBTimerValue)stop->maxCount;
+
+        // reset accumulator and counter
+        stop->accum = 0;
+        stop->count = 0;
+        return TRUE;
+    }
+    return FALSE;
 }

@@ -11,16 +11,6 @@
 #ifndef __BDISPLAY_PCDISPLAY_H__
 #define __BDISPLAY_PCDISPLAY_H__
 
-#ifndef DIRECT3D_VERSION
-#define DIRECT3D_VERSION 0x0800
-#endif
-#ifndef DIRECTSOUND_VERSION
-#define DIRECTSOUND_VERSION 0x0800
-#endif
-
-#include <d3d8.h>
-#include <dsound.h>
-
 #define D3DDevice_SetRenderState(state, value) \
     (bDisplayInfo.d3dDevice->SetRenderState((state), (value))) // MG: confirm it.
 
@@ -72,34 +62,40 @@ typedef IDirect3DSurface8*  LPDIRECT3DSURFACE8;
 // Types, Structures and Classes
 
 // display information container
-typedef struct _TBDisplayInfo {
-	uint32					flags;					// display flags
-	int						xRes, yRes;				// screen dimensions
-	int						xResHalf, yResHalf;		// half screen dimensions (width/2,height/2)
-	int						bpp, zDepth;			// bit depth/Z depth (should always be 32:24)
-	int						stencilDepth;			// depth of stencil buffer (should always be 8)
-	float					xAspect, yAspect;		// 3D projection aspect scales
-	int						tnlHardware;			// TRUE if running on a TnL hardware card
-	int						tnlActive;				// TRUE if we are currently running in TnL mode
-	int						hwVertexShaders;		// TRUe if hardware vertex shaders are available
-	int						pixelFormat;			// screen pixel format (see BDPIXFORMAT_)
-	int						started;				// is the display started?
-	int						linearTexture[8];		// 'using linear texture on stage' flags
-	struct _TBRenderTarget	*curRenderTarget;		// current render target
-	int						inScene;				// TRUE if within BeginScene/EndScene pair
-	int						xAAMul, yAAMul;			// anti-alias multipliers
-	D3DMULTISAMPLE_TYPE		aaType;					// anti-alias type
+typedef struct _TBDisplayInfo
+{
+	uint32                  flags;                // 0x000: display flags
+	int                     xRes;                 // 0x004: screen width
+	int                     yRes;                 // 0x008: screen height
+	int                     xResHalf;             // 0x00C: half width  (xRes / 2)
+	int                     yResHalf;             // 0x010: half height (yRes / 2)
+	int                     bpp;                  // 0x014: backbuffer bit depth
+	int                     zDepth;               // 0x018: Z-buffer depth
+	int                     stencilDepth;         // 0x01C: stencil buffer depth
+	float                   xAspect;              // 0x020: 3D projection aspect scale (X)
+	float                   yAspect;              // 0x024: 3D projection aspect scale (Y)
+	int                     modulate2X;           // 0x028: TRUE if Modulate2X is supported/active
+	int                     tnlHardware;          // 0x02C: TRUE if hardware T&L available
+	int                     tnlActive;            // 0x030: TRUE if currently using HW T&L
+	int                     hwVertexShaders;      // 0x034: TRUE if HW vertex shaders available
+	int                     pixelFormat;          // 0x038: screen pixel format (see BDPIXFORMAT_)
+	int                     started;              // 0x03C: TRUE if display is started
+	int                     inScene;              // 0x040: TRUE if within BeginScene/EndScene pair
+	struct _TBRenderTarget* curRenderTarget;      // 0x044: current render target
+	D3DFORMAT               displayFormat;        // 0x048: chosen backbuffer format
+	UINT                    adapterOrdinal;       // 0x04C: adapter ordinal used for creation
+	LPDIRECT3D8             d3d;                  // 0x050: Direct3D object
+	LPDIRECT3DDEVICE8       d3dDevice;            // 0x054: Direct3D device
+	LPDIRECT3DSURFACE8      backBuffer;           // 0x058: back buffer surface
+	LPDIRECT3DSURFACE8      depthStencilBuffer;   // 0x05C: depth/stencil surface
 
-	LPDIRECT3D8				d3d;					// Direct3D object
-	LPDIRECT3DDEVICE8		d3dDevice;				// Direct3D device
-	LPDIRECT3DSURFACE8		backBuffer;				// back buffer surface
-	LPDIRECT3DSURFACE8		depthStencilBuffer;		// depth/stencil surface
-	LPDIRECT3DSURFACE8		frontBuffer;			// front buffer
+	D3DCAPS8                devCaps;              // 0x060..0x133: device capabilities (size 0xD4)
 
-	int						noofPolysProcessed;		// number of triangles drawn this frame
+	D3DPRESENT_PARAMETERS   presentParams;        // 0x134..0x167: present parameters (size 0x34)
 
-	D3DCAPS8                devCaps;                // MG: determine what is this - TODO
-} TBDisplayInfo;
+	DWORD                   textureCapsMirror;    // 0x168: cached/mirrored texture caps (device-dependent)
+	int                     noofPolysProcessed;   // 0x16C: number of triangles drawn this frame
+} TBDisplayInfo; // total size: 0x170
 
 
 // Babel Vsync callback function

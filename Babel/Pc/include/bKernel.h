@@ -14,6 +14,7 @@
 
 #include "bKernel/pcKernel.h"
 #include "bKernel/heap.h"
+#include "bKernel/pcImagehlp.h"
 #include "bKernel/pcDebug.h"
 #include "bKernel/debug.h"
 #include "bKernel/pcFile.h"

@@ -22,13 +22,13 @@
 // ********************************************************************************
 // include all headers from bDisplay/
 
+#include "bDisplay/pcDxdebug.h"
 #include "bDisplay/consoleWindow.h"
 #include "bDisplay/display.h"
 #include "bDisplay/frametimegraph.h"
 #include "bDisplay/pcDisplay.h"
 #include "bDisplay/pcDrawprim.h"
 #include "bDisplay/font.h"
-#include "bDisplay/pcDxdebug.h"
 #include "bDisplay/pcFont.h"
 #include "bDisplay/texture.h"
 #include "bDisplay/pcTexture.h"

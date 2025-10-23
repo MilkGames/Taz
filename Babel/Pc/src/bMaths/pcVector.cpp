@@ -254,8 +254,16 @@ void bmVectorRotateX(TBVector dest, const TBVector src, const float rads)
 
 void bmVectorRotateY(TBVector dest, const TBVector src, const float rads)
 {
-        bkPrintf("*** WARNING *** bmVectorRotateY was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    const float x = src[0];
+    const float y = src[1];
+    const float z = src[2];
+
+    const float c = (float)cos((double)rads);
+    const float s = (float)sin((double)rads);
+
+    dest[1] = y;
+    dest[0] = c * x + s * z;
+    dest[2] = c * z - s * x;
 }
 
 

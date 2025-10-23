@@ -12,6 +12,7 @@
 // Globals
 
 TBViewInfo bViewInfo;
+int        bObjectMatrixIsIdentity;
 
 // ********************************************************************************
 // Function Implementations
@@ -38,8 +39,9 @@ void bdSetViewport(const int topLeftX, const int topLeftY, const int width, cons
 */
 void bdSetViewPosition(const float xPos, const float yPos, const float zPos)
 {
-        bkPrintf("*** WARNING *** bdSetViewPosition was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+	bViewInfo.xPos = xPos;
+	bViewInfo.yPos = yPos;
+	bViewInfo.zPos = zPos;
 }
 
 /*	--------------------------------------------------------------------------------

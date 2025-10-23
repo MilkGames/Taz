@@ -9,6 +9,60 @@
 #include <babel.h>
 
 // ********************************************************************************
+// Globals
+
+int bInsideEventCallback; // I have no idea why is this global - do you?
+
+// ********************************************************************************
+// Locals
+
+TBEvent bEventRoot;          // global sentinel (circular list of events)
+TBMutex bEventMutex;         // global mutex for event lists
+
+// ********************************************************************************
+// Helper Functions
+
+// Local helper seen as a standalone function on Xbox, but inlined on PC
+// and can be seen in Taz.map on PC:
+//   - remove and free all clients of 'evt'
+//   - unlink 'evt' from the global event ring
+//   - free 'evt' itself
+void DeleteEvent(TBEvent* evt)
+{
+    if (!evt) return;
+
+    // Hold the mutex while we mutate client and event rings.
+    bkWaitMutex(&bEventMutex);
+
+    // --- delete all clients of this event (exact traversal pattern from decomp) ---
+    TBEventClient* root = &evt->clients;   // clients list sentinel stored inside TBEvent
+    TBEventClient* it   = root->next;
+
+    // Important: step forward first, then free the node we just passed.
+    // Safe because each TBEventClient (and its queue buffer, if present) is one contiguous block.
+    while (it != root) {
+        it = it->next;               // step forward
+        bkHeapFree(it->prev);        // free the node we just passed
+        it->prev = 0;                // PC decomp zeroes prev of the current node (cosmetic)
+    }
+
+    // Reset clients list to an empty self-loop.
+    root->next = root;
+    root->prev = root;
+
+    // --- unlink the event node from the global event ring ---
+    TBEvent* nextEvt = evt->next;
+    TBEvent* prevEvt = evt->prev;
+    nextEvt->prev = prevEvt;
+    prevEvt->next = nextEvt;
+
+    bkReleaseMutex(&bEventMutex);
+
+    // Free the event node itself.
+    bkHeapFree(evt);
+}
+
+// ********************************************************************************
 // Function Implementations
 
 /* --------------------------------------------------------------------------------
@@ -21,8 +75,10 @@
 
 void bInitEvents()
 {
-        bkPrintf("*** WARNING *** bInitEvents was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    bInsideEventCallback = 0;
+    bEventRoot.prev = &bEventRoot;   // empty ring: root points to itself
+    bEventRoot.next = &bEventRoot;
+    bkCreateMutex(&bEventMutex);
 }
 
 
@@ -36,8 +92,21 @@ void bInitEvents()
 
 void bShutdownEvents()
 {
-        bkPrintf("*** WARNING *** bShutdownEvents was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    bInsideEventCallback = 0;
+
+    // Iterator over the event ring. We keep the "step-first, use-prev" pattern
+    // to match the exact PC decomp behavior and remain safe during deletes.
+    TBEvent* it = bEventRoot.next;
+    if (it != &bEventRoot)
+    {
+        do {
+            it = it->next;           // step forward
+            TBEvent* evt = it->prev; // the node we just passed is the one to delete
+            DeleteEvent(evt);
+        } while (it != &bEventRoot);
+    }
+
+    bkDeleteMutex(&bEventMutex);
 }
 
 
@@ -66,8 +135,46 @@ TBEvent *bFindEvent(uint32 crc)
 
 int bkCreateEvent(char *eventName)
 {
-        bkPrintf("*** WARNING *** bkCreateEvent was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    // Compute CRC for the provided name
+    const uint32 crc = bkStringCRC(eventName);
+
+    // Search the global circular doubly-linked list for an existing event
+    TBEvent *it = bEventRoot.next;
+    while (it != &bEventRoot) {
+        if (it->crc == crc)
+            return OK; // already exists
+        it = it->next;
+    }
+
+    // Allocate a new event node
+    TBEvent *evt = (TBEvent*)MALLOCEX(sizeof(TBEvent), (uint32)"Event");
+    if (!evt)
+        return FAIL; // oh-oh, out of memory
+
+    // Insert at the tail of the global ring: [tail] <-> [evt] <-> [root]
+    TBEvent *tail = bEventRoot.prev;
+    evt->prev = tail;
+    evt->next = &bEventRoot;
+    tail->next = evt;
+    bEventRoot.prev = evt;
+
+    // Byte-wise copy of the name into the struct field
+    {
+        const char *s = eventName;
+        char *d = evt->name;
+        char ch;
+        do { ch = *s++; *d++ = ch; } while (ch != '\0');
+    }
+
+	// Initialize the clients list as a self-referential sentinel
+    evt->clients.prev = &evt->clients;
+    evt->clients.next = &evt->clients;
+
+	// Initialize metadata
+    evt->crc        = crc;
+    evt->noofQueues = 0;
+
+    return OK;
 }
 
 
@@ -81,7 +188,35 @@ int bkCreateEvent(char *eventName)
 
 TBEventClient *bkTrapEventCallback(char *eventName, TBEventCallback callback, void *context)
 {
-        bkPrintf("*** WARNING *** bkTrapEventCallback was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    const uint32 crc = bkStringCRC(eventName);
+
+    // p = bEventRoot.next; while (p != &bEventRoot) { ...; p = p->next; }
+    TBEvent *evt = bEventRoot.next;
+    while (evt != &bEventRoot) {
+        if (evt->crc == crc) {
+            // MUST allocate via MALLOCEX with the exact group id (0x655858 -> "Event Client (Callback)").
+            TBEventClient *client = (TBEventClient*)MALLOCEX(sizeof(TBEventClient), (uint32)"Event Client (Callback)");
+            if (client == NULL)
+                return NULL;
+
+            // Link into the event’s client ring
+            TBEventClient *prev = evt->clients.prev;
+            client->next = &evt->clients;
+            client->prev = prev;
+            prev->next   = client;
+            client->next->prev = client;
+
+            // Payload init
+            client->event = evt;
+            client->type  = EBEVENTCLIENTTYPE_CALLBACK;
+            client->callback.callback        = callback;
+            client->callback.callbackContext = context;
+
+            return client;
+        }
+        evt = evt->next;
+    }
+
     return NULL;
 }
 

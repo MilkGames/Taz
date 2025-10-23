@@ -26,7 +26,7 @@
 	#define BSOFTBREAK()	DebugBreak()		// macro to throw control into the debugger
 
 	// this is needed on the PC as the run-time headers do not define a dummy for it in release builds
-	#define DXGetErrorString8A(X)
+	// #define DXGetErrorString8A(X) // MG: nope, I need that!
 #endif		// #ifdef _DEBUG
 
 

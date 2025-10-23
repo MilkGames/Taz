@@ -11,10 +11,10 @@
 // ********************************************************************************
 // Globals
 
+char  bHomeDirectory[256];
 int   bActive        = 1;          // exe default: active on start
 int   bFocus         = 1;          // allow auto-suspend on focus loss
 HWND  bMainWindow    = NULL;
-char  bAppPath[256];
 
 // ********************************************************************************
 // Locals
@@ -27,6 +27,9 @@ static int bMainRunning = 0;
 static char *bAppName = NULL;
 
 static int bCPUSimdFlags;
+
+static int    bArgc = 0;      // Argc in command line
+static char** bArgv = NULL;   // Argv in command line
 
 // ********************************************************************************
 // Local Helpers
@@ -45,6 +48,72 @@ static void cpuid_regs(unsigned int leaf, unsigned int regs[4])
         mov     [edi+12], ecx       // ECX
         pop     ebx
     }
+}
+
+// ---------------------------------------------------------------------
+// Internal command line parser
+// - s          : full command line (GetCommandLineA())
+// - out        : destination array (may be NULL for count-only pass)
+// - skip_first : 1 => do NOT count/copy the very first token (exe path)
+//                0 => include it
+// Returns: number of arguments according to skip_first.
+static int bParseCommandLine(const char* s, char** out, int skip_first)
+{
+    // emulate the decompile’s counter trick: start from -skip_first
+    // so the first token is skipped when skip_first==1.
+    int count = -skip_first;
+
+    const char* p = s;
+    while (*p) {
+        // skip whitespace
+        while (*p == ' ' || *p == '\t') {
+            ++p;
+            if (!*p) goto done;
+        }
+        if (!*p) break;
+
+        // token start
+        const char* start = p;
+        int in_quotes = 0;
+        while (*p) {
+            char c = *p;
+            if (c == '\"') {
+                in_quotes = !in_quotes;
+                ++p;
+                continue;
+            }
+            if (!in_quotes && (c == ' ' || c == '\t'))
+                break;
+            ++p;
+        }
+        const char* end = p; // [start, end) is the token
+
+        // copy if we have an output array and we are past the "skip" slot
+        if (out && count >= 0) {
+            const unsigned int len = (unsigned int)(end - start);
+            char* dst = (char*)MALLOCEX(len + 1, (uint32)"Command Line");
+            if (dst) {
+                // fast copy
+                const char* src = start;
+                for (unsigned int i = 0; i < len; ++i) dst[i] = src[i];
+                dst[len] = '\0';
+            }
+            out[count] = dst;
+        }
+
+        // advance count for this token
+        ++count;
+
+        // if we stopped on whitespace, skip it and continue
+        while (*p == ' ' || *p == '\t') {
+            ++p;
+        }
+    }
+
+done:
+    // decompile returned: (((int)pcVar6 < 0) - 1) & pcVar6
+    // that yields 0 while count < 0, otherwise just count
+    return (count < 0) ? 0 : count;
 }
 
 // ********************************************************************************
@@ -174,21 +243,21 @@ int bInitKernel()
     // PC-only probe
     TestCPU();
 
-    // Build executable directory path into bAppPath
+    // Build executable directory path into bHomeDirectory
     // (buffer is 256 bytes in the original; keep the same limit 0x100)
-    GetModuleFileNameA(NULL, bAppPath, 0x100);
+    GetModuleFileNameA(NULL, bHomeDirectory, 0x100);
 
     // Trim everything after the last backslash (including the slash itself)
-    if (char* lastSlash = strrchr(bAppPath, '\\'))
+    if (char* lastSlash = strrchr(bHomeDirectory, '\\'))
         *lastSlash = '\0';
 
     // Ensure the path ends with a trailing backslash
     // (the decomp does this via *(uint16*)(end-1) = '\\\0')
     {
-        const size_t len = strlen(bAppPath);
-        if (len == 0 || bAppPath[len - 1] != '\\') {
-            bAppPath[len]     = '\\';
-            bAppPath[len + 1] = '\0';
+        const size_t len = strlen(bHomeDirectory);
+        if (len == 0 || bHomeDirectory[len - 1] != '\\') {
+            bHomeDirectory[len]     = '\\';
+            bHomeDirectory[len + 1] = '\0';
         }
     }
 
@@ -208,8 +277,25 @@ int bInitKernel()
 
 void bShutdownKernel()
 {
-        bkPrintf("*** WARNING *** bShutdownKernel was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+	TBPackageID zeroPkg = {0, 0}; // crc=0, loaded=0
+	bkDeleteFilenameTable(zeroPkg);
+	if (bGlobalResourceList.globalNext != &bGlobalResourceList) {
+		bkPrintf("\n*** RESOURCE LEAKS DETECTED :\n");
+		bkListResources(BRESMASK_ALL);
+		bkPrintf("\n");
+		bkDeleteAllResources();
+		bShutdownEvents();
+		bShutdownTimer();
+		bShutdownDebug();
+		return;
+	}
+
+	bkPrintf("Resource list is clean\n");
+	bkDeleteAllResources();
+	bShutdownEvents();
+	bShutdownTimer();
+	bShutdownDebug();
+	return;
 }
 
 
@@ -401,8 +487,33 @@ int bkDeleteMutex(TBMutex *mutex)
 
 int bInitCommandLine()
 {
-        bkPrintf("*** WARNING *** bInitCommandLine was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    const LPSTR cmd = GetCommandLineA();
+
+    // 1st pass: count (skip exe)
+    bArgc = bParseCommandLine(cmd, NULL, 1);
+
+    // allocate argv array
+    bArgv = (char**)MALLOCEX(bArgc * sizeof(char*), (uint32)"Command Line");
+
+    // 2nd pass: fill (skip exe)
+    bArgc = bParseCommandLine(cmd, bArgv, 1);
+
+#ifdef PRINT_COMMANDLINE
+	if (bArgc <= 0) {
+		bkPrintf("bInitCommandLine: No command line arguments found\n");
+	} 
+	else {
+		bkPrintf("bInitCommandLine: Found %d command line argument%s:\n",
+             bArgc, (bArgc == 1) ? "" : "s");
+        int i;
+        for (i = 0; i < bArgc; ++i) {
+            bkPrintf("bInitCommandLine: Argument %d: %s\n",
+                     i + 1, bArgv[i] ? bArgv[i] : "<null>");
+        }
+    }
+#endif
+
+    return 1;
 }
 
 
@@ -416,8 +527,17 @@ int bInitCommandLine()
 
 void bShutdownCommandLine()
 {
-        bkPrintf("*** WARNING *** bShutdownCommandLine was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    for (int i = 0; i < bArgc; ++i) {
+        if (bArgv[i]) {
+            bkHeapFree(bArgv[i]);
+            bArgv[i] = NULL;
+        }
+    }
+    if (bArgv) {
+        bkHeapFree(bArgv);
+        bArgv = NULL;
+    }
+    bArgc = 0;
 }
 
 
@@ -431,8 +551,8 @@ void bShutdownCommandLine()
 
 void bkGetCommandLine(int *argc, char **argv[])
 {
-        bkPrintf("*** WARNING *** bkGetCommandLine was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    *argc = bArgc;
+	*argv = bArgv;
 }
 
 

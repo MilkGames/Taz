@@ -14,7 +14,7 @@
 // Constants and Macros
 
 // max simultaneous texture stages
-#define BMAX_TEXTURE_STAGES	4
+#define BMAX_TEXTURE_STAGES	2
 
 
 // ********************************************************************************
@@ -66,10 +66,10 @@ typedef struct _TBRenderTarget {
 	void					*texData;								// WC texture data
 	void					*zData;									// WC z-buffer data
 	int						textureBytes;							// size of texture/zbuffer data
-	//D3DTexture				d3dTexture;								// our D3D texture info
-	//D3DSurface				d3dZBuffer;								// our D3D Z buffer
-	//D3DSurface				*d3dSurface;							// the surface of our texture
-	//D3DFORMAT				rgbFormat,zFormat;						// buffer formats
+	IDirect3DTexture8*		d3dTexture;								// our D3D texture info
+	IDirect3DSurface8*		d3dZBuffer;								// our D3D Z buffer
+	IDirect3DSurface8*	    d3dSurface;							    // the surface of our texture
+	D3DFORMAT				rgbFormat,zFormat;						// buffer formats
 } TBRenderTarget;
 
 
@@ -193,6 +193,25 @@ void bdGetRenderTargetInfo(TBRenderTarget *target, int *width=NULL, int *height=
 
 int bdSetRenderTargetAsTexture(TBRenderTarget *target, int stage=0);
 
+/* --------------------------------------------------------------------------------
+   Function : bSuspendRenderTargets
+   Purpose : suspend render buffers
+   Parameters : 
+   Returns : 
+   Info : 
+*/
+
+void bSuspendRenderTargets();
+
+/* --------------------------------------------------------------------------------
+   Function : bResumeRenderTargets
+   Purpose : resume render buffers
+   Parameters : 
+   Returns : 
+   Info : 
+*/
+
+void bResumeRenderTargets();
 
 /*	--------------------------------------------------------------------------------
 	Function : bdLockRenderState

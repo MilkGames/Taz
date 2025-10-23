@@ -20,8 +20,25 @@
 */
 void bSetInitialRenderStates(int stages)
 {
-        bkPrintf("*** WARNING *** bSetInitialRenderStates was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    // Core defaults for the engine's state-cache
+    bdSetRenderState(BDRENDERSTATE_ANTIALIAS,         0,   0);
+    bdSetRenderState(BDRENDERSTATE_TEXTUREFILTER,     2,   0);
+    bdSetRenderState(BDRENDERSTATE_TEXTUREWRAP,       3,   0);
+    bdSetRenderState(BDRENDERSTATE_ALPHABLENDMODE,    0,   0);
+    bdSetRenderState(BDRENDERSTATE_LIGHTING,          0,   0);
+    bdSetRenderState(BDRENDERSTATE_BACKFACECULL,      0,   0);
+    bdSetRenderState(BDRENDERSTATE_ZWRITE,            1,   0);
+    bdSetRenderState(BDRENDERSTATE_ZTEST,             3,   0);
+    bdSetRenderState(BDRENDERSTATE_CLEAR,          0xff,   0);
+    bdSetRenderState(BDRENDERSTATE_DISTANCEFOG,       0,   0);
+    bdSetRenderState(BDRENDERSTATE_ALPHAENABLE,       0,   0);
+    bdSetRenderState(BDRENDERSTATE_FRAMEWRITE,        1,   0);
+    bdSetRenderState(BDRENDERSTATE_2DWORLDMATRIX,     0,   0);
+
+    // Enable first N texture stages (PC: N == 2; Xbox == 4)
+    for (uint32 stage = 0; stage < (uint32)stages; ++stage) {
+        bdSetRenderState(BDRENDERSTATE_TEXTUREENABLE, stage, 1);
+    }
 }
 
 /*	--------------------------------------------------------------------------------
