@@ -9,6 +9,13 @@
 #include <babel.h>
 
 // ********************************************************************************
+// Locals
+
+int stopSpam2 = 0;
+int stopSpam5 = 0;
+int stopSpam6 = 0;
+
+// ********************************************************************************
 // Function Implementations
 
 /*	--------------------------------------------------------------------------------
@@ -59,7 +66,10 @@ void biDeleteAllMaps()
 */
 TBIInputChannel *biCreateChannel(TBIChannelMap *map, char *name, int32 type, uint32 flags, int32 maxValue, int accIncSpeed, int accDecSpeed)
 {
+	if (!stopSpam5) {
         bkPrintf("*** WARNING *** biCreateChannel was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+		stopSpam5++;
+	}
     return NULL;
 }
 
@@ -98,7 +108,10 @@ void biDeleteChannel(TBIInputChannel *channel)
 */
 int biBindInput(TBIInputChannel *channel, int32 posInputID, int32 negInputID)
 {
+	if (!stopSpam6) {
         bkPrintf("*** WARNING *** biBindInput was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+		stopSpam6++;
+	}
     return 0;
 }
 
@@ -150,7 +163,10 @@ void biResetMap(TBIChannelMap *map)
 */
 int biReadDevices()
 {
-        bkPrintf("*** WARNING *** biReadDevices was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    if (!stopSpam2) {
+		bkPrintf("*** WARNING *** biReadDevices was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+		stopSpam2++;
+	}
     return 0;
 }
 

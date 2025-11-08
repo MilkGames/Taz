@@ -13,6 +13,10 @@
 // ********************************************************************************
 // Constants and macros
 
+// in the original PC build this suffix (DAT_0075365C) is effectively an empty C-string
+// check bkOpenFileReadOnlyWithSearch for additional info
+#define BFILE_SEARCH_SUFFIX ""
+
 // Enums for disk failures trigging a "_DiskError" event
 typedef enum
 {
@@ -23,7 +27,6 @@ typedef enum
 	BDISKERROR_FATAL_ERROR,		// Not used on Xbox
 	BDISKERRORS
 } EBDiskErrorReasonCode;
-
 
 // ********************************************************************************
 // Types, structures and classes

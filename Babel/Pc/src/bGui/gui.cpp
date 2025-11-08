@@ -10,6 +10,12 @@
 #include "../../include/bGui/defFont.h"
 
 // ********************************************************************************
+// Locals
+
+int stopSpam11 = 0;
+int stopSpam12 = 0;
+
+// ********************************************************************************
 // Function Implementations
 
 /*	--------------------------------------------------------------------------------
@@ -138,7 +144,10 @@ void bgExitGui()
 */
 TBGuiElement *bgCreateMenu(uint32 flags)
 {
+	if (!stopSpam11) {
         bkPrintf("*** WARNING *** bgCreateMenu was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+		stopSpam11++;
+	}
     return NULL;
 }
 
@@ -177,7 +186,10 @@ void bgSetMainMenu(TBGuiElement *menuPtr)
 */
 TBGuiMenuItem *bgAddMenuItem(TBGuiElement *menuPtr, char *text, int32 id, TBGuiElement *subMenu, uint32 flags)
 {
+	if (!stopSpam12) {
         bkPrintf("*** WARNING *** bgAddMenuItem was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+		stopSpam12++;
+	}
     return NULL;
 }
 

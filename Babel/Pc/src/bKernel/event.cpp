@@ -95,7 +95,7 @@ void bShutdownEvents()
     bInsideEventCallback = 0;
 
     // Iterator over the event ring. We keep the "step-first, use-prev" pattern
-    // to match the exact PC decomp behavior and remain safe during deletes.
+    // to match the exact PC decomp behavior and remain safe during deletes
     TBEvent* it = bEventRoot.next;
     if (it != &bEventRoot)
     {
@@ -291,8 +291,93 @@ void bkDeleteEventClient(TBEventClient *client)
 
 int bkGenerateEvent(char *eventName, char *parmString, void *data, int takeMutex)
 {
-        bkPrintf("*** WARNING *** bkGenerateEvent was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    if (!eventName) return FAIL;
+
+    if (takeMutex) bkWaitMutex(&bEventMutex);
+
+    const uint32 wantCRC = bkStringCRC(eventName);
+
+    // find event: walk from bEventRoot.next up to &bEventRoot (sentinel)
+    TBEvent *evt = bEventRoot.next;
+    while (evt != &bEventRoot) {
+        if (evt->crc == wantCRC) break;
+        evt = evt->next;
+    }
+    if (evt == &bEventRoot) {
+        if (takeMutex) bkReleaseMutex(&bEventMutex);
+        return FAIL;
+    }
+
+    // iterate clients
+    TBEventClient *head = &evt->clients;
+    for (TBEventClient *c = head->next; c != head; c = c->next)
+    {
+        if (c->type == EBEVENTCLIENTTYPE_CALLBACK) {
+            bInsideEventCallback = 1;
+            c->callback.callback(eventName,
+                                 parmString ? parmString : (char*)"",
+                                 data,
+                                 c->callback.callbackContext);
+            bInsideEventCallback = 0;
+            continue;
+        }
+
+        // queue client
+        TBEventClientQueue *q = &c->queue;
+
+        // full?
+        if (q->size >= q->maxSize && q->maxSize > 0) {
+            if (q->flags & BEVENTQUEUEFLAG_NEWPRIORITY) {
+                // drop oldest: shift left by 1 entry
+                if (q->maxSize > 1) {
+                    const size_t bytes = (size_t)(q->maxSize - 1) * sizeof(TBEventEntry);
+                    memmove(q->queue, q->queue + 1, bytes);
+                }
+                if (q->size > 0) q->size -= 1;
+            } else {
+                const char *ps = parmString ? parmString : "[NULL]";
+                const char *ds = data ? (const char*)data : "[NULL]";
+                bkPrintf("bkGenerateEvent: *** WARNING *** Event '%s' lost parameters '%s' '%s' due to queue overflow ***\n",
+                         eventName, ps, ds);
+                continue;
+            }
+        }
+
+        // append at tail
+        int idx = q->size;
+        if (idx < 0) idx = 0;
+        if (idx >= q->maxSize) idx = q->maxSize - 1;
+
+        TBEventEntry *e = &q->queue[idx];
+
+        // copy parameter string (ASCIIZ) (byte-by-byte until '\0')
+        if (parmString) {
+            char *dst = e->parms;
+            const char *src = parmString;
+            while ((*dst++ = *src++) != '\0') { /* no-op */ }
+        } else {
+            e->parms[0] = '\0';
+        }
+
+        // copy 16-byte payload (4 dwords)
+        if (data) {
+            const uint32 *src = (const uint32*)data;
+            ((uint32*)e->data)[0] = src[0];
+            ((uint32*)e->data)[1] = src[1];
+            ((uint32*)e->data)[2] = src[2];
+            ((uint32*)e->data)[3] = src[3];
+        } else {
+            ((uint32*)e->data)[0] = 0;
+            ((uint32*)e->data)[1] = 0;
+            ((uint32*)e->data)[2] = 0;
+            ((uint32*)e->data)[3] = 0;
+        }
+
+        if (q->size < q->maxSize) q->size += 1;
+    }
+
+    if (takeMutex) bkReleaseMutex(&bEventMutex);
+    return OK;
 }
 
 

@@ -116,18 +116,16 @@ void bdSetRenderState(uint32 renderState, uint32 value1, uint32 value2)
             return;
         }
 
-        case BDRENDERSTATE_TEXTUREWRAP:
-        {
-            // Well, just keep the decompiled bit math to match behavior 1:1.
-            // Note: This maps to D3DTADDRESS_WRAP (1) vs D3DTADDRESS_MIRROR (2).
-            // value1 bit assignment comes from BDTEXTUREWRAP_* flags in render.h.
-			// MG: TODO on this
-            DWORD addrU = ((~value1) & BDTEXTUREWRAP_WRAPU) ? 2 : 1; // ((~v & 1) << 1) | 1  -> 2 or 1
-            DWORD addrV = ((~value1) & BDTEXTUREWRAP_WRAPV) ? 2 : 1; // ((~v & 2)     ) | 1  -> 3? (but with these flags becomes 2 or 1)
-            bDisplayInfo.d3dDevice->SetTextureStageState(0, D3DTSS_ADDRESSU, addrU);
-            bDisplayInfo.d3dDevice->SetTextureStageState(0, D3DTSS_ADDRESSV, addrV);
-            return;
-        }
+		case BDRENDERSTATE_TEXTUREWRAP:
+		{
+			const DWORD addrU = (value1 & BDTEXTUREWRAP_WRAPU) ? D3DTADDRESS_WRAP : D3DTADDRESS_CLAMP; // 1 or 3
+			const DWORD addrV = (value1 & BDTEXTUREWRAP_WRAPV) ? D3DTADDRESS_WRAP : D3DTADDRESS_CLAMP; // 1 or 3
+
+			IDirect3DDevice8* dev = bDisplayInfo.d3dDevice;
+			dev->SetTextureStageState(0, D3DTSS_ADDRESSU, addrU);
+			dev->SetTextureStageState(0, D3DTSS_ADDRESSV, addrV);
+			return;
+		}
 
         case BDRENDERSTATE_LIGHTING:
             bDisplayInfo.d3dDevice->SetRenderState(D3DRS_LIGHTING, value1);
@@ -163,14 +161,22 @@ void bdSetRenderState(uint32 renderState, uint32 value1, uint32 value2)
 
         case BDRENDERSTATE_FRAMEWRITE:
         {
-            // Build COLORWRITEENABLE mask
-            BYTE m = ((value1 & 0x03) != 0) ? 1 : 0; // initial from (value1 & 3)
-            if ((value1 & 0x05) != 0) m |= 2;
-            if ((value1 & 0x09) != 0) m |= 4;
-            if ((value1 & 0x11) != 0) m |= 8;
+			// Build COLORWRITEENABLE mask
+			DWORD m = 0;
+			if (value1 & 0x01) {
+				m = D3DCOLORWRITEENABLE_RED
+					| D3DCOLORWRITEENABLE_GREEN
+					| D3DCOLORWRITEENABLE_BLUE
+					| D3DCOLORWRITEENABLE_ALPHA;
+			} else {
+				if (value1 & 0x02) m |= D3DCOLORWRITEENABLE_RED;
+				if (value1 & 0x04) m |= D3DCOLORWRITEENABLE_GREEN;
+				if (value1 & 0x08) m |= D3DCOLORWRITEENABLE_BLUE;
+				if (value1 & 0x10) m |= D3DCOLORWRITEENABLE_ALPHA;
+			}
 
-            // D3D expects the D3DCOLORWRITEENABLE_* bitfield (low 4 bits map to RGBA).
-            // The decompiled bVar1 accumulates in the same low 4 bits.
+            // D3D expects the D3DCOLORWRITEENABLE_* bitfield (low 4 bits map to RGBA)
+            // The decompiled bVar1 accumulates in the same low 4 bits
             bDisplayInfo.d3dDevice->SetRenderState(D3DRS_COLORWRITEENABLE, m);
             return;
         }
@@ -246,8 +252,19 @@ void bSetDefaultRenderStates()
 
 void bdSetFogRange(float nearDist, float farDist)
 {
-        bkPrintf("*** WARNING *** bdSetFogRange was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    IDirect3DDevice8* dev = bDisplayInfo.d3dDevice;
+
+    // Device states: FOGSTART (0x24), FOGEND (0x25)
+    if (dev) {
+        // Pass float bits as DWORD (D3D8 expects DWORD payload)
+        dev->SetRenderState(D3DRS_FOGSTART, *(const DWORD*)&nearDist);
+        dev->SetRenderState(D3DRS_FOGEND,   *(const DWORD*)&farDist);
+    }
+
+    // Mirror into our software state and precompute reciprocal range
+    bRenderState.fogFar   = farDist;
+    bRenderState.fogNear  = nearDist;
+    bRenderState.fogRange = 1.0f / (farDist - nearDist);
 }
 
 
@@ -261,8 +278,23 @@ void bdSetFogRange(float nearDist, float farDist)
 
 void bdSetFogColour(int red, int green, int blue)
 {
-        bkPrintf("*** WARNING *** bdSetFogColour was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    IDirect3DDevice8* dev = bDisplayInfo.d3dDevice;
+
+    // Build ARGB = 0xFFRRGGBB (alpha forced to 0xFF)
+    DWORD color =
+        (0xFFu << 24) |
+        ((DWORD)(red   & 0xFF) << 16) |
+        ((DWORD)(green & 0xFF) <<  8) |
+        ((DWORD)(blue  & 0xFF) <<  0);
+
+    if (dev) {
+        dev->SetRenderState(D3DRS_FOGCOLOR, color);
+    }
+
+    // Mirror to our software state
+    bRenderState.rFog = red;
+    bRenderState.gFog = green;
+    bRenderState.bFog = blue;
 }
 
 
@@ -322,8 +354,70 @@ void bdDeleteRenderTarget(TBRenderTarget *target)
 
 int bdSetRenderTarget(TBRenderTarget *target, int r,int g,int b, int a,float depth, uint32 flags)
 {
-        bkPrintf("*** WARNING *** bdSetRenderTarget was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    IDirect3DDevice8* dev = bDisplayInfo.d3dDevice;
+    HRESULT hr;
+
+    // Select color/depth surfaces
+    IDirect3DSurface8* colorSurf = NULL;
+    IDirect3DSurface8* depthSurf = NULL;
+
+    if (target)
+    {
+        colorSurf = target->d3dSurface; // color RT surface
+        if (target->d3dZBuffer) {
+            depthSurf = target->d3dZBuffer; // explicit z/stencil surface on the RT
+        } else if (target->zDepth) {
+            depthSurf = bDisplayInfo.depthStencilBuffer; // fall back to the device DS buffer
+        }
+    }
+    else
+    {
+        // Back to the main backbuffer & device depth/stencil
+        colorSurf = bDisplayInfo.backBuffer;
+        depthSurf = bDisplayInfo.depthStencilBuffer;
+    }
+
+    // SetRenderTarget
+    hr = dev->SetRenderTarget(colorSurf, depthSurf);
+    if (FAILED(hr))
+    {
+        bkPrintf("bdSetRenderTarget: SetRenderTarget failed (%s)\n", DXGetErrorString8A(hr));
+        return 0;
+    }
+
+    // Update current RT pointer: null -> head of list, otherwise the passed target
+    bDisplayInfo.curRenderTarget = target ? target : &bRenderTargetList;
+
+    // Restore viewport and clip rect that belong to this render target
+    const TBRenderTarget* rt = bDisplayInfo.curRenderTarget;
+    bdSetViewport(rt->vpX, rt->vpY, rt->vpWidth, rt->vpHeight);
+    bdSetClipRectangle(rt->clipXPos, rt->clipYPos, rt->clipWidth, rt->clipHeight);
+
+    // Optional clear according to flags
+    // Flags (observed in disasm): bit 0 = color, bit 1 = zbuffer
+    const bool clearColor = (flags & 0x1) != 0;
+    const bool clearZ     = (flags & 0x2) != 0;
+
+    if (clearColor || clearZ)
+    {
+        DWORD clr = 0;
+        if (clearColor)
+        {
+            // Disasm packs 24-bit RGB (alpha not used here)
+            clr = ((DWORD)(r & 0xFF))
+                | ((DWORD)(g & 0xFF) << 8)
+                | ((DWORD)(b & 0xFF) << 16);
+        }
+
+        DWORD d3dFlags = 0;
+        if (clearColor) d3dFlags |= D3DCLEAR_TARGET;
+        if (clearZ)     d3dFlags |= D3DCLEAR_ZBUFFER;
+
+        // Stencil value is 0, Count/pRects are 0/NULL
+        dev->Clear(0, NULL, d3dFlags, clr, depth, 0);
+    }
+
+    return 1;
 }
 
 
@@ -379,7 +473,62 @@ void bSuspendRenderTargets()
 
 void bResumeRenderTargets()
 {
-	bkPrintf("*** WARNING *** bResumeRenderTargets was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    TBRenderTarget* rt = bRenderTargetList.next;
+    if (rt == &bRenderTargetList) return;
+
+    do
+    {
+        // Create the color render-target texture: 1 level, RENDER_TARGET usage, DEFAULT pool.
+        HRESULT hr = bDisplayInfo.d3dDevice->CreateTexture(
+            (UINT)rt->width,
+            (UINT)rt->height,
+            1,                               // Levels
+            D3DUSAGE_RENDERTARGET,           // Usage
+            (D3DFORMAT)rt->rgbFormat,        // Color format
+            D3DPOOL_DEFAULT,                 // Pool
+            &rt->d3dTexture                  // Out
+        );
+
+        if (hr < 0)
+        {
+            const char* es = DXGetErrorString8A(hr);
+            bkPrintf("bResumeRenderTargets: CreateTexture failure on render target (%s)\n", es);
+        }
+        else
+        {
+            // If a depth/stencil was in use before, recreate it.
+            if (rt->d3dSurface) // note: matches the non-null check in the disasm
+            {
+                hr = bDisplayInfo.d3dDevice->CreateDepthStencilSurface(
+                    (UINT)rt->width,
+                    (UINT)rt->height,
+                    (D3DFORMAT)rt->zFormat,
+                    D3DMULTISAMPLE_NONE,
+                    &rt->d3dSurface
+                );
+
+                if (hr < 0)
+                {
+                    const char* es = DXGetErrorString8A(hr);
+                    bkPrintf("bResumeRenderTargets: CreateTexture failure on depth/stencil buffer (%s)\n", es);
+                }
+            }
+
+            // Grab surface level 0 from the color RT texture.
+            if (rt->d3dTexture)
+            {
+                hr = rt->d3dTexture->GetSurfaceLevel(0, &rt->d3dZBuffer);
+                if (hr < 0)
+                {
+                    const char* es = DXGetErrorString8A(hr);
+                    bkPrintf("bResumeRenderTargets: GetSurfaceLevel failure (%s)\n", es);
+                }
+            }
+        }
+
+        rt = rt->next;
+    }
+    while (rt != &bRenderTargetList);
 }
 
 /*	--------------------------------------------------------------------------------

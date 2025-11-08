@@ -57,47 +57,49 @@ static int         bGroupSP = 0;
 // ********************************************************************************
 // Local Helpers
 
-// Insert a FREE block into the free-list sorted by ascending offset.
-/* Derived from original ConnectFreeBlock implementation. */
-/* :contentReference[oaicite:0]{index=0} */
+// Insert a FREE block into the free-list sorted by ascending offset
 static void ConnectFreeBlock(THeapBlock *blk)
 {
-	THeapBlock *tail = bFreeRoot.freePrev;
+    THeapBlock* tail = bFreeRoot.freePrev;
+    if (tail == &bFreeRoot) {
+        // empty list -> make blk both head and tail
+        bFreeRoot.freeNext = blk;
+        bFreeRoot.freePrev = blk;
+        blk->freeNext = &bFreeRoot;
+        blk->freePrev = &bFreeRoot;
+        return;
+    }
 
-	if (tail == &bFreeRoot)
-	{
-		// First free block in the list
-		bFreeRoot.freeNext = blk;
-		bFreeRoot.freePrev = blk;
-		blk->freeNext = &bFreeRoot;
-		blk->freePrev = &bFreeRoot;
-		return;
-	}
+    THeapBlock* cur = tail;
+    const int key = (int)blk->offset; // signed compares per JGE/JG
 
-	// Walk backwards until we find prev < blk <= curr by offset, or we wrap
-	THeapBlock *cur = bFreeRoot.freePrev;
-	while ( !( ( (int)cur->offset <  (int)blk->offset ) &&
-	           ( (cur->freeNext == &bFreeRoot) || ((int)blk->offset <= (int)cur->freeNext->offset) ) ) )
-	{
-		cur = cur->freePrev;
-		if (cur == &bFreeRoot)
-		{
-			// Insert at tail
-			blk->freePrev = bFreeRoot.freePrev;
-			blk->freeNext = &bFreeRoot;
-			bFreeRoot.freePrev->freeNext = blk;
-			blk->freeNext->freePrev = blk;
-			return;
-		}
-	}
+    for (;;) {
+        // cur->offset < key ?
+        if ((int)cur->offset < key) {
+            THeapBlock* prev = cur->freePrev;
+            // prev == root || prev->offset > key ?
+            if (prev == &bFreeRoot || (int)prev->offset > key) {
+                // insert between prev and cur
+                blk->freeNext = cur;
+                blk->freePrev = prev;
+                prev->freeNext = blk;
+                cur->freePrev  = blk;
+                return;
+            }
+        }
 
-	// Insert between cur and cur->freeNext
-	THeapBlock *prev = cur;
-	THeapBlock *next = cur->freeNext;
-	blk->freePrev = prev;
-	blk->freeNext = next;
-	prev->freeNext = blk;
-	next->freePrev = blk;
+        // step backward
+        cur = cur->freePrev;
+
+        // fall-through: append at tail if we wrapped to root
+        if (cur == &bFreeRoot) {
+            blk->freePrev      = tail;
+            blk->freeNext      = &bFreeRoot;
+            tail->freeNext     = blk;
+            bFreeRoot.freePrev = blk;
+            return;
+        }
+    }
 }
 
 // Unlink a block (free or used) from whichever list its freePrev/freeNext currently reference.
@@ -145,7 +147,6 @@ static THeapBlock* TryCoalesceNext(THeapBlock *blk)
 // - Small blocks are linked near their orderNext neighbor.
 // - Large blocks are linked near their orderPrev neighbor.
 /* Behavior mirrored from bkHeapAllocEx epilogue. */
-/* :contentReference[oaicite:1]{index=1} */
 static void LinkUsedBlock(THeapBlock *blk, uint userSizeAligned)
 {
 	THeapBlock *tail = bUsedSentinel.freePrev;
@@ -416,7 +417,7 @@ void *bkHeapAllocEx(uint size, char *file, int line, ushort flags, uint32 group,
 		int totalFree = (int)bHeapSize - (int)bBytesAllocated - (int)sizeof(THeapBlock);
 		bkPrintf("%s(%d): bkHeapAlloc: Out of memory asking for %u\n", file ? file : "?", line, (unsigned)userSize);
 		bkPrintf("bkHeapAlloc: (only %d bytes free; short by %d) (largest %d; short by %d)\n",
-			totalFree, (int)userSize - totalFree, largest, (int)userSize - largest); /* :contentReference[oaicite:8]{index=8} */
+			totalFree, (int)userSize - totalFree, largest, (int)userSize - largest);
 		return 0;
 	}
 
@@ -446,7 +447,7 @@ void *bkHeapAllocEx(uint size, char *file, int line, ushort flags, uint32 group,
 			fit->size = need;
 
 			// Link new remainder into free-list and try coalescing with previous
-			ConnectFreeBlock(rem);                  /* :contentReference[oaicite:9]{index=9} */
+			ConnectFreeBlock(rem);
 			THeapBlock *prev = rem->orderPrev;
 			if (prev != bFirstBlock && prev->used == 0)
 			{
@@ -457,7 +458,7 @@ void *bkHeapAllocEx(uint size, char *file, int line, ushort flags, uint32 group,
 				rem->size += rem->orderPrev->size;
 				THeapBlock *opp = rem->orderPrev->orderPrev;
 				rem->orderPrev = opp;
-				opp->orderNext = rem;              /* :contentReference[oaicite:10]{index=10} */
+				opp->orderNext = rem;
 			}
 			blk = fit;
 		}
@@ -501,7 +502,7 @@ void *bkHeapAllocEx(uint size, char *file, int line, ushort flags, uint32 group,
 				UnlinkListNode(fit);
 				fit->orderNext->size += fit->size;
 				fit->orderNext->orderPrev = fit->orderPrev;
-				fit->orderPrev->orderNext = fit->orderNext;   /* :contentReference[oaicite:11]{index=11} */
+				fit->orderPrev->orderNext = fit->orderNext;
 			}
 			blk = take;
 		}
@@ -518,7 +519,7 @@ void *bkHeapAllocEx(uint size, char *file, int line, ushort flags, uint32 group,
 	blk->used  = 1;
 	blk->flags = flags;
 
-	LinkUsedBlock(blk, userSize); /* :contentReference[oaicite:12]{index=12} */
+	LinkUsedBlock(blk, userSize);
 
 	return (void*)(blk + 1);
 }
@@ -549,9 +550,15 @@ void *bkHeapCalloc(uint size, int32 value, char *file, int line, ushort flags)
 
 void *bkHeapCallocEx(uint size, int32 value, char *file, int line, ushort flags, uint32 group)
 {
-        bkPrintf("*** WARNING *** bkHeapCallocEx was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return NULL;
+    // Allocate with the exact parameter order observed (last implicit arg = 0)
+    void* p = bkHeapAllocEx(size, file, line, flags, group, 0);
+    if (p) {
+        // Fill using the low byte of 'value' (same effect as the REP STOSD/STOSB path)
+        memset(p, (int)value, size);
+    }
+    return p;
 }
+
 
 
 /* --------------------------------------------------------------------------------
@@ -566,56 +573,61 @@ void bkHeapFree(void* user)
 {
     if (!user) return;
 
-    THeapBlock* blk = (THeapBlock*)user - 1;
+    // header is exactly 0x20 bytes before user pointer
+    THeapBlock* blk = (THeapBlock*)((unsigned char*)user - 0x20);
 
-	if (blk->orderPrev == 0) {
-		free(blk);
-		return;
-	}
-
-    // Bookkeeping
-    if (blk->used) {
-        if (bBytesAllocated >= blk->size) bBytesAllocated -= blk->size;
-        else bBytesAllocated = 0;
+    // CRT-allocated chunk (orderPrev == NULL) -> free(header) and return
+    if (blk->orderPrev == NULL) {
+        free(blk);
+        return;
     }
 
-    // Remove from used-list
-    UnlinkListNode(blk);
+    // bookkeeping
+    bBytesAllocated -= blk->size;
 
-    // Mark free and insert into free list
-    blk->used  = 0;
-    blk->flags = 0;
-    blk->group = 0;
+    // unlink from current free ring (even if previously "used" – matches retail)
+    THeapBlock* prev = blk->freePrev;
+    THeapBlock* next = blk->freeNext;
+    prev->freeNext = next;
+    next->freePrev = prev;
 
+    // mark free
+    blk->used = 0;
+
+    // insert by offset into free ring
     ConnectFreeBlock(blk);
 
-    // Try to coalesce with right neighbor
-    THeapBlock* right = blk->orderNext;
-    if (right && right->used == 0) {
-        // Remove right from free list
-        right->freePrev->freeNext = right->freeNext;
-        right->freeNext->freePrev = right->freePrev;
+    // --- coalesce RIGHT (retail: first right, then left)
+    if (blk != bFirstBlock) {
+        THeapBlock* right = blk->orderNext;
+        if (right && right->used == 0) {
+            // absorb blk into right
+            right->size += blk->size;
 
-        // Merge sizes and order-links
-        blk->size += right->size;
-        blk->orderNext = right->orderNext;
-        if (right->orderNext) right->orderNext->orderPrev = blk;
+            // repair linear chain
+            right->orderPrev = blk->orderPrev;
+            blk->orderPrev->orderNext = right;
+
+            // move free "anchor" from blk to right (prev side only, as per asm)
+            right->freePrev = blk->freePrev;
+            blk->freePrev->freeNext = right;
+
+            blk = right; // continue with the merged block
+        }
     }
 
-    // Try to coalesce with left neighbor
+    // --- coalesce LEFT
     THeapBlock* left = blk->orderPrev;
-    if (left && left->used == 0) {
-        // Remove left from free list
-        left->freePrev->freeNext = left->freeNext;
-        left->freeNext->freePrev = left->freePrev;
+    if (left != bFirstBlock && left && left->used == 0) {
+        blk->size += left->size;
 
-        // Merge into left
-        left->size += blk->size;
-        left->orderNext = blk->orderNext;
-        if (blk->orderNext) blk->orderNext->orderPrev = left;
+        // repair linear chain
+        blk->orderPrev = left->orderPrev;
+        left->orderPrev->orderNext = blk;
 
-        // Re-insert the merged left (already in free list position logically)
-        blk = left;
+        // unlink left from free ring, reconnect prev -> blk
+        blk->freePrev = left->freePrev;
+        left->freePrev->freeNext = blk;
     }
 }
 
@@ -754,7 +766,7 @@ void *bkHeapRealloc(void *ptr, int32 newSize)
 			_Memory->size = needNew;
 
 			// Link new free space
-			ConnectFreeBlock(blk);              /* :contentReference[oaicite:18]{index=18} */
+			ConnectFreeBlock(blk);
 		}
 		return ptr;
 	}
@@ -771,8 +783,7 @@ void *bkHeapRealloc(void *ptr, int32 newSize)
 
 int bkHeapGetBlockSize(void *ptr)
 {
-        bkPrintf("*** WARNING *** bkHeapGetBlockSize was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    return *(int *)((int)ptr + -0x1c) + -0x20; // insert Knuckles idk meme
 }
 
 
@@ -899,8 +910,10 @@ void bkHeapSetBreakAlloc(uint32 blockId)
 
 int bkHeapGroupPush(const char * const group)
 {
-        bkPrintf("*** WARNING *** bkHeapGroupPush was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+	if (bGroupSP == 0x1f) return 0; // MG: what??????
+	bGroupSP++;
+	bGroupStack[bGroupSP] = (uint32)group;
+	return 1;
 }
 
 
@@ -914,8 +927,9 @@ int bkHeapGroupPush(const char * const group)
 
 int bkHeapGroupPop(void)
 {
-        bkPrintf("*** WARNING *** bkHeapGroupPop was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+	if (!bGroupSP) return 0;
+	bGroupSP--;
+	return 1;
 }
 
 
@@ -952,8 +966,7 @@ int bkHeapFreeSpace(int *largestFreeBlock /*=NULL*/)
 
 uint32 bGetCurrentGroup(void)
 {
-        bkPrintf("*** WARNING *** bGetCurrentGroup was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+	return bGroupStack[bGroupSP];
 }
 
 

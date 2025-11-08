@@ -67,44 +67,44 @@ typedef enum EBTextureMatrixType
 
 // texture data container
 
-typedef struct {
-	//D3DTexture				header;					// texture header
-	int						delay;					// anim delay for this frame
-} TBTextureData;
+typedef struct _TBTextureData {
+	IDirect3DTexture8*		header;	// texture header / D3D8 COM texture [0x00]
+	int32					delay;	// anim delay for this frame         [0x04]
+} TBTextureData; // sizeof = 0x08
 
 
 // a texture record
 typedef struct _TBTexture {
-	TBResourceInfo			resInfo;				// global resource info
+	TBResourceInfo			resInfo;				// global resource info                          [0x00]
 
-	//D3DTexture				*curFrame;				// current frame header
-	TBTextureData			*frame;					// textures for each frame
-	int32					totalArea;				// total area of a single frame (including mips)
-	ushort					format;					// texture format
-	ushort					xDim;					// texture width
+	IDirect3DTexture8*		curFrame;				// current frame handle                          [0x20]
+	IDirect3DTexture8**		frames;					// frames array (D3D surfaces per frame)         [0x24]
 
-	ushort					yDim;					// texture height
-	ushort					flags;					// flags
-	ushort					curFrameNumber;			// current frame number
-	uchar					mipLevels;				// mipmap levels
-	uchar					noofFrames;				// #frames
-	int32					animDuration;			// total anim duration
-	uchar					alphaBlendMode;			// alpha blend mode (see BDALPHABLENDMODE_)
-	uchar					bpp;					// bits per pixel
-	uchar					pad[2];					// important for srtucture alignment
+	void*					loadDesc;				// loader-side descriptor (TODO: TBTextureLoadDesc*) [0x28]
+	int32					totalArea;				// loader scratch/accumulator                    [0x2C]
 
-	//D3DPalette				d3dPalette;				// D3D palette interface (paletted formats only, 12 bytes)
-	TBTextureCallback		setCallback;			// called when this texture is set
+	ushort					format;					// internal format tag (EBTextureFormat)         [0x30]
+	ushort					xDim;					// width                                         [0x32]
+	ushort					yDim;					// height                                        [0x34]
+	ushort					UNKNOWN;				// TODO: flags/stride? (used as row width in pal pass) [0x36]
 
-	void					*setContext;			// context for setCallback function
-	TBTextureCallback		unsetCallback;			// called when this texture is unset
-	void					*unsetContext;			// context for unsetCallback function
-	void					*lastLockPtr;			// ptr from last lock
+	void*					palHeapBase;			// pointer to 32-bit palette table(s)            [0x38]
+	void*					indexStream;			// pointer to 4bpp/8bpp index stream             [0x3C]
 
-	void					*lastPaletteLockPtr;	// ptr to last locked palette
-	uchar					pad4[12];
+	ushort					currentFrame;			// current frame index                           [0x40]
+	uchar					mipLevels;				// mip level count                               [0x42]
+	uchar					noofFrames;				// number of frames                              [0x43]
 
-	uchar					pad5[16];				// pad to 128 bytes to keep texture data alignment
+	void*					frameMeta;				// per-frame offsets (palette/index row pitch)   [0x44]
+	uint32					loaderTag;				// loader/runtime tag                            [0x48]
+
+	uchar					alphaBlendMode;			// alpha blend mode                              [0x4C]
+	uchar					pad[3];					// used by loader math (don’t remove)            [0x4D]
+
+	TBTextureCallback		setCallback;			// per-bind callback                             [0x50]
+	void*					setContext;				// user context for setCallback                  [0x54]
+	TBTextureCallback		unsetCallback;			// per-unbind callback                           [0x58]
+	void*					unsetContext;			// user context for unsetCallback                [0x5C]
 } TBTexture;
 
 
@@ -366,7 +366,7 @@ void bdSetNoTexture(int stage);
    Info : 
 */
 
-void bFixupTexture(TBTexture *texture);
+TBTexture *bFixupTexture(void *fileData);
 
 
 /* --------------------------------------------------------------------------------
@@ -387,13 +387,15 @@ __inline void bSetTextureLite(int stage, TBTexture *handle);
    Returns : delay value
    Info : 
 */
-
+// MG: WE DON'T HAVE ANY FRAME DELAY! Is it my fault btw...?
+/*
 BINLINE int bGetTextureFrameDelay(TBTexture *texturePtr, int frameNumber)
 {
 	BASSERT(BASSERT_GENERAL, texturePtr != NULL && frameNumber < texturePtr->noofFrames, "bGetTextureFrameDelay: texturePtr == NULL (%#x) or frameNumber specified (%d) >= texturePtr->noofFrames (%d)\n", texturePtr, frameNumber, texturePtr->noofFrames);
 
 	return texturePtr->frame[frameNumber].delay;
 }
+/*
 
 /* --------------------------------------------------------------------------------
    Function : bdScrollTexture

@@ -118,6 +118,19 @@ int baDrawActorInstance(TBActorInstance *actorInstance, int alpha, int flags)
 }
 
 /*	--------------------------------------------------------------------------------
+	Function : bLoadActorByCRC
+	Purpose : load an actor from storage
+	Parameters : package index, crc
+	Returns : ptr to actor instance or NULL for failure
+	Info : 
+*/
+TBActor *bLoadActorByCRC(TBPackageIndex *index, uint32 crc)
+{
+	bkPrintf("*** WARNING *** bLoadActorByCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    return 0;
+}
+
+/*	--------------------------------------------------------------------------------
 	Function : bDeleteActor
 	Purpose : delete an actor
 	Parameters : ptr to actor

@@ -165,8 +165,10 @@ void bmVectorScaleToLength4(TBVector dest, const TBVector src, const float lengt
 
 void bmVectorLerp(TBVector dest, const TBVector src1, const TBVector src2, const float t)
 {
-        bkPrintf("*** WARNING *** bmVectorLerp was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    const float s = 1.0f - t;
+    dest[0] = t * src2[0] + s * src1[0];
+    dest[1] = t * src2[1] + s * src1[1];
+    dest[2] = t * src2[2] + s * src1[2];
 }
 
 

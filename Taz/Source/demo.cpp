@@ -2333,15 +2333,59 @@ bool AttractInterruptButton(void)
 
 void DrawLegalSplashScreen()
 {
+#ifdef SPLASH_TEST // MG: that's mine! milestone #2 and some shit u know
+	bool flag = FALSE;
+	for (int i = 0; i < 35; i++) {
+#endif
 	if (videoMode.flags & BDISPLAYFLAG_NTSC)
 	{
 		camera[0].fade.StartFadeUp(FADETYPE_NORMAL,1);
-		
+#ifndef SPLASH_TEST
 #ifdef STANDALONE
 		LoadSplashScreen(&gameStatus.splashScreen,"legal.bmp","splshscr");
 #else
 		LoadSplashScreen(&gameStatus.splashScreen,"legal2.bmp","splshscr");
 #endif
+#else
+		switch(i){
+		case 0: LoadSplashScreen(&gameStatus.splashScreen, "bonus.bmp", "splshscr"); break;
+		case 1: LoadSplashScreen(&gameStatus.splashScreen, "boss.bmp", "splshscr"); break;
+		case 2: LoadSplashScreen(&gameStatus.splashScreen, "credits.bmp", "splshscr"); break;
+		case 3: LoadSplashScreen(&gameStatus.splashScreen, "demo00.bmp", "splshscr"); break;
+		case 4: LoadSplashScreen(&gameStatus.splashScreen, "demo01.bmp", "splshscr"); break;
+		case 5: LoadSplashScreen(&gameStatus.splashScreen, "demo02.bmp", "splshscr"); break;
+		case 6: LoadSplashScreen(&gameStatus.splashScreen, "demo03.bmp", "splshscr"); break;
+		case 7: LoadSplashScreen(&gameStatus.splashScreen, "demo04.bmp", "splshscr"); break;
+		case 8: LoadSplashScreen(&gameStatus.splashScreen, "demo05.bmp", "splshscr"); break;
+		case 9: LoadSplashScreen(&gameStatus.splashScreen, "demo06.bmp", "splshscr"); break;
+		case 10: LoadSplashScreen(&gameStatus.splashScreen, "gallery.bmp", "splshscr"); break;
+		case 11: LoadSplashScreen(&gameStatus.splashScreen, "guide.bmp", "splshscr"); break;
+		case 12: LoadSplashScreen(&gameStatus.splashScreen, "languageselect.bmp", "splshscr"); break;
+		case 13: LoadSplashScreen(&gameStatus.splashScreen, "legal.bmp", "splshscr"); break;
+		case 14: LoadSplashScreen(&gameStatus.splashScreen, "legal2.bmp", "splshscr"); break;
+		case 15: LoadSplashScreen(&gameStatus.splashScreen, "shewins.bmp", "splshscr"); break;
+		case 16: LoadSplashScreen(&gameStatus.splashScreen, "splash.bmp", "splshscr"); break;
+		case 17: LoadSplashScreen(&gameStatus.splashScreen, "splash02.bmp", "splshscr"); break;
+		case 18: LoadSplashScreen(&gameStatus.splashScreen, "splash04.bmp", "splshscr"); break;
+		case 19: LoadSplashScreen(&gameStatus.splashScreen, "splash5.bmp", "splshscr"); break;
+		case 20: LoadSplashScreen(&gameStatus.splashScreen, "splashnildraw.bmp", "splshscr"); break;
+		case 21: LoadSplashScreen(&gameStatus.splashScreen, "splashnilone.bmp", "splshscr"); break;
+		case 22: LoadSplashScreen(&gameStatus.splashScreen, "splashonedraw.bmp", "splshscr"); break;
+		case 23: LoadSplashScreen(&gameStatus.splashScreen, "splashonenil.bmp", "splshscr"); break;
+		case 24: LoadSplashScreen(&gameStatus.splashScreen, "tazwins.bmp", "splshscr"); break;
+		case 25: LoadSplashScreen(&gameStatus.splashScreen, "maps\\aqua.bmp", "splshscr"); break;
+		case 26: LoadSplashScreen(&gameStatus.splashScreen, "maps\\contruct.bmp", "splshscr"); break;
+		case 27: LoadSplashScreen(&gameStatus.splashScreen, "maps\\deptstr.bmp", "splshscr"); break;
+		case 28: LoadSplashScreen(&gameStatus.splashScreen, "maps\\ghost.bmp", "splshscr"); break;
+		case 29: LoadSplashScreen(&gameStatus.splashScreen, "maps\\goldmine.bmp", "splshscr"); break;
+		case 30: LoadSplashScreen(&gameStatus.splashScreen, "maps\\grandc.bmp", "splshscr"); break;
+		case 31: LoadSplashScreen(&gameStatus.splashScreen, "maps\\icedome.bmp", "splshscr"); break;
+		case 32: LoadSplashScreen(&gameStatus.splashScreen, "maps\\museum.bmp", "splshscr"); break;
+		case 33: LoadSplashScreen(&gameStatus.splashScreen, "maps\\safari.bmp", "splshscr"); break;
+		case 34: LoadSplashScreen(&gameStatus.splashScreen, "maps\\tazhub.bmp", "splshscr"); if (!flag) {i = 0; flag = TRUE;} break;
+		}
+#endif
+
 		
 		TBTimerValue	startTime, finishTime;
 		
@@ -2383,6 +2427,13 @@ void DrawLegalSplashScreen()
 			
 			Flip(0, 0, 0, 128);
 		}
+#ifdef SPLASH_TEST
+		while (elapsedTime < 1.0f);
+#else
 		while (elapsedTime < 5.0f);
+#endif
 	}
 }
+#ifdef SPLASH_TEST
+}
+#endif

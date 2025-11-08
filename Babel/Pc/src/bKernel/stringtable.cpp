@@ -9,6 +9,72 @@
 #include <babel.h>
 
 // ********************************************************************************
+// Locals
+
+static const char* bLanguageCodes[] = {
+    "uk", "f", "d", "e", "it", "nl", "sw", "fin", "n", "dk", "us", "jp"
+};
+
+// ********************************************************************************
+// Helper Functions
+
+ushort *bStringPrintFormat(ushort* dst, wchar_t conv, int width, int precision, int zero_pad, va_list* argp)
+{
+	// MG: Basically if you look at this function in Ghidra you'll see that it was most likely an
+	// MG: assembly function. I'm not gonna waste my time on that, recreated this function with
+	// MG: _snwprintf in mind.
+    if (!dst) return dst;
+
+    // Build a minimal wide printf format like L"%0*.*d"
+    wchar_t fmt[16];
+    wchar_t* f = fmt;
+    *f++ = L'%';
+    if (zero_pad) *f++ = L'0';
+    *f++ = L'*';
+    *f++ = L'.';
+    *f++ = L'*';
+    *f++ = conv;
+    *f++ = 0;
+
+    // Choose default precision for floats if not specified
+    int p = precision;
+    if (p < 0 && (conv==L'f'||conv==L'e'||conv==L'g'||conv==L'F'||conv==L'E'||conv==L'G')) p = 6;
+    if (p < 0) p = 0;
+
+    wchar_t tmp[256];
+    tmp[0] = 0;
+
+    switch (conv) {
+        case L'd': case L'i': {
+            // Default integral promotion is int; wide printf handles %d
+            int v = va_arg(*argp, int);
+            _snwprintf(tmp, sizeof(tmp)/sizeof(tmp[0]), fmt, width, p, v);
+        } break;
+        case L'u': case L'x': case L'X': {
+            uint v = va_arg(*argp, uint);
+            _snwprintf(tmp, sizeof(tmp)/sizeof(tmp[0]), fmt, width, p, v);
+        } break;
+        case L'f': case L'e': case L'g': case L'F': case L'E': case L'G': {
+            double v = va_arg(*argp, double);
+            _snwprintf(tmp, sizeof(tmp)/sizeof(tmp[0]), fmt, width, p, v);
+        } break;
+        default: {
+            // Fallback: emit literal % + conv
+            *dst++ = (ushort)L'%';
+            if (conv) *dst++ = (ushort)conv;
+            *dst = 0;
+            return dst;
+        }
+    }
+
+    const wchar_t* r = tmp;
+    while (*r) *dst++ = (ushort)*r++;
+    *dst = 0;
+    return dst;
+}
+
+
+// ********************************************************************************
 // Function Implementations
 
 /* --------------------------------------------------------------------------------
@@ -21,8 +87,10 @@
 
 uint32 bkFixStringTableCRC(uint32 crc)
 {
-        bkPrintf("*** WARNING *** bkFixStringTableCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    char buffer[8];
+    const char* langCode = bLanguageCodes[bLanguage];
+    sprintf(buffer, ".%s", langCode);
+    return bkCRC32((uchar *)buffer, strlen(buffer), crc);
 }
 
 
@@ -36,8 +104,34 @@ uint32 bkFixStringTableCRC(uint32 crc)
 
 TBStringTable *bLoadStringTableByCRC(TBPackageIndex *pakIndex, uint32 crc)
 {
-        bkPrintf("*** WARNING *** bLoadStringTableByCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return NULL;
+    // Load raw blob: [TBStringTable header][TBStringTableString array][...strings block...]
+    TBStringTable* stringTable = (TBStringTable*)bkLoadFileByCRC(pakIndex, crc, 0, 0, 0, 0);
+    if (!stringTable)
+        return 0;
+
+    // Point to the array that immediately follows the header
+    stringTable->strings = (TBStringTableString*)((char*)stringTable + sizeof(TBStringTable));
+
+    // One-time fixups: convert stored offsets into absolute pointers
+    if ((stringTable->flag & 1) == 0) {
+        const char* base = (const char*)stringTable;
+        TBStringTableString* s = stringTable->strings;
+        const int count = stringTable->noofStrings;
+
+        for (int i = 0; i < count; ++i) {
+            // string: always an offset into this blob
+            s[i].string = (ushort*)(base + (unsigned int)s[i].string);
+
+            // audioFilename: fix only if present (0 means "none")
+            if (s[i].audioFilename) {
+                s[i].audioFilename = (char*)(base + (unsigned int)s[i].audioFilename);
+            }
+        }
+
+        stringTable->flag |= 1; // mark as fixed
+    }
+
+    return stringTable;
 }
 
 
@@ -51,8 +145,12 @@ TBStringTable *bLoadStringTableByCRC(TBPackageIndex *pakIndex, uint32 crc)
 
 void bDeleteStringTable(TBStringTable *tablePtr)
 {
-        bkPrintf("*** WARNING *** bDeleteStringTable was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    if (!tablePtr) return;
+
+    // Free only if not 'Loaded'
+    if (!tablePtr->resInfo.packageId.loaded) {
+        bkHeapFree(tablePtr);
+    }
 }
 
 
@@ -66,8 +164,21 @@ void bDeleteStringTable(TBStringTable *tablePtr)
 
 char *bkString16to8(char *dest, const ushort *src)
 {
-        bkPrintf("*** WARNING *** bkString16to8 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return NULL;
+    char* start = dest;
+
+    if (*src == 0) {
+        *dest = '\0';
+        return start;
+    }
+    
+    do {
+        *dest = (char)*src;
+        src++;
+        dest++;
+    } while (*src != 0);
+
+    *dest = '\0';
+    return start;
 }
 
 
@@ -81,13 +192,22 @@ char *bkString16to8(char *dest, const ushort *src)
 
 ushort *bkString8to16(ushort *dest, const char * src)
 {
-        bkPrintf("*** WARNING *** bkString8to16 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    ushort* start = dest;
+
+    while (*src != 0) {
+        *dest = (ushort)(uchar)*src;
+        src++;
+        dest++;
+    }
+
+    *dest = 0;
+
+    return start;
 }
 
 ushort *bkString8to16(ushort *dest, const uchar * src)
 {
-        bkPrintf("*** WARNING *** bkString8to16 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+        bkPrintf("*** WARNING *** bkString8to16 #2 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -102,8 +222,15 @@ ushort *bkString8to16(ushort *dest, const uchar * src)
 
 int bkStringLength16(const ushort *str)
 {
-        bkPrintf("*** WARNING *** bkStringLength16 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    const ushort* p = str;
+    ushort c;
+
+    do {
+        c = *p;
+        p++;
+    } while (c != 0);
+
+    return (((int)p - (int)str) / 2) - 1;
 }
 
 
@@ -117,8 +244,17 @@ int bkStringLength16(const ushort *str)
 
 ushort *bkStringCopy16(ushort *dst, const ushort *src)
 {
-        bkPrintf("*** WARNING *** bkStringCopy16 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    ushort* start = dst;
+    ushort c;
+
+    do {
+        c = *src;
+        *dst = c;
+        src++;
+        dst++;
+    } while (c != 0);
+
+    return start;
 }
 
 
@@ -147,9 +283,97 @@ int bkStringCompare16(const ushort *src, const ushort *dst, int length)
 
 int bkStringVSprintf16(ushort *target, const ushort *format, va_list argp)
 {
-        bkPrintf("*** WARNING *** bkStringVSprintf16 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    if (!target || !format) return 0;
+    const ushort* f = format;
+    ushort* out = target;
+
+    while (*f) {
+        ushort ch = *f++;
+        if (ch != (ushort)L'%') {
+            *out++ = ch;
+            continue;
+        }
+
+        // Parse flags: support only '0' (zero padding)
+        int zero_pad = 0;
+        if (*f == (ushort)L'0') { zero_pad = 1; ++f; }
+
+        // Parse width
+        int width = 0;
+        while (*f >= (ushort)L'0' && *f <= (ushort)L'9') {
+            width = width * 10 + (int)(*f - (ushort)L'0');
+            ++f;
+        }
+
+        // Parse precision: .<digits>
+        int precision = -1;
+        if (*f == (ushort)L'.') {
+            ++f;
+            precision = 0;
+            while (*f >= (ushort)L'0' && *f <= (ushort)L'9') {
+                precision = precision * 10 + (int)(*f - (ushort)L'0');
+                ++f;
+            }
+        }
+
+        // Length modifier (kept for compatibility, but not used directly here)
+        if (*f == (ushort)L'l' || *f == (ushort)L'h') {
+            ++f; // ignore; bStringPrintFormat will read the promoted types
+        }
+
+        // Conversion
+        wchar_t conv = (wchar_t)(*f ? *f++ : 0);
+
+        switch (conv) {
+            case L'%': {
+                *out++ = (ushort)L'%';
+            } break;
+
+            case L'c': {
+                int v = va_arg(argp, int);
+                *out++ = (ushort)(v & 0xFFFF);
+            } break;
+
+            case L's': { // narrow string -> widen 1:1 into UTF-16
+                const char* s = va_arg(argp, const char*);
+                if (!s) s = "(null)";
+                int n = 0;
+                if (precision >= 0) {
+                    while (*s && n < precision) { *out++ = (uchar)*s++; ++n; }
+                } else {
+                    while (*s) { *out++ = (uchar)*s++; }
+                }
+            } break;
+
+            case L'S': { // already UTF-16
+                const ushort* ws = va_arg(argp, const ushort*);
+                if (!ws) { const wchar_t* wnull = L"(null)"; while (*wnull) *out++ = (ushort)*wnull++; break; }
+                int n = 0;
+                if (precision >= 0) {
+                    while (*ws && n < precision) { *out++ = *ws++; ++n; }
+                } else {
+                    while (*ws) { *out++ = *ws++; }
+                }
+            } break;
+
+            // numeric / floating-point go through the single-specifier formatter
+            case L'd': case L'i': case L'u': case L'x': case L'X':
+            case L'f': case L'e': case L'g': case L'F': case L'E': case L'G': {
+                out = bStringPrintFormat(out, conv, width, precision, zero_pad, &argp);
+            } break;
+
+            default: {
+                // Unknown specifier: emit verbatim
+                *out++ = (ushort)L'%';
+                if (conv) *out++ = (ushort)conv;
+            } break;
+        }
+    }
+
+    *out = 0; // null-terminate
+    return (int)(out - target);
 }
+
 
 
 /* --------------------------------------------------------------------------------
@@ -165,7 +389,7 @@ int bkStringVSprintf16(ushort *target, const ushort *format, va_list argp)
 
 int bkStringSprintf16(ushort *target, const ushort *format, ...)
 {
-        bkPrintf("*** WARNING *** bkStringSprintf16 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+        bkPrintf("*** WARNING *** bkStringSprintf16 #1 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -180,7 +404,7 @@ int bkStringSprintf16(ushort *target, const ushort *format, ...)
 
 int bkStringVSprintf16(ushort *target, const char *format, va_list argp)
 {
-        bkPrintf("*** WARNING *** bkStringVSprintf16 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+        bkPrintf("*** WARNING *** bkStringVSprintf16 #2 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 
@@ -198,7 +422,7 @@ int bkStringVSprintf16(ushort *target, const char *format, va_list argp)
 
 int bkStringSprintf16(ushort *target, const char *format, ...)
 {
-        bkPrintf("*** WARNING *** bkStringSprintf16 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+        bkPrintf("*** WARNING *** bkStringSprintf16 #2 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return 0;
 }
 

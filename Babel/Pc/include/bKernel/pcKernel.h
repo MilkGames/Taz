@@ -72,8 +72,6 @@ extern TBOSEvent	bOSEvents[BMAXOSEVENTS];		// OS event list
 extern HANDLE		bOSEventHandles[BMAXOSEVENTS];	// OS event handle array
 extern int			bNoofOSEvents;					// #OS events in array
 extern uint32		bBkInitFlags;					// flags used when bkInit was called
-//extern LAUNCH_DATA	bXBLaunchData;					// Xbox launch info
-extern DWORD		bXBLaunchType;					// type of launch info
 extern int			bForceUseSystemHeap;			// set to force use of system heap
 
 extern int			bForceStandardMallocFree;		// set to force use of standard malloc and free
@@ -140,6 +138,15 @@ void bDeleteOSEvent(HANDLE event);
 
 void bHandleOSEvents();
 
+/* --------------------------------------------------------------------------------
+	Function : bPumpMessages
+	Purpose : pump and dispatch pending OS window messages (non-blocking)
+	Parameters :
+	Returns :
+	Info : processes all queued messages
+*/
+
+void bPumpMessages();
 
 /* --------------------------------------------------------------------------------
    Function : bkRun

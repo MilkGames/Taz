@@ -18,12 +18,14 @@
 
 // a splash resource
 typedef struct _TBSplash {
-	TBResourceInfo			resInfo;			// resource info header
-
-	int32					xDim;				// image width
-	int32					yDim;				// image height
-	uchar					*data[2];			// data fields
-} TBSplash;
+    TBResourceInfo   resInfo;           // 0x00..0x1F (32 bytes). First dword used as sentinel on failure
+    int32            xRes;              // 0x20
+    int32            yRes;              // 0x24
+    uchar*           data[2];           // 0x28
+    int              count;             // 0x30
+    uint32           crc[16];           // 0x34..0x73
+    TBTexture*       texture[16];       // 0x74..0xB3 (filled at runtime)
+} TBSplash; // total: 0xB4
 
 
 // ********************************************************************************

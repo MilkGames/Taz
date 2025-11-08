@@ -97,11 +97,8 @@ extern uint _end;
 #include "subtitle.h"
 
 #if(BPLATFORM == PC)
-//#include "binkVideo.h"				// NH: Bink video routines
-#endif
-
-#if(BPLATFORM == PC)
-//#include "binkVideo.h"				// NH: Bink video routines
+  #include "bink.h"				// NH: Bink video routines
+  #include "bink_dynload.h"     // MG: nice and clean binkw32.dll wrapper
 #endif
 
 #if(BPLATFORM == PS2)
@@ -312,7 +309,7 @@ void rollMain(void *context);
 void Main(void *context)
 {
 #ifdef SUGAR_COATED_CRASHES
-#ifdef _MASTER
+//#ifdef _MASTER // MG: I removed this, because... yeah!!!
 #if BPLATFORM!=PS2	// TP: Not on PS2, exception handling takes up to 250k apparently so I have disabled it
 	// PP: Should the unthinkable happen - should the final game crash for any reason -
 	// PP: let's put up the "damaged disk" message.
@@ -320,7 +317,7 @@ void Main(void *context)
 	try
 	{
 #endif
-#endif// PP: def _MASTER
+//#endif// PP: def _MASTER
 #endif// PP: def SUGAR_COATED_CRASHES
 
 	bool exitGameIntro=false;
@@ -1219,18 +1216,20 @@ void Main(void *context)
 #endif // NH: #if BPLATFORM == PC
 
 #ifdef SUGAR_COATED_CRASHES
-#ifdef _MASTER
+//#ifdef _MASTER // MG: see above
 #if BPLATFORM!=PS2	// TP: Not on PS2, exception handling takes up to 250k apparently so I have disabled it
 	}
 	catch(...)
 	{
+		//bkPrintf("*** FATAL ERROR! *** ", err);
 		// PP: Should the unthinkable happen - should the final game crash for any reason -
 		// PP: let's put up the "damaged disk" message.
 		// PP: It's a whole lot prettier than a frozen screen!
 		badDisk();
+		
 	}
 #endif
-#endif// PP:  _MASTER
+//#endif// PP:  _MASTER
 #endif// PP: def SUGAR_COATED_CRASHES
 
 }// PP: end func 'main'
@@ -3273,6 +3272,151 @@ char* strcatf(char * const buffer, const char * const format, ...)
 	return buffer;
 }
 
+#if BPLATFORM == PC
+
+// MG: so! actually our bink headers can be outdated/too new for this
+// it's not a good approach to actually call for struct params
+// if you can't tell for sure if they're valid or not
+// that's why you can undefine this in case of any problems
+// but right now it works just fine
+#define BINK_EXPOSE_MINIMAL_FIELDS
+
+int BinkShowFrame(HBINK bink, U32 surfType)
+{
+    // Decompress the next frame to Bink's internal buffer
+    BinkDoFrame(bink);
+
+    // Render it to the backbuffer
+    if (bdBeginScene() == 1)
+    {
+        IDirect3DSurface8* bb = bDisplayInfo.backBuffer;
+        if (bb)
+        {
+            D3DLOCKED_RECT lr;
+            HRESULT hr;
+
+            // Lock the backbuffer. The decompiled loop retried until success
+            for (;;)
+            {
+                hr = bb->LockRect(&lr, NULL, 0);
+                if (SUCCEEDED(hr)) break;
+                // Very defensive: spin until we get it (matches the binary behavior)
+                hr = bb->LockRect(&lr, NULL, 0);
+                if (SUCCEEDED(hr)) break;
+            }
+
+            // Copy the frame into the backbuffer memory
+            // Params: (bink, destBits, destPitch, destHeight, destX, destY, destFormat)
+            // Using full-surface copy at (0,0), height = screen height, format = surfType
+            U32 ok = BinkCopyToBuffer(
+                bink,
+                lr.pBits,
+                (S32)lr.Pitch,
+                (U32)videoMode.yScreen,
+                0, 0,
+                surfType);
+
+            bb->UnlockRect();
+            bdEndScene();
+
+            // If Bink had to block (e.g., waiting on vsync path), advance frame with an extra flip
+            if (ok == 0)
+                bdFlip(0, 0, 0, 0, 1);
+        }
+    }
+
+#ifdef BINK_EXPOSE_MINIMAL_FIELDS
+    // Stop when we've displayed the last frame
+    if (bink->Frames <= bink->FrameNum)
+        return 0;
+#endif
+
+    // Advance to the next frame
+    BinkNextFrame(bink);
+    return 1;
+}
+
+U32 binkPlayVideo(char* video, IDirect3DSurface8* surface)
+{
+	if (!Bink_LoadDLL("binkw32.dll")) {
+		bkAlert("binkw32.dll was not found!");
+		return 0;
+	}
+
+    U32 surfType;
+    HBINK bnk;
+    S32 shouldWait;
+    int done = 0;
+
+    // Clear a couple of frames
+    bdFlip(0, 0, 0, 0, 1);
+    bdFlip(0, 0, 0, 0, 1);
+
+    // Query Bink pixel format corresponding to the D3D8 surface
+    surfType = BinkDX8SurfaceType(surface);
+    if ((surfType == 0) || (surfType == 0xFFFFFFFF))
+    {
+        bkPrintf("*** Error *** Bink does not support the supplied surface type\n");
+        return 0;
+    }
+
+    // Hook up sound (DirectSound)
+    BinkSetSoundSystem(BinkOpenDirectSound, 0);
+
+    // Open the movie
+    bnk = BinkOpen(video, 0);
+    if (!bnk)
+    {
+        bkPrintf("*** Error *** Bink couldn't open the \"%s\" file\n", video);
+        return 0;
+    }
+
+    bkPrintf("Started Playing Video \"%s\"\n", video);
+
+    // log whether we could double-size to screen
+    // needs minimal public fields in BINK (Width/Height)
+#ifdef BINK_EXPOSE_MINIMAL_FIELDS
+    if ((U32)videoMode.xScreen < (bnk->Width << 1) ||
+        (U32)videoMode.yScreen < (bnk->Height << 1))
+        bkPrintf("Standard Height And Width for this Bink video\n");
+    else
+        bkPrintf("Double Height And Width for this Bink video\n");
+#endif
+
+    // Make sure target is cleared before first copy
+    bdSetRenderState(BDRENDERSTATE_CLEAR, 0, 0);
+
+    // Main loop
+    for (;;)
+    {
+        if (done) break;
+
+        // BinkWait returns 0 when it's time to decompress the next frame
+        shouldWait = BinkWait(bnk);
+        if (shouldWait == 0)
+        {
+            // Decode + blit one frame; returns 0 when the last frame was just drawn
+            if (!BinkShowFrame(bnk, surfType))
+                done = 1;
+        }
+
+        // Game input pump
+        //biReadDevices();
+        //UpdateMousePointer(&mouse);
+		//MG: todo on skipping
+    }
+
+    // Final clear (the original set CLEAR with 0xFF at the end)
+    bdSetRenderState(BDRENDERSTATE_CLEAR, 0xFF, 0);
+
+    bkPrintf("Finished Playing Video \"%s\"\n", video);
+    BinkClose(bnk);
+	Bink_UnloadDLL();
+    return 1;
+}
+
+#endif
+
 // PP: TEMP DEBUG TEST - will remove
 int32	videoReturnCodes[8]= {	-100,
 								-100,
@@ -3321,8 +3465,7 @@ void doCorporateStuff()
 		for (vidNo=0;vidNo<numVideos;vidNo++)
 		{
 			// NH: Play the bink video
-			// MG: don't have bink libs :(
-			//if (!binkPlayVideo(videos[vidNo], bDisplayInfo.backBuffer))
+			if (!binkPlayVideo(videos[vidNo], bDisplayInfo.backBuffer))
 				bkPrintf("*** ERROR *** There was an error in displaying the \"%s\" Bink video\n", videos[vidNo]);
 		}
 	}

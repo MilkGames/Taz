@@ -63,8 +63,20 @@ uint32 bdGetRenderState(uint32 renderState, uint32 *value2)
 */
 void bdPushRenderState(uint32 state, uint32 value1, uint32 value2)
 {
-        bkPrintf("*** WARNING *** bdPushRenderState was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    // Read current stack depth for this render state.
+    int depth = bRenderState.stateStackDepth[state];
+
+    // Save current pair when -1 < depth < 15 (i.e., room in the stack).
+    if (depth >= 0 && depth < (BRENDERSTATE_STACKDEPTH - 1)) {
+        bRenderState.stateStack[state][depth][0] = bRenderState.renderState[state][0];
+        bRenderState.stateStack[state][depth][1] = bRenderState.renderState[state][1];
+    }
+
+    // Increment depth unconditionally (INC).
+    bRenderState.stateStackDepth[state] = depth + 1;
+
+    // Apply the new state.
+    bdSetRenderState(state, value1, value2);
 }
 
 /*	--------------------------------------------------------------------------------
@@ -76,8 +88,18 @@ void bdPushRenderState(uint32 state, uint32 value1, uint32 value2)
 */
 void bdPopRenderState(uint32 state)
 {
-        bkPrintf("*** WARNING *** bdPopRenderState was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    // Old depth before pop
+    int oldDepth = bRenderState.stateStackDepth[state];
+    // DEC depth and store back
+    int depth = oldDepth - 1;
+    bRenderState.stateStackDepth[state] = depth;
+
+    // If 0 <= depth < 15, restore from the saved entry at index (oldDepth - 1)
+    if (depth >= 0 && depth < (BRENDERSTATE_STACKDEPTH - 1)) {
+        uint32 v1 = bRenderState.stateStack[state][depth][0];
+        uint32 v2 = bRenderState.stateStack[state][depth][1];
+        bdSetRenderState(state, v1, v2);
+    }
 }
 
 /*	--------------------------------------------------------------------------------
@@ -89,8 +111,7 @@ void bdPopRenderState(uint32 state)
 */
 void bdSaveRenderStates(TBSavedRenderStates *saveBlock)
 {
-        bkPrintf("*** WARNING *** bdSaveRenderStates was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    memcpy(saveBlock->states, bRenderState.renderState, sizeof(saveBlock->states));
 }
 
 /*	--------------------------------------------------------------------------------
@@ -100,8 +121,17 @@ void bdSaveRenderStates(TBSavedRenderStates *saveBlock)
 	Returns : 
 	Info : 
 */
-void bdRestoreRenderStates(TBSavedRenderStates *saveBlock)
+void bdRestoreRenderStates(TBSavedRenderStates* saveBlock)
 {
-        bkPrintf("*** WARNING *** bdRestoreRenderStates was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    for (uint32 state = 0; state < BDRENDERSTATE_NOOF; ++state)
+    {
+        const uint32 v1 = saveBlock->states[state][0];
+        const uint32 v2 = saveBlock->states[state][1];
+
+        if (bRenderState.renderState[state][0] != v1 ||
+            bRenderState.renderState[state][1] != v2)
+        {
+            bdSetRenderState(state, v1, v2);
+        }
+    }
 }

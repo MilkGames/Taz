@@ -9,6 +9,11 @@
 #include <babel.h>
 
 // ********************************************************************************
+// Locals
+
+int stopSpam3 = 0;
+
+// ********************************************************************************
 // Function Implementations
 
 /*	--------------------------------------------------------------------------------
@@ -59,6 +64,9 @@ void bdEnableMemoryGraph(int enable, EBMemoryGraphType graphType, int markerKb, 
 */
 void bRenderGraphs()
 {
+	if (!stopSpam3) {
         bkPrintf("*** WARNING *** bRenderGraphs was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+		stopSpam3++;
+	}
     return;
 }

@@ -91,8 +91,16 @@ void bmMatTranslate(TBMatrix mat, const float x, const float y, const float z)
 
 void bmMatScale(TBMatrix mat, const float x, const float y, const float z)
 {
-        bkPrintf("*** WARNING *** bmMatScale was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    // zero all 16 elements
+    for (int r = 0; r < 4; ++r)
+        for (int c = 0; c < 4; ++c)
+            mat[r][c] = 0.0f;
+
+    // set diagonal (row-major)
+    mat[0][0] = x;     // _11
+    mat[1][1] = y;     // _22
+    mat[2][2] = z;     // _33
+    mat[3][3] = 1.0f;  // _44
 }
 
 
@@ -106,13 +114,24 @@ void bmMatScale(TBMatrix mat, const float x, const float y, const float z)
 
 void bmMatMultiplyAligned(TBMatrix dest, const TBMatrix src1, const TBMatrix src2)
 {
+	// MG: there's no difference between this and bmMatMultiplyUnligned,
+	// MG: because... erm... I don't care?
+    TBMatrix A; /* src2 */
+    TBMatrix B; /* src1 */
+    /* Copy sources into temporaries to handle potential aliasing */
+    for (int i = 0; i < 4; ++i) {
+        for (int c = 0; c < 4; ++c) {
+            A[i][c] = src2[i][c];
+            B[i][c] = src1[i][c];
+        }
+    }
+    /* Row-major multiplication: dest = A * B */
     for (int r = 0; r < 4; ++r) {
-        const float a0 = src1[r][0], a1 = src1[r][1], a2 = src1[r][2], a3 = src1[r][3];
-
-        dest[r][0] = a0*src2[0][0] + a1*src2[1][0] + a2*src2[2][0] + a3*src2[3][0];
-        dest[r][1] = a0*src2[0][1] + a1*src2[1][1] + a2*src2[2][1] + a3*src2[3][1];
-        dest[r][2] = a0*src2[0][2] + a1*src2[1][2] + a2*src2[2][2] + a3*src2[3][2];
-        dest[r][3] = a0*src2[0][3] + a1*src2[1][3] + a2*src2[2][3] + a3*src2[3][3];
+        const float a0 = A[r][0], a1 = A[r][1], a2 = A[r][2], a3 = A[r][3];
+        dest[r][0] = a0*B[0][0] + a1*B[1][0] + a2*B[2][0] + a3*B[3][0];
+        dest[r][1] = a0*B[0][1] + a1*B[1][1] + a2*B[2][1] + a3*B[3][1];
+        dest[r][2] = a0*B[0][2] + a1*B[1][2] + a2*B[2][2] + a3*B[3][2];
+        dest[r][3] = a0*B[0][3] + a1*B[1][3] + a2*B[2][3] + a3*B[3][3];
     }
 }
 
@@ -127,10 +146,24 @@ void bmMatMultiplyAligned(TBMatrix dest, const TBMatrix src1, const TBMatrix src
 
 void bmMatMultiplyUnaligned(TBMatrix dest, const TBMatrix src1, const TBMatrix src2)
 {
-    bkPrintf("*** WARNING *** *** WARNING *** *** DANGER *** *** DANGER *** bmMatMultiplyUnaligned was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING *** *** WARNING *** *** DANGER *** *** DANGER ***\n");
-    return;
+    TBMatrix A; /* src2 */
+    TBMatrix B; /* src1 */
+    /* Copy sources into temporaries to handle potential aliasing */
+    for (int i = 0; i < 4; ++i) {
+        for (int c = 0; c < 4; ++c) {
+            A[i][c] = src2[i][c];
+            B[i][c] = src1[i][c];
+        }
+    }
+    /* Row-major multiplication: dest = A * B */
+    for (int r = 0; r < 4; ++r) {
+        const float a0 = A[r][0], a1 = A[r][1], a2 = A[r][2], a3 = A[r][3];
+        dest[r][0] = a0*B[0][0] + a1*B[1][0] + a2*B[2][0] + a3*B[3][0];
+        dest[r][1] = a0*B[0][1] + a1*B[1][1] + a2*B[2][1] + a3*B[3][1];
+        dest[r][2] = a0*B[0][2] + a1*B[1][2] + a2*B[2][2] + a3*B[3][2];
+        dest[r][3] = a0*B[0][3] + a1*B[1][3] + a2*B[2][3] + a3*B[3][3];
+    }
 }
-
 
 /*	--------------------------------------------------------------------------------
 	Function : bmMatMultiply
@@ -318,8 +351,33 @@ void bmMatYZXRotation(TBMatrix dest, const float x, const float y, const float z
 
 void bmMatZXYRotation(TBMatrix dest, const float x, const float y, const float z)
 {
-        bkPrintf("*** WARNING *** bmMatZXYRotation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    const float cx = (float)cos(x),  sx = (float)sin(x);
+    const float cy = (float)cos(y),  sy = (float)sin(y);
+    const float cz = (float)cos(z),  sz = (float)sin(z);
+
+    // Row 0
+    dest[0][0] =  cz*cy - sz*sx*sy;
+    dest[0][1] = -sz*cx;
+    dest[0][2] =  cz*sy + sz*sx*cy;
+    dest[0][3] =  0.0f;
+
+    // Row 1
+    dest[1][0] =  sz*cy + cz*sx*sy;
+    dest[1][1] =  cz*cx;
+    dest[1][2] =  sz*sy - cz*sx*cy;
+    dest[1][3] =  0.0f;
+
+    // Row 2
+    dest[2][0] = -cx*sy;
+    dest[2][1] =  sx;
+    dest[2][2] =  cx*cy;
+    dest[2][3] =  0.0f;
+
+    // Row 3
+    dest[3][0] =  0.0f;
+    dest[3][1] =  0.0f;
+    dest[3][2] =  0.0f;
+    dest[3][3] =  1.0f;
 }
 
 
@@ -363,8 +421,24 @@ int bmMatInverse(TBMatrix dest, const TBMatrix in)
 
 void bmMatMultiplyVector(const TBMatrix mat, TBVector vec)
 {
-        bkPrintf("*** WARNING *** bmMatMultiplyVector was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    const float x = vec[0];
+    const float y = vec[1];
+    const float z = vec[2];
+    const float w = vec[3];
+
+    /* Column 0 */
+    const float r0 = x*mat[0][0] + y*mat[1][0] + z*mat[2][0] + w*mat[3][0];
+    /* Column 1 */
+    const float r1 = x*mat[0][1] + y*mat[1][1] + z*mat[2][1] + w*mat[3][1];
+    /* Column 2 */
+    const float r2 = x*mat[0][2] + y*mat[1][2] + z*mat[2][2] + w*mat[3][2];
+    /* Column 3 */
+    const float r3 = x*mat[0][3] + y*mat[1][3] + z*mat[2][3] + w*mat[3][3];
+
+    vec[0] = r0;
+    vec[1] = r1;
+    vec[2] = r2;
+    vec[3] = r3;
 }
 
 

@@ -1,5 +1,5 @@
 # Microsoft Developer Studio Project File - Name="Taz" - Package Owner=<4>
-# Microsoft Developer Studio Generated Build File, Format Version 60000
+# Microsoft Developer Studio Generated Build File, Format Version 6.00
 # ** DO NOT EDIT **
 
 # TARGTYPE "Win32 (x86) Application" 0x0101
@@ -672,6 +672,10 @@ SOURCE=.\animation.cpp
 # Begin Source File
 
 SOURCE=.\attach.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\bink_dynload.cpp
 # End Source File
 # Begin Source File
 
@@ -1728,6 +1732,10 @@ SOURCE=.\animation.h
 # Begin Source File
 
 SOURCE=.\attach.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\bink_dynload.h
 # End Source File
 # Begin Source File
 

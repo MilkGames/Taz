@@ -68,8 +68,8 @@ static STACK<TBRenderTarget, RENDER_TARGET_STACK_DEPTH>		renderTargetStack("rend
 // TP: Choose your videos, moved here to tidy up main
 #ifdef INFOGRAMES
 	#if BPLATFORM == PC
-		char	*videos[] = {"videos\\infoident_taz.bik", "videos\\warnerident_taz.bik", "videos\\blitzident_taz.bik"};
-		char	numVideos = 3;
+		char	*videos[] = {"videos\\infoident_taz.bik", "videos\\warnerident_taz.bik", "videos\\blitzident_taz.bik", "videos\\milkident_taz.bik"};
+		char	numVideos = 4;
 	#elif(BPLATFORM == XBOX)
 		char	*videos[] = 
 #ifdef CONSUMERDEMO// PP: TEMP: gotter account for subfolder paths (Ash is gonna do some fix for this)
@@ -96,8 +96,8 @@ static STACK<TBRenderTarget, RENDER_TARGET_STACK_DEPTH>		renderTargetStack("rend
 	#endif
 #else
 	#if BPLATFORM == PC
-		char	*videos[] = {"videos\\infoident_taz.bik", "videos\\warnerident_taz.bik", "videos\\blitzident_taz.bik"};
-		char	numVideos = 3;
+		char	*videos[] = {"videos\\infoident_taz.bik", "videos\\warnerident_taz.bik", "videos\\blitzident_taz.bik", "videos\\milkident_taz.bik"};
+		char	numVideos = 4;
 	#else
 		char	*videos[] = {"blitz.pss"};
 		char	numVideos = 1;

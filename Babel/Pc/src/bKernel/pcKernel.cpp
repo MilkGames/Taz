@@ -16,20 +16,24 @@ int   bActive        = 1;          // exe default: active on start
 int   bFocus         = 1;          // allow auto-suspend on focus loss
 HWND  bMainWindow    = NULL;
 
+TBOSEvent     bOSEvents[BMAXOSEVENTS];
+void         *bOSEventHandles[BMAXOSEVENTS];
+int           bNoofOSEvents;
+
 // ********************************************************************************
 // Locals
 
 // purely for fidelity with the exe; not observed being read elsewhere
-static int bMainRunning = 0;
+static int    bMainRunning = 0;
 
 // In the exe this is just a pointer that may be NULL.
 // If NULL, we show literal "Babel (Running)/(Suspended)".
-static char *bAppName = NULL;
+static char  *bAppName = NULL;
 
-static int bCPUSimdFlags;
+static int    bCPUSimdFlags;
 
-static int    bArgc = 0;      // Argc in command line
-static char** bArgv = NULL;   // Argv in command line
+static int	  bArgc = 0;      // Argc in command line
+static char **bArgv = NULL;   // Argv in command line
 
 // ********************************************************************************
 // Local Helpers
@@ -339,10 +343,51 @@ void bDeleteOSEvent(HANDLE event)
 
 void bHandleOSEvents()
 {
-        bkPrintf("*** WARNING *** bHandleOSEvents was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    int i = 0;
+    const int count = bNoofOSEvents;
+    if (count <= 0) return;
+
+    for (; i < count; )
+    {
+        HANDLE h = bOSEventHandles[i];
+        DWORD wait = WaitForSingleObject(h, 0);
+
+        if (wait == WAIT_OBJECT_0)
+        {
+            ResetEvent(h);
+
+            TBOSEventCallback cb = bOSEvents[i].callback;
+            void* ctx = bOSEvents[i].context;
+
+            int step = cb ? cb(ctx) : 1;
+            i += step;
+        }
+        else
+        {
+            ++i;
+        }
+    }
 }
 
+/* --------------------------------------------------------------------------------
+	Function : bPumpMessages
+	Purpose : pump and dispatch pending OS window messages (non-blocking)
+	Parameters :
+	Returns :
+	Info : processes all queued messages
+*/
+void bPumpMessages(void)
+{
+    MSG msg;
+    while (PeekMessageA(&msg, NULL, 0, 0, PM_REMOVE))
+    {
+        if (msg.message != WM_QUIT)
+        {
+            TranslateMessage(&msg);
+            DispatchMessageA(&msg);
+        }
+    }
+}
 
 /* --------------------------------------------------------------------------------
    Function : bkRun

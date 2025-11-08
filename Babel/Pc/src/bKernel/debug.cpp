@@ -51,8 +51,10 @@ void bkSetDebugStream(TBDebugStream *stream)
 
 void bkSetDebugStreamFlags(TBDebugStream *stream, uint32 flagMask, uint32 newValues)
 {
-        bkPrintf("*** WARNING *** bkSetDebugStreamFlags was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+	if (stream == NULL) {
+		stream = bCurrentDebugStream;
+	}
+	stream->flags = ~flagMask & stream->flags | flagMask & newValues;
 }
 
 

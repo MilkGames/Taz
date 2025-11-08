@@ -30,21 +30,23 @@ int bkInit(uint base, uint size, uint32 flags)
 
   bInitMaths();
   if (!bInitKernel()) {
-    return 0;
+    return FAIL;
   }
 
   if (!bInitHeap(base,size)) {
     bShutdownKernel();
-    return 0;
+    return FAIL;
   }
 
   bInitCommandLine();
+  // MG: placed it here so I wouldn't forget about it
+  bkPrintf("*** WARNING *** bdConsoleWindowPrintf was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
   bDumpDXVersions();
   if (!bInitDisplay()) {
     bDumpDXVersions();
     bShutdownHeap();
     bShutdownKernel();
-	return 0; // they forgot to add this
+	return FAIL; // they forgot to add this
   }
 
   if (!bInitActor()) {
@@ -53,20 +55,20 @@ int bkInit(uint base, uint size, uint32 flags)
     bShutdownInput();
     bShutdownDisplay();
     bShutdownKernel();
-    return 0;
+    return FAIL;
   }
 
   if (!bInitSound()) {
-    bDumpDXVersions();
-    bShutdownActor();
-    bShutdownHeap();
-    bShutdownInput();
-    bShutdownDisplay();
-    bShutdownKernel();
-    return 0;
+	bDumpDXVersions();
+	bShutdownActor();
+	bShutdownHeap();
+	bShutdownInput();
+	bShutdownDisplay();
+	bShutdownKernel();
+	return FAIL;
   }
 
-  return 1;
+  return OK;
 }
 
 
@@ -88,7 +90,6 @@ void bkShutdown()
 	bShutdownKernel();
 	bShutdownCommandLine();
 	bShutdownHeap();
-    return;
 }
 
 
@@ -102,6 +103,14 @@ void bkShutdown()
 
 void bkUpdate(int modules)
 {
-        bkPrintf("*** WARNING *** bkUpdate was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+	if (modules & BUPDATEMODULE_BKERNEL) {
+		bPumpMessages();
+	}
+	
+	if (modules & BUPDATEMODULE_BSOUND) {
+		bUpdateSound();
+		if (bNoofOSEvents != 0) {
+			bHandleOSEvents();
+		}
+	}
 }

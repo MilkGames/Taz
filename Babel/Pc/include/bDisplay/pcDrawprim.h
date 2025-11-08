@@ -705,11 +705,17 @@ typedef struct _TBVertexBuffer {
 
 // a permanent index buffer
 typedef struct _TBIndexBuffer {
-	int							noofIndices;			// #indices
-	int							indexBits;				// size of an index in bits (16 or 32)
-	//D3DFORMAT					indexFormat;			// D3D index format
-	struct _TBIndexBuffer		*next, *prev;			// list links
-	//D3DIndexBuffer				d3dIdxBuffer;			// D3D index buffer
+	IDirect3DIndexBuffer8*	d3dIdxBuffer;			// D3D index buffer handle         [0x00]
+	void*					shadowData;				// optional CPU copy               [0x04]
+
+	int						noofIndices;			// number of indices               [0x08]
+	int						indexBits;				// 16 or 32                        [0x0C]
+	D3DFORMAT				indexFormat;			// D3DFMT_INDEX16 / D3DFMT_INDEX32 [0x10]
+
+	struct _TBIndexBuffer*	next;					// LRU/owner list                  [0x14]
+	struct _TBIndexBuffer*	prev;					// LRU/owner list                  [0x18]
+
+	unsigned int			flags;					// creation/runtime flags          [0x1C]
 } TBIndexBuffer;
 
 

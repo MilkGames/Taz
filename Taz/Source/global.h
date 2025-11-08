@@ -17,10 +17,18 @@
 #endif
 
 //#define INFOGRAMES
-#define SKIPLAUNCHER
 
 // NH: For master releases with absolutely NO debug, testing or infogrames stuff included (ie. GUI and screenshots)
 //#define _MASTER
+
+#ifdef MILKGAMES
+	#define SKIPLAUNCHER // MG: yeah, it skips launcher (imagine creating a function that you don't use lmao)
+	#define ENABLEVIDEO  // MG: hello there, it's MilkGames here! let's play some Bink videos!
+	#define FILES_DEBUG  // MG: hmmm... erm... yeah, files debug!!!!
+	#define SPLASH_TEST // MG: shows every splash that we have in the game instead of basic legal splash
+	#define SUGAR_COATED_CRASHES // MG: calls a bad disk message when a fatal error occurs
+	#define TEXT_TEST // MG: replaces a bad disk message
+#endif
 
 #ifdef CONSUMERDEMO
 	#define INFOGRAMES

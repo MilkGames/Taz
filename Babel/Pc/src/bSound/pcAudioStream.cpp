@@ -9,6 +9,11 @@
 #include <babel.h>
 
 // ********************************************************************************
+// Locals
+
+int stopSpam7 = 0;
+
+// ********************************************************************************
 // Function Implementations
 
 /*	--------------------------------------------------------------------------------
@@ -334,6 +339,9 @@ void bGetAudioStreamBufferInfo(TBAudioStream *stream,
 
 void bUpdateSound()
 {
+	if (!stopSpam7) {
         bkPrintf("*** WARNING *** bUpdateSound was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+		stopSpam7++;
+	}
     return;
 }

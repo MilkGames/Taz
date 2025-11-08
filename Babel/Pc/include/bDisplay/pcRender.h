@@ -22,54 +22,76 @@
 
 // information on which render states are valid
 typedef struct _TBRenderStateInfo {
-	int						antialiasEnableState;					// what can this card do with antialiasing?
-	struct _TBTexture		*currentTexture[BMAX_TEXTURE_STAGES];	// current texture
-	float					fogNear, fogFar, fogRange;				// fog parameters
-	int						rFog,gFog,bFog;							// fog colour
+	struct _TBTexture *currentTexture[BMAX_TEXTURE_STAGES];	  // current texture per stage               [0x00] (2 * 4 = 8)
 
-	union {
-		uint32				renderState[BDRENDERSTATE_NOOF][2];		// current render state values
-		uint64				renderState64[BDRENDERSTATE_NOOF];		// combined 64bit version
-	};
+	float    fogNear;                                         // fog near                                [0x08]
+	float    fogFar;                                          // fog far                                 [0x0C]
+	float    fogRange;                                        // fog range (derived or cached)           [0x10]
+	int      rFog;                                            // fog colour R (0..255)                   [0x14]
+	int      gFog;                                            // fog colour G (0..255)                   [0x18]
+	int      bFog;                                            // fog colour B (0..255)                   [0x1C]
 
-	union {
-		uint32				stateStack[BDRENDERSTATE_NOOF][BRENDERSTATE_STACKDEPTH][2];		// render state stack
-		uint64				stateStack64[BDRENDERSTATE_NOOF][BRENDERSTATE_STACKDEPTH];		// combined 64bit version
-	};
+	union {                                                   // current render state values             [0x20]
+		uint32 renderState[BDRENDERSTATE_NOOF][2];            //   lo/hi 32-bit components               (0x20..0x97)
+		uint64 renderState64[BDRENDERSTATE_NOOF];             //   combined 64-bit view
+	};                                                        //   size: 0x78 bytes
 
-	int32					stateStackDepth[BDRENDERSTATE_NOOF];		// depth of stacks
-	int32					textureEnable[BMAX_TEXTURE_STAGES];			// current texture enable states
-	int32					renderStateLock[BDRENDERSTATE_NOOF];		// lock count on render states (states can only be set when it is zero)
-	int32					textureMatrix[BMAX_TEXTURE_STAGES];			// texture stage using texture matrix ?
-	int32					textureMatrixFlags[BMAX_TEXTURE_STAGES];	// texture matrix flags for specific stages
-	TBMatrix				textureMatrixLinear[BMAX_TEXTURE_STAGES];
-	TBMatrix				textureMatrixUser[BMAX_TEXTURE_STAGES];
-	int						forceTextureStage[BMAX_TEXTURE_STAGES];		// ref counts to force actor texture use on particular stages
-	int						shadowActive;								// used on PC to warn about problems with skinned actors as recieving geometry
-} TBRenderStateInfo;
+	union {                                                   // render state stack                      [0x98]
+		uint32 stateStack[BDRENDERSTATE_NOOF]
+		                  [BRENDERSTATE_STACKDEPTH][2];       //   per-state stack (lo/hi 32-bit)
+		uint64 stateStack64[BDRENDERSTATE_NOOF]
+		                    [BRENDERSTATE_STACKDEPTH];        //   combined 64-bit view
+	};                                                        //   size: 0x780 bytes  (0x98..0x817)
+
+	int32    stateStackDepth[BDRENDERSTATE_NOOF];             // depth of stacks per render state        [0x818] (15 * 4 = 0x3C)
+	int32    textureEnable[BMAX_TEXTURE_STAGES];              // current texture enable states per stage [0x854] (2 * 4 = 8)
+	int32    renderStateLock[BDRENDERSTATE_NOOF];             // lock count on render states             [0x85C] (15 * 4 = 0x3C)
+	int      forceTextureStage[BMAX_TEXTURE_STAGES];          // ref-counts to force actor texture usage [0x898] (2 * 4 = 8)
+	int      shadowActive;                                    // skinned actors receiving-shadow hazard  [0x8A0]
+
+	uchar    pad[5];                                          // pad/alignment (to 8-byte boundary)      [0x8A4]
+} TBRenderStateInfo; // sizeof(TBRenderStateInfo) == 0x8B0
 
 
 // a render target control structure
 typedef struct _TBRenderTarget {
-	TBTexture				dummyTexture;							// just so we can use this structure 
-	TBTextureData			dummyTextureData;						// data for the dummy texture
+	TBTexture               dummyTexture;           // so we can use this struct       [0x00]
 
-	struct _TBRenderTarget	*next, *prev;							// list links
-	int						width, height;							// width and height in pixels
-	int						rgbDepth;								// rgb depth in bits
-	int						zDepth;									// z depth in bits
-	uint32					flags;									// flags (see BCREATERENDERTARGET_)
-	int						vpX, vpY;								// top-left viewport coord
-	int						vpWidth, vpHeight;						// viewport width and height
-	int						clipXPos, clipYPos;						// clip rectangle position
-	int						clipWidth, clipHeight;					// clip rectangle width and height
-	void					*texData;								// WC texture data
-	void					*zData;									// WC z-buffer data
-	int						textureBytes;							// size of texture/zbuffer data
-	IDirect3DTexture8*		d3dTexture;								// our D3D texture info
-	IDirect3DSurface8*		d3dZBuffer;								// our D3D Z buffer
-	IDirect3DSurface8*	    d3dSurface;							    // the surface of our texture
-	D3DFORMAT				rgbFormat,zFormat;						// buffer formats
+	// linkage
+	struct _TBRenderTarget*	next;					// LRU/owner list                  [0x60]
+	struct _TBRenderTarget*	prev;					// LRU/owner list                  [0x64]
+
+	// logical size
+	int						width;					// target width                    [0x68]
+	int						height;					// target height                   [0x6C]
+
+	// depth in bits
+	int						rgbDepth;				// color depth (bits)              [0x70]
+	int						zDepth;					// depth-stencil depth (bits)      [0x74]
+
+	// usage flags
+	uint32					flags;					// creation/runtime flags          [0x78]
+
+	// backing objects
+	IDirect3DTexture8*	    d3dTexture;				// color as texture (if allocated) [0x7C]
+	IDirect3DSurface8*		d3dZBuffer;				// depth-stencil surface           [0x80]
+	IDirect3DSurface8*		d3dSurface;				// color render surface            [0x84]
+
+	// viewport (cached)
+	int						vpX;					// viewport x                      [0x88]
+	int						vpY;					// viewport y                      [0x8C]
+	int						vpWidth;				// viewport width                  [0x90]
+	int						vpHeight;				// viewport height                 [0x94]
+
+	// formats
+	D3DFORMAT				rgbFormat;				// color format                    [0x98]
+	D3DFORMAT				zFormat;				// depth format                    [0x9C]
+
+	// clip rect (cached)
+	int						clipXPos;				// clip x                          [0xA0]
+	int						clipYPos;				// clip y                          [0xA4]
+	int						clipWidth;				// clip w                          [0xA8]
+	int						clipHeight;				// clip h                          [0xAC]
 } TBRenderTarget;
 
 

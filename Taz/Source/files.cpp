@@ -257,7 +257,14 @@ void InitFileSystem(void)
 	sprintf(splashFilename, "");
 #endif
 
+// MG: we have Xbox and PC packs so I divided them
+// MG: Xbox should still start, as Babel initially
+// MG: searches for packs near .xbe
+#ifdef ENABLE_MODIFICATIONS
+	bkSetFileSearchPath(FILE_SEARCHPATHFLAGS_DEFAULTPATHFIRST,3, "..\\paks\\pc", "..\\paks","paks\\");
+#else
 	bkSetFileSearchPath(FILE_SEARCHPATHFLAGS_DEFAULTPATHFIRST,2,"..\\paks","paks\\");
+#endif
 
 	if (bkCreateEvent("load") == FAIL)	bkPrintf("*** ERROR *** Cannot setup load event.\n");
 	loadEventClient = bkTrapEventCallback("load", PackageLoaded, 0);
@@ -1168,7 +1175,7 @@ void DrawLoadLoop(int drawFlags)
 		// PP: finish timing the frame; calculate frames per second, frame length, etc.
 		finishTimingFrame();
 
-		if (controller1.f10DebounceChannel->value)
+		if (FALSE) // MG: REMOUT (controller1.f10DebounceChannel->value)
 		{
 			// take screen shot
 			TakeScreenShot();
@@ -1884,7 +1891,7 @@ void DrawMouse()
 }
 #endif // NH: #if BPLATFORM==PC
 
-
+#define MODIFY_BADDISK
 /*	--------------------------------------------------------------------------------
 	Function 	: badDisk
 	Purpose 	: handle a fatal disk read error
@@ -1911,13 +1918,66 @@ void badDisk(void)
 	// PP: THERE'S NO POINT PREPARING IT IN ADVANCE!
 	// PP: ===============
 
+	// MG: Phil missed that BookList could be not initialized on this call, this fixes it
+	BookList_update();
+	BookList_draw();
+	// MG:
+
 	book.setBookRect(RECTANGLE(-0.35f, 0.35f, -0.35f, 0.35f));
 
+#ifndef MODIFY_BADDISK
 	page=book.addPage();
 
 	page->insertItem(STR_XBOX_TCR_BAD_GAME_DISK)
 		->setFontSize(BADDISK_FONTSIZE)
 		->setWrap(true);
+#else
+	TEXTBOX* tb2 = new TEXTBOX();
+	TEXTBOX* tb3p1 = new TEXTBOX();
+	TEXTBOX* tb3p2 = new TEXTBOX();
+	TEXTBOX* tb3p3 = new TEXTBOX();
+	TEXTBOX* tb4 = new TEXTBOX();
+
+    // MG: Page 1 (5s): original-style message but with STR_EX_GALLERY10_LOCKED
+	page=book.addPage("BAD_DISK_1");
+    page->insertItem(STR_EX_GALLERY10_LOCKED)
+        ->setFontSize(BADDISK_FONTSIZE)
+		->setWrap(true);
+
+    // MG: Page 2 (5s): "Just kidding..."
+    PAGE* p2 = book.addPage("BAD_DISK_2");
+    p2->insertItem(tb2);
+    tb2->setStyle(TS_normal);
+    tb2->setFontSize(BADDISK_FONTSIZE);
+    tb2->setText("Just kidding...");
+	tb2->setWrap(true);
+
+    // MG: Page 3 (15s): explanation
+    PAGE* p3 = book.addPage("BAD_DISK_3");
+    p3->insertItem(tb3p1);
+    tb3p1->setStyle(TS_normal);
+    tb3p1->setFontSize(BADDISK_FONTSIZE);
+    tb3p1->setText(
+        "Fatal game error occurred."
+    );
+	tb3p1->setWrap(true);
+
+	p3->insertItem(tb3p3);
+    tb3p3->setStyle(TS_normal);
+    tb3p3->setFontSize(BADDISK_FONTSIZE);
+    tb3p3->setText(
+		"Please contact MilkGames with your debugLog.txt file for assistance."
+    );
+	tb3p3->setWrap(true);
+
+    // MG: Page 4 (10s): shutdown notice
+    PAGE* p4 = book.addPage("BAD_DISK_4");
+    p4->insertItem(tb4);
+    tb4->setStyle(TS_normal);
+    tb4->setFontSize(BADDISK_FONTSIZE);
+    tb4->setText("The game will shutdown in 5 seconds.");
+	tb4->setWrap(true);
+#endif
 
 	// PP: these two strings mention Xbox; you'll need different versions for other platforms
 #if(BPLATFORM == XBOX)
@@ -1974,6 +2034,8 @@ TP:	Not allowed to, TCR 6-09
 #endif
 	Flip(0, 0, 0, 128);
 
+#ifndef MODIFY_BADDISK
+
 	while(true)
 	{
 		biReadDevices();
@@ -2019,4 +2081,65 @@ TP:	Not allowed to, TCR 6-09
 
 		bkSleep(0);
 	}
+
+#else // MG: MODIFY_BADDISK
+
+    // MG: Durations and page names
+    static const float kDurSec[4] = { 5.0f, 5.0f, 10.0f, 5.0f };
+    static const char* const kPageName[4] = {
+        "BAD_DISK_1","BAD_DISK_2","BAD_DISK_3","BAD_DISK_4"
+    };
+
+    // MG: Timer state (DrawLegalSplashScreen style)
+    TBTimerValue startTime = bkTimerRead();
+    float        fTime     = 0.0f;   // MG: seconds for the last frame
+
+    // MG: State machine
+    int   currentPage = 0;           // MG: 0..3
+    float clock       = kDurSec[0];  // MG: seconds remaining on current page
+
+    while (true)
+    {
+        biReadDevices();
+        bsUpdate((int)(gameStatus.deltaTime));
+
+        book.privateUpdate();
+        book.privateDraw();
+    #ifdef CONSOLEDEBUG
+        DrawConsole();
+    #endif
+        Flip(0, 0, 0, 128);
+
+        // MG: Frame timer: ? -> FPS -> fTime (seconds)
+        TBTimerValue now = bkTimerRead();
+        {
+            float fps = bkTimerToFPS(bkTimerDelta(startTime, now));
+            fTime = (fps > 0.0f) ? (1.0f / fps) : 0.0f;
+        }
+        startTime = now;
+
+        // MG: Decrement and advance
+        clock -= fTime;
+        if (clock <= 0.0f)
+        {
+            ++currentPage;
+            if (currentPage < 4)
+            {
+                book.gotoPage(kPageName[currentPage]);
+                clock = kDurSec[currentPage];
+            }
+            else
+            {
+                bkShutdown();
+                BabelHasShutdown = TRUE;
+                return;
+            }
+        }
+
+        // MG: Keep audio/rumble ticking
+        bkUpdate();
+        bkSleep(0);
+    }
+
+#endif // MG: MODIFY_BADDISK
 }

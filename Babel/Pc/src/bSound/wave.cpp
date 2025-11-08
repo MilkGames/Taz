@@ -9,6 +9,11 @@
 #include <babel.h>
 
 // ********************************************************************************
+// Locals
+
+int stopSpam10 = 0;
+
+// ********************************************************************************
 // Function Implementations
 
 /*	--------------------------------------------------------------------------------
@@ -265,7 +270,10 @@ void bsSetChannelFrequency(int channel, int frequency)
 
 void bsUpdate(int timeDelta)
 {
+	if (!stopSpam10) {
         bkPrintf("*** WARNING *** bsUpdate was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+		stopSpam10++;
+	}
     return;
 }
 

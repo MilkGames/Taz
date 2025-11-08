@@ -119,9 +119,13 @@ const D3DTEXTURESTAGESTATETYPE bSavedTSS_IDs[23] = {
     D3DTSS_TEXTURETRANSFORMFLAGS  // 24
 };
 
-DWORD                     bSavedRS_Values[56];
-DWORD                     bSavedTSS_Values[23];
-int                       bHaveSavedStates; // becomes 1 after bdCloseDisplay() preserves states
+DWORD bSavedRS_Values[56];
+DWORD bSavedTSS_Values[23];
+int   bHaveSavedStates;     // becomes 1 after bdCloseDisplay() preserves states
+
+bool  bAllowAsyncVblMsg = false;    // allow to send a suspend message (see bdFlip + BabelWndProc)
+int64 bLastFrameTime;
+int64 bLastFlipDelta;
 
 // ********************************************************************************
 // Helper Functions
@@ -496,8 +500,126 @@ int bdSetPreFlipCallback(TBPreFlipCallback callback, void *context)
 */
 void bdFlip(int red, int green, int blue, int alpha, int flags)
 {
-        bkPrintf("*** WARNING *** bdFlip was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    // Optional async message
+    if ((bDisplayInfo.flags & BDISPLAYFLAG_WINDOW) && bActive && bAllowAsyncVblMsg)
+    {
+        PostMessageA(bMainWindow, BK_WM_SUSPEND, 0, 0);
+    }
+
+    if (bDisplayInfo.started)
+    {
+        if (flags & BFLIPFLAG_UPDATE)
+            bkUpdate(BUPDATEMODULE_ALL);
+
+        // Ensure we are back on default render target
+        if (bDisplayInfo.curRenderTarget != &bRenderTargetList)
+            bdSetRenderTarget(NULL, 0, 0, 0, 0, 1.0f, 0);
+
+        // FPS update from stopwatch
+        if (bkStopStopwatch(&bFpsStopwatch))
+            bFPS = bkTimerToFPS(bFpsStopwatch.value);
+
+        // Present
+        bDisplayInfo.d3dDevice->Present(NULL, NULL, NULL, NULL);
+
+        // Frame timing
+        {
+            TBTimerValue t = bkTimerRead();
+            bLastFrameTime = bkTimerDelta(bLastFlipDelta, t);
+        }
+
+        // Device state
+        HRESULT hr = bDisplayInfo.d3dDevice->TestCooperativeLevel();
+        if (hr == D3DERR_DEVICELOST)
+        {
+            bkPrintf("D3D device lost, waiting for ready state\n");
+            do
+            {
+                Sleep(10);
+                bPumpMessages();      // Peek/Translate/Dispatch loop
+                bHandleOSEvents();    // handle OS events
+                hr = bDisplayInfo.d3dDevice->TestCooperativeLevel();
+            } while (hr != D3DERR_DEVICENOTRESET);
+
+            bkPrintf("D3D device needs to be reset, suspending resources\n");
+
+            // Suspend resources before Reset
+            baFlushVertexShaderCache();
+            bSuspendRenderTargets();
+            bSuspendTextures();
+            bSuspendVertexBuffers();
+
+            bDisplayInfo.backBuffer->Release();
+			bDisplayInfo.backBuffer = NULL;
+
+            bDisplayInfo.depthStencilBuffer->Release();
+			bDisplayInfo.depthStencilBuffer = NULL;
+
+            // Save current render states
+            TBSavedRenderStates saved;
+            bdSaveRenderStates(&saved);
+
+            // Reset device
+            if (FAILED(bDisplayInfo.d3dDevice->Reset(&bDisplayInfo.presentParams)))
+                bkPrintf("Failed to reset D3D device, all is now lost\n");
+
+            bkPrintf("D3D device reset, resuming resources\n");
+
+            if (FAILED(bDisplayInfo.d3dDevice->GetBackBuffer(0, D3DBACKBUFFER_TYPE_MONO, &bDisplayInfo.backBuffer)))
+                bkPrintf("Failed to get backbuffer\n");
+
+            if (FAILED(bDisplayInfo.d3dDevice->GetDepthStencilSurface(&bDisplayInfo.depthStencilBuffer)))
+                bkPrintf("Failed to get depth/stencil buffer\n");
+
+            // Resume all GPU resources
+            bResumeRenderTargets();
+            bResumeTextures();
+            bResumeVertexBuffers();
+
+            // Reapply default VS and states
+            bCurrentVertexShader = 1;
+            bLastVertexBuffer    = (TBVertexBuffer*)1;  // sentinel
+            bSetVertexShader(0x152, NULL);
+            bSetDefaultRenderStates();
+
+            // Restore render states (compare with current bRenderState.renderState[][])
+            for (int rs = BDRENDERSTATE_ANTIALIAS; rs < BDRENDERSTATE_NOOF; ++rs)
+            {
+                const uint32 want0 = saved.states[rs][0];
+                const uint32 want1 = saved.states[rs][1];
+                if (want0 != bRenderState.renderState[rs][0] ||
+                    want1 != bRenderState.renderState[rs][1])
+                {
+                    bdSetRenderState(rs, want0, want1);
+                }
+            }
+
+            bkPrintf("D3D device resumed\n");
+            bkGenerateEvent("_Resume", NULL, NULL, 1);
+        }
+
+        // Prepare for next frame fps measurement
+        bLastFlipDelta = bkTimerRead();
+        bkStartStopwatch(&bFpsStopwatch);
+
+        // Optional clear based on CLEARCONTROL state
+        {
+            const uint32 clearCtl = bRenderState.renderState[BDRENDERSTATE_CLEAR][0];
+            if (clearCtl)
+            {
+                DWORD flagsClear = (clearCtl & 0x3); // TARGET(1), Z(2)
+                if ((clearCtl & 0x4) && bDisplayInfo.stencilDepth)
+                    flagsClear |= 0x4;              // STENCIL(4)
+
+                D3DCOLOR clr = D3DCOLOR_ARGB(alpha & 0xFF, red & 0xFF, green & 0xFF, blue & 0xFF);
+                bDisplayInfo.d3dDevice->Clear(0, NULL, flagsClear, clr, 1.0f, 0);
+            }
+        }
+
+        // Stats
+        ++bFlipCount;
+        bDisplayInfo.noofPolysProcessed = 0;
+    }
 }
 
 /* --------------------------------------------------------------------------------
@@ -752,6 +874,10 @@ int bStartDisplay()
         ppp->BackBufferFormat = rtFmt;
         ppp->BackBufferCount  = 1;
         ppp->MultiSampleType  = msaa;
+		if (bDisplayInfo.flags & BDISPLAYFLAG_ANTIALIASED)
+			ppp->Flags = 0;
+		else
+			ppp->Flags = 1; // enables lockable BB
         ppp->EnableAutoDepthStencil = TRUE;
         ppp->AutoDepthStencilFormat = zFmt;
         ppp->Windowed = isWindowed;
@@ -1012,8 +1138,24 @@ void bdSetScreenOffset(int x, int y)
 */
 void bdClear(int red, int green, int blue, int alpha, float z, int32 stencil, uint32 flags)
 {
-        bkPrintf("*** WARNING *** bdClear was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    // Build Clear flags exactly like the asm:
+    // EAX = flags & 3  (TARGET|Z), then OR 0x4 if (flags&4) AND stencilDepth
+    DWORD d3dFlags = (DWORD)(flags & 0x3);
+    if ( (flags & 0x4) && bDisplayInfo.stencilDepth )
+        d3dFlags |= 0x4;
+
+    // Color packing per asm sequence:
+    // EDI starts with (red & 0xff), OR (alpha << 8), <<8, OR green, <<8, OR blue
+    // Result = ARGB (alpha in [31:24], red [23:16], green [15:8], blue [7:0])
+    const D3DCOLOR clr =
+        (((D3DCOLOR)(alpha & 0xFF)) << 24) |
+        (((D3DCOLOR)( red  & 0xFF)) << 16) |
+        (((D3DCOLOR)(green & 0xFF)) <<  8) |
+         ((D3DCOLOR)( blue  & 0xFF));
+
+    // Call matches vtbl offset 0x90 in the disassembly -> IDirect3DDevice8::Clear
+    LPDIRECT3DDEVICE8 dev = bDisplayInfo.d3dDevice;
+    dev->Clear(0, NULL, d3dFlags, clr, z, (DWORD)stencil);
 }
 
 /* --------------------------------------------------------------------------------

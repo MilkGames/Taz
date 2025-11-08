@@ -9,6 +9,12 @@
 #include <babel.h>
 
 // ********************************************************************************
+// Locals
+
+int stopSpam4 = 0;
+int stopSpam8 = 0;
+
+// ********************************************************************************
 // Function Implementations
 
 /*	--------------------------------------------------------------------------------
@@ -33,7 +39,7 @@ void bdEnableConsoleWindow(int enable)
 */
 void bdConsoleWindowPrintf(char *format, ...)
 {
-        bkPrintf("*** WARNING *** bdConsoleWindowPrintf was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+        //bkPrintf("*** WARNING *** bdConsoleWindowPrintf was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
     return;
 }
 
@@ -98,6 +104,9 @@ void bdShowConsoleWindow(int show)
 */
 void bRenderConsoleWindow()
 {
+	if (!stopSpam4) {
         bkPrintf("*** WARNING *** bRenderConsoleWindow was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+		stopSpam4++;
+	}
     return;
 }

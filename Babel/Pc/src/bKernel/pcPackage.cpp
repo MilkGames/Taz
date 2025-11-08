@@ -6,6 +6,8 @@
 // Component : XBOX Kernel
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+#define _BKERNEL_
+
 #include <babel.h>
 
 // ********************************************************************************
@@ -21,8 +23,99 @@
 
 TBPackageIndex *bkOpenPackage(char *filename)
 {
-        bkPrintf("*** WARNING *** bkOpenPackage was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return NULL;
+    char pathWithExt[256];   // "<filename><.pc>"
+    char foundDir[256];      // directory returned by bkOpenFileReadOnlyWithSearch
+    TBFileHandle fp;
+    TBPackageIndex* index;
+
+    // Build "<filename><ext>"
+    sprintf(pathWithExt, "%s%s", filename, BPACKAGE_EXT);
+
+    // Allocate package header
+    index = (TBPackageIndex*)MALLOC(sizeof(TBPackageIndex));
+    if (!index) {
+        int largest = 0;
+        int avail   = bkHeapFreeSpace(&largest);
+        int wanted  = (int)sizeof(TBPackageIndex);
+        int more    = (wanted > avail) ? (wanted - avail) : 0;
+
+        bkPrintf("bkOpenPackage: Out of memory '%s' (%d bytes wanted)\n", filename, wanted);
+        bkPrintf("bkOpenPackage: (only %d bytes available: %d more required) ***\n", avail, more);
+        return 0;
+    }
+
+    // Open with search; on success 'foundDir' holds the directory we matched
+    if (!bkOpenFileReadOnlyWithSearch(pathWithExt, &fp, foundDir, sizeof(foundDir), BFILEOPENFLAG_WITHSEARCH)) {
+        bkPrintf("bkOpenPackage: Could not open file '%s'\n", pathWithExt);
+        bkHeapFree(index);
+        return 0;
+    }
+
+    // Read the on-disk header straight into the struct
+    bkReadFromFile(fp, index, sizeof(TBPackageIndex));
+
+    // Store a human-readable package path: "%s%s%s" (dir, sep, filename)
+    sprintf(index->pakFilename, "%s%s%s", foundDir, (foundDir[0] ? "\\" : ""), filename);
+
+    // Keep the file handle in the runtime union
+    index->fp = fp;
+
+    // Empty package guard
+    if (index->noofFiles == 0) {
+        fclose((FILE*)fp);
+        bkPrintf("bkOpenPackage: Package is empty! '%s'\n", pathWithExt);
+        bkHeapFree(index);
+        return 0;
+    }
+
+    // Version warning (package built against different Babel build)
+    if ((int)index->buildNumber != (int)BBUILDNUMBER) {
+        bkPrintf("\nbkOpenPackage: *** WARNING : package '%s' from build %d used with build %d (package should be rebuilt) ***\n\n",
+                 pathWithExt, (int)index->buildNumber, (int)BBUILDNUMBER);
+    }
+
+    // Clear "loaded" flag (opened-from-disk case)
+    index->id.loaded = 0;
+
+    // Seek to file index and load it
+    bkSeekFile(index->fp, index->indexOffset * index->pauSize, EHOSTSEEK_SET);
+
+    {
+        int bytes = index->noofFiles * (int)sizeof(TBFileIndex);
+        index->index = (TBFileIndex*)MALLOC(bytes);
+        if (!index->index) {
+            int largest = 0;
+            int avail   = bkHeapFreeSpace(&largest);
+            int more    = (bytes > avail) ? (bytes - avail) : 0;
+
+            fclose((FILE*)index->fp);
+            bkHeapFree(index);
+
+            bkPrintf("bkOpenPackage: Out of memory for index '%s' (wanted %d bytes)\n", filename, bytes);
+            bkPrintf("bkOpenPackage: (only %d bytes available: %d more required) ***\n", avail, more);
+            return 0;
+        }
+        bkReadFromFile(index->fp, index->index, bytes);
+    }
+
+    // Optional tag buffer
+    if (index->noofTags != 0) {
+        bkSeekFile(index->fp, index->tagOffset * index->pauSize, EHOSTSEEK_SET);
+
+        {
+            int tbytes = index->noofTags * (int)sizeof(uint32);
+            index->tags = (uint32*)MALLOC(tbytes);
+            if (index->tags) {
+                bkReadFromFile(index->fp, index->tags, tbytes);
+            }
+        }
+    }
+
+    // Build filename table from the resolved "<filename><ext>"
+    bkLoadFilenameTable(index, pathWithExt);
+
+    bkPrintf("Opened package '%s' OK (%d files)\n", filename, index->noofFiles);
+    return index;
 }
 
 
@@ -66,6 +159,5 @@ int bkFreePackageMemory(TBPackageIndex **index)
 
 void bkClosePackage(TBPackageIndex *indexPtr)
 {
-        bkPrintf("*** WARNING *** bkClosePackage was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    bClosePackage(indexPtr,0);
 }

@@ -9,6 +9,12 @@
 #include <babel.h>
 
 // ********************************************************************************
+// Locals
+
+static int      bProjectionSP    = 0;
+static uint32   bProjectionStack[16];
+
+// ********************************************************************************
 // Function Implementations
 
 /*	--------------------------------------------------------------------------------
@@ -20,8 +26,16 @@
 */
 void bdPushProjectionMode(const uint32 mode)
 {
-        bkPrintf("*** WARNING *** bdPushProjectionMode was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    // Save current projection only when 0 <= sp < 15, to avoid writing index 15 (matches JGE 0x0F)
+    if (bProjectionSP >= 0 && bProjectionSP < 15) {
+        // bViewInfo.projectionMode is the current mode to be restored later
+        bProjectionStack[bProjectionSP] = bViewInfo.projectionMode;
+    }
+    // Increment stack pointer unconditionally (INC EAX)
+    bProjectionSP++;
+
+    // Call bdSetProjectionMode(mode, 0)
+    bdSetProjectionMode(mode, 0);
 }
 
 /*	--------------------------------------------------------------------------------
@@ -33,6 +47,13 @@ void bdPushProjectionMode(const uint32 mode)
 */
 void bdPopProjectionMode()
 {
-        bkPrintf("*** WARNING *** bdPopProjectionMode was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    // Decrement first (DEC EAX), store back
+    bProjectionSP--;
+
+    // If sp is negative or sp >= 15, do nothing (matches JS / JGE 0x0F)
+    if ((-1 < bProjectionSP) && (bProjectionSP < 15)) {
+        bdSetProjectionMode(bProjectionStack[bProjectionSP], 0);
+    }
+
+	return;
 }

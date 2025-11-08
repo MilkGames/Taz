@@ -19,6 +19,14 @@
 // max size of data channel block
 #define BKG_DATA_BLOCK_SIZE			(256*1024)
 
+// MG: new defines by me
+#define BKG_SLOT_COUNT				16
+#define BKG_SENTINEL_OFF			0x12C
+#define BKG_SLOT_FREE				-1
+#define BKG_CHUNK_SIZE				(128*1024)      // 128 KiB fread chunk (maybe REMOUT because of BKG_AUDIO_BLOCK_SIZE)
+#define BKG_CHAN_MASK				0xFF            // low8 = channel (0=file, 1=package)
+#define BKG_FLAG_KEEPBUFFER			0x100           // bit8 in the *same* dword as 'channel'
+
 // background load scheduler flags
 #define BKGFLAG_UPDATENOOFBYTES		0x00000001			// update the bBytesTransferred variable
 #define BKGFLAG_CLOSEFILEATEND		0x00000002			// close filehandle at finish

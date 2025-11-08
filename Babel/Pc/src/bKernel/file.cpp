@@ -19,7 +19,44 @@ int	         bFileSearchPaths;
 // ********************************************************************************
 // Locals
 
-int          bFileSearchFlags;
+int					  bFileSearchFlags;
+TBFilenameTableHeader bFilenameTable = {{0,0}, &bFilenameTable, &bFilenameTable, 0, 0, {0}};
+
+// ********************************************************************************
+// Helper Functions
+
+static uchar* bEnsureAlloc(uchar* dataPtr, int needBytes)
+{
+    if (dataPtr == NULL) {
+        char* group = (char*)bGetCurrentGroup();
+        if (group == (char*)BDEFAULTGROUP) {
+            group = "Package";
+        }
+
+        uchar* p = (uchar*)MALLOCEX((uint)needBytes,(uint32)group);
+
+        if (p == NULL) {
+            bkPrintf("EnsureAlloc: *** Out of memory on Babel heap for file (need %d bytes) ***\n",
+                     needBytes);
+
+            int maxBlock = 0;
+            int available = bkHeapFreeSpace(&maxBlock);
+            bkPrintf("EnsureAlloc: (only %d bytes available: %d more required, max %d bytes (%d short)) ***\n",
+                     available,
+                     needBytes - available,
+                     maxBlock,
+                     needBytes - maxBlock);
+            return NULL;
+        }
+        return p;
+    }
+
+    if (bkHeapGetBlockSize(dataPtr) >= needBytes) {
+        return dataPtr;
+    }
+
+    return NULL;
+}
 
 // ********************************************************************************
 // Function Implementations
@@ -114,8 +151,73 @@ uchar *bkLoadFile(TBPackageIndex *indexPtr, char *filename, uchar *dataPtr, int 
 uchar *bkLoadFileByCRC(TBPackageIndex *index, uint32 crc, uchar *dataPtr, int *retSize, TBFileTagInfo *tagInfo,
 																									int noofExtraBytes)
 {
-        bkPrintf("*** WARNING *** bkLoadFileByCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    // ----- Binary search by CRC over the index table (sorted ascending). -----
+    TBFileIndex *base = index->index;         // ptr to TBFileIndex records
+    int lo = 0;
+    int hi = index->noofFiles - 1;
+    TBFileIndex *fe = NULL;
+
+    while (lo <= hi) {
+        int mid = (lo + hi) >> 1;
+        TBFileIndex *cur = base + mid;
+        uint32 c = cur->crc;
+
+        if (c == crc) {
+            fe = cur;
+            break;
+        }
+        if (c < crc) lo = mid + 1;
+        else         hi = mid - 1;
+    }
+
+    if (fe == NULL) {
+        bkPrintf("bkLoadFile: Could not find 0x%08x in package\n", crc);
+        return NULL;
+    }
+
+    // ----- Return size and tag-info if requested. -----
+    if (retSize) {
+        *retSize = fe->size;
+    }
+    if (tagInfo) {
+        // Tag pointer base is index->tags; align fe->tagOffset down to dword
+        tagInfo->tags     = (uint32 *)((uchar*)index->tags + (fe->tagOffset & ~3));
+        tagInfo->noofTags = fe->noofTags;
+    }
+
+    // Total required bytes in the destination buffer (payload + caller's extra tail)
+    const int need = fe->size + noofExtraBytes;
+
+    // ----- Opened (disk) vs Loaded (RAM) package. -----
+    // Per header: 'loaded' is 1 for RAM-backed packages.
+    if (!index->id.loaded) {
+        // OPENED: allocate (or validate) and read from file handle.
+        uchar *out = bEnsureAlloc(dataPtr, need);
+        if (!out)
+            return NULL;
+
+        // Seek to start-of-file + pauSize*offset, then read exactly 'size' bytes
+        bkSeekFile(index->fp, index->pauSize * fe->offset, EHOSTSEEK_SET);
+        bkReadFromFile(index->fp, out, fe->size);
+        return out;
+    }
+
+    // LOADED: either return direct pointer, or copy into user buffer
+    if (dataPtr == NULL) {
+        // Direct pointer into RAM-mapped package blob
+        return (uchar *)(index->data + index->pauSize * fe->offset);
+    }
+
+    // Supplied a buffer: ensure capacity then copy
+    if (bkHeapGetBlockSize(dataPtr) < need) {
+        return NULL;
+    }
+
+    {
+        const uchar *src = (const uchar *)(index->data + index->pauSize * fe->offset);
+        memcpy(dataPtr, src, fe->size);
+    }
+    return dataPtr;
 }
 
 
@@ -196,8 +298,7 @@ uint32 bkStringUprCRC(const char *data)
 
 TBFileIndex *bGetPackageIndexEntry(TBPackageIndex *index, int ordinal)
 {
-        bkPrintf("*** WARNING *** bGetPackageIndexEntry was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return NULL;
+    return index->index + ordinal;
 }
 
 
@@ -272,8 +373,89 @@ int32 bkEnumPackageContents(TBPackageIndex *index, int32 lastHandle, uint32 matc
 
 int bkOpenFileReadOnlyWithSearch(char *filename, TBFileHandle *fpPtr, char *fullpath, int maxlen, int flags)
 {
-        bkPrintf("*** WARNING *** bkOpenFileReadOnlyWithSearch was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    char srcName[256];   // local copy of the input filename
+    char pathBuild[256]; // intermediate sprintf("%s%s" / "%s%s%s")
+    char openPath[256];  // final path we actually try to open
+    char searchDir[256]; // current directory from the search-path list
+    int  ok;
+
+    // Exact local copy (the binary uses an explicit byte copy)
+    strcpy(srcName, filename);
+
+    // When WITHSEARCH flag is set and caller passed 'fullpath',
+    // it zeroes the first byte early.
+    if (fullpath && (flags & BFILEOPENFLAG_WITHSEARCH))
+        *fullpath = '\0';
+
+    // Absolute path with drive: "C:\..."
+    if (srcName[1] == ':') {
+        sprintf(pathBuild, "%s%s", srcName, BFILE_SEARCH_SUFFIX);
+        strcpy(openPath, pathBuild);
+        return bkOpenFileReadOnly(openPath, fpPtr);
+    }
+
+    // Absolute without drive: "\..."
+    if (srcName[0] == '\\') {
+        sprintf(pathBuild, "%s%s%s", bHomeDirectory, srcName, BFILE_SEARCH_SUFFIX);
+        strcpy(openPath, pathBuild);
+        ok = bkOpenFileReadOnly(openPath, fpPtr);
+        if (ok == 1) goto FillFullpathReturn;
+    } else {
+        // Relative path, first shot depends on bFileSearchFlags:
+        //   flags == 0 > try HomeDir+filename first
+        if (bFileSearchFlags == 0) {
+            sprintf(pathBuild, "%s%s%s", bHomeDirectory, srcName, BFILE_SEARCH_SUFFIX);
+            strcpy(openPath, pathBuild);
+            ok = bkOpenFileReadOnly(openPath, fpPtr);
+            if (ok == 1) goto FillFullpathReturn;
+        }
+
+        // Iterate configured search paths (if any)
+        if (bFileSearchPaths > 0) {
+            for (int i = 0; i < bFileSearchPaths; ++i) {
+                // Copy this entry into a local working buffer
+                strcpy(searchDir, bFileSearchPath[i]);
+
+                if (searchDir[1] == ':') {
+                    // Has drive letter > "<SearchDir>\<filename><SUFFIX>"
+                    sprintf(pathBuild, "%s\\%s%s", searchDir, srcName, BFILE_SEARCH_SUFFIX);
+                } else {
+                    // Relative search dir > "<HomeDir><SearchDir>\<filename><SUFFIX>"
+                    sprintf(pathBuild, "%s%s\\%s%s", bHomeDirectory, searchDir, srcName, BFILE_SEARCH_SUFFIX);
+                }
+
+                strcpy(openPath, pathBuild);
+                ok = bkOpenFileReadOnly(openPath, fpPtr);
+                if (ok == 1) {
+                    // On success via search list AND WITHSEARCH flag: return the matched directory only
+                    if (fullpath && (flags & BFILEOPENFLAG_WITHSEARCH)) {
+                        strncat(fullpath, searchDir, maxlen);
+                    }
+                    goto FillFullpathReturn;
+                }
+            }
+        }
+
+        // If bFileSearchFlags == 1 > last-chance attempt: "<HomeDir><filename><SUFFIX>"
+        if (bFileSearchFlags == 1) {
+            sprintf(pathBuild, "%s%s%s", bHomeDirectory, srcName, BFILE_SEARCH_SUFFIX);
+            strcpy(openPath, pathBuild);
+            ok = bkOpenFileReadOnly(openPath, fpPtr);
+            if (ok != 1) return ok; // pass-through (usually 0)
+            goto FillFullpathReturn;
+        }
+    }
+
+    // Not found anywhere
+    return FAIL;
+
+FillFullpathReturn:
+    // If caller requested full resolved path (not search-dir only), provide it.
+    if (fullpath && !(flags & BFILEOPENFLAG_WITHSEARCH)) {
+        *fullpath = '\0';
+        strncat(fullpath, openPath, maxlen);
+    }
+    return OK;
 }
 
 
@@ -287,8 +469,11 @@ int bkOpenFileReadOnlyWithSearch(char *filename, TBFileHandle *fpPtr, char *full
 
 int bkOpenFileReadOnly(char *filename, TBFileHandle *fpPtr)
 {
-        bkPrintf("*** WARNING *** bkOpenFileReadOnly was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    TBFileHandle f = fopen(filename, "rb");
+    if (!f) return FAIL;
+
+    *fpPtr = f;
+    return TRUE;
 }
 
 
@@ -302,8 +487,7 @@ int bkOpenFileReadOnly(char *filename, TBFileHandle *fpPtr)
 
 int bkReadFromFile(TBFileHandle fp, void *data, int noofBytes)
 {
-        bkPrintf("*** WARNING *** bkReadFromFile was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    return fread(data,1,noofBytes,fp);
 }
 
 
@@ -317,8 +501,19 @@ int bkReadFromFile(TBFileHandle fp, void *data, int noofBytes)
 
 void bkSeekFile(TBFileHandle fp, int position, EBHostSeekMode mode)
 {
-        bkPrintf("*** WARNING *** bkSeekFile was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+	if (mode == EHOSTSEEK_SET) {
+		fseek(fp,position,0);
+		return;
+	}
+	if (mode != EHOSTSEEK_CUR) {
+		if (mode == EHOSTSEEK_END) {
+			fseek(fp,position,2);
+			return;
+		}
+		return;
+	}
+	fseek(fp,position,1);
+	return;
 }
 
 
@@ -347,8 +542,7 @@ int bkTellFile(TBFileHandle fp)
 
 void bkCloseFile(TBFileHandle fp)
 {
-        bkPrintf("*** WARNING *** bkCloseFile was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    fclose((FILE*)fp);
 }
 
 
@@ -362,8 +556,12 @@ void bkCloseFile(TBFileHandle fp)
 
 int bFileLength(TBFileHandle fp)
 {
-        bkPrintf("*** WARNING *** bFileLength was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    long cur = ftell(fp);               // save current position
+    fseek(fp, 0, SEEK_END);             // go to end
+    long end = ftell(fp);               // length
+    fseek(fp, cur, SEEK_SET);           // restore position
+
+    return (int)end;
 }
 
 
@@ -498,7 +696,6 @@ TBFileIndex *bFindIndexFileByCRC(TBPackageIndex *index, uint32 crc)
 void bkSetLanguage(EBLanguageID languageId)
 {
 	bLanguage = languageId;
-    return;
 }
 
 
@@ -512,10 +709,96 @@ void bkSetLanguage(EBLanguageID languageId)
 
 int bkLoadFilenameTable(TBPackageIndex *index, char *filename)
 {
-        bkPrintf("*** WARNING *** bkLoadFilenameTable was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
-}
+    // No filename table present in this package, nothing to do
+    if (index->filenameTableOffset == 0) {
+        return 0;
+    }
 
+    // Check if a filename table for this package is already cached.
+    // The bitfield `id.crc` correctly compares only the 31-bit ID,
+    // ignoring the `id.loaded` flag, which is exactly what the original
+    // `& 0x7fffffff` mask did.
+	if (bFilenameTable.next != &bFilenameTable) {
+		TBFilenameTableHeader* node = bFilenameTable.next;
+		while (node != &bFilenameTable) {
+			if (node->package.crc == index->id.crc) {
+				// Found it. Just increment the reference count and exit.
+				node->refCount++;
+				return 0;
+			}
+			node = node->next;
+		}
+	}
+
+    // The table is not cached. We need to load it.
+    // Allocate a single block for the header, the (crc, offset) pairs, and the raw name data.
+    const uint32 pairsSize = (uint32)index->noofFiles * 8u;
+    const uint32 totalSize = 0x114u + pairsSize + index->filenameTableSize;
+
+    TBFilenameTableHeader* newNode =
+        (TBFilenameTableHeader*)MALLOCEX(totalSize, (uint32)"Filename Table");
+
+    if (!newNode) {
+        bkPrintf("bkLoadFilenameTable: Out of memory\n");
+        return 0;
+    }
+
+    // 1. Fill in the header fields.
+    newNode->package   = index->id;
+    newNode->noofFiles = (uint32)index->noofFiles;
+    newNode->refCount  = 1;
+
+    // 2. Link the new node at the end of the global doubly-linked list.
+    newNode->prev = bFilenameTable.prev;
+    newNode->next = &bFilenameTable;
+    bFilenameTable.prev->next = newNode;
+    bFilenameTable.prev       = newNode;
+
+    // 3. Copy the package filename string into the header (at offset +0x14).
+    // This is a simple strcpy.
+    char* d = newNode->filename;
+    const char* s = filename;
+    while ((*d++ = *s++) != '\0') {/* empty */}
+
+    // 4. Build the table of (crc, nameOffset) pairs. This table starts at offset +0x114.
+    uint32* out_pairs = (uint32*)((char*)newNode + 0x114);
+    TBFileIndex* file_indices = index->index;
+    for (int i = 0; i < index->noofFiles; ++i) {
+        *out_pairs++ = file_indices[i].crc;
+        *out_pairs++ = file_indices[i].filenameOffset;
+    }
+
+    // 5. Copy the raw filename data. It goes right after the pairs table.
+    char* dstNames = (char*)out_pairs; // Continue from where the pairs ended
+
+    // The `id.loaded` bitfield cleanly replaces the original `(int)id < 0` check.
+    if (index->id.loaded) {
+        // This is a memory-resident package. Copy data from the RAM buffer.
+        // We use `index->data`, as it's the designated pointer for RAM packages.
+        // The Ghidra output using `index->pakFilename - 0x40` is considered a
+        // decompiler error, as it makes no logical sense.
+        const char* srcNames = (const char*)index->data + (index->pauSize * index->filenameTableOffset);
+
+        // This optimized copy (dwords then bytes) correctly mimics the `rep movsd/movsb`
+        // pattern seen in the original assembly.
+        uint32 dwords = index->filenameTableSize >> 2;
+        uint32 bytes  = index->filenameTableSize & 3;
+        while (dwords--) {
+            *(uint32*)dstNames = *(const uint32*)srcNames;
+            dstNames += 4; srcNames += 4;
+        }
+        while (bytes--) {
+            *dstNames++ = *srcNames++;
+        }
+    } else {
+        // This is a disk-backed package. Read data from the file.
+        bkSeekFile(index->fp, index->pauSize * index->filenameTableOffset, EHOSTSEEK_SET);
+        bkReadFromFile(index->fp, dstNames, index->filenameTableSize);
+    }
+
+    // A new table was successfully loaded.
+    return 1;
+}
 
 /*	--------------------------------------------------------------------------------
 	Function : bkDeleteFilenameTable
@@ -527,8 +810,38 @@ int bkLoadFilenameTable(TBPackageIndex *index, char *filename)
 
 int bkDeleteFilenameTable(TBPackageID id)
 {
-        bkPrintf("*** WARNING *** bkDeleteFilenameTable was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    if (id.crc == 0) {
+        TBFilenameTableHeader* it = bFilenameTable.next;
+        if (it != &bFilenameTable) {
+            do {
+                TBFilenameTableHeader* next = it->next;
+                bkHeapFree(it);
+                it = next;
+            } while (it != &bFilenameTable);
+        }
+        bFilenameTable.prev = &bFilenameTable;
+        bFilenameTable.next = &bFilenameTable;
+        return 0;
+    }
+
+    {
+        TBFilenameTableHeader* it = bFilenameTable.next;
+        while (it != &bFilenameTable) {
+            if (it->package.crc == id.crc) {
+                int rc = --it->refCount;
+                if (rc != 0)
+                    return rc;
+
+                // unlink and free
+                it->prev->next = it->next;
+                it->next->prev = it->prev;
+                bkHeapFree(it);
+                return 0;
+            }
+            it = it->next;
+        }
+    }
+    return -1;
 }
 
 
@@ -558,7 +871,27 @@ int bkFilenameTableAddRef(TBPackageID id)
 
 char *bkFindFilenameByCRC(TBPackageID id, uint32 crc)
 {
-        bkPrintf("*** WARNING *** bkFindFilenameByCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    TBFilenameTableHeader* it = bFilenameTable.next;
+    while (it != &bFilenameTable) {
+        if (id.crc == 0 || it->package.crc == id.crc) {
+            if (crc == 0) {
+                return it->filename; // +0x14 in the header
+            }
+
+            // pairs region and names region layout
+            const uint32* pairs = (const uint32*)((const char*)it + 0x114);
+            const char* names  = (const char*)it + 0x114 + it->noofFiles * 8;
+
+            uint32 i, n = it->noofFiles;
+            for (i = 0; i < n; ++i) {
+                if (pairs[i * 2 + 0] == crc) {
+                    uint32 nameOff = pairs[i * 2 + 1];
+                    return (char*)(names + nameOff);
+                }
+            }
+        }
+        it = it->next;
+    }
     return NULL;
 }
 
@@ -573,8 +906,19 @@ char *bkFindFilenameByCRC(TBPackageID id, uint32 crc)
 
 int bkFileLength(char *filename, int flags)
 {
-        bkPrintf("*** WARNING *** bkFileLength was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    TBFileHandle fp;
+
+    if (flags & BFILEOPENFLAG_WITHSEARCH) {
+        if (!bkOpenFileReadOnlyWithSearch(filename, &fp, 0, 0, 0))
+            return 0;
+    } else {
+        if (!bkOpenFileReadOnly(filename, &fp))
+            return 0;
+    }
+
+    const int len = bFileLength(fp);
+    bkCloseFile(fp);
+    return len;
 }
 
 
@@ -588,8 +932,54 @@ int bkFileLength(char *filename, int flags)
 
 int bkFileLength(TBPackageIndex *index, char *filename, int flags)
 {
-        bkPrintf("*** WARNING *** bkFileLength was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    if (!index) {
+        TBFileHandle fp;
+        if (flags & BFILEOPENFLAG_WITHSEARCH) {
+            if (!bkOpenFileReadOnlyWithSearch(filename, &fp, 0, 0, 0))
+                return 0;
+        } else {
+            if (!bkOpenFileReadOnly(filename, &fp))
+                return 0;
+        }
+        // plain file length path
+        {
+            int len = bFileLength(fp);
+            bkCloseFile(fp);
+            return len;
+        }
+    }
+
+    // package path: compute CRC(filename)
+    {
+        const uchar* s = (const uchar*)filename;
+        uint crc = 0;
+        while (*s) {
+            uchar top = (uchar)(crc >> 24);
+            crc = (crc << 8) ^ bCRCtable[(uchar)(*s ^ top)];
+            ++s;
+        }
+
+        // binary search in package index by crc; entries are sorted by .crc
+        {
+            TBFileIndex* arr = index->index;     // base pointer to file index array
+            int lo = 0;
+            int hi = index->noofFiles - 1;       // number of files in the package
+
+            while (lo <= hi) {
+                int mid = (lo + hi) >> 1;
+                unsigned int k = arr[mid].crc;   // field read matches [+4] in asm
+                if (k == crc) {
+                    return (int)arr[mid].size;   // field read matches [+8] in asm
+                }
+                if (k < crc) lo = mid + 1; else hi = mid - 1;
+            }
+
+            // not found: print the same two messages, then return 0
+            bkPrintf("bkLoadFile: Could not find 0x%08x in package\n", crc);
+            bkPrintf("Could not find '%s' in package\n", filename);
+            return 0;
+        }
+    }
 }
 
 

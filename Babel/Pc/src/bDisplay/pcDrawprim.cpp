@@ -28,8 +28,94 @@ TBIndexBuffer   bIndexBufferList;
 */
 void bdDrawPrimitive(uint32 primType, void *vertices, int vertCount, uint vertType)
 {
-        bkPrintf("*** WARNING *** bdDrawPrimitive #1 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    UINT stride;
+
+    if (!bDisplayInfo.started)
+        return;
+
+    // Set FVF (as "vertex shader") and adjust VP mode if needed
+    bSetVertexShader((int)vertType, (_TBVertexBuffer*)0);
+
+    // Special case: engine QUAD list (primType == 6) is drawn as batched TRIANGLESTRIPs of 4 verts
+    if (primType == 6) {
+        // Stride selection (matches disassembly table)
+        switch ((unsigned)vertType) {
+            case 0x0152: stride = 0x24; break; // TBPrimVertex: XYZ+N+DIFFUSE+TEX1
+            case 0x01C4: stride = 0x20; break; // TBSpecularPrimVertex2D: XYZRHW+DIFFUSE+SPECULAR+TEX1
+            case 0x0252: stride = 0x2C; break;
+            case 0x02C4: stride = 0x28; break;
+            case 0x03C4: stride = 0x30; break;
+            case 0x0352: stride = 0x34; break;
+            case 0x115C: stride = 0x34; break;
+            case 0x04C4: stride = 0x38; break;
+            case 0x0452: stride = 0x3C; break;
+            case 0x125C: stride = 0x40; break;
+            case 0x135C: stride = 0x48; break;
+            case 0x145C: stride = 0x50; break;
+            case 0x0042: stride = 0x10; break; // point/compact
+            default:     stride = 0;    break;
+        }
+
+        if (vertCount > 0 && stride != 0) {
+            // Number of quads = ceil(vertCount / 4)
+            int batches = ((vertCount - 1) >> 2) + 1;
+            BYTE* ptr   = (BYTE*)vertices;
+            const UINT step = stride * 4;
+
+            while (batches-- > 0) {
+                // Draw one quad as TRIANGLESTRIP with 2 primitives
+                bDisplayInfo.d3dDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, (const void*)ptr, stride);
+                ptr += step;
+            }
+        }
+        return;
+    }
+
+    // === Generic path: pass-through to D3D with adjusted primitive counts ===
+
+    // Stride selection (matches disassembly table)
+    switch ((unsigned)vertType) {
+        case 0x0152: stride = 0x24; break; // TBPrimVertex: XYZ+N+DIFFUSE+TEX1
+        case 0x01C4: stride = 0x20; break; // TBSpecularPrimVertex2D: XYZRHW+DIFFUSE+SPECULAR+TEX1
+        case 0x0252: stride = 0x2C; break;
+        case 0x02C4: stride = 0x28; break;
+        case 0x03C4: stride = 0x30; break;
+        case 0x0352: stride = 0x34; break;
+        case 0x115C: stride = 0x34; break;
+        case 0x04C4: stride = 0x38; break;
+        case 0x0452: stride = 0x3C; break;
+        case 0x125C: stride = 0x40; break;
+        case 0x135C: stride = 0x48; break;
+        case 0x145C: stride = 0x50; break;
+        case 0x0042: stride = 0x10; break; // point/compact
+        default:     stride = 0;    break;
+    }
+
+    // Convert vertex count -> primitive count per primitive type
+    UINT primCount;
+    switch (primType) {
+        case 0: // POINTLIST: one primitive per vertex
+            primCount = (vertCount < 0) ? 0 : (UINT)vertCount;
+            break;
+        case 1: // LINELIST: two vertices per primitive
+            primCount = (vertCount < 0) ? 0 : (UINT)(vertCount >> 1);
+            break;
+        case 2: // LINESTRIP: N-1 primitives
+            primCount = (vertCount <= 0) ? 0u : (UINT)(vertCount - 1);
+            break;
+        case 3: // TRIANGLELIST: three vertices per primitive
+            primCount = (vertCount < 0) ? 0 : (UINT)(vertCount / 3);
+            break;
+        default: // TRIANGLESTRIP/FAN-like: N-2 primitives
+            primCount = (vertCount <= 0) ? 0u : (UINT)(vertCount - 2);
+            break;
+    }
+
+    if (primCount == 0 || stride == 0)
+        return;
+
+    // Engine primType maps to D3DPT by +1 (0..3 -> 1..4, strip/fan -> 5/6 as defined upstream)
+    bDisplayInfo.d3dDevice->DrawPrimitiveUP((D3DPRIMITIVETYPE)(primType + 1), primCount, vertices, stride);
 }
 
 void bdDrawPrimitive(uint32 primType, TBPrimVertex *vertices, int vertCount)
@@ -153,8 +239,50 @@ void bdDrawPrimitiveIndexed(uint32 primType, void *vertices, int vertCount, usho
 
 void bdDrawPrimitiveVB(uint32 primType, TBVertexBuffer *vbPtr, int firstVertex, int vertCount)
 {
-        bkPrintf("*** WARNING *** bdDrawPrimitiveVB was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    if (!bDisplayInfo.started) {
+        return;
+    }
+
+    // Bind the vertex shader / FVF & stream according to the buffer
+    bSetVertexShader(vbPtr->vertexType, vbPtr);
+
+    // Special handling for engine QUADLIST (primType == 6 in retail numbering)
+    if (primType == 6U) {
+        int i = 0;
+        if (vertCount > 0) {
+            do {
+                // Render a quad (4 verts) as a triangle strip of 2 primitives
+                bDisplayInfo.d3dDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, (UINT)i, (UINT)2);
+                i += 4;
+            } while (i < vertCount);
+        }
+        return;
+    }
+
+    // Map vertex count -> primitive count per primitive topology
+    int primCount;
+    switch (primType) {
+        case 0: // point list
+            primCount = vertCount;
+            break;
+        case 1: // line list
+            primCount = vertCount / 2;
+            break;
+        case 2: // line strip
+            primCount = vertCount - 1;
+            break;
+        case 3: // triangle list
+            primCount = vertCount / 3;
+            break;
+        default: // triangle strip / triangle fan (engine maps both here)
+            primCount = vertCount - 2;
+            break;
+    }
+
+    // Device call matches the retail (+1 mapping from engine primType to D3D enum)
+    bDisplayInfo.d3dDevice->DrawPrimitive((D3DPRIMITIVETYPE)(primType + 1U),
+                                          (UINT)firstVertex,
+                                          (UINT)primCount);
 }
 
 
@@ -183,80 +311,81 @@ void bdDrawPrimitiveIndexedVB(uint32 primType, TBVertexBuffer *vbPtr, int firstV
 
 int bdVertexBufferCreate(TBVertexBuffer **vbPtr, int32 noofVertices, uint vertexType, uint32 flags, int noofBuffers)
 {
-    {
-    if (bDisplayInfo.started == 0) {
+    // Guard: display must be started
+    if (!bDisplayInfo.started) {
         return 0;
     }
 
+    // Avoid zero-count
     if (noofVertices == 0) {
         noofVertices = 1;
     }
 
-    // Allocate TBVertexBuffer via engine heap (must use MALLOCEX).
-    // (0x65739C -> "Vertex Buffer")
-    _TBVertexBuffer *blk = (_TBVertexBuffer*)MALLOCEX(sizeof(_TBVertexBuffer), (uint32)"Vertex Buffer");
+    // Allocate engine-side VB handle block (size matches TBVertexBuffer)
+    TBVertexBuffer* blk = (_TBVertexBuffer*)MALLOCEX(sizeof(TBVertexBuffer), (uint32)"Vertex Buffer");
+
     if (!blk) {
         return 0;
     }
 
-    // Initialize engine-side fields
+    // Initialize basic fields
     blk->noofVertices = noofVertices;
     blk->shadowData   = NULL;
     blk->flags        = flags;
-    blk->vertexType   = (int)vertexType;
+    blk->vertexType   = vertexType;
 
-    // Determine vertex size (mirrors the decompiled cascade)
-    int vsize = bGetVertexSize((int)vertexType);
-    blk->vertexSize = vsize;
+    // Derive per-vertex stride in bytes (engine canonical mapping)
+    // (Disassembly encodes a big table; bGetVertexSize centralizes the same mapping.)
+    const int stride = bGetVertexSize((int)vertexType);
+    blk->vertexSize  = stride;
 
-    // If certain vertex types are used, force SW processing flag (bit 0x20)
-    // Matches the decompiled if-chain:
-    //   types: 0x125C, 0x0042, 0x115C, 0x135C, 0x145C
-    if ((vertexType < 0x125D &&
-         (vertexType == 0x125C || vertexType == 0x0042 || vertexType == 0x115C)) ||
-        (vertexType == 0x135C || vertexType == 0x145C))
+    // For specific vertex types, set internal flag bit 0x20 (matches disasm behavior)
+    // Set {0x125C, 0x0042, 0x115C, 0x135C, 0x145C}
+    if (vertexType == 0x125Cu || vertexType == 0x0042u ||
+        vertexType == 0x115Cu || vertexType == 0x135Cu ||
+        vertexType == 0x145Cu)
     {
-        blk->flags = flags | 0x20; // BVERTBUF_NEEDVERTEXSHADER?? can't tell for sure
+        blk->flags = flags | 0x20u;
     }
 
-    // Build D3D usage/pool from flags and device capabilities
+    // Decide pool from flags (per disasm): pool = ((~flags >> 6) & 1) ? MANAGED : DEFAULT;
+    const D3DPOOL pool = (((~blk->flags) >> 6) & 1u) ? D3DPOOL_MANAGED : D3DPOOL_DEFAULT;
+
+    // Usage bit: if no HW vertex shaders but flag 0x20 is requested, set SOFTWAREPROCESSING
     DWORD usage = 0;
-    if (bDisplayInfo.hwVertexShaders == 0 && (blk->flags & 0x20)) {
-        usage |= D3DUSAGE_SOFTWAREPROCESSING; // (-cVar1 & 0x10) in the decompile
+    if (!bDisplayInfo.hwVertexShaders && (blk->flags & 0x20u)) {
+        usage |= D3DUSAGE_SOFTWAREPROCESSING;
     }
 
-    // Pool: (~flags >> 6) & 1 -> 0 (DEFAULT) or 1 (MANAGED)
-    const DWORD poolBit = ((~blk->flags) >> 6) & 1;
-    D3DPOOL pool = (poolBit != 0) ? D3DPOOL_MANAGED : D3DPOOL_DEFAULT;
+    // Create the D3D8 vertex buffer; length = stride * noofVertices
+    const UINT length = (stride > 0 && noofVertices > 0) ? (UINT)(stride * (UINT)noofVertices) : 0u;
+    IDirect3DVertexBuffer8** ppVB = (IDirect3DVertexBuffer8**)blk; // struct begins with the COM pointer
 
-    // Create the D3D8 vertex buffer. Length = vertexSize * noofVertices
-    HRESULT hr = bDisplayInfo.d3dDevice->CreateVertexBuffer(
-        vsize * noofVertices,
-        usage,
-        vertexType,                // FVF
-        pool,
-        &blk->vertexBuffer
-    );
-
-    if (SUCCEEDED(hr)) {
-        // Insert into the global intrusive list
-        blk->prev = bVertexBufferList.prev;
-        blk->next = &bVertexBufferList;
-        bVertexBufferList.prev->next = blk;
-        bVertexBufferList.prev       = blk;
-
-        // Out parameter
-        *vbPtr = blk;
-        return 1;
+    IDirect3DDevice8* dev = bDisplayInfo.d3dDevice;
+    if (!dev || length == 0) {
+        bkHeapFree(blk);
+        return 0;
     }
 
-    // Error path: report and free
-    bkPrintf("bdVertexBufferCreate: *** ERROR : Failed to create vertex buffer (%s) ***\n", DXGetErrorString8A(hr));
-    bkHeapFree(blk);
-    return 0;
-}
-}
+    HRESULT hr = dev->CreateVertexBuffer(length, usage, (DWORD)vertexType, pool, ppVB);
+    if (FAILED(hr)) {
+        const char* err = DXGetErrorString8A(hr);
+        bkPrintf("bdVertexBufferCreate: *** ERROR : Failed to create vertex buffer (%s) ***\n", err);
+        bkHeapFree(blk);
+        return 0;
+    }
 
+    // Link into global list tail (intrusive doubly-linked list with sentinel bVertexBufferList)
+    blk->prev = bVertexBufferList.prev;
+    blk->next = &bVertexBufferList;
+    bVertexBufferList.prev->next = blk;
+    bVertexBufferList.prev = blk;
+
+    // Out
+    *vbPtr = blk;
+    (void)noofBuffers; // parameter present in signature, unused in implementation
+    return 1;
+}
 
 /* --------------------------------------------------------------------------------
    Function : bdVertexBufferDestroy
@@ -268,10 +397,34 @@ int bdVertexBufferCreate(TBVertexBuffer **vbPtr, int32 noofVertices, uint vertex
 
 void bdVertexBufferDestroy(TBVertexBuffer *vbPtr)
 {
-        bkPrintf("*** WARNING *** bdVertexBufferDestroy was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
-}
+    if (!vbPtr) return;
 
+    // If this VB is currently bound, reset stream by setting a default vertex shader (0x0152)
+    if (vbPtr == bLastVertexBuffer) {
+        bSetVertexShader(0x0152, (TBVertexBuffer*)0);
+    }
+
+    // Unlink from intrusive list
+    vbPtr->next->prev = vbPtr->prev;
+    vbPtr->prev->next = vbPtr->next;
+
+    // Release D3D buffer completely (loop until Release() returns 0)
+    if (vbPtr->vertexBuffer) {
+        while (vbPtr->vertexBuffer->Release() != 0) {
+            // keep releasing until refcount hits zero
+        }
+        vbPtr->vertexBuffer = 0;
+    }
+
+    // Free shadow/system-memory mirror if present
+    if (vbPtr->shadowData) {
+        free(vbPtr->shadowData);
+        vbPtr->shadowData = 0;
+    }
+
+    // Free the container
+    bkHeapFree(vbPtr);
+}
 
 /* --------------------------------------------------------------------------------
    Function : bdVertexBufferLock
@@ -283,9 +436,24 @@ void bdVertexBufferDestroy(TBVertexBuffer *vbPtr)
 
 void *bdVertexBufferLock(TBVertexBuffer *vbPtr, uint32 flags)
 {
-        bkPrintf("*** WARNING *** bdVertexBufferLock was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return NULL;
+    IDirect3DVertexBuffer8 *vb = vbPtr ? vbPtr->vertexBuffer : 0;
+    if (!vb) {
+        // No D3D VB: fall back to shadow system memory.
+        return vbPtr ? vbPtr->shadowData : 0;
+    }
+
+    DWORD lockFlags = (DWORD)(((((flags & 4) << 2) | (flags & 8)) << 6) | (flags & 2)) << 3;
+
+    void *data = 0;
+    HRESULT hr = vb->Lock(0, 0, (BYTE**)&data, lockFlags);
+    if (hr < 0) {
+        const char *err = DXGetErrorString8A(hr);
+        bkPrintf("bdVertexBufferLock : *** ERROR *** Lock failed '%s'\n", err);
+        return 0;
+    }
+    return data;
 }
+
 
 
 /* --------------------------------------------------------------------------------
@@ -298,8 +466,10 @@ void *bdVertexBufferLock(TBVertexBuffer *vbPtr, uint32 flags)
 
 void bdVertexBufferUnlock(TBVertexBuffer *vbPtr)
 {
-        bkPrintf("*** WARNING *** bdVertexBufferUnlock was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    IDirect3DVertexBuffer8 *vb = vbPtr ? vbPtr->vertexBuffer : 0;
+    if (vb) {
+        vb->Unlock();
+    }
 }
 
 
@@ -340,7 +510,79 @@ void bSuspendVertexBuffers()
 
 void bResumeVertexBuffers()
 {
-	bkPrintf("*** WARNING *** bResumeVertexBuffers was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    // Count list items
+    int count = 0;
+    TBVertexBuffer* it = bVertexBufferList.next;
+    if (it != &bVertexBufferList) {
+        do { it = it->next; ++count; } while (it != &bVertexBufferList);
+    }
+    bkPrintf("Resuming %d vertex buffers...\n", count);
+
+    TBVertexBuffer* vb = bVertexBufferList.next;
+    if (vb == &bVertexBufferList) return;
+
+    do {
+        // usage = (!hwVS && (flags & 0x20)) ? D3DUSAGE_SOFTWAREPROCESSING : 0
+        DWORD usage = 0;
+        if (!bDisplayInfo.hwVertexShaders && (vb->flags & 0x20))
+            usage = 0x10; // D3DUSAGE_SOFTWAREPROCESSING
+
+        // pool = ((~flags >> 6) & 1) ? MANAGED : DEFAULT
+        D3DPOOL pool = ((((~vb->flags) >> 6) & 1) ? D3DPOOL_MANAGED : D3DPOOL_DEFAULT);
+
+        const UINT length = (UINT)vb->vertexSize * (UINT)vb->noofVertices;
+
+        HRESULT hr = bDisplayInfo.d3dDevice->CreateVertexBuffer(
+            length,
+            usage,
+            (DWORD)vb->vertexType,   // FVF
+            pool,
+            &vb->vertexBuffer        // first field in TBVertexBuffer
+        );
+
+        if (hr < 0) {
+            bkPrintf("bResumeVertexBuffers: * ERROR * Could not recreate vertex buffer\n");
+        } else if (vb->shadowData) {
+            // Attempt to lock and upload the shadow copy
+            BYTE* dst = 0;
+            HRESULT hrL = E_FAIL;
+
+            if (vb->vertexBuffer) {
+                hrL = vb->vertexBuffer->Lock(0, 0, (BYTE**)&dst, 0);
+            }
+
+            if (!vb->vertexBuffer || hrL >= 0) {
+                if (!dst) {
+                    bkPrintf("bResumeVertexBuffers: * ERROR * Could not lock vertex buffer\n");
+                } else {
+                    // Copy exactly like the disasm (dwords then tail bytes)
+                    const BYTE* srcB = (const BYTE*)vb->shadowData;
+                    BYTE*       dstB = (BYTE*)dst;
+                    const DWORD* srcD = (const DWORD*)srcB;
+                    DWORD*       dstD = (DWORD*)dstB;
+
+                    UINT dwords = length >> 2;
+                    while (dwords--) *dstD++ = *srcD++;
+
+                    srcB = (const BYTE*)srcD;
+                    dstB = (BYTE*)dstD;
+                    UINT tail = length & 3;
+                    while (tail--) *dstB++ = *srcB++;
+
+                    if (vb->vertexBuffer) vb->vertexBuffer->Unlock();
+                }
+            } else {
+                const char* err = DXGetErrorString8A(hrL);
+                bkPrintf("bdVertexBufferLock : *** ERROR *** Lock failed '%s'\n", err);
+                bkPrintf("bResumeVertexBuffers: * ERROR * Could not lock vertex buffer\n");
+            }
+
+            free(vb->shadowData);
+            vb->shadowData = 0;
+        }
+
+        vb = vb->next;
+    } while (vb != &bVertexBufferList);
 }
 
 
@@ -537,75 +779,88 @@ int bdDrawFixedMultiStreak(int noofPoints, TBVector pointArray, float *sizeArray
 
 void bSetVertexShader(int type, TBVertexBuffer *vertexBuffer)
 {
-    // If FVF changes, (re)configure HW/SW T&L and set the FVF.
+    // if (type != bCurrentVertexShader) ...
     if (type != bCurrentVertexShader)
     {
-        bool forceHW = false;
+        // ---- Decide T&L mode by type (the exact cases that jump to LAB_00572224) ----
+        const int wantsHW =
+            (type == 0x0152) || // BVERTTYPE_SINGLE
+            (type == 0x01C4) || // BVERTTYPE_SPECULAR_SINGLE2D
+            (type == 0x0252) || // BVERTTYPE_DUAL
+            (type == 0x02C4) || // BVERTTYPE_SPECULAR_DUAL2D
+            (type == 0x0352) || // (3D extended)
+            (type == 0x03C4) || // SPECULAR_TRI2D
+            (type == 0x0452);   // *** present in disasm ***
 
-        // ---- decide whether to force HW T&L ----
-        if (type < 0x353) {
-            if (type == 0x352) {
-                forceHW = true;
-            } else if (type > 0x252) {
-                // 0x2C4
-                forceHW = (type == 0x2C4);
-            } else if (type == 0x252) {
-                forceHW = true;
-            } else if ((type - 0x152) == 0) { // 0x152
-                forceHW = true;
-            }
-        } else {
-            if (type == 0x3C4) {
-                forceHW = true;
-            } else {
-                const int delta = type - 0x452; // 0x452, 0x4C4 (= 0x452 + 0x72)
-                if (delta == 0 || delta == 0x72) {
-                    forceHW = true;
-                }
-            }
-        }
-
-        // ---- toggle SW/HW vertex processing exactly like decompiled branches ----
-        if (forceHW) {
-            if (bDisplayInfo.tnlHardware != 0 && bDisplayInfo.tnlActive == 0) {
-                bDisplayInfo.d3dDevice->SetRenderState(D3DRS_SOFTWAREVERTEXPROCESSING, FALSE);
+        if (wantsHW)
+        {
+            // if (bDisplayInfo.tnlHardware && !bDisplayInfo.tnlActive) -> enable HW T&L
+            if (bDisplayInfo.tnlHardware && !bDisplayInfo.tnlActive)
+            {
+                // D3DRS_SOFTWAREVERTEXPROCESSING = 0
+                bDisplayInfo.d3dDevice->SetRenderState((D3DRENDERSTATETYPE)0x99, 0);
                 bDisplayInfo.tnlActive = 1;
-                // force rebind of stream on next part (sentinel == 1)
+                // force stream rebind (sentinel = 1)
                 bLastVertexBuffer = (TBVertexBuffer*)1;
             }
-        } else {
-            if (bDisplayInfo.hwVertexShaders == 0 && bDisplayInfo.tnlActive != 0) {
-                bDisplayInfo.d3dDevice->SetRenderState(D3DRS_SOFTWAREVERTEXPROCESSING, TRUE);
+        }
+        else
+        {
+            // if (!hwVertexShaders && tnlActive) -> switch to SWVP
+            if (!bDisplayInfo.hwVertexShaders && bDisplayInfo.tnlActive)
+            {
+                // D3DRS_SOFTWAREVERTEXPROCESSING = 1
+                bDisplayInfo.d3dDevice->SetRenderState((D3DRENDERSTATETYPE)0x99, 1);
                 bDisplayInfo.tnlActive = 0;
+                // force stream rebind (sentinel = 1)
                 bLastVertexBuffer = (TBVertexBuffer*)1;
             }
         }
 
-        // Set the FVF (in D3D8 this is SetVertexShader with a DWORD FVF)
+        // Set FVF-as-vertex-shader and remember current
         bDisplayInfo.d3dDevice->SetVertexShader((DWORD)type);
         bCurrentVertexShader = type;
     }
 
-    // Already bound? nothing to do
+    // ---- Stream-source binding path ----
     if (vertexBuffer == bLastVertexBuffer)
         return;
 
-    if (vertexBuffer != NULL)
+    if (vertexBuffer)
     {
-        // Bind real buffer + stride from buffer
+        // IDirect3DDevice8::SetStreamSource(0, vb, stride)
         bDisplayInfo.d3dDevice->SetStreamSource(
-            /*Stream*/0,
-            vertexBuffer->vertexBuffer,
-            (UINT)vertexBuffer->vertexSize
+            0,
+            vertexBuffer->vertexBuffer,           // [EDI+0x00] in disasm
+            (UINT)vertexBuffer->vertexSize        // [EDI+0x0C] in disasm
         );
         bLastVertexBuffer = vertexBuffer;
         return;
     }
 
-    // vertexBuffer == nullptr -> match decompile: SetStreamSource(0, NULL, stride_for_type)
-    const int stride = bGetVertexSize(type);
-    bDisplayInfo.d3dDevice->SetStreamSource(/*Stream*/0, /*pVB*/NULL, (UINT)stride);
-    bLastVertexBuffer = NULL;
+    // vertexBuffer == NULL -> SetStreamSource(0, NULL, stride) with stride by 'type'
+    UINT stride;
+    switch (type)
+    {
+        case 0x0042: stride = 0x10; break;
+        case 0x0152: stride = 0x24; break;
+        case 0x01C4: stride = 0x20; break;
+        case 0x0252: stride = 0x2C; break;
+        case 0x02C4: stride = 0x28; break;
+        case 0x03C4: stride = 0x30; break;
+        case 0x0352: stride = 0x34; break;
+        case 0x0452: stride = 0x3C; break;
+        case 0x04C4: stride = 0x38; break;
+        case 0x115C: stride = 0x34; break;
+        case 0x125C: stride = 0x40; break;
+        case 0x135C: stride = 0x48; break;
+        case 0x145C: stride = 0x50; break;
+        default:     stride = 0;    break;
+    }
+
+    bDisplayInfo.d3dDevice->SetStreamSource(0, NULL, stride);
+    // Disasm stores EDI into bLastVertexBuffer; here EDI == vertexBuffer == NULL
+    bLastVertexBuffer = vertexBuffer;
 }
 
 
@@ -777,7 +1032,76 @@ void bSuspendIndexBuffers()
 
 void bResumeIndexBuffers()
 {
-	bkPrintf("*** WARNING *** bResumeIndexBuffers was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    // Count buffers first
+    int count = 0;
+    TBIndexBuffer* it = bIndexBufferList.next;
+    if (it != &bIndexBufferList) {
+        do { it = it->next; ++count; } while (it != &bIndexBufferList);
+    }
+    bkPrintf("Resuming %d index buffers...\n", count);
+
+    TBIndexBuffer* ib = bIndexBufferList.next;
+    if (ib == &bIndexBufferList) return;
+
+    do {
+        // Compute total byte length: (indexBits >> 3) * noofIndices
+        UINT lengthBytes = (UINT)((ib->indexBits >> 3) * ib->noofIndices);
+
+        // Create with Usage=0, Pool=DEFAULT (per disasm), Format from buffer
+        HRESULT hr = bDisplayInfo.d3dDevice->CreateIndexBuffer(
+            lengthBytes,
+            0,                              // Usage
+            ib->indexFormat,                // D3DFMT_INDEX16 / D3DFMT_INDEX32
+            D3DPOOL_DEFAULT,                // Pool
+            &ib->d3dIdxBuffer               // out
+        );
+
+        if (hr < 0) {
+            const char* estr = DXGetErrorString8A(hr);
+            bkPrintf("bResumeIndexBuffers: * ERROR * Could not recreate index buffer (%s)\n", estr);
+        } else if (ib->shadowData) {
+            // Lock and upload shadow copy
+            BYTE* dst = 0;
+            HRESULT hrl = E_FAIL;
+
+            if (ib->d3dIdxBuffer) {
+                hrl = ib->d3dIdxBuffer->Lock(0, 0, &dst, 0);
+            }
+
+            if (!ib->d3dIdxBuffer || hrl >= 0) {
+                if (!dst) {
+                    bkPrintf("bResumeIndexBuffers: * ERROR * Could not lock index buffer\n");
+                } else {
+                    // Copy dwords then tail bytes (match disasm behavior)
+                    const BYTE* srcB = (const BYTE*)ib->shadowData;
+                    BYTE*       dstB = (BYTE*)dst;
+
+                    const DWORD* srcD = (const DWORD*)srcB;
+                    DWORD*       dstD = (DWORD*)dstB;
+
+                    UINT dwords = lengthBytes >> 2;
+                    while (dwords--) { *dstD++ = *srcD++; }
+
+                    srcB = (const BYTE*)srcD;
+                    dstB = (BYTE*)dstD;
+
+                    UINT tail = lengthBytes & 3;
+                    while (tail--) { *dstB++ = *srcB++; }
+
+                    if (ib->d3dIdxBuffer) ib->d3dIdxBuffer->Unlock();
+                }
+            } else {
+                const char* estr = DXGetErrorString8A(hrl);
+                bkPrintf("bdIndexBufferLock : *** ERROR *** Lock failed '%s'\n", estr);
+                bkPrintf("bResumeIndexBuffers: * ERROR * Could not lock index buffer\n");
+            }
+
+            free(ib->shadowData);
+            ib->shadowData = 0;
+        }
+
+        ib = ib->next;
+    } while (ib != &bIndexBufferList);
 }
 
 /*	--------------------------------------------------------------------------------

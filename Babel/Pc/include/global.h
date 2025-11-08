@@ -13,11 +13,22 @@
 
 // there are a lot of problems or things in Babel that I wanna fix or add as I explore
 // sometimes you may very much need exactly the original library code so
-// by removing this nasty thing you can explore everything in Ghidra
+// by adding this nasty thing you can explore everything in Ghidra
 // with about the same code as in assembler, good luck with that btw
-#define AUTHENTIC
+// #define AUTHENTIC
 
-#ifdef AUTHENTIC
+// I need some stuff in Babel and Taz, so by adding this I change something in those
+#define MILKGAMES
+
+// if AUTHENTIC is not defined or MILKGAMES was - enable Babel modifications
+#if !defined(AUTHENTIC) || defined(MILKGAMES) // || defined(ADD_YOUR_NAME_HERE)
+	#define ENABLE_MODIFICATIONS
+#endif
+
+// or you can enable modifications here
+// #define ENABLE_MODIFICATIONS
+
+#ifdef ENABLE_MODIFICATIONS
 	#define PRINT_DISCLAIMER    // print a really long legal + MilkGames disclaimer
 	#define PRINT_REALBUILDDATE // print real Babel build date
 	#define FIX_PLATFORMINFO    // fix PlatformInfo in pcDebug.cpp
