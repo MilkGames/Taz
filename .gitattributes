@@ -1,1 +1,2 @@
 *.xbp filter=lfs diff=lfs merge=lfs -text
+*.pc filter=lfs diff=lfs merge=lfs -text
