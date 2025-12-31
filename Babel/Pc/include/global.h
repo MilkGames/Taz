@@ -29,12 +29,16 @@
 // #define ENABLE_MODIFICATIONS
 
 #ifdef ENABLE_MODIFICATIONS
+	#define FILTER_STUB_SPAM	// removes stub functions spam
 	#define PRINT_DISCLAIMER    // print a really long legal + MilkGames disclaimer
 	#define PRINT_REALBUILDDATE // print real Babel build date
+	#define PRINT_CREDITS		// print credits
 	#define FIX_PLATFORMINFO    // fix PlatformInfo in pcDebug.cpp
+	#define SHORT_PLATFORMINFO  // hides computer name and user name in PlatformInfo
 	//#define PRINT_CRCTABLE      // print Babel CRC table, could be useful sometimes
 	#define PRINT_COMMANDLINE	// print command line arguments
 	#define FORCE_WINDOWED		// force windowed mode
+	#define SKIP_IDEVICES_IF_INACTIVE // skip reading input devices if the MainWindow is not active
 #endif
 
 #endif		// __BABEL_H__

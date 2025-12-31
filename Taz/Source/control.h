@@ -625,6 +625,7 @@ void defaultKeyboardControls(PADCONTROLSTATUS *controller, int padNumber);
 // PP: ***************************************** MISSING-CONTROLLER STUFF ***************************************
 // PP: **********************************************************************************************************
 
+#if BPLATFORM != PC // MG: see .cpp
 /*	--------------------------------------------------------------------------------
 	Function 	: checkForMissingControllers2
 	Purpose 	: find and bind required controllers; if a required controller is missing,
@@ -635,7 +636,7 @@ void defaultKeyboardControls(PADCONTROLSTATUS *controller, int padNumber);
 					but very effective!
 */
 void checkForMissingControllers2(bool display=true);
-
+#endif
 
 #ifdef ALLOW_CONTROLLERS_IN_ANY_PORTS
 

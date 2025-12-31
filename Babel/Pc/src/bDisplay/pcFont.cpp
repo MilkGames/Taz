@@ -86,112 +86,119 @@ void PrintFontLite(TBVertexBuffer *buffer, const TBFont *font, const ushort *str
 				   float x,float y,int r,int g,int b,int a,
                    TBPrintFontCallback callback,void *callbackContext)
 {
-    // These Look-Up Tables for colour are assumed to be engine globals, as per the original code.
-    extern uint32 bRColLUT[256], bGColLUT[256], bBColLUT[256], bAColLUT[256];
+	_TBPrimVertex        *vertex;
+	const _TBFontGlyphInfo     *glyph;
+	int                   glyphIndex;
+	_TBFontCallbackInfo   callbackInfo;
+	short                 glyphHeight;
+	short                 glyphWidth;
+	short                 glyphX;
+	short                 glyphY;
+	float                 invTextureHeight;
+	float                 invTextureWidth;
+	float                 lineHeight;
+	float                 u0;
+	float                 u1;
+	float                 v0;
+	float                 v1;
 
-    // --- Safety checks (added for robustness, not present in original) ---
-    if (!buffer || !font || !string || strLen <= 0)
-    {
-        return;
-    }
+	invTextureWidth  = 1.0f / (float)font->texture->xDim;
+	invTextureHeight = 1.0f / (float)font->texture->yDim;
 
-    const float invTexW = 1.0f / (float)font->texture->xDim;
-    const float invTexH = 1.0f / (float)font->texture->yDim;
+	vertex = (_TBPrimVertex *)bdVertexBufferLock(buffer, 0);
 
-    // --- Optimization (present in your version): Pack colour once, as it's the same for all vertices. ---
-    const uint32 colour =
-        bRColLUT[(r & 0xFF)] |
-        bGColLUT[(g & 0xFF)] |
-        bBColLUT[(b & 0xFF)] |
-        bAColLUT[(a & 0xFF)];
+	callbackInfo.context     = callbackContext;
+	callbackInfo.lineNumber  = 0;
+	callbackInfo.glyphIndex  = 0;
+	glyphIndex               = 0;
+	callbackInfo.vertexBase  = vertex;
 
-    TBPrimVertex* out = (TBPrimVertex*)bdVertexBufferLock(buffer, 0);
+	if (strLen > 0)
+	{
+		do
+		{
+			glyph = (_TBFontGlyphInfo *)((int)font + (uint)string[glyphIndex] * 8 + -0xd0);
+			if (*(short *)((int)font + (uint)string[glyphIndex] * 8 + -0xcc) == 0)
+			{
+				glyph = font->glyph + 0x80;
+			}
 
-    // --- Safety check (added for robustness) ---
-    if (!out) 
-    {
-        return;
-    }
+			glyphX      = glyph->xPos;
+			glyphWidth  = glyph->width;
+			glyphY      = glyph->yPos;
+			glyphHeight = glyph->height;
 
-    // Initialize the callback structure
-    TBFontCallbackInfo cb; 
-    cb.context     = callbackContext;
-    cb.lineNumber  = 0;
-    cb.glyphIndex  = 0; // Will be incremented inside the callback block
-    cb.vertexBase  = out;
+			vertex->x = x;
+			u0        = (float)(int)glyphX      * invTextureWidth;
+			u1        = (float)(int)glyphWidth  * invTextureWidth + u0;
+			v0        = (float)(int)glyphY      * invTextureHeight;
+			v1        = (float)(int)glyphHeight * invTextureHeight + v0;
 
-    const float lineH = (float)font->lineHeight;
-    TBPrimVertex* v  = out;
+			lineHeight   = font->lineHeight;
+			vertex->u    = u0;
+			vertex->v    = v1;
+			vertex->y    = y - lineHeight;
+			vertex->z    = 0.0f;
+			vertex->colour =
+				  bGColLUT[g]
+				| bAColLUT[a]
+				| bBColLUT[b]
+				| bRColLUT[r];
 
-    int i;
-    for (i = 0; i < strLen; ++i)
-    {
-        const ushort ch = string[i];
+			vertex[1].x = x;
+			vertex[1].y = y;
+			vertex[1].u = u0;
+			vertex[1].v = v0;
+			vertex[1].z = 0.0f;
+			vertex[1].colour =
+				  bGColLUT[g]
+				| bAColLUT[a]
+				| bBColLUT[b]
+				| bRColLUT[r];
 
-        // Get glyph info. If width is 0, the glyph is invalid/disabled.
-        // The original code falls back to glyph 0x80 in this case.
-        const TBFontGlyphInfo* gi = &font->glyph[ch];  
-        if (gi->width == 0)
-        {
-            gi = &font->glyph[0x80];
-        }
+			vertex[2].x = (float)(int)glyph->width + x;
+			lineHeight  = font->lineHeight;
+			vertex[2].u = u1;
+			vertex[2].y = y - lineHeight;
+			vertex[2].z = 0.0f;
+			vertex[2].v = v1;
+			vertex[2].colour =
+				  bGColLUT[g]
+				| bAColLUT[a]
+				| bBColLUT[b]
+				| bRColLUT[r];
 
-        // Calculate vertex positions for the quad
-        const float x0 = x;
-        const float x1 = x + (float)gi->width;
-        const float y0 = y - lineH; // Top of the quad
-        const float y1 = y;         // Bottom of the quad (baseline)
+			glyphX      = glyph->width;
+			vertex[3].y = y;
+			vertex[3].u = u1;
+			vertex[3].v = v0;
+			vertex[3].z = 0.0f;
+			vertex[3].x = (float)(int)glyphX + x;
+			vertex[3].colour =
+				  bGColLUT[g]
+				| bAColLUT[a]
+				| bBColLUT[b]
+				| bRColLUT[r];
 
-        // Calculate texture coordinates from the atlas
-        const float u0 = (float)gi->xPos * invTexW;
-        const float u1 = (float)(gi->xPos + gi->width) * invTexW;
-        const float v_top_atlas = (float)gi->yPos * invTexH;
-        const float v_bottom_atlas = (float)(gi->yPos + gi->height) * invTexH;
+			if (callback != NULL)
+			{
+				callbackInfo.glyphIndex++;
+				callbackInfo.glyphNumber = glyphIndex;
+				callbackInfo.curVertex   = vertex;
 
-        // Build the 4 vertices for the quad (TL, BL, TR, BR)
-        // NOTE: The V coordinates are swapped (y0 uses v_bottom, y1 uses v_top)
-		// This is often due to texture coordinate systems vs. screen coordinate systems
+				callback(EBFONTCALLBACKREASON_POLY, &callbackInfo);
+			}
 
-        // Top-Left vertex
-        v[0].x = x0; v[0].y = y0; v[0].z = 0.0f; v[0].colour = colour;
-        v[0].u = u0; v[0].v = v_bottom_atlas;
+			glyphIndex++;
+			x       = (float)(int)glyph->width + x;
+			vertex += 4;
 
-        // Bottom-Left vertex
-        v[1].x = x0; v[1].y = y1; v[1].z = 0.0f; v[1].colour = colour;
-        v[1].u = u0; v[1].v = v_top_atlas;
+		} while (glyphIndex < strLen);
+	}
 
-        // Top-Right vertex
-        v[2].x = x1; v[2].y = y0; v[2].z = 0.0f; v[2].colour = colour;
-        v[2].u = u1; v[2].v = v_bottom_atlas;
-
-        // Bottom-Right vertex
-        v[3].x = x1; v[3].y = y1; v[3].z = 0.0f; v[3].colour = colour;
-        v[3].u = u1; v[3].v = v_top_atlas;
-        
-        // callback logic
-        if (callback)
-        {
-            // Populate the remaining fields for the callback context
-            cb.glyphNumber = i;       // The index of the character in the input string
-            cb.curVertex   = v;       // Pointer to the 4 vertices just generated
-
-            // Invoke the callback. glyphIndex is only incremented
-            // when the callback is active
-            callback(EBFONTCALLBACKREASON_POLY, &cb);
-            cb.glyphIndex++; 
-        }
-
-        // Advance pen position for the next character
-        x = x1;
-        v += 4;
-    }
-
-    bdVertexBufferUnlock(buffer);
-
-    // Final draw calls, as seen in the decompiled code.
-    bdSetTexture(0, font->texture);
-    // The value '6' likely corresponds to an enum for primitive type, e.g., TRIANGLELIST
-    bdDrawPrimitiveVB(6, buffer, 0, strLen * 4);
+	bdVertexBufferUnlock(buffer);
+	bdSetTexture(0, font->texture);
+	bdDrawPrimitiveVB(6, buffer, 0, strLen * 4);
 }
 
 // ********************************************************************************
@@ -439,155 +446,390 @@ int bPrintFontVerts(TBPrimVertex *vertBase, TBFontLineInfo *line, const TBFont *
 					 const TBFontFormatting *formatting, int r,int g,int b, int a, TBPrintFontCallback callback,
 					 void *callbackContext)
 {
-    if (strLen > BMAX_PRINT_CHARS) {
+    // Clamp input string length to internal buffer size (per disasm)
+    if (strLen > BMAX_PRINT_CHARS)
+    {
         strLen = BMAX_PRINT_CHARS;
-        bkPrintf("bdPrintFont: *** WARNING : String length truncated to %d chars ***\n", BMAX_PRINT_CHARS);
+        bkPrintf("bdPrintFont: *** WARNING : String length truncated to %d chars ***\n",
+                 BMAX_PRINT_CHARS);
     }
 
+    // Prepare callback info
     TBFontCallbackInfo cb;
-    cb.vertexBase    = vertBase;
-    cb.curVertex     = vertBase;
-    cb.glyphs        = bPrintFontGlyph;
-    cb.glyphIndex    = 0;
-    cb.glyphNumber   = 0;
-    cb.lineNumber    = 0;
-    cb.context       = callbackContext;
-    cb.curGlyph      = 0;
-    cb.escapeString  = 0;
+    cb.vertexBase   = vertBase;
+    cb.curVertex    = vertBase;
+    cb.glyphs       = bPrintFontGlyph;
+    cb.curGlyph     = 0;
+    cb.escapeString = 0;
+    cb.lineNumber   = 0;
+    cb.glyphNumber  = 0;
+    cb.glyphIndex   = 0;
+    cb.context      = callbackContext;
 
-    float invTexW = 1.0f, invTexH = 1.0f;
-    if (font && font->texture) {
+    // Texture size inverse (per disasm; assumed non?NULL when fonts are valid)
+    float invTexW = 1.0f;
+    float invTexH = 1.0f;
+    if (font && font->texture)
+    {
         invTexW = 1.0f / (float)font->texture->xDim;
         invTexH = 1.0f / (float)font->texture->yDim;
     }
 
-    TBPrintFontGlyph* wr = bPrintFontGlyph;
-    int i = 0;
-    while (i < strLen && (wr - bPrintFontGlyph) < BMAX_PRINT_CHARS) {
-        unsigned short ch = string[i];
+    // -------------------------------------------------------------------------
+    // 1) Build glyph array (bPrintFontGlyph) from the input string.
+    //    This must follow the original Xbox semantics very closely:
+    //      - '@['name']'  > texture escape + TEXTURE callback
+    //      - '@(name)'    > generic escape + ESCAPE callback
+    //      - '@@'         > literal '@'
+    //      - '\\\\'       > literal '\\'
+    //      - '\\n'        > forced newline (charCode = -2)
+    //      - 1 / 2        > encoded '@' / '\\' characters
+    // -------------------------------------------------------------------------
 
-        // Escape: @@ => literal '@'
-        if (ch == '@' && (i + 1) < strLen && string[i + 1] == '@') {
-            ch = '@'; i += 2;
-        } else if (ch == '\\') {
-            // Escapes: \\ => '\', \n => newline sentinel, others skip-pair
-            if ((i + 1) < strLen) {
-                unsigned short e = string[i + 1];
-                if (e == '\\') { ch = '\\'; i += 2; }
-                else if (e == 'n') {
-                    wr->charCode = -2;
-                    wr->width = wr->height = 0.0f;
-                    wr->texture = 0;
-                    wr->u[0]=wr->u[1]=wr->u[2]=wr->u[3]=0.0f;
-                    wr->v[0]=wr->v[1]=wr->v[2]=wr->v[3]=0.0f;
-                    ++wr; i += 2; continue;
-                } else { i += 2; continue; }
-            } else { ch = '\\'; i += 1; }
-        } else {
-            i += 1;
+    TBPrintFontGlyph *glyphCursor = bPrintFontGlyph;
+    int i = 0;
+
+    while (i < strLen)
+    {
+        ushort ch = string[i];
+
+        // ---------------------------------------------------------------------
+        // '@'–based escape sequences
+        // ---------------------------------------------------------------------
+        if (ch == '@' && (i + 1) < strLen && string[i + 1] != '@')
+        {
+            ushort nextCh = string[i + 1];
+            int j = i + 1;
+
+            // @[textureName]
+            if (nextCh == '[')
+            {
+                // Extract name between '[' and ']'
+                char nameBuf[256];
+                char *dst = nameBuf;
+                int k = i + 2;
+                while (k < strLen && string[k] != ']')
+                {
+                    if ((dst - nameBuf) < (int)(sizeof(nameBuf) - 1))
+                    {
+                        *dst++ = (char)string[k];
+                    }
+                    k++;
+                }
+                *dst = '\0';
+
+                // Describe this as a "glyph" with special charCode -1
+                glyphCursor->charCode = -1;
+
+                // Load texture; fall back to glyph 0x37 width if missing (per disasm)
+                TBTexture *tex = (TBTexture*)bLoadResource(0,
+                                                           nameBuf,
+                                                           EBRESTYPE_TEXTURE,
+                                                           BDEFAULTGROUP);
+                glyphCursor->texture = tex;
+
+                if (!tex)
+                {
+                    const TBFontGlyphInfo *fgi = &font->glyph[0x37];
+                    glyphCursor->width  = (float)(int)fgi->width;
+                    glyphCursor->height = font->lineHeight;
+                }
+                else
+                {
+                    glyphCursor->width  = (float)tex->xDim;
+                    glyphCursor->height = (float)tex->yDim;
+                }
+
+                // Full?texture quad [0..1]x[0..1]
+                glyphCursor->u[0] = 0.0f; glyphCursor->v[0] = 0.0f;
+                glyphCursor->u[1] = 0.0f; glyphCursor->v[1] = 1.0f;
+                glyphCursor->u[2] = 1.0f; glyphCursor->v[2] = 1.0f;
+                glyphCursor->u[3] = 1.0f; glyphCursor->v[3] = 0.0f;
+
+                // TEXTURE callback – may veto this glyph (return 0 ? drop)
+                if (callback)
+                {
+                    cb.escapeString = nameBuf;
+                    cb.curGlyph     = glyphCursor;
+
+                    if (!callback(EBFONTCALLBACKREASON_TEXTURE, &cb))
+                    {
+                        // Drop this glyph entirely
+                        // (disasm decrements glyphCursor before the global increment)
+                        // i.e. behave as if it was never emitted.
+                        // We simply do NOT advance glyphCursor here.
+                    }
+                    else
+                    {
+                        ++glyphCursor;
+                    }
+                }
+                else
+                {
+                    ++glyphCursor;
+                }
+
+                // Skip to the char after closing ']'
+                i = (k < strLen) ? (k + 1) : strLen;
+                continue;
+            }
+
+            // @(escapeName) – generic ESCAPE callback
+            if (nextCh == '(')
+            {
+                char nameBuf[256];
+                char *dst = nameBuf;
+                int k = i + 2;
+                while (k < strLen && string[k] != ')')
+                {
+                    if ((dst - nameBuf) < (int)(sizeof(nameBuf) - 1))
+                    {
+                        *dst++ = (char)string[k];
+                    }
+                    k++;
+                }
+                *dst = '\0';
+
+                glyphCursor->charCode = -1;
+                glyphCursor->width    = 0.0f;
+                glyphCursor->height   = 0.0f;
+                glyphCursor->texture  = 0;
+                glyphCursor->u[0] = glyphCursor->u[1] =
+                glyphCursor->u[2] = glyphCursor->u[3] = 0.0f;
+                glyphCursor->v[0] = glyphCursor->v[1] =
+                glyphCursor->v[2] = glyphCursor->v[3] = 0.0f;
+
+                if (callback)
+                {
+                    cb.escapeString = nameBuf;
+                    cb.curGlyph     = glyphCursor;
+
+                    // For ESCAPE: only keep glyph when callback returns non?zero
+                    if (callback(EBFONTCALLBACKREASON_ESCAPE, &cb))
+                    {
+                        ++glyphCursor;
+                    }
+                }
+
+                // Skip to the char after closing ')'
+                i = (k < strLen) ? (k + 1) : strLen;
+                continue;
+            }
+
+            // Unknown '@X' escape – emit warning and skip the two chars
+            bkPrintf("Unknown escape sequence '%c'\n", (uint)nextCh);
+            i += 2;
+            continue;
         }
 
-        if (ch == 1) ch = '@';
-        else if (ch == 2) ch = '\\';
+        // ---------------------------------------------------------------------
+        // Backslash handling:
+        //   "\\\\" > literal '\\'
+        //   "\\n"  > newline sentinel glyph (charCode = -2)
+        //   others > pair skipped
+        // ---------------------------------------------------------------------
+        if (ch == '\\' && (i + 1) < strLen && string[i + 1] != '\\')
+        {
+            ushort esc = string[i + 1];
 
-        int giIndex = (int)ch - 0x20;
-        if (giIndex < 0) giIndex = 0;
+            if (esc == 'n')
+            {
+                // newline sentinel – width/height zero
+                glyphCursor->charCode = -2;
+                glyphCursor->width    = 0.0f;
+                glyphCursor->height   = 0.0f;
+                glyphCursor->texture  = 0;
+                glyphCursor->u[0] = glyphCursor->u[1] =
+                glyphCursor->u[2] = glyphCursor->u[3] = 0.0f;
+                glyphCursor->v[0] = glyphCursor->v[1] =
+                glyphCursor->v[2] = glyphCursor->v[3] = 0.0f;
 
-        const TBFontGlyphInfo* gi = &font->glyph[giIndex];
-        if (gi->width == 0) gi = &font->glyph[0x80];
+                ++glyphCursor;
+            }
+            // any other backslash escape (e.g. '\x') is simply ignored as a pair
 
-        wr->charCode = giIndex;
-        wr->texture  = (TBTexture*)font->texture;
-        wr->width    = (float)(int)gi->width;
-        wr->height   = (float)font->lineHeight;
+            i += 2;
+            continue;
+        }
 
-        const float u0 = (float)(int)gi->xPos * invTexW;
-        const float v0 = (float)(int)gi->yPos * invTexH;
-        const float u1 = u0 + (float)(int)gi->width  * invTexW;
-        const float v1 = v0 + (float)(int)gi->height * invTexH;
+        // ---------------------------------------------------------------------
+        // Normal glyphs (including '@@' -> '@' and '\\\\' -> '\\')
+        // ---------------------------------------------------------------------
+        int srcIndex = i;
+        if ((ch == '@' || ch == '\\') && (i + 1) < strLen && string[i + 1] == ch)
+        {
+            // '@@' or '\\\\' – consume both, but glyph comes from the second char
+            srcIndex = i + 1;
+        }
 
-        // Atlas corners (no half-texel offsets; retail PC path)
-        // Index convention: 0=TL,1=BL,2=BR,3=TR
-        wr->u[0] = u0; wr->v[0] = v0; // TL
-        wr->u[1] = u0; wr->v[1] = v1; // BL
-        wr->u[2] = u1; wr->v[2] = v1; // BR
-        wr->u[3] = u1; wr->v[3] = v0; // TR
+        ushort rawCh = string[srcIndex];
+        ushort chCode;
+        if (rawCh == 1)
+            chCode = '@';
+        else if (rawCh == 2)
+            chCode = '\\';
+        else
+            chCode = rawCh;
 
-        ++wr;
+        // Map to font glyph index (charCode used for wrapping/justify logic)
+        int glyphIndex = (int)chCode - 0x20;
+        if (glyphIndex < 0)
+            glyphIndex = 0;
+
+        const TBFontGlyphInfo *gi = &font->glyph[glyphIndex];
+        if (gi->width == 0)
+            gi = &font->glyph[0x80];
+
+        glyphCursor->charCode = glyphIndex;
+        glyphCursor->texture  = (TBTexture*)font->texture;
+        glyphCursor->width    = (float)(int)gi->width;
+        glyphCursor->height   = font->lineHeight;
+
+        // NOTE: original Xbox code applies a half?texel offset to all glyphs
+        //       (xPos * invTex + invTex * 0.5f, etc). Keep that behaviour.
+        float u0 = (float)(int)gi->xPos * invTexW + invTexW * 0.5f;
+        float v0 = (float)(int)gi->yPos * invTexH + invTexH * 0.5f;
+        float u1 = (float)(int)gi->width  * invTexW + u0;
+        float v1 = (float)(int)gi->height * invTexH + v0;
+
+        // Index convention in TBPrintFontGlyph: 0=TL,1=BL,2=BR,3=TR
+        glyphCursor->u[0] = u0; glyphCursor->v[0] = v0; // TL
+        glyphCursor->u[1] = u0; glyphCursor->v[1] = v1; // BL
+        glyphCursor->u[2] = u1; glyphCursor->v[2] = v1; // BR
+        glyphCursor->u[3] = u1; glyphCursor->v[3] = v0; // TR
+
+        ++glyphCursor;
+
+        // Advance character index:
+        //   - normal char: +1
+        //   - '@@' / '\\\\' pair: +2
+        if ((srcIndex == i) || (srcIndex >= strLen))
+            i += 1;
+        else
+            i += 2;
     }
 
-    const int glyphCount = (int)(wr - bPrintFontGlyph);
-    if (glyphCount <= 0) return 0;
+    const int glyphCount = (int)(glyphCursor - bPrintFontGlyph);
+    if (glyphCount <= 0)
+        return 0;
 
-    // Lines (no wrapping branch + simple wrapping)
+    // -------------------------------------------------------------------------
+    // 2) Line layout: no?wrap case + wrapping case (including justify support)
+    // -------------------------------------------------------------------------
+
     int lineCount = 0;
-    if (!formatting->wrap) {
-        TBFontLineInfo* dst = line;
+
+    if (!formatting->wrap)
+    {
+        TBFontLineInfo *dst = line;
         dst->glyph      = bPrintFontGlyph;
         dst->noofGlyphs = 0;
         dst->width      = 0.0f;
         dst->height     = (int)font->lineHeight;
-        for (int gi = 0; gi < glyphCount; ++gi) {
-            if (bPrintFontGlyph[gi].charCode == -2) {
-                ++lineCount; ++dst;
-                dst->glyph      = &bPrintFontGlyph[gi + 1];
+
+        for (int giIdx = 0; giIdx < glyphCount; ++giIdx)
+        {
+            if (bPrintFontGlyph[giIdx].charCode == -2)
+            {
+                // newline sentinel – terminate current line and start a new one
+                ++lineCount;
+                ++dst;
+
+                dst->glyph      = &bPrintFontGlyph[giIdx + 1];
                 dst->noofGlyphs = 0;
                 dst->width      = 0.0f;
                 dst->height     = (int)font->lineHeight;
-            } else {
+            }
+            else
+            {
                 dst->noofGlyphs += 1;
-                dst->width      += bPrintFontGlyph[gi].width;
-                if ((int)bPrintFontGlyph[gi].height > dst->height)
-                    dst->height = (int)bPrintFontGlyph[gi].height;
+                dst->width      += bPrintFontGlyph[giIdx].width;
+                if ((int)bPrintFontGlyph[giIdx].height > dst->height)
+                    dst->height = (int)bPrintFontGlyph[giIdx].height;
             }
         }
+
         ++lineCount;
-    } else {
-        TBFontLineInfo* dst = line;
-        int gi = 0;
+    }
+    else
+    {
+        // Wrapping: greedy with backwards search for last space (charCode == 0)
+        TBFontLineInfo *dst = line;
+        int giIdx = 0;
+
         dst->glyph      = &bPrintFontGlyph[0];
         dst->noofGlyphs = 0;
         dst->width      = 0.0f;
         dst->height     = (int)font->lineHeight;
-        lineCount = 1;
 
-        while (gi < glyphCount) {
-            if (bPrintFontGlyph[gi].charCode == -2) {
-                ++gi; ++dst; ++lineCount;
-                dst->glyph      = &bPrintFontGlyph[gi];
+        while (giIdx < glyphCount)
+        {
+            if (bPrintFontGlyph[giIdx].charCode == -2)
+            {
+                // Forced newline
+                ++lineCount;
+                ++dst;
+
+                dst->glyph      = &bPrintFontGlyph[giIdx + 1];
                 dst->noofGlyphs = 0;
                 dst->width      = 0.0f;
                 dst->height     = (int)font->lineHeight;
+
+                ++giIdx;
                 continue;
             }
-            const float nextW = dst->width + bPrintFontGlyph[gi].width;
-            if (dst->noofGlyphs > 0 && nextW > formatting->width) {
+
+            float nextW = dst->width + bPrintFontGlyph[giIdx].width;
+
+            if (dst->noofGlyphs > 0 && nextW > formatting->width)
+            {
+                // Find last breakable glyph (space) on this line
                 int back = dst->noofGlyphs - 1;
-                while (back >= 0 && dst->glyph[back].charCode != 0) --back;
-                if (back >= 0) {
-                    const int base = (int)(dst->glyph - bPrintFontGlyph);
-                    gi = base + back + 1;
-                    dst->width = 0.0f; dst->noofGlyphs = back;
-                    for (int t = 0; t < back; ++t) dst->width += dst->glyph[t].width;
+                while (back >= 0 && dst->glyph[back].charCode != 0)
+                    --back;
+
+                if (back >= 0)
+                {
+                    const int baseIndex = (int)(dst->glyph - bPrintFontGlyph);
+                    giIdx = baseIndex + back + 1;
+
+                    dst->width      = 0.0f;
+                    dst->noofGlyphs = back;
+
+                    for (int t = 0; t < back; ++t)
+                        dst->width += dst->glyph[t].width;
                 }
-                ++dst; ++lineCount;
-                dst->glyph      = &bPrintFontGlyph[gi];
+
+                ++dst;
+                ++lineCount;
+
+                dst->glyph      = &bPrintFontGlyph[giIdx];
                 dst->noofGlyphs = 0;
                 dst->width      = 0.0f;
                 dst->height     = (int)font->lineHeight;
                 continue;
             }
+
             dst->noofGlyphs += 1;
             dst->width = nextW;
-            if ((int)bPrintFontGlyph[gi].height > dst->height)
-                dst->height = (int)bPrintFontGlyph[gi].height;
-            ++gi;
+            if ((int)bPrintFontGlyph[giIdx].height > dst->height)
+                dst->height = (int)bPrintFontGlyph[giIdx].height;
+
+            ++giIdx;
         }
+
+        if (dst->noofGlyphs > 0)
+            ++lineCount;
     }
 
-    // Vertical block offset
+    // -------------------------------------------------------------------------
+    // 3) Vertical block offset (TOP / CENTRE / BOTTOM) – matches disasm:
+    //       blockH = sum(line.height) + (lineCount - 1) * lineSpace
+    // -------------------------------------------------------------------------
+
     float blockH = 0.0f;
-    for (int ln = 0; ln < lineCount; ++ln) blockH += (float)line[ln].height;
+    for (int ln = 0; ln < lineCount; ++ln)
+        blockH += (float)line[ln].height;
     blockH += (float)(lineCount - 1) * formatting->lineSpace;
 
     float vOff = 0.0f;
@@ -595,60 +837,118 @@ int bPrintFontVerts(TBPrimVertex *vertBase, TBFontLineInfo *line, const TBFont *
         vOff = (formatting->height - blockH) * 0.5f;
     else if (formatting->vertFormat == EBFONTFORMATTING_BOTTOM)
         vOff = formatting->height - blockH;
-    // TOP -> vOff=0
+    // TOP => vOff = 0
 
-    // Emit vertices (TL, BL, TR, BR) — TRIANGLESTRIP quads (DrawPrimitiveVB type 6 path)
-    TBPrimVertex* out = vertBase;
-    const unsigned int colourPacked = bRColLUT[(r & 255)] | bGColLUT[(g & 255)] |
-                                      bBColLUT[(b & 255)] | bAColLUT[(a & 255)];
+    // -------------------------------------------------------------------------
+    // 4) Emit positioned vertices into VB and issue POLY callbacks
+    // -------------------------------------------------------------------------
+
+    TBPrimVertex *out = vertBase;
+    const unsigned int colourPacked =
+        bGColLUT[(g & 255)] | bAColLUT[(a & 255)] |
+        bBColLUT[(b & 255)] | bRColLUT[(r & 255)];
+
     float yBase = formatting->y - vOff;
 
-    for (int ln2 = 0; ln2 < lineCount; ++ln2) {
-        TBFontLineInfo* L = &line[ln2];
+    for (int x = 0; x < lineCount; ++x)
+    {
+        TBFontLineInfo *L = &line[x];
 
+        // Horizontal alignment / justification
         float hOff = 0.0f;
         if (formatting->horzFormat == EBFONTFORMATTING_CENTRE)
+        {
             hOff = (formatting->width - L->width) * 0.5f;
+        }
         else if (formatting->horzFormat == EBFONTFORMATTING_RIGHT)
+        {
             hOff = (formatting->width - L->width);
-        else if (formatting->horzFormat == EBFONTFORMATTING_JUSTIFY) {
+        }
+        else if (formatting->horzFormat == EBFONTFORMATTING_JUSTIFY)
+        {
             int spaces = 0;
-            for (int k = 0; k < L->noofGlyphs; ++k) if (L->glyph[k].charCode == 0) ++spaces;
-            if (spaces > 1) {
-                const float extra = (formatting->width - L->width) / (float)spaces;
-                for (int k = 0; k < L->noofGlyphs; ++k)
-                    if (L->glyph[k].charCode == 0) L->glyph[k].width += extra;
-                L->width = formatting->width;
+            for (int k = 0; k < L->noofGlyphs; ++k)
+            {
+                if (L->glyph[k].charCode == 0)
+                    ++spaces;
+            }
+
+            if (spaces > 1)
+            {
+                float extra = formatting->width - L->width;
+                if (extra > 0.0f)
+                    hOff = extra / (float)(spaces - 1);
             }
         }
 
         const float lineH    = (float)L->height;
         const float yTopLine = yBase - lineH;
-        float x = formatting->x + hOff;
+        float x = formatting->x;
+        float justifyStep = 0.0f;
 
-        cb.lineNumber = ln2;
+        if (formatting->horzFormat == EBFONTFORMATTING_JUSTIFY)
+        {
+            // For JUSTIFY, we spread extra width between spaces;
+            // base x is left edge, hOff is per?space increment.
+            justifyStep = hOff;
+        }
+        else
+        {
+            x += hOff;
+        }
 
-        for (int k = 0; k < L->noofGlyphs; ++k) {
-            const TBPrintFontGlyph& gph = L->glyph[k];
-            if (gph.charCode == -2) continue;
+        cb.lineNumber = x;
+
+        for (int k = 0; k < L->noofGlyphs; ++k)
+        {
+            const TBPrintFontGlyph &gph = L->glyph[k];
+            if (gph.charCode == -2)
+                continue;
+
+            if (formatting->horzFormat == EBFONTFORMATTING_JUSTIFY &&
+                gph.charCode == 0 && justifyStep > 0.0f)
+            {
+                // Space – add justification gap before glyph
+                x += justifyStep;
+            }
 
             const float yTopGlyph = yTopLine + (lineH - gph.height) * 0.5f;
             const float yBotGlyph = yTopGlyph + gph.height;
 
             // TL
-			out[0].x = x;             out[0].y = yTopGlyph; out[0].z = 0.0f;
-			out[0].colour = colourPacked; out[0].u = gph.u[1]; out[0].v = gph.v[1];
-			// BL
-			out[1].x = x;             out[1].y = yBotGlyph; out[1].z = 0.0f;
-			out[1].colour = colourPacked; out[1].u = gph.u[0]; out[1].v = gph.v[0];
-			// TR
-			out[2].x = x + gph.width; out[2].y = yTopGlyph; out[2].z = 0.0f;
-			out[2].colour = colourPacked; out[2].u = gph.u[2]; out[2].v = gph.v[2];
-			// BR
-			out[3].x = x + gph.width; out[3].y = yBotGlyph; out[3].z = 0.0f;
-			out[3].colour = colourPacked; out[3].u = gph.u[3]; out[3].v = gph.v[3];
+            out[0].x = x;
+            out[0].y = yTopGlyph;
+            out[0].z = 0.0f;
+            out[0].u = gph.u[1];
+            out[0].v = gph.v[1];
+            out[0].colour = colourPacked;
 
-            if (callback) {
+            // BL
+            out[1].x = x;
+            out[1].y = yBotGlyph;
+            out[1].z = 0.0f;
+            out[1].u = gph.u[0];
+            out[1].v = gph.v[0];
+            out[1].colour = colourPacked;
+
+            // TR
+            out[2].x = x + gph.width;
+            out[2].y = yTopGlyph;
+            out[2].z = 0.0f;
+            out[2].u = gph.u[2];
+            out[2].v = gph.v[2];
+            out[2].colour = colourPacked;
+
+            // BR
+            out[3].x = x + gph.width;
+            out[3].y = yBotGlyph;
+            out[3].z = 0.0f;
+            out[3].u = gph.u[3];
+            out[3].v = gph.v[3];
+            out[3].colour = colourPacked;
+
+            if (callback)
+            {
                 cb.curVertex   = out;
                 cb.curGlyph    = (TBPrintFontGlyph*)&gph;
                 cb.glyphNumber = k;

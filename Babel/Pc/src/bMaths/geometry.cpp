@@ -73,8 +73,60 @@ float bmGeomLengthAlongVector(const TBVector basis, const TBVector test)
 
 extern float bmGeomDistanceFromLine(const TBCollisionLine * const line, const TBVector point, TBVector closestPoint)
 {
-        bkPrintf("*** WARNING *** bmGeomDistanceFromLine was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    float dx = line->end[0] - line->start[0];
+    float dy = line->end[1] - line->start[1];
+    float dz = line->end[2] - line->start[2];
+
+    const float len = bmSqrt(dx * dx + dy * dy + dz * dz);
+
+    if (len == 0.0f)
+    {
+        closestPoint[0] = line->start[0];
+        closestPoint[1] = line->start[1];
+        closestPoint[2] = line->start[2];
+        closestPoint[3] = line->start[3];
+        return bmVectorDistance(point, line->start);
+    }
+
+    const float invLen = 1.0f / len;
+    const float nx = dx * invLen;
+    const float ny = dy * invLen;
+    const float nz = dz * invLen;
+
+    const float px = point[0] - line->start[0];
+    const float py = point[1] - line->start[1];
+    const float pz = point[2] - line->start[2];
+
+    const float t = px * nx + py * ny + pz * nz;
+
+    if (t <= 0.0f)
+    {
+        closestPoint[0] = line->start[0];
+        closestPoint[1] = line->start[1];
+        closestPoint[2] = line->start[2];
+        closestPoint[3] = line->start[3];
+        return bmSqrt(px * px + py * py + pz * pz);
+    }
+
+    if (t >= len)
+    {
+        const float ex = point[0] - line->end[0];
+        const float ey = point[1] - line->end[1];
+        const float ez = point[2] - line->end[2];
+
+        closestPoint[0] = line->end[0];
+        closestPoint[1] = line->end[1];
+        closestPoint[2] = line->end[2];
+        closestPoint[3] = line->end[3];
+        return bmSqrt(ex * ex + ey * ey + ez * ez);
+    }
+
+    // interior: closestPoint[3] intentionally untouched
+    closestPoint[0] = line->start[0] + nx * t;
+    closestPoint[1] = line->start[1] + ny * t;
+    closestPoint[2] = line->start[2] + nz * t;
+
+    return bmSqrt((px * px + py * py + pz * pz) - (t * t));
 }
 
 

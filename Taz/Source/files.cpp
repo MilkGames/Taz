@@ -35,7 +35,7 @@
 #endif // NH: #ifdef _MASTER
 
 #ifndef _MASTER
-	#define REG_KEY "Software\\Infogrames Interactive\\TazWanted\\Pre-release"
+	#define REG_KEY "Software\\Infogrames Interactive\\TazWanted\\Release" // MG: I changed that, sorry
 #endif // NH: #ifndef _MASTER
 
 #else // NH: #ifndef CONSUMERDEMO
@@ -1175,7 +1175,7 @@ void DrawLoadLoop(int drawFlags)
 		// PP: finish timing the frame; calculate frames per second, frame length, etc.
 		finishTimingFrame();
 
-		if (FALSE) // MG: REMOUT (controller1.f10DebounceChannel->value)
+		if (controller1.f10DebounceChannel->value)
 		{
 			// take screen shot
 			TakeScreenShot();
@@ -1435,6 +1435,9 @@ void ProcessConfigFile(void)
 	HKEY	hKey;
     DWORD	dwBufLen = 80;
 	char	datFile[80];
+#ifdef FIX_CONFIGFILEREAD
+	char   *szFileName = "%s\\taz.dat";
+#endif
 
 	memset(szProductLoc, 0, 80);
 	
@@ -1444,9 +1447,17 @@ void ProcessConfigFile(void)
 		{
 			RegCloseKey(hKey);
 		}
+		else szFileName = "%staz.dat";
 	}
-	
+#ifdef FIX_CONFIGFILEREAD
+	else szFileName = "%staz.dat";
+#endif
+
+#ifdef FIX_CONFIGFILEREAD
+	sprintf(datFile, szFileName, szProductLoc);
+#else
 	sprintf(datFile, "%s\\taz.dat", szProductLoc);
+#endif
 
 	HANDLE hFile;	
 	DWORD bytesRead;
@@ -1658,6 +1669,9 @@ void InitMissingCdWarning(void)
 
 void CheckCD()
 {
+#ifdef NOCD
+	return;
+#endif
 	if (!ValidCD())
 	{
 		missingCdBook.flags &= ~BKFLAG_BOOKLIST; // NH: // PP: bodge
@@ -1891,7 +1905,6 @@ void DrawMouse()
 }
 #endif // NH: #if BPLATFORM==PC
 
-#define MODIFY_BADDISK
 /*	--------------------------------------------------------------------------------
 	Function 	: badDisk
 	Purpose 	: handle a fatal disk read error
@@ -1900,6 +1913,7 @@ void DrawMouse()
 	Info 		: // PP: this has to interrupt whatever loading was going on at the time
 					// PP: I kept the name short because I can see us using this function a lot.
 */
+
 void badDisk(void)
 {
 	BOOK						book;
@@ -1925,58 +1939,39 @@ void badDisk(void)
 
 	book.setBookRect(RECTANGLE(-0.35f, 0.35f, -0.35f, 0.35f));
 
-#ifndef MODIFY_BADDISK
 	page=book.addPage();
 
+#ifndef MODIFY_BADDISK
 	page->insertItem(STR_XBOX_TCR_BAD_GAME_DISK)
 		->setFontSize(BADDISK_FONTSIZE)
 		->setWrap(true);
 #else
-	TEXTBOX* tb2 = new TEXTBOX();
-	TEXTBOX* tb3p1 = new TEXTBOX();
-	TEXTBOX* tb3p2 = new TEXTBOX();
-	TEXTBOX* tb3p3 = new TEXTBOX();
-	TEXTBOX* tb4 = new TEXTBOX();
 
-    // MG: Page 1 (5s): original-style message but with STR_EX_GALLERY10_LOCKED
-	page=book.addPage("BAD_DISK_1");
-    page->insertItem(STR_EX_GALLERY10_LOCKED)
-        ->setFontSize(BADDISK_FONTSIZE)
-		->setWrap(true);
+	TEXTBOX* tbp1 = new TEXTBOX();
+	TEXTBOX* tbp2 = new TEXTBOX();
+	TEXTBOX* tbp3 = new TEXTBOX();
 
-    // MG: Page 2 (5s): "Just kidding..."
-    PAGE* p2 = book.addPage("BAD_DISK_2");
-    p2->insertItem(tb2);
-    tb2->setStyle(TS_normal);
-    tb2->setFontSize(BADDISK_FONTSIZE);
-    tb2->setText("Just kidding...");
-	tb2->setWrap(true);
-
-    // MG: Page 3 (15s): explanation
-    PAGE* p3 = book.addPage("BAD_DISK_3");
-    p3->insertItem(tb3p1);
-    tb3p1->setStyle(TS_normal);
-    tb3p1->setFontSize(BADDISK_FONTSIZE);
-    tb3p1->setText(
+    page->insertItem(tbp1);
+    tbp1->setStyle(TS_normal);
+    tbp1->setFontSize(BADDISK_FONTSIZE);
+    tbp1->setText(
         "Fatal game error occurred."
     );
-	tb3p1->setWrap(true);
+	tbp1->setWrap(true);
 
-	p3->insertItem(tb3p3);
-    tb3p3->setStyle(TS_normal);
-    tb3p3->setFontSize(BADDISK_FONTSIZE);
-    tb3p3->setText(
+	page->insertItem(tbp2);
+    tbp2->setStyle(TS_normal);
+    tbp2->setFontSize(BADDISK_FONTSIZE);
+    tbp2->setText(
 		"Please contact MilkGames with your debugLog.txt file for assistance."
     );
-	tb3p3->setWrap(true);
+	tbp2->setWrap(true);
 
-    // MG: Page 4 (10s): shutdown notice
-    PAGE* p4 = book.addPage("BAD_DISK_4");
-    p4->insertItem(tb4);
-    tb4->setStyle(TS_normal);
-    tb4->setFontSize(BADDISK_FONTSIZE);
-    tb4->setText("The game will shutdown in 5 seconds.");
-	tb4->setWrap(true);
+    page->insertItem(tbp3);
+    tbp3->setStyle(TS_normal);
+    tbp3->setFontSize(BADDISK_FONTSIZE);
+    tbp3->setText("The game will shutdown in 15 seconds.");
+	tbp3->setWrap(true);
 #endif
 
 	// PP: these two strings mention Xbox; you'll need different versions for other platforms
@@ -2027,14 +2022,17 @@ TP:	Not allowed to, TCR 6-09
 	PauseRumble(&controller1);
 	PauseRumble(&controller2);
 
+	book.privateUpdate();
 	book.privateDraw();
 
-#ifdef CONSOLEDEBUG
-		DrawConsole();
+#ifdef MODIFY_BADDISK
+	// MG: Timer state (DrawLegalSplashScreen style)
+    TBTimerValue startTime = bkTimerRead();
+    float        fTime     = 0.0f;   // MG: seconds for the last frame
+    float        clock     = 15;  // MG: seconds remaining on current page
 #endif
-	Flip(0, 0, 0, 128);
 
-#ifndef MODIFY_BADDISK
+	Flip(0, 0, 0, 128);
 
 	while(true)
 	{
@@ -2075,41 +2073,7 @@ TP:	Not allowed to, TCR 6-09
 		
 #endif// PP: xbox
 
-		// PP: bkUpdate is the guts of bdFlip
-		// PP: needed to keep streaming music ticking over, also to update the vibration (allowing it to stop)
-		bkUpdate();
-
-		bkSleep(0);
-	}
-
-#else // MG: MODIFY_BADDISK
-
-    // MG: Durations and page names
-    static const float kDurSec[4] = { 5.0f, 5.0f, 10.0f, 5.0f };
-    static const char* const kPageName[4] = {
-        "BAD_DISK_1","BAD_DISK_2","BAD_DISK_3","BAD_DISK_4"
-    };
-
-    // MG: Timer state (DrawLegalSplashScreen style)
-    TBTimerValue startTime = bkTimerRead();
-    float        fTime     = 0.0f;   // MG: seconds for the last frame
-
-    // MG: State machine
-    int   currentPage = 0;           // MG: 0..3
-    float clock       = kDurSec[0];  // MG: seconds remaining on current page
-
-    while (true)
-    {
-        biReadDevices();
-        bsUpdate((int)(gameStatus.deltaTime));
-
-        book.privateUpdate();
-        book.privateDraw();
-    #ifdef CONSOLEDEBUG
-        DrawConsole();
-    #endif
-        Flip(0, 0, 0, 128);
-
+#ifdef MODIFY_BADDISK
         // MG: Frame timer: ? -> FPS -> fTime (seconds)
         TBTimerValue now = bkTimerRead();
         {
@@ -2122,24 +2086,18 @@ TP:	Not allowed to, TCR 6-09
         clock -= fTime;
         if (clock <= 0.0f)
         {
-            ++currentPage;
-            if (currentPage < 4)
-            {
-                book.gotoPage(kPageName[currentPage]);
-                clock = kDurSec[currentPage];
-            }
-            else
-            {
-                bkShutdown();
-                BabelHasShutdown = TRUE;
-                return;
-            }
+			bkShutdown();
+			BabelHasShutdown = TRUE;
+			return;
         }
 
-        // MG: Keep audio/rumble ticking
-        bkUpdate();
-        bkSleep(0);
-    }
+		book.privateDraw();
+#endif // MG: #ifdef MODIFY_BADDISK
 
-#endif // MG: MODIFY_BADDISK
+		// PP: bkUpdate is the guts of bdFlip
+		// PP: needed to keep streaming music ticking over, also to update the vibration (allowing it to stop)
+		bkUpdate();
+
+		bkSleep(0);
+	}
 }

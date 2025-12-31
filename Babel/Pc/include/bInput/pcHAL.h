@@ -13,6 +13,9 @@
 // ********************************************************************************
 // Constants and Macros
 
+// bDirectInputKeyMap size
+#define BDIRECTINPUTKEYMAPSIZE 107
+
 // maximum number of device ports
 #define BNOOFINPUTPORTS		4
 
@@ -23,29 +26,48 @@
 #define BNOOFRUMBLEMOTORS	2
 
 // maximum number of pads this platform supports
-#define BMAXPADS			2
+#define BMAXPADS			4
 
 
 // ********************************************************************************
 // Types, Structures and Classes
 
-// state for a port
-typedef struct _TBInputPortState {
-	int					portId;								// physical port ID (0..BNOOFINPUTPORTS-1)
-	int					connected;							// TRUE if currently connected, FALSE otherwise
-	HANDLE				handle;								// handle representing this pad and it's resources
-	//XINPUT_STATE		state;								// device state
-} TBInputPortState;
+// Device info used by input system
+typedef struct _TBDeviceInfo
+{
+    uint32                flags;             // 0x00  device flags
+    GUID                  guid;              // 0x04  device instance GUID
+    IDirectInputDevice8A *device;            // 0x14  DirectInput device pointer
+
+    uint32                numButtons;        // 0x18  number of buttons
+    uint32                numAxes;           // 0x1C  number of axes
+    uint32                numPOVs;           // 0x20  number of POV hats
+
+    uint32                axisPresentMask;   // 0x24  bitmask of present axes
+
+    LONG                  axisMin[6];        // 0x28  per-axis min
+    LONG                  axisMax[6];        // 0x40  per-axis max
+    LONG                  axisCenter[6];     // 0x58  per-axis center
+    LONG                  axisHalfRange[6];  // 0x70  per-axis half-range
+    LONG                  axisScaled[6];     // 0x88  per-axis scaled half-range
+
+    uint32                capsSize;          // 0xA0  sizeof caps struct
+} TBDeviceInfo; // sizeof(TBDeviceInfo) == 0xA4
 
 
 // our DirectInput information container
 typedef struct _TBInputInfo {
-	TBInputPortState	portState[BNOOFINPUTPORTS];			// port state info
-	int					noofConnectedDevices;				// number of currently connected devices
-	TBInputPortState	memCardState[BNOOFMEMCARDS];		// memory card state info
-	int					noofConnectedMemCards;				// number of currently connected memory cards
-	TBInputPortState	*devicePortMap[BNOOFINPUTPORTS];	// map of connected logical ports to physical ports
-	DWORD				lastDynamicTick;					// time last dynamic connection check was made
+    IDirectInput8A* pDI;                 // 0x000: DirectInput8 main interface
+    TBDeviceInfo    devices[6];           // 0x004: 6 devices (0–3 pads, 4 keyboard, 5 mouse)
+    uint            joystickCount;       // 0x3DC: number of active joysticks/gamepads
+    uchar           keyboardState[256];  // 0x3E0: raw keyboard state (GetDeviceState + c_dfDIKeyboard)
+    DIMOUSESTATE    mouseFiltered;       // 0x4E0: filtered mouse state (smoothed / throttled)
+    DIMOUSESTATE    mouseRaw;            // 0x4F0: raw mouse state (GetDeviceState + c_dfDIMouse)
+    uint            UNKNOWN1;            // 0x500: unknown
+    DIJOYSTATE      joyState[BMAXPADS];  // 0x504: raw DIJOYSTATE for up to BMAXPADS pads
+    int32           joyAxis[BMAXPADS][6];// 0x644: calibrated axes [pad][0..5] = X,Y,Z,Rx,Ry,Rz
+    uint32          UNKNOWN2[228];       // 0x6A4: unknown
+    uint            initialized;         // 0xA34: non-zero when input system is initialized
 } TBInputInfo;
 
 
@@ -54,8 +76,8 @@ typedef struct _TBInputInfo {
 
 extern TBInputInfo	bInputInfo;						// our input device information container
 
-extern GUID *bJoystickInstanceGuid[BMAXPADS];       // MG: still need to test it - TODO
-extern unsigned char bDirectInputKeyMap[256];
+extern GUID *bJoystickInstanceGuid[BMAXPADS];
+extern int bDirectInputKeyMap[BDIRECTINPUTKEYMAPSIZE];
 
 // ********************************************************************************
 // Prototypes

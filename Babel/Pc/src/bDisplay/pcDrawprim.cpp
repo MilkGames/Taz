@@ -593,12 +593,11 @@ void bResumeVertexBuffers()
    Returns : OK=valid, FAIL=clipped
    Info : 
 */
-
 int bdDrawFlatSprite(TBVector centre, float xDim, float yDim, float ang, struct _TBTexture *texture, int32 uFlip, int32 vFlip,
 					 int r,int g,int b,int a, TBPrimVertex2D *destVerts, float zBias)
 {
-        bkPrintf("*** WARNING *** bdDrawFlatSprite was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+	if (bdWorldToScreenSizeXY(centre,xDim,yDim,&xDim,&yDim) == 0.0) return 0;
+	return bdDrawFixedFlatSprite(centre,xDim,yDim,ang,texture,uFlip,vFlip,r,g,b,a,destVerts,zBias);
 }
 
 
@@ -644,8 +643,104 @@ int bPrimCount(uint32 primType, int vertCount)
 int bdDrawFixedFlatSprite(TBVector centre, float xDim, float yDim, float ang, struct _TBTexture *texture, int32 uFlip,
 						  int32 vFlip, int r,int g,int b,int a, TBPrimVertex2D *destVerts, float zBias)
 {
-        bkPrintf("*** WARNING *** bdDrawFixedFlatSprite was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+	TBSpecularPrimVertex2D localVerts[4];
+	TBSpecularPrimVertex2D *verts = (destVerts != NULL) ? (TBSpecularPrimVertex2D *)destVerts : localVerts;
+
+	TBVector proj;
+	bdProjectVertices(proj, centre, 1);
+
+	const float zProj = proj[2];
+
+	// matches x87 behavior for NaN too
+	if (!(zProj >= 0.05f) || !(zProj <= 1.0f)) {
+		return 0;
+	}
+
+	// fog in specular alpha (0xAA000000)
+	uint32 specular = 0xff000000;
+	if (bRenderState.renderState[8][0] != 0) {
+		const float fogZ = zProj / proj[3];
+
+		if (!(fogZ > bRenderState.fogNear)) {
+			specular = 0xff000000;
+		} else if (!(fogZ <= bRenderState.fogFar)) {
+			specular = 0x00000000;
+		} else {
+			const float t = (fogZ - bRenderState.fogNear) * bRenderState.fogRange * 255.0f;
+			const int32 it = (int32)t;            // trunc like __ftol
+			const int32 tmp = 0xff - it;
+			specular = ((uint32)tmp) << 24;
+		}
+	}
+
+	const float xC = bViewInfo.xCentre + proj[0];
+	const float yC = bViewInfo.yCentre - proj[1];
+	const float z   = zProj + zBias;
+
+	const uint32 colour = (uint32)bRColLUT[r] | (uint32)bGColLUT[g] | (uint32)bBColLUT[b] | (uint32)bAColLUT[a];
+
+	const float uRight  = (uFlip == 0) ? 1.0f : 0.0f;
+	const float uLeft   = (uFlip == 0) ? 0.0f : 1.0f;
+	const float vTop    = (vFlip == 0) ? 0.0f : 1.0f;
+	const float vBottom = (vFlip == 0) ? 1.0f : 0.0f;
+
+	// common per-vertex fields
+	for (int32 i = 0; i < 4; i++) {
+		verts[i].z        = z;
+		verts[i].rhw      = 1.0f;
+		verts[i].colour   = colour;
+		verts[i].specular = specular;
+	}
+
+	// UV layout (triangle strip): right-top, right-bottom, left-top, left-bottom
+	verts[0].u = uRight; verts[0].v = vTop;
+	verts[1].u = uRight; verts[1].v = vBottom;
+	verts[2].u = uLeft;  verts[2].v = vTop;
+	verts[3].u = uLeft;  verts[3].v = vBottom;
+
+	if (ang == 0.0f) {
+		verts[0].x = xC + xDim; verts[0].y = yC - yDim;
+		verts[1].x = xC + xDim; verts[1].y = yC + yDim;
+		verts[2].x = xC - xDim; verts[2].y = yC - yDim;
+		verts[3].x = xC - xDim; verts[3].y = yC + yDim;
+	} else {
+		const float c = (float)cos((double)ang);
+		const float s = (float)sin((double)ang);
+
+		// clockwise rotation (matches asm formulas):
+		// x' = x*c + y*s
+		// y' = -x*s + y*c
+		const float x0 =  (xDim * c) + ((-yDim) * s);
+		const float y0 =  (-xDim * s) + ((-yDim) * c);
+
+		const float x1 =  (xDim * c) + (( yDim) * s);
+		const float y1 =  (-xDim * s) + (( yDim) * c);
+
+		const float x2 = ((-xDim) * c) + ((-yDim) * s);
+		const float y2 = -((-xDim) * s) + ((-yDim) * c);
+
+		const float x3 = ((-xDim) * c) + (( yDim) * s);
+		const float y3 = -((-xDim) * s) + (( yDim) * c);
+
+		verts[0].x = xC + x0; verts[0].y = yC + y0;
+		verts[1].x = xC + x1; verts[1].y = yC + y1;
+		verts[2].x = xC + x2; verts[2].y = yC + y2;
+		verts[3].x = xC + x3; verts[3].y = yC + y3;
+	}
+
+	// if caller provided a buffer, only fill it
+	if (destVerts != NULL) {
+		return 1;
+	}
+
+	bdSetTexture(0, texture);
+
+	if (bDisplayInfo.started != 0) {
+		bSetVertexShader(0x1c4, (TBVertexBuffer *)0);
+		bDisplayInfo.d3dDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, localVerts, 0x20);
+	}
+
+	return 1;
 }
 
 
@@ -747,8 +842,295 @@ int bdDrawMultiStreak(int noofPoints, TBVector pointArray, float *sizeArray, flo
 int bdDrawMultiStreakClipped(int noofPoints, TBVector pointArray, float *sizeArray, float *screenSizeArray, int *colourArray,
 					  TBPrimVertex2D *destVerts, float zBias)
 {
-        bkPrintf("*** WARNING *** bdDrawMultiStreakClipped was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+	float *tmpPoints = (float *)MALLOC((uint32)(noofPoints << 5));      // 2 * noofPoints * 4 floats
+	float *tmpSizes  = (float *)MALLOC((uint32)(noofPoints * 8));       // 2 * noofPoints floats
+	int32 *tmpCols   = (int32 *)MALLOC((uint32)(noofPoints << 5));      // 2 * noofPoints * 4 ints
+
+	float *tmpPointsW = tmpPoints;
+	float *tmpSizesW  = tmpSizes;
+	int32 *tmpColsW   = tmpCols;
+
+	int32 runCount = 0;
+	int32 totalVerts = 0;
+
+	TBSpecularPrimVertex2D *outVerts = (TBSpecularPrimVertex2D *)destVerts;
+
+	// Remaining segments = noofPoints - 1. The binary uses a decrementing counter.
+	int32 remaining = (int32)(noofPoints - 1);
+
+	for (int32 i = 0; i < (int32)(noofPoints - 1); ++i)
+	{
+		// Load endpoints (object space).
+		const float *p0 = &pointArray[i * 4];
+		const float *p1 = &pointArray[(i + 1) * 4];
+
+		float x0 = p0[0];
+		float y0 = p0[1];
+		float z0w = p0[2];
+		float w0 = p0[3];
+
+		float x1 = p1[0];
+		float y1 = p1[1];
+		float z1w = p1[2];
+		float w1 = p1[3];
+
+		float size0 = sizeArray[i];
+		float size1 = sizeArray[i + 1];
+
+		float c0[4];
+		float c1[4];
+		const int32 c0i = (int32)(i * 4);
+		const int32 c1i = (int32)((i + 1) * 4);
+		c0[0] = (float)colourArray[c0i + 0];
+		c0[1] = (float)colourArray[c0i + 1];
+		c0[2] = (float)colourArray[c0i + 2];
+		c0[3] = (float)colourArray[c0i + 3];
+		c1[0] = (float)colourArray[c1i + 0];
+		c1[1] = (float)colourArray[c1i + 1];
+		c1[2] = (float)colourArray[c1i + 2];
+		c1[3] = (float)colourArray[c1i + 3];
+
+		// Project both endpoints to determine clip classification (projection-space Z).
+		float proj0[4];
+		float proj1[4];
+		float vec0[4] = { x0, y0, z0w, w0 };
+		float vec1[4] = { x1, y1, z1w, w1 };
+		bmMatMultiplyVector2(proj0, bViewInfo.objectToProjection, vec0);
+		bmMatMultiplyVector2(proj1, bViewInfo.objectToProjection, vec1);
+
+		const float clipZ = 3.0f;
+		const int32 in0 = (proj0[2] > clipZ);
+		const int32 in1 = (proj1[2] > clipZ);
+
+		// local_94 equivalent:
+		// 0 = both outside
+		// 1 = entering (add 2 points)
+		// 2 = leaving  (add 1 point, then flush if more segments remain)
+		// 3 = inside   (add 1 point)
+		int32 segMode = 0;
+
+		if (!in0)
+		{
+			if (in1)
+			{
+				// entering: move p0 to intersection
+				const float t = (proj1[2] - clipZ) / (proj1[2] - proj0[2]);
+				x0 = (x0 - x1) * t + x1;
+				y0 = (y0 - y1) * t + y1;
+				z0w = (z0w - z1w) * t + z1w;
+				w0 = (w0 - w1) * t + w1;
+				c0[0] = (c0[0] - c1[0]) * t + c1[0];
+				c0[1] = (c0[1] - c1[1]) * t + c1[1];
+				c0[2] = (c0[2] - c1[2]) * t + c1[2];
+				c0[3] = (c0[3] - c1[3]) * t + c1[3];
+				size0 = (size0 - size1) * t + size1;
+				segMode = 1;
+			}
+			else
+			{
+				segMode = 0;
+			}
+		}
+		else
+		{
+			if (in1)
+			{
+				segMode = 3;
+			}
+			else
+			{
+				// leaving: move p1 to intersection
+				const float t = (proj0[2] - clipZ) / (proj0[2] - proj1[2]);
+				x1 = (x1 - x0) * t + x0;
+				y1 = (y1 - y0) * t + y0;
+				z1w = (z1w - z0w) * t + z0w;
+				w1 = (w1 - w0) * t + w0;
+				c1[0] = (c1[0] - c0[0]) * t + c0[0];
+				c1[1] = (c1[1] - c0[1]) * t + c0[1];
+				c1[2] = (c1[2] - c0[2]) * t + c0[2];
+				c1[3] = (c1[3] - c0[3]) * t + c0[3];
+				size1 = (size1 - size0) * t + size0;
+				segMode = 2;
+			}
+		}
+
+		// Decrement remaining *after* classification (matches the binary's DEC).
+		remaining--;
+
+		// If we're inside and the run has not started yet, emit the start point.
+		if ((segMode == 2 || segMode == 3) && runCount == 0)
+		{
+			tmpPointsW[0] = x0;
+			tmpPointsW[1] = y0;
+			tmpPointsW[2] = z0w;
+			tmpPointsW[3] = w0;
+			tmpPointsW += 4;
+			*tmpSizesW++ = size0;
+			// Truncate-to-zero (matches __ftol behaviour for in-range values).
+			tmpColsW[0] = (int32)c0[0];
+			tmpColsW[1] = (int32)c0[1];
+			tmpColsW[2] = (int32)c0[2];
+			tmpColsW[3] = (int32)c0[3];
+			tmpColsW += 4;
+			runCount = 1;
+		}
+
+		if (segMode == 1)
+		{
+			// entering: emit intersection + end point
+			tmpPointsW[0] = x0;
+			tmpPointsW[1] = y0;
+			tmpPointsW[2] = z0w;
+			tmpPointsW[3] = w0;
+			tmpPointsW[4] = x1;
+			tmpPointsW[5] = y1;
+			tmpPointsW[6] = z1w;
+			tmpPointsW[7] = w1;
+			tmpPointsW += 8;
+
+			*tmpSizesW++ = size0;
+			*tmpSizesW++ = size1;
+
+			tmpColsW[0] = (int32)c0[0];
+			tmpColsW[1] = (int32)c0[1];
+			tmpColsW[2] = (int32)c0[2];
+			tmpColsW[3] = (int32)c0[3];
+			tmpColsW[4] = (int32)c1[0];
+			tmpColsW[5] = (int32)c1[1];
+			tmpColsW[6] = (int32)c1[2];
+			tmpColsW[7] = (int32)c1[3];
+			tmpColsW += 8;
+
+			runCount += 2;
+		}
+		else if (segMode == 2)
+		{
+			// leaving: emit clipped end point
+			tmpPointsW[0] = x1;
+			tmpPointsW[1] = y1;
+			tmpPointsW[2] = z1w;
+			tmpPointsW[3] = w1;
+			tmpPointsW += 4;
+
+			*tmpSizesW++ = size1;
+			tmpColsW[0] = (int32)c1[0];
+			tmpColsW[1] = (int32)c1[1];
+			tmpColsW[2] = (int32)c1[2];
+			tmpColsW[3] = (int32)c1[3];
+			tmpColsW += 4;
+
+			runCount += 1;
+
+			// If there are more segments remaining, flush this run now.
+			if (remaining > 0)
+			{
+				int32 drawCount = 0;
+				for (int32 j = 0; j < runCount; ++j)
+				{
+					float *p = &tmpPoints[j * 4];
+					const float worldSize = tmpSizes[j];
+					if (bdWorldToScreenSizeX(p, worldSize, &screenSizeArray[j]) == 0.0f)
+					{
+						drawCount = 0;
+						goto flush_done_a;
+					}
+				}
+				drawCount = bdDrawFixedMultiStreak(runCount, tmpPoints, screenSizeArray, (int *)tmpCols,
+								   (TBPrimVertex2D *)(outVerts + 1), zBias);
+			flush_done_a:
+				// Build degenerate brackets (positions only).
+				if (drawCount > 0)
+				{
+					outVerts[0].x = outVerts[1].x;
+					outVerts[0].y = outVerts[1].y;
+					outVerts[0].z = outVerts[1].z;
+					outVerts[0].rhw = outVerts[1].rhw;
+				}
+				else
+				{
+					outVerts[0].x = 0.0f;
+					outVerts[0].y = 0.0f;
+					outVerts[0].z = 0.0f;
+					outVerts[0].rhw = 0.0f;
+				}
+				outVerts[drawCount + 1].x = outVerts[drawCount].x;
+				outVerts[drawCount + 1].y = outVerts[drawCount].y;
+				outVerts[drawCount + 1].z = outVerts[drawCount].z;
+				outVerts[drawCount + 1].rhw = outVerts[drawCount].rhw;
+
+				totalVerts += (drawCount + 2);
+				outVerts += (drawCount + 2);
+
+				// Reset run buffers.
+				tmpPointsW = tmpPoints;
+				tmpSizesW = tmpSizes;
+				tmpColsW = tmpCols;
+				runCount = 0;
+			}
+		}
+		else if (segMode == 3)
+		{
+			// inside: emit end point
+			tmpPointsW[0] = x1;
+			tmpPointsW[1] = y1;
+			tmpPointsW[2] = z1w;
+			tmpPointsW[3] = w1;
+			tmpPointsW += 4;
+
+			*tmpSizesW++ = size1;
+			tmpColsW[0] = (int32)c1[0];
+			tmpColsW[1] = (int32)c1[1];
+			tmpColsW[2] = (int32)c1[2];
+			tmpColsW[3] = (int32)c1[3];
+			tmpColsW += 4;
+
+			runCount += 1;
+		}
+	}
+
+	// Flush any final run.
+	if (runCount != 0)
+	{
+		int32 drawCount = 0;
+		for (int32 j = 0; j < runCount; ++j)
+		{
+			float *p = &tmpPoints[j * 4];
+			const float worldSize = tmpSizes[j];
+			if (bdWorldToScreenSizeX(p, worldSize, &screenSizeArray[j]) == 0.0f)
+			{
+				drawCount = 0;
+				goto flush_done_b;
+			}
+		}
+		drawCount = bdDrawFixedMultiStreak(runCount, tmpPoints, screenSizeArray, (int *)tmpCols,
+							   (TBPrimVertex2D *)(outVerts + 1), zBias);
+	flush_done_b:
+		if (drawCount > 0)
+		{
+			outVerts[0].x = outVerts[1].x;
+			outVerts[0].y = outVerts[1].y;
+			outVerts[0].z = outVerts[1].z;
+			outVerts[0].rhw = outVerts[1].rhw;
+		}
+		else
+		{
+			outVerts[0].x = 0.0f;
+			outVerts[0].y = 0.0f;
+			outVerts[0].z = 0.0f;
+			outVerts[0].rhw = 0.0f;
+		}
+		outVerts[drawCount + 1].x = outVerts[drawCount].x;
+		outVerts[drawCount + 1].y = outVerts[drawCount].y;
+		outVerts[drawCount + 1].z = outVerts[drawCount].z;
+		outVerts[drawCount + 1].rhw = outVerts[drawCount].rhw;
+		totalVerts += (drawCount + 2);
+	}
+
+	bkHeapFree(tmpCols);
+	bkHeapFree(tmpSizes);
+	bkHeapFree(tmpPoints);
+
+	return (int)totalVerts;
 }
 
 
@@ -764,8 +1146,219 @@ int bdDrawMultiStreakClipped(int noofPoints, TBVector pointArray, float *sizeArr
 int bdDrawFixedMultiStreak(int noofPoints, TBVector pointArray, float *sizeArray, int *colourArray,
 						   TBPrimVertex2D *destVerts, float zBias)
 {
-        bkPrintf("*** WARNING *** bdDrawFixedMultiStreak was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+	// Note: the original prototype uses TBPrimVertex2D*, but the vertex layout written
+	// by the original code is TBSpecularPrimVertex2D (0x20 bytes per vertex).
+	TBSpecularPrimVertex2D *verts = (TBSpecularPrimVertex2D *)destVerts;
+
+	TBVector proj0;
+	TBVector proj1;
+
+	bdProjectVertices(proj0, pointArray, 1);
+
+	// match x87 behavior for NaN too
+	if (!(proj0[2] >= 0.05f) || !(proj0[2] <= 1.0f))
+	{
+		return 0;
+	}
+
+	float x0 = bViewInfo.xCentre + proj0[0];
+	float y0 = bViewInfo.yCentre - proj0[1];
+	float z0 = proj0[2];
+
+	bdProjectVertices(proj1, pointArray + 4, 1);
+
+	if (!(proj1[2] >= 0.05f) || !(proj1[2] <= 1.0f))
+	{
+		return 0;
+	}
+
+	float x1 = bViewInfo.xCentre + proj1[0];
+	float y1 = bViewInfo.yCentre - proj1[1];
+	float z1 = proj1[2];
+
+	// direction from point0 to point1
+	float dxPrev = x1 - x0;
+	float dyPrev = y1 - y0;
+	float lenPrev = bmSqrtApprox(dxPrev * dxPrev + dyPrev * dyPrev);
+
+	if (lenPrev > 0.0f)
+	{
+		dxPrev /= lenPrev;
+		dyPrev /= lenPrev;
+	}
+
+	const uint32 specular = 0xff000000;
+	const uint32 colour0 =
+		bRColLUT[colourArray[0]] | bGColLUT[colourArray[1]] | bBColLUT[colourArray[2]] | bAColLUT[colourArray[3]];
+
+	const float s0 = sizeArray[0];
+	const float offY0 = dyPrev * s0;
+	const float offX0 = dxPrev * s0;
+	const float z0b = z0 + zBias;
+
+	// start cap (v=0.0): take the strip pair and shift it backward by (-offX0, -offY0)
+	verts[0].x = (x0 - offY0) - offX0;
+	verts[0].y = (y0 + offX0) - offY0;
+	verts[0].z = z0b;
+	verts[0].rhw = 1.0f;
+	verts[0].colour = colour0;
+	verts[0].specular = specular;
+	verts[0].u = 0.0f;
+	verts[0].v = 0.0f;
+
+	verts[1].x = (x0 + offY0) - offX0;
+	verts[1].y = (y0 - offX0) - offY0;
+	verts[1].z = z0b;
+	verts[1].rhw = 1.0f;
+	verts[1].colour = colour0;
+	verts[1].specular = specular;
+	verts[1].u = 1.0f;
+	verts[1].v = 0.0f;
+
+	// strip start at point0 (v=0.5)
+	verts[2].x = x0 - offY0;
+	verts[2].y = y0 + offX0;
+	verts[2].z = z0b;
+	verts[2].rhw = 1.0f;
+	verts[2].colour = colour0;
+	verts[2].specular = specular;
+	verts[2].u = 0.0f;
+	verts[2].v = 0.5f;
+
+	verts[3].x = x0 + offY0;
+	verts[3].y = y0 - offX0;
+	verts[3].z = z0b;
+	verts[3].rhw = 1.0f;
+	verts[3].colour = colour0;
+	verts[3].specular = specular;
+	verts[3].u = 1.0f;
+	verts[3].v = 0.5f;
+
+	int32 outCount = 4;
+
+	// iterate middle points (1..noofPoints-2) writing 2 verts per point at v=0.5
+	float xCur = x1;
+	float yCur = y1;
+	float zCur = z1;
+
+	for (int32 i = 1; i < (int32)noofPoints - 1; i++)
+	{
+		TBVector projNext;
+		bdProjectVertices(projNext, pointArray + ((i + 1) * 4), 1);
+
+		if (!(projNext[2] >= 0.05f) || !(projNext[2] <= 1.0f))
+		{
+			return 0;
+		}
+
+		float xNext = bViewInfo.xCentre + projNext[0];
+		float yNext = bViewInfo.yCentre - projNext[1];
+		float zNext = projNext[2];
+
+		float dxNext = xNext - xCur;
+		float dyNext = yNext - yCur;
+		float lenNext = bmSqrtApprox(dxNext * dxNext + dyNext * dyNext);
+
+		if (lenNext > 0.0f)
+		{
+			dxNext /= lenNext;
+			dyNext /= lenNext;
+		}
+
+		const float s = sizeArray[i];
+		const float avgDy = (dyNext + dyPrev) * 0.5f;
+		const float avgDx = (dxNext + dxPrev) * 0.5f;
+
+		// perpendicular scaled by size for this point
+		const float offY = avgDy * s;
+		const float offX = -avgDx * s;
+
+		const float zB = zCur + zBias;
+
+		const int *col = colourArray + (i * 4);
+		const uint32 colour =
+			bRColLUT[col[0]] | bGColLUT[col[1]] | bBColLUT[col[2]] | bAColLUT[col[3]];
+
+		verts[outCount + 0].x = xCur - offY;
+		verts[outCount + 0].y = yCur - offX;
+		verts[outCount + 0].z = zB;
+		verts[outCount + 0].rhw = 1.0f;
+		verts[outCount + 0].colour = colour;
+		verts[outCount + 0].specular = specular;
+		verts[outCount + 0].u = 0.0f;
+		verts[outCount + 0].v = 0.5f;
+
+		verts[outCount + 1].x = xCur + offY;
+		verts[outCount + 1].y = yCur + offX;
+		verts[outCount + 1].z = zB;
+		verts[outCount + 1].rhw = 1.0f;
+		verts[outCount + 1].colour = colour;
+		verts[outCount + 1].specular = specular;
+		verts[outCount + 1].u = 1.0f;
+		verts[outCount + 1].v = 0.5f;
+
+		outCount += 2;
+
+		// advance
+		dxPrev = dxNext;
+		dyPrev = dyNext;
+
+		xCur = xNext;
+		yCur = yNext;
+		zCur = zNext;
+	}
+
+	// final cap at last point (index = noofPoints-1)
+	const int32 last = (int32)noofPoints - 1;
+	const float sL = sizeArray[last];
+	const float offYL = dyPrev * sL;
+	const float offXL = dxPrev * sL;
+	const float zL = zCur + zBias;
+
+	const int *colL = colourArray + (last * 4);
+	const uint32 colourL =
+		bRColLUT[colL[0]] | bGColLUT[colL[1]] | bBColLUT[colL[2]] | bAColLUT[colL[3]];
+
+	// final strip pair at last point (v=0.5)
+	verts[outCount + 0].x = xCur - offYL;
+	verts[outCount + 0].y = yCur + offXL;
+	verts[outCount + 0].z = zL;
+	verts[outCount + 0].rhw = 1.0f;
+	verts[outCount + 0].colour = colourL;
+	verts[outCount + 0].specular = specular;
+	verts[outCount + 0].u = 0.0f;
+	verts[outCount + 0].v = 0.5f;
+
+	verts[outCount + 1].x = xCur + offYL;
+	verts[outCount + 1].y = yCur - offXL;
+	verts[outCount + 1].z = zL;
+	verts[outCount + 1].rhw = 1.0f;
+	verts[outCount + 1].colour = colourL;
+	verts[outCount + 1].specular = specular;
+	verts[outCount + 1].u = 1.0f;
+	verts[outCount + 1].v = 0.5f;
+
+	// end cap (v=1.0) is the last-point strip pair shifted forward by (offXL, offYL)
+	verts[outCount + 2].x = (xCur - offYL) + offXL;
+	verts[outCount + 2].y = (yCur + offXL) + offYL;
+	verts[outCount + 2].z = zL;
+	verts[outCount + 2].rhw = 1.0f;
+	verts[outCount + 2].colour = colourL;
+	verts[outCount + 2].specular = specular;
+	verts[outCount + 2].u = 0.0f;
+	verts[outCount + 2].v = 1.0f;
+
+	verts[outCount + 3].x = (xCur + offYL) + offXL;
+	verts[outCount + 3].y = (yCur - offXL) + offYL;
+	verts[outCount + 3].z = zL;
+	verts[outCount + 3].rhw = 1.0f;
+	verts[outCount + 3].colour = colourL;
+	verts[outCount + 3].specular = specular;
+	verts[outCount + 3].u = 1.0f;
+	verts[outCount + 3].v = 1.0f;
+
+	outCount += 4;
+	return outCount;
 }
 
 

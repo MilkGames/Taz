@@ -22,7 +22,7 @@
 // Types, Structures and Classes
 
 // type for mesh vertex buffers
-//typedef D3DVertexBuffer		TBMeshVertexBuffer;
+typedef IDirect3DVertexBuffer8		TBMeshVertexBuffer;
 
 // function pointer type for soft skin batch renderers
 typedef void (*TBDrawSoftSkinCallback)(struct _TBActorInstance *actorInstance, struct _TSoftSkinRenderModeState *renderModeState);
@@ -46,6 +46,14 @@ extern int						bForceHardSkinning;			// Force use of hard skinning (testing onl
 */
 void bDrawSoftSkin(struct _TBActorInstance *actorInstance, int alpha);
 
+/*	--------------------------------------------------------------------------------
+	Function : bDrawSoftSkinCPU
+	Purpose : draw a soft-skinned character via CPU
+	Parameters : actor instance ptr
+	Returns : 
+	Info : 
+*/
+void bDrawSoftSkinCPU(struct _TBActorInstance *actorInstance, int alpha);
 
 /*	--------------------------------------------------------------------------------
 	Function : baFlushVertexShaderCache

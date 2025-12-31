@@ -223,14 +223,8 @@ ushort *bkString8to16(ushort *dest, const uchar * src)
 int bkStringLength16(const ushort *str)
 {
     const ushort* p = str;
-    ushort c;
-
-    do {
-        c = *p;
-        p++;
-    } while (c != 0);
-
-    return (((int)p - (int)str) / 2) - 1;
+    while (*p++ != 0);
+    return int(p - str) - 1;
 }
 
 

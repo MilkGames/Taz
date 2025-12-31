@@ -16,18 +16,50 @@
 //#define AMERICAN
 #endif
 
-//#define INFOGRAMES
+#define INFOGRAMES
 
 // NH: For master releases with absolutely NO debug, testing or infogrames stuff included (ie. GUI and screenshots)
 //#define _MASTER
 
-#ifdef MILKGAMES
-	#define SKIPLAUNCHER // MG: yeah, it skips launcher (imagine creating a function that you don't use lmao)
-	#define ENABLEVIDEO  // MG: hello there, it's MilkGames here! let's play some Bink videos!
-	#define FILES_DEBUG  // MG: hmmm... erm... yeah, files debug!!!!
-	#define SPLASH_TEST // MG: shows every splash that we have in the game instead of basic legal splash
-	#define SUGAR_COATED_CRASHES // MG: calls a bad disk message when a fatal error occurs
-	#define TEXT_TEST // MG: replaces a bad disk message
+#ifdef MILKGAMES // MG: this is my own stuff. check global.h in Babel for more info
+	#define NOCD // MG: disable CD check (if _MASTER was defined)
+	//#define OBJECTVIEWONLY // MG: launch in object viewer right away (doesn't work for now)
+	#define _TAZDEBUG // MG: defining this here, because it's a bit stupid to define this in project settings for release build...
+	#define FIX_CONFIGFILEREAD // MG: if you have nothing in registy Taz will skip taz.dat reading, this will try to read it if you have it next to .exe
+	#define SKIPLAUNCHER // MG: yeah, it skips a launcher (imagine creating a function that you don't use lmao)
+	//#define ENABLEVIDEO  // MG: hello there, it's MilkGames here! let's play some Bink videos!
+	//#define FILES_DEBUG  // MG: hmmm... erm... yeah, files debug!!!!
+	//#define CONSOLEWINDOW // MG: enables a console window ASAP, this will take effect only on PC, change main.cpp if you need it on other platforms
+	//#define DRAWLEGALSPLASH // MG: draw a legal splash screen after the game launch
+	#define DISABLE_MOOD_SPAMMING // MG: see RequestMood in music.h
+
+	// MG: source code shenanigans is back!
+	//#define PHIL // MG: enable specific Phil's stuff:
+				 // MG: 1. log after SetActorPosition
+				 // MG: 2. log after starting an idle anim
+				 // MG: 3. enable a whole Phil Scene sequence
+				 // MG: 4. enables fade debug messages
+				 // MG: 5. FIREBALL log
+				 // MG: 6. *** CHANGE A START_SCENE ***
+				 // MG: 7. toogles toggleShadowLightDebug if fly cam is active
+				 // MG: 8. highlights current page in a book
+				 // MG: 9. enables PONGDUST_TIMERS
+				 // MG: 10. enables MEMLEAKS_TO_DEBUG_WINDOW (disabled by me)
+				 // MG: 11. enables SHADOWLIGHT_DEBUG
+				 // MG: 12. enables change state debug
+				 // MG: 13. enables debug information about books
+				 // MG: 14. enables some Dodge City debug info
+				 // MG: maybe even something else!!!
+	//#define TEST_BOOK // MG: enable Phil's test book to test books + input + text
+	//#define LOTTERY // MG: enable lottery numbers in Phil's test book
+	//#define TEST_SOUND // MG: enable creating a test sound sphere
+	//#define CONTROLNOTEPOS // MG: idk, lmao
+
+#ifdef DRAWLEGALSPLASH
+	//#define SPLASH_TEST // MG: shows every splash that we have in the game instead of basic legal splash
+#endif
+	//#define SUGAR_COATED_CRASHES // MG: calls a bad disk message when a fatal error occurs
+	#define MODIFY_BADDISK // MG: replaces a bad disk message
 #endif
 
 #ifdef CONSUMERDEMO

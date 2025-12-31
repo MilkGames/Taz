@@ -985,12 +985,12 @@ void InitialisePhilGame(void)
 	//ActivateCheat(CHEAT_SUPERSLOWMO);
 
 	// PP: If I can't sleep, why the hell should he?
-	ActivateCheat(CHEAT_INSOMNIA);
+	//ActivateCheat(CHEAT_INSOMNIA);
 
-	ActivateCheat(CHEAT_DISABLESECURITYBOXES);
-	ActivateCheat(CHEAT_OPEN_BONUS_GAMES);
-	ActivateCheat(CHEAT_OPEN_GALLERY);
-	ActivateCheat(CHEAT_OPEN_BOSS_GAME);
+	//ActivateCheat(CHEAT_DISABLESECURITYBOXES);
+	//ActivateCheat(CHEAT_OPEN_BONUS_GAMES);
+	//ActivateCheat(CHEAT_OPEN_GALLERY);
+	//ActivateCheat(CHEAT_OPEN_BOSS_GAME);
 
 	//ActivateCheat(CHEAT_INVINCIBLE);
 
@@ -1024,10 +1024,10 @@ void initThwap(void);
 
 void InitialisePhilScene(void)
 {
-	ActivateCheat(CHEAT_DISABLESECURITYBOXES);
-	ActivateCheat(CHEAT_OPEN_GALLERY);
-	ActivateCheat(CHEAT_OPEN_BOSS_GAME);
-	ActivateCheat(CHEAT_OPEN_BONUS_GAMES);
+	//ActivateCheat(CHEAT_DISABLESECURITYBOXES);
+	//ActivateCheat(CHEAT_OPEN_GALLERY);
+	//ActivateCheat(CHEAT_OPEN_BOSS_GAME);
+	//ActivateCheat(CHEAT_OPEN_BONUS_GAMES);
 	//ActivateCheat(CHEAT_TURBO);
 
 	{
@@ -1399,8 +1399,11 @@ void chooseLotteryNumbers(void)
 
 		lotteryBoxes[i]->sprintf8("%d", lotteryNumbers[i]);
 	}
-
+#if BPLATFORM != PC
 	if(controller1.squareDebounceChannel->value)
+#else
+	if(controller1.crossDebounceChannel->value)
+#endif
 	{
 		if(numLotteryNumbersChosen < 6)
 		{
@@ -1539,7 +1542,7 @@ void UpdatePhilScene(int scene)
 
 
 #ifdef TEST_BOOK
-
+#if BPLATFORM != PC
 	if(controller2.l1DebounceChannel->value)
 	{
 		testBook.nextPage()->selectItem();
@@ -1548,14 +1551,24 @@ void UpdatePhilScene(int scene)
 	{
 		testBook.prevPage()->selectItem();
 	}
+#else
+	if(controller1.circleDebounceChannel->value)
+	{
+		testBook.nextPage()->selectItem();
+	}
+	else if(controller1.squareDebounceChannel->value)
+	{
+		testBook.prevPage()->selectItem();
+	}
+#endif
 
 	if((testBook.flags & BKFLAG_OPEN) && testBook.getSelectedItem())
 	{
 		testFontSize=MAX(0.1f, testFontSize);
-		bkPrintf("setting font size to %5.2f\n", testFontSize);
+		//bkPrintf("setting font size to %5.2f\n", testFontSize);
 		fontSizeBox->setFontSize(testFontSize);
 		testBook.realign();
-
+#if BPLATFORM != PC
 		if(controller2.r3DebounceChannel->value)
 		{
 			// PP: RESET
@@ -1623,6 +1636,75 @@ void UpdatePhilScene(int scene)
 				}
 			}
 		}
+#else
+		if(controller1.l3DebounceChannel->value)
+		{
+			// PP: RESET
+
+			if(controller1.l2Channel->value)
+			{
+				testBook.getSelectedItem()->setDrawScale(1.0f);
+				//testBook.getSelectedItem()->textbox()->setFontSize(1.0f);
+			}
+			
+			if(controller1.r2Channel->value)
+			{
+				testBook.getSelectedItem()->setAlignScale(1.0f);
+				testBook.realign();
+			}
+
+			if(!(controller1.l2Channel->value || controller1.r2Channel->value))
+			{
+				testBook.getSelectedItem()->setXAlign(PIFLAG_XALIGN_CENTRE);
+				testBook.getSelectedItem()->setYAlign(PIFLAG_YALIGN_CENTRE);
+				testBook.realign();
+			}
+		}
+		else
+		{
+#define SCALE_ADJUST_STEP			(-1.0f*(1/(float)BIMAX)*fTime)
+
+			if(testBook.getSelectedItem() != NULL)
+			{
+				if(controller1.l2Channel->value)
+				{
+					testBook.getSelectedItem()->setDrawScale(testBook.getSelectedItem()->getDrawScale()+controller2.y2Channel->value*SCALE_ADJUST_STEP);
+					//testBook.getSelectedItem()->textbox()->setFontSize(testBook.getSelectedItem()->textbox()->getFontSize()+controller2.y2Channel->value*SCALE_ADJUST_STEP);
+				}
+
+				if(controller1.r2Channel->value)
+				{
+					testBook.getSelectedItem()->setAlignScale(testBook.getSelectedItem()->getAlignScale()+controller2.y2Channel->value*SCALE_ADJUST_STEP);
+					testBook.realign();
+				}
+
+				if(!(controller1.l2Channel->value || controller1.r2Channel->value))
+				{
+					if(controller2.x1DebounceChannel->value < 0)
+					{
+						testBook.getSelectedItem()->setXAlign(PIFLAG_XALIGN_LEFT);
+						testBook.realign();
+					}
+					else if(controller2.x1DebounceChannel->value > 0)
+					{
+						testBook.getSelectedItem()->setXAlign(PIFLAG_XALIGN_RIGHT);
+						testBook.realign();
+					}
+
+					if(controller2.y1DebounceChannel->value < 0)
+					{
+						testBook.getSelectedItem()->setYAlign(PIFLAG_YALIGN_BOTTOM);
+						testBook.realign();
+					}
+					else if(controller2.y1DebounceChannel->value > 0)
+					{
+						testBook.getSelectedItem()->setYAlign(PIFLAG_YALIGN_TOP);
+						testBook.realign();
+					}
+				}
+			}
+		}
+#endif
 	}
 
 	// PP: Nyeh very temp - force the test book to respond to navigation

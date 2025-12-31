@@ -1340,7 +1340,8 @@ void PlayAmbientSounds(int scene)
 
 							if (pActor = FindActorInstanceInMap("watercenter01", 0, &map))
 							{
-								PlayTrackingSample("waterfall.wav", 255, pActor->actorInstance.position, 0, 0, METERTOUNIT(10.0f), METERTOUNIT(15.0f));	//Garden ambience
+								//PlayTrackingSample("waterfall.wav", 255, pActor->actorInstance.position, 0, 0, METERTOUNIT(10.0f), METERTOUNIT(15.0f));	//Garden ambience
+								// MG: TEMP!!!! doesn't exist, stop spamming!!!
 							}
 
 							break;

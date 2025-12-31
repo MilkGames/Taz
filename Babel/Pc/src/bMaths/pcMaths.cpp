@@ -71,6 +71,9 @@ void bmSRand(uint32 seed)
 
 float bmSqrtApprox(float x)
 {
-        bkPrintf("*** WARNING *** bmSqrtApprox was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    uint bits = *(uint*)&x; // reinterpret bits
+    bits -= 0x3F800000u;
+    bits = (uint)(((int)bits) >> 1); // SAR
+    bits += 0x3F800000u;
+    return *(float*)&bits;
 }

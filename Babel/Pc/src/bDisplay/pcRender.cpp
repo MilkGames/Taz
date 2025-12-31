@@ -308,8 +308,12 @@ void bdSetFogColour(int red, int green, int blue)
 
 void bSetGlobalAlpha(int newAlphaScale)
 {
-        bkPrintf("*** WARNING *** bSetGlobalAlpha was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    if (newAlphaScale == 256) newAlphaScale = 255;
+
+    bDisplayInfo.d3dDevice->SetRenderState(
+        D3DRS_TEXTUREFACTOR,
+        static_cast<DWORD>(newAlphaScale) << 24
+    );
 }
 
 
@@ -323,8 +327,512 @@ void bSetGlobalAlpha(int newAlphaScale)
 
 TBRenderTarget *bdCreateRenderTarget(int width, int height, int rgbBits, int zBits, uint32 flags)
 {
-        bkPrintf("*** WARNING *** bdCreateRenderTarget was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return NULL;
+    TBRenderTarget *target;
+    uint bitMask;
+    const char *formatDepthStr;
+    HRESULT hr;
+    D3DFORMAT depthFormat;
+    D3DFORMAT colorFormat;
+    D3DFORMAT rgbDepthFormat;
+    int hasDepthStencil;
+    const char *formatColorStr;
+    int mipLevelCount;
+    int mipLevelIndex;
+    IDirect3DTexture8 **outTexturePtr;
+    IDirect3DSurface8 *surface;
+    IDirect3DTexture8 *texture;
+
+    // Allocate render target object
+    target = (TBRenderTarget *)MALLOC(sizeof(TBRenderTarget));
+    if (!target)
+    {
+        return NULL;
+    }
+
+    // Original code zeroed first 0x18 dwords (0x60 bytes) via REP STOSD.
+    // That matches clearing the "header" of TBRenderTarget.
+    memset(target, 0, 0x18 * sizeof(uint32));
+
+    // ===== Enforce power-of-two size =====
+    {
+        int origWidth  = width;
+        int origHeight = height;
+
+        // round width down to nearest power of two
+        bitMask = 0x80000000u;
+        while (bitMask && (width & bitMask) == 0)
+        {
+            bitMask >>= 1;
+        }
+        if (bitMask == 0)
+            bitMask = 0x20; // fallback
+        else
+        {
+            
+        }
+        if (width != (int)bitMask)
+            width = (int)bitMask;
+
+        // round height down to nearest power of two
+        bitMask = 0x80000000u;
+        while (bitMask && (height & bitMask) == 0)
+        {
+            bitMask >>= 1;
+        }
+        if (bitMask == 0)
+            bitMask = 0x20;
+        else
+        {
+            
+        }
+        if (height != (int)bitMask)
+            height = (int)bitMask;
+
+        if (width != origWidth || height != origHeight)
+        {
+            bkPrintf(
+                "bdCreateRenderTarget: PC Render targets must be powers of two in each dimension, "
+                "rounding down to (%dx%d)\n",
+                width, height);
+        }
+    }
+
+    // Common locals init
+    depthFormat     = D3DFMT_UNKNOWN;
+    colorFormat     = D3DFMT_UNKNOWN;
+    rgbDepthFormat  = D3DFMT_UNKNOWN;
+    mipLevelIndex   = 0;
+    mipLevelCount   = 1;
+    outTexturePtr   = &target->d3dTexture;
+    hasDepthStencil = 0;
+
+    // ========================================================================
+    //  CASE 1: (flags & 1) == 0   > no private Z-buffer, clamp to screen size
+    // ========================================================================
+    if ((flags & 1) == 0)
+    {
+        // Clamp to screen resolution
+        if (width > (int)bDisplayInfo.xRes)
+        {
+            bkPrintf(
+                "bdCreateRenderTarget: *** specified width (%d) exceeds screen width (%d) "
+                "and cannot be used without a private Z buffer, clamping to %d ***\n",
+                width, bDisplayInfo.xRes, bDisplayInfo.xRes);
+            width = (int)bDisplayInfo.xRes;
+        }
+
+        if (height > (int)bDisplayInfo.yRes)
+        {
+            bkPrintf(
+                "bdCreateRenderTarget: *** specified height (%d) exceeds screen height (%d) "
+                "and cannot be used without a private Z buffer, clamping to %d ***\n",
+                height, bDisplayInfo.yRes, bDisplayInfo.yRes);
+            height = (int)bDisplayInfo.yRes;
+        }
+
+        // In this mode we just share the screen depth buffer, so only color RT texture.
+        rgbDepthFormat = bDisplayInfo.displayFormat;
+
+        hr = bDisplayInfo.d3dDevice->CreateTexture(
+            width,
+            height,
+            1,                               // Levels
+            D3DUSAGE_RENDERTARGET,           // Usage
+            bDisplayInfo.displayFormat,      // Format (same as display)
+            D3DPOOL_DEFAULT,                 // Pool
+            &target->d3dTexture);
+
+        if (FAILED(hr))
+        {
+            formatDepthStr = DXGetErrorString8A(hr);
+            bkPrintf("bdCreateRenderTarget: CreateTexture failure (%s)\n", formatDepthStr);
+            bkHeapFree(target);
+            return NULL;
+        }
+
+        target->d3dSurface = NULL;
+        target->rgbFormat  = bDisplayInfo.displayFormat;
+        // depthFormat остаётся D3DFMT_UNKNOWN (share screen depth)
+    }
+    else
+    {
+        // ====================================================================
+        //  CASE 2: private render target (flags & 1) != 0
+        //          2a) zBits == 0 > no depth/stencil
+        //          2b) zBits != 0 > private depth/stencil surface
+        // ====================================================================
+
+        if (zBits == 0)
+        {
+            // ------------------ Color-only private render target ------------------
+
+            colorFormat    = D3DFMT_UNKNOWN;
+            rgbDepthFormat = D3DFMT_UNKNOWN;
+
+            // Select color format by rgbBits
+            if (rgbBits == 16)
+            {
+                // Try 16-bit color formats in order: R5G6B5, X1R5G5B5, A1R5G5B5
+                if (SUCCEEDED(bDisplayInfo.d3d->CheckDeviceFormat(
+                        0,
+                        D3DDEVTYPE_HAL,
+                        bDisplayInfo.displayFormat,
+                        D3DUSAGE_RENDERTARGET,
+                        D3DRTYPE_TEXTURE,
+                        D3DFMT_R5G6B5)))
+                {
+                    colorFormat = D3DFMT_R5G6B5;
+                }
+                else if (SUCCEEDED(bDisplayInfo.d3d->CheckDeviceFormat(
+                             0,
+                             D3DDEVTYPE_HAL,
+                             bDisplayInfo.displayFormat,
+                             D3DUSAGE_RENDERTARGET,
+                             D3DRTYPE_TEXTURE,
+                             D3DFMT_X1R5G5B5)))
+                {
+                    colorFormat = D3DFMT_X1R5G5B5;
+                }
+                else if (SUCCEEDED(bDisplayInfo.d3d->CheckDeviceFormat(
+                             0,
+                             D3DDEVTYPE_HAL,
+                             bDisplayInfo.displayFormat,
+                             D3DUSAGE_RENDERTARGET,
+                             D3DRTYPE_TEXTURE,
+                             D3DFMT_A1R5G5B5)))
+                {
+                    colorFormat = D3DFMT_A1R5G5B5;
+                }
+                else
+                {
+                    // fall back to 32-bit
+                    bkPrintf(
+                        "bdCreateRenderTarget: Could not find a compatible 16bit render/texture format, "
+                        "trying 32bit\n");
+                }
+            }
+
+            if (colorFormat == D3DFMT_UNKNOWN)
+            {
+                // Either rgbBits was 32, or 16-bit formats failed. Try 32-bit formats.
+                if (SUCCEEDED(bDisplayInfo.d3d->CheckDeviceFormat(
+                        0,
+                        D3DDEVTYPE_HAL,
+                        bDisplayInfo.displayFormat,
+                        D3DUSAGE_RENDERTARGET,
+                        D3DRTYPE_TEXTURE,
+                        D3DFMT_A8R8G8B8)))
+                {
+                    colorFormat = D3DFMT_A8R8G8B8;
+                }
+                else if (SUCCEEDED(bDisplayInfo.d3d->CheckDeviceFormat(
+                             0,
+                             D3DDEVTYPE_HAL,
+                             bDisplayInfo.displayFormat,
+                             D3DUSAGE_RENDERTARGET,
+                             D3DRTYPE_TEXTURE,
+                             D3DFMT_X8R8G8B8)))
+                {
+                    colorFormat = D3DFMT_X8R8G8B8;
+                }
+                else
+                {
+                    bkHeapFree(target);
+                    bkPrintf(
+                        "bdCreateRenderTarget: Could not find a compatible 32bit render/texture format\n");
+                    return NULL;
+                }
+            }
+
+            rgbDepthFormat = colorFormat;
+
+            formatColorStr = bDXFormatToString(colorFormat);
+            formatDepthStr = bDXFormatToString(D3DFMT_UNKNOWN);
+            bkPrintf(
+                "bdCreateRenderTarget: Creating (%dx%d) render target with surface format %s, "
+                "no depth/stencil buffer\n",
+                width, height, formatColorStr, formatDepthStr);
+
+            hr = bDisplayInfo.d3dDevice->CreateTexture(
+                width,
+                height,
+                1,
+                D3DUSAGE_RENDERTARGET,
+                colorFormat,
+                D3DPOOL_DEFAULT,
+                &target->d3dTexture);
+
+            if (FAILED(hr))
+            {
+                formatDepthStr = DXGetErrorString8A(hr);
+                bkPrintf(
+                    "bdCreateRenderTarget: CreateTexture failure on render target (%s)\n",
+                    formatDepthStr);
+                bkHeapFree(target);
+                return NULL;
+            }
+
+            target->d3dSurface = NULL;
+            target->rgbFormat  = colorFormat;
+            depthFormat        = D3DFMT_UNKNOWN;
+        }
+        else
+        {
+            // ------------------ Color + private depth/stencil ------------------
+
+            // if rgbBits != zBits, force both to same value and warn
+            if (rgbBits != zBits)
+            {
+                bkPrintf(
+                    "bdCreateRenderTarget: *** RGB and Z depths do not match (rgb %d, z %d), "
+                    "forcing both to %d\n",
+                    rgbBits, zBits, rgbBits);
+                zBits = rgbBits;
+            }
+
+            depthFormat    = D3DFMT_UNKNOWN;
+            colorFormat    = D3DFMT_UNKNOWN;
+            rgbDepthFormat = D3DFMT_UNKNOWN;
+
+            // First try 16-bit pair (color + D16) if rgbBits==16
+            if (rgbBits == 16)
+            {
+                // Choose 16-bit color format as before
+                if (SUCCEEDED(bDisplayInfo.d3d->CheckDeviceFormat(
+                        0,
+                        D3DDEVTYPE_HAL,
+                        bDisplayInfo.displayFormat,
+                        D3DUSAGE_RENDERTARGET,
+                        D3DRTYPE_TEXTURE,
+                        D3DFMT_R5G6B5)))
+                {
+                    colorFormat = D3DFMT_R5G6B5;
+                }
+                else if (SUCCEEDED(bDisplayInfo.d3d->CheckDeviceFormat(
+                             0,
+                             D3DDEVTYPE_HAL,
+                             bDisplayInfo.displayFormat,
+                             D3DUSAGE_RENDERTARGET,
+                             D3DRTYPE_TEXTURE,
+                             D3DFMT_X1R5G5B5)))
+                {
+                    colorFormat = D3DFMT_X1R5G5B5;
+                }
+                else if (SUCCEEDED(bDisplayInfo.d3d->CheckDeviceFormat(
+                             0,
+                             D3DDEVTYPE_HAL,
+                             bDisplayInfo.displayFormat,
+                             D3DUSAGE_RENDERTARGET,
+                             D3DRTYPE_TEXTURE,
+                             D3DFMT_A1R5G5B5)))
+                {
+                    colorFormat = D3DFMT_A1R5G5B5;
+                }
+
+                if (colorFormat != D3DFMT_UNKNOWN &&
+                    SUCCEEDED(bDisplayInfo.d3d->CheckDeviceFormat(
+                        0,
+                        D3DDEVTYPE_HAL,
+                        bDisplayInfo.displayFormat,
+                        D3DUSAGE_DEPTHSTENCIL,
+                        D3DRTYPE_SURFACE,
+                        D3DFMT_D16)))
+                {
+                    depthFormat = D3DFMT_D16;
+                }
+                else
+                {
+                    if (colorFormat == D3DFMT_UNKNOWN)
+                    {
+                        bkPrintf(
+                            "bdCreateRenderTarget: Could not find a compatible 16bit render/texture format, "
+                            "trying 32bit\n");
+                    }
+                    else
+                    {
+                        bkPrintf(
+                            "bdCreateRenderTarget: Could not find a compatible 16bit depth/stencil format, "
+                            "trying 32bit\n");
+                    }
+                    colorFormat = D3DFMT_UNKNOWN;
+                    depthFormat = D3DFMT_UNKNOWN;
+                }
+            }
+
+            // If 16-bit pair not selected, try 32-bit pair (color + 32-bit depth)
+            if (colorFormat == D3DFMT_UNKNOWN || depthFormat == D3DFMT_UNKNOWN)
+            {
+                // Color 32-bit
+                if (SUCCEEDED(bDisplayInfo.d3d->CheckDeviceFormat(
+                        0,
+                        D3DDEVTYPE_HAL,
+                        bDisplayInfo.displayFormat,
+                        D3DUSAGE_RENDERTARGET,
+                        D3DRTYPE_TEXTURE,
+                        D3DFMT_A8R8G8B8)))
+                {
+                    colorFormat = D3DFMT_A8R8G8B8;
+                }
+                else if (SUCCEEDED(bDisplayInfo.d3d->CheckDeviceFormat(
+                             0,
+                             D3DDEVTYPE_HAL,
+                             bDisplayInfo.displayFormat,
+                             D3DUSAGE_RENDERTARGET,
+                             D3DRTYPE_TEXTURE,
+                             D3DFMT_X8R8G8B8)))
+                {
+                    colorFormat = D3DFMT_X8R8G8B8;
+                }
+                else
+                {
+                    bkHeapFree(target);
+                    bkPrintf(
+                        "bdCreateRenderTarget: Could not find a compatible 32bit render/texture format\n");
+                    return NULL;
+                }
+
+                // Depth 32-bit: first D32, then D24S8
+                if (SUCCEEDED(bDisplayInfo.d3d->CheckDeviceFormat(
+                        0,
+                        D3DDEVTYPE_HAL,
+                        bDisplayInfo.displayFormat,
+                        D3DUSAGE_DEPTHSTENCIL,
+                        D3DRTYPE_SURFACE,
+                        D3DFMT_D32)))
+                {
+                    depthFormat = D3DFMT_D32;
+                }
+                else if (SUCCEEDED(bDisplayInfo.d3d->CheckDeviceFormat(
+                             0,
+                             D3DDEVTYPE_HAL,
+                             bDisplayInfo.displayFormat,
+                             D3DUSAGE_DEPTHSTENCIL,
+                             D3DRTYPE_SURFACE,
+                             D3DFMT_D24S8)))
+                {
+                    depthFormat = D3DFMT_D24S8;
+                }
+                else
+                {
+                    bkHeapFree(target);
+                    bkPrintf(
+                        "bdCreateRenderTarget: Could not find a compatible 32bit depth/stencil format\n");
+                    return NULL;
+                }
+            }
+
+            rgbDepthFormat = colorFormat;
+            hasDepthStencil = 1;
+
+            formatColorStr = bDXFormatToString(colorFormat);
+            formatDepthStr = bDXFormatToString(depthFormat);
+            bkPrintf(
+                "bdCreateRenderTarget: Creating (%dx%d) render target with surface format %s, "
+                "depth/stencil format %s...\n",
+                width, height, formatColorStr, formatDepthStr);
+
+            // Create color render target texture
+            hr = bDisplayInfo.d3dDevice->CreateTexture(
+                width,
+                height,
+                1,
+                D3DUSAGE_RENDERTARGET,
+                colorFormat,
+                D3DPOOL_DEFAULT,
+                &target->d3dTexture);
+
+            if (FAILED(hr))
+            {
+                formatDepthStr = DXGetErrorString8A(hr);
+                bkPrintf(
+                    "bdCreateRenderTarget: CreateTexture failure on render target (%s)\n",
+                    formatDepthStr);
+                bkHeapFree(target);
+                return NULL;
+            }
+
+            // Create depth/stencil surface
+            hr = bDisplayInfo.d3dDevice->CreateDepthStencilSurface(
+                width,
+                height,
+                depthFormat,
+                D3DMULTISAMPLE_NONE,
+                &target->d3dSurface);
+
+            if (FAILED(hr))
+            {
+                formatDepthStr = DXGetErrorString8A(hr);
+                bkPrintf(
+                    "bdCreateRenderTarget: CreateTexture failure on depth/stencil buffer (%s)\n",
+                    formatDepthStr);
+
+                texture = target->d3dTexture;
+                if (texture)
+                {
+                    texture->Release();
+                }
+
+                bkHeapFree(target);
+                return NULL;
+            }
+
+            target->zFormat   = depthFormat;
+            target->rgbFormat = colorFormat;
+        }
+    }
+
+    // ========================================================================
+    //  Common success path: get color surface level 0 and set up TBRenderTarget
+    // ========================================================================
+
+    texture = target->d3dTexture;
+    hr = texture->GetSurfaceLevel(0, &target->d3dZBuffer);
+    if (FAILED(hr))
+    {
+        formatDepthStr = DXGetErrorString8A(hr);
+        bkPrintf(
+            "bdCreateRenderTarget: GetSurfaceLevel failure (%s)\n",
+            formatDepthStr);
+
+        // Release texture
+        if (texture)
+        {
+            texture->Release();
+        }
+
+        // Release depth surface if it exists
+        surface = target->d3dSurface;
+        if (surface)
+        {
+            surface->Release();
+        }
+
+        bkHeapFree(target);
+        return NULL;
+    }
+
+    // Fill out render target fields
+    target->rgbDepth   = rgbDepthFormat;
+    target->zDepth     = mipLevelIndex;
+    target->vpX        = 0;
+    target->vpY        = 0;
+    target->width      = width;
+    target->vpWidth    = width;
+    target->flags      = flags;
+    target->clipXPos   = 0;
+    target->clipYPos   = 0;
+    target->clipWidth  = width;
+    target->height     = height;
+    target->vpHeight   = height;
+    target->clipHeight = height;
+
+    // Insert into bRenderTargetList (double-linked list, tail insertion)
+    target->next = &bRenderTargetList;
+    target->prev = bRenderTargetList.prev;
+    bRenderTargetList.prev->next = target;
+    bRenderTargetList.prev       = target;
+
+    return target;
 }
 
 
@@ -338,8 +846,46 @@ TBRenderTarget *bdCreateRenderTarget(int width, int height, int rgbBits, int zBi
 
 void bdDeleteRenderTarget(TBRenderTarget *target)
 {
-        bkPrintf("*** WARNING *** bdDeleteRenderTarget was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    uint32 stage;
+    IDirect3DSurface8* surface;
+
+    if (target == NULL)
+    {
+        while (bRenderTargetList.next != &bRenderTargetList)
+        {
+            bdDeleteRenderTarget(bRenderTargetList.next);
+        }
+        return;
+    }
+
+    if (bDisplayInfo.curRenderTarget == target)
+    {
+        bdSetRenderTarget(NULL, 0, 0, 0, 0, 1.0f, 0);
+    }
+
+    stage = 0;
+    do
+    {
+        if ((void*)bRenderState.currentTexture[stage] == (void*)target)
+        {
+            bdSetTexture(stage, NULL);
+        }
+        stage++;
+    } while (stage < 2);
+
+    target->next->prev = target->prev;
+    target->prev->next = target->next;
+
+    target->d3dZBuffer->Release();
+    target->d3dTexture->Release();
+
+    surface = target->d3dSurface;
+    if (surface != NULL)
+    {
+        surface->Release();
+    }
+
+    bkHeapFree(target);
 }
 
 
@@ -354,70 +900,62 @@ void bdDeleteRenderTarget(TBRenderTarget *target)
 
 int bdSetRenderTarget(TBRenderTarget *target, int r,int g,int b, int a,float depth, uint32 flags)
 {
-    IDirect3DDevice8* dev = bDisplayInfo.d3dDevice;
+    IDirect3DDevice8 *dev = bDisplayInfo.d3dDevice;
     HRESULT hr;
 
-    // Select color/depth surfaces
-    IDirect3DSurface8* colorSurf = NULL;
-    IDirect3DSurface8* depthSurf = NULL;
+    IDirect3DSurface8 *colorSurf;
+    IDirect3DSurface8 *depthSurf;
+    TBRenderTarget *rt;
 
-    if (target)
+    if (target != NULL)
     {
-        colorSurf = target->d3dSurface; // color RT surface
-        if (target->d3dZBuffer) {
-            depthSurf = target->d3dZBuffer; // explicit z/stencil surface on the RT
-        } else if (target->zDepth) {
-            depthSurf = bDisplayInfo.depthStencilBuffer; // fall back to the device DS buffer
-        }
+        // disasm: push [target+0x84] as depth, push [target+0x80] as color
+        colorSurf = target->d3dZBuffer;
+
+        if (target->d3dSurface != NULL)
+            depthSurf = target->d3dSurface;
+        else if (target->zDepth != 0)
+            depthSurf = bDisplayInfo.depthStencilBuffer;
+        else
+            depthSurf = NULL;
+
+        rt = target;
     }
     else
     {
-        // Back to the main backbuffer & device depth/stencil
         colorSurf = bDisplayInfo.backBuffer;
         depthSurf = bDisplayInfo.depthStencilBuffer;
+        rt = &bRenderTargetList;
     }
 
-    // SetRenderTarget
     hr = dev->SetRenderTarget(colorSurf, depthSurf);
     if (FAILED(hr))
     {
         bkPrintf("bdSetRenderTarget: SetRenderTarget failed (%s)\n", DXGetErrorString8A(hr));
-        return 0;
+        return FAIL;
     }
 
-    // Update current RT pointer: null -> head of list, otherwise the passed target
-    bDisplayInfo.curRenderTarget = target ? target : &bRenderTargetList;
+    bDisplayInfo.curRenderTarget = rt;
 
-    // Restore viewport and clip rect that belong to this render target
-    const TBRenderTarget* rt = bDisplayInfo.curRenderTarget;
     bdSetViewport(rt->vpX, rt->vpY, rt->vpWidth, rt->vpHeight);
     bdSetClipRectangle(rt->clipXPos, rt->clipYPos, rt->clipWidth, rt->clipHeight);
 
-    // Optional clear according to flags
-    // Flags (observed in disasm): bit 0 = color, bit 1 = zbuffer
-    const bool clearColor = (flags & 0x1) != 0;
-    const bool clearZ     = (flags & 0x2) != 0;
-
-    if (clearColor || clearZ)
+    // disasm: flags bit0=color, bit1=z; passes 1/2/3 directly to Clear
     {
-        DWORD clr = 0;
-        if (clearColor)
+        const uint32 clearFlags = (flags & 0x3);
+        if (clearFlags != 0)
         {
-            // Disasm packs 24-bit RGB (alpha not used here)
-            clr = ((DWORD)(r & 0xFF))
-                | ((DWORD)(g & 0xFF) << 8)
-                | ((DWORD)(b & 0xFF) << 16);
+            uint32 clr = 0;
+            if ((clearFlags & 0x1) != 0)
+            {
+                clr = D3DCOLOR_ARGB((a & 0xFF), (r & 0xFF), (g & 0xFF), (b & 0xFF));
+            }
+
+            dev->Clear(0, NULL, clearFlags, (D3DCOLOR)clr, depth, 0);
         }
-
-        DWORD d3dFlags = 0;
-        if (clearColor) d3dFlags |= D3DCLEAR_TARGET;
-        if (clearZ)     d3dFlags |= D3DCLEAR_ZBUFFER;
-
-        // Stencil value is 0, Count/pRects are 0/NULL
-        dev->Clear(0, NULL, d3dFlags, clr, depth, 0);
     }
 
-    return 1;
+    return OK;
 }
 
 
@@ -431,8 +969,10 @@ int bdSetRenderTarget(TBRenderTarget *target, int r,int g,int b, int a,float dep
 
 void bdGetRenderTargetInfo(TBRenderTarget *target, int *width, int *height, int *rgbDepth, int *zDepth)
 {
-        bkPrintf("*** WARNING *** bdGetRenderTargetInfo was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+	if (width != NULL) *width = target->width;
+	if (height != NULL) *height = target->height;
+	if (rgbDepth != NULL) *rgbDepth = target->rgbDepth;
+	if (zDepth != NULL) *zDepth = target->zDepth;
 }
 
 
@@ -446,8 +986,28 @@ void bdGetRenderTargetInfo(TBRenderTarget *target, int *width, int *height, int 
 
 int bdSetRenderTargetAsTexture(TBRenderTarget *target, int stage)
 {
-        bkPrintf("*** WARNING *** bdSetRenderTargetAsTexture was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    if (target == NULL)
+        return FAIL;
+
+    if ((bRenderState.currentTexture[stage] == NULL) && (bDisplayInfo.modulate2X != 0) && (stage == 0))
+    {
+        bDisplayInfo.d3dDevice->SetTextureStageState((DWORD)stage, D3DTSS_COLOROP, D3DTOP_MODULATE2X);
+        bDisplayInfo.d3dDevice->SetTextureStageState((DWORD)stage, D3DTSS_ALPHAOP, D3DTOP_MODULATE2X);
+    }
+
+    LPDIRECT3DDEVICE8 dev = bDisplayInfo.d3dDevice;
+
+    bRenderState.currentTexture[stage] = &target->dummyTexture;
+
+    const HRESULT hr = dev->SetTexture((DWORD)stage, target->d3dTexture);
+    if (hr < 0)
+    {
+        const char* err = DXGetErrorString8A(hr);
+        bkPrintf("bdSetRenderTargetAsTexture: SetTexture failed (%s)\n", err);
+        return FAIL;
+    }
+
+    return OK;
 }
 
 /* --------------------------------------------------------------------------------
@@ -541,8 +1101,7 @@ void bResumeRenderTargets()
 
 int bdLockRenderState(int renderState)
 {
-        bkPrintf("*** WARNING *** bdLockRenderState was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    return ++bRenderState.renderStateLock[renderState];
 }
 
 
@@ -556,6 +1115,5 @@ int bdLockRenderState(int renderState)
 
 int bdUnlockRenderState(int renderState)
 {
-        bkPrintf("*** WARNING *** bdUnlockRenderState was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    return --bRenderState.renderStateLock[renderState];
 }

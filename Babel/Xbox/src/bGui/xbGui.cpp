@@ -3,13 +3,6 @@
 
 #include <babel.h>
 
-// xbGui.cpp — GPU GUI for Taz (Babel/Xbox/D3D8)
-// ?????? GUI ????? ?????????. ??? ?????? ??????? ? backbuffer.
-
-// ---------------------------------------------------------------------
-// ???????
-// ---------------------------------------------------------------------
-
 static inline int clampi(int v, int lo, int hi)
 {
     if (v < lo) return lo;
@@ -17,7 +10,6 @@ static inline int clampi(int v, int lo, int hi)
     return v;
 }
 
-// ARGB (A=255)
 static inline unsigned PackARGB(int r, int g, int b)
 {
     return (0xFFu << 24)
@@ -26,7 +18,6 @@ static inline unsigned PackARGB(int r, int g, int b)
         |  (unsigned)clampi(b,0,255);
 }
 
-// +/- ?????? ? RGB
 static void DeltaRGB(int r, int g, int b, int delta,
                      int* ro, int* go, int* bo)
 {
@@ -34,10 +25,6 @@ static void DeltaRGB(int r, int g, int b, int delta,
     *go = clampi(g + delta, 0, 255);
     *bo = clampi(b + delta, 0, 255);
 }
-
-// ---------------------------------------------------------------------
-// ??????????/?????????????? ??????-??????? ??? 2D
-// ---------------------------------------------------------------------
 
 static int   s_gui2DActive = 0;
 static DWORD sVS = 0;
@@ -77,7 +64,6 @@ static void guiBegin2D()
     bDisplayInfo.d3dDevice->GetTextureStageState(1, D3DTSS_COLOROP,   &sTSS1_ColorOp);
     bDisplayInfo.d3dDevice->GetTextureStageState(1, D3DTSS_ALPHAOP,   &sTSS1_AlphaOp);
 
-    // ??????????? GPU ??? 2D-?????? (RHW), ??? ???????/?????? ???????.
     bSetVertexShader(BVERTTYPE_SINGLE2D, NULL);
     bDisplayInfo.d3dDevice->SetTexture(0, NULL);
 
@@ -87,7 +73,6 @@ static void guiBegin2D()
     bDisplayInfo.d3dDevice->SetRenderState(D3DRS_ZENABLE,   D3DZB_FALSE);
     bDisplayInfo.d3dDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 
-    // ??? ??????? — ????? DIFFUSE.
     bDisplayInfo.d3dDevice->SetTextureStageState(0, D3DTSS_COLOROP,   D3DTOP_SELECTARG1);
     bDisplayInfo.d3dDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_DIFFUSE);
     bDisplayInfo.d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAOP,   D3DTOP_SELECTARG1);
@@ -132,7 +117,6 @@ static void guiEnd2D()
     s_gui2DActive = 0;
 }
 
-// ????????????? (???????? ???????).
 static void drawSolidRect(float x, float y, float w, float h, unsigned color)
 {
     const float hp = 0.5f; // half-pixel bias
@@ -161,10 +145,13 @@ static void guiSolidRect_i(int x, int y, int w, int h, unsigned color)
 // PUBLIC API
 // ---------------------------------------------------------------------
 
-/* ---------------------------------------------------------------
- * Function : bInitGuiHAL
- * Purpose  : initialise hardware specific GUI
- * --------------------------------------------------------------- */
+/* --------------------------------------------------------------------------------
+   Function : bInitGuiHAL
+   Purpose : initialise hardware specific GUI
+   Parameters : 
+   Returns : 
+   Info : 
+*/
 void bInitGuiHAL(void)
 {
 	int input;
@@ -190,19 +177,25 @@ void bInitGuiHAL(void)
         (int)bGuiInfo.fillMode);
 }
 
-/* ---------------------------------------------------------------
- * Function : bShutdownGuiHAL
- * Purpose  : shutdown gui
- * --------------------------------------------------------------- */
+/* --------------------------------------------------------------------------------
+   Function : bShutdownGuiHAL
+   Purpose : shutdown hardware specific GUI
+   Parameters : 
+   Returns : 
+   Info : 
+*/
 void bShutdownGuiHAL(void)
 {
     bkPrintf("bShutdownGuiHAL\n");
 }
 
-/* ---------------------------------------------------------------
- * Function : bGuiLockScreen
- * Purpose  : lock the screen for gui access (prepare GPU 2D)
- * --------------------------------------------------------------- */
+/* --------------------------------------------------------------------------------
+   Function : bGuiLockScreen
+   Purpose : lock the screen for gui access
+   Parameters : 
+   Returns : 
+   Info : 
+*/
 void bGuiLockScreen(void)
 {
     /*bkPrintf("GUI lock: xRes=%d yRes=%d backBuf=%p\n",
@@ -212,19 +205,25 @@ void bGuiLockScreen(void)
     guiBegin2D();
 }
 
-/* ---------------------------------------------------------------
- * Function : bGuiUnlockScreen
- * Purpose  : unlock the screen for gui access (restore GPU)
- * --------------------------------------------------------------- */
+/* --------------------------------------------------------------------------------
+   Function : bGuiUnlockScreen
+   Purpose : unlock the screen for gui access
+   Parameters : 
+   Returns : 
+   Info : 
+*/
 void bGuiUnlockScreen(void)
 {
     guiEnd2D();
 }
 
-/* ---------------------------------------------------------------
- * Function : bGuiFillRect
- * Purpose  : filled rectangle
- * --------------------------------------------------------------- */
+/* --------------------------------------------------------------------------------
+   Function : bGuiFillRect
+   Purpose : fill a rectangle with a colour
+   Parameters : pos, size, colour
+   Returns : 
+   Info : 
+*/
 void bGuiFillRect(int xPos, int yPos, int width, int height, int r, int g, int b)
 {
     /*bkPrintf("FillRect: x=%d y=%d w=%d h=%d col=%02X%02X%02X\n",
@@ -233,10 +232,13 @@ void bGuiFillRect(int xPos, int yPos, int width, int height, int r, int g, int b
     guiSolidRect_i(xPos, yPos, width, height, PackARGB(r,g,b));
 }
 
-/* ---------------------------------------------------------------
- * Function : bGuiDrawFrame
- * Purpose  : frame (raised/sunken/flat/x2)
- * --------------------------------------------------------------- */
+/* --------------------------------------------------------------------------------
+   Function : bGuiDrawFrame
+   Purpose : draw a GUI frame
+   Parameters : pos, size, style, base colour
+   Returns : 
+   Info : 
+*/
 void bGuiDrawFrame(int xPos, int yPos, int width, int height,
                    EBGuiFrameStyle style, int r, int g, int b)
 {
@@ -279,10 +281,13 @@ void bGuiDrawFrame(int xPos, int yPos, int width, int height,
     if (height > 2) guiSolidRect_i(xPos + width - 1, yPos+1, 1, height-2, cBot);    // right
 }
 
-/* ---------------------------------------------------------------
- * Function : bGuiDrawHBar
- * Purpose  : horizontal bar (shadow + highlight)
- * --------------------------------------------------------------- */
+/* --------------------------------------------------------------------------------
+   Function : bGuiDrawHBar
+   Purpose : draw a horizontal bar
+   Parameters : pos, width, base colour
+   Returns : 
+   Info : 
+*/
 void bGuiDrawHBar(int xPos, int yPos, int width, int r, int g, int b)
 {
     int sr,sg,sb, hr,hg,hb;
@@ -296,10 +301,13 @@ void bGuiDrawHBar(int xPos, int yPos, int width, int r, int g, int b)
     bGuiFillRect(xPos, yPos+1, width, 1, hr,hg,hb);
 }
 
-/* ---------------------------------------------------------------
- * Function : bGuiDrawVBar
- * Purpose  : vertical bar (shadow + highlight)
- * --------------------------------------------------------------- */
+/* --------------------------------------------------------------------------------
+   Function : bGuiDrawVBar
+   Purpose : draw a vertical bar
+   Parameters : pos, height, base colour
+   Returns : 
+   Info : 
+*/
 void bGuiDrawVBar(int xPos, int yPos, int height, int r, int g, int b)
 {
     int sr,sg,sb, hr,hg,hb;
@@ -313,11 +321,13 @@ void bGuiDrawVBar(int xPos, int yPos, int height, int r, int g, int b)
     bGuiFillRect(xPos + 1, yPos, 1, height, hr,hg,hb);
 }
 
-/* ---------------------------------------------------------------
- * Function : bGuiPrintText
- * Purpose  : render text from TBGuiFont at (xPos,yPos)
- * Notes    : ??? (OPAQUE) — ?????? ???????????????; ??????? — «???????».
- * --------------------------------------------------------------- */
+/* --------------------------------------------------------------------------------
+   Function : bGuiPrintText
+   Purpose : print some text
+   Parameters : font, xpos, ypos, text
+   Returns : 
+   Info : 
+*/
 void bGuiPrintText(TBGuiFont* font, int xPos, int yPos, char* text)
 {
     if (!font) font = &bDefGuiFont;
@@ -333,7 +343,6 @@ void bGuiPrintText(TBGuiFont* font, int xPos, int yPos, char* text)
     /*bkPrintf("PrintText: \"%s\" at %d,%d h=%d\n",
              text, xPos, yPos, font->height);*/
 
-    // ?????? ??????
     int totalW = 0;
     {
         const char* p = text;
@@ -348,7 +357,6 @@ void bGuiPrintText(TBGuiFont* font, int xPos, int yPos, char* text)
         bGuiFillRect(xPos, yPos, totalW, font->height, backR, backG, backB);
     }
 
-    // ???????
     int penX = 0;
     const char* p = text;
     while (*p) {
@@ -364,7 +372,6 @@ void bGuiPrintText(TBGuiFont* font, int xPos, int yPos, char* text)
         for (row = 0; row < gh; ++row) {
             for (col = 0; col < gw; ++col) {
                 if (data[row*gw + col] == '1') {
-                    // 1x1 «?????» ???????
                     bGuiFillRect(xPos + penX + col, yPos + row, 1, 1, foreR,foreG,foreB);
                 }
             }
@@ -373,10 +380,13 @@ void bGuiPrintText(TBGuiFont* font, int xPos, int yPos, char* text)
     }
 }
 
-/* ---------------------------------------------------------------
- * Function : bGuiPrintIcon
- * Purpose  : 8x12 icon mask
- * --------------------------------------------------------------- */
+/* --------------------------------------------------------------------------------
+   Function : bGuiPrintIcon
+   Purpose : print a GUI icon
+   Parameters : icon ID, xpos, ypos
+   Returns : 
+   Info : 
+*/
 void bGuiPrintIcon(EBGuiIcons icon, int xPos, int yPos)
 {
     const int foreR = bGuiInfo.textFore[0];

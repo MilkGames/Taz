@@ -21,8 +21,8 @@ D3DMATRIX  bIdentityD3DMatrix = {
     0.0f, 0.0f, 0.0f, 1.0f
 };
 
-TBObjectMatrixCallback bObjectMatrixCallback;
-void*                  bObjectMatrixContext;
+TBObjectMatrixCallback bObjectMatrixCallback = NULL;
+void*                  bObjectMatrixContext = NULL;
 
 // ********************************************************************************
 // Globals
@@ -35,20 +35,19 @@ int        bObjectMatrixIsIdentity;
 // ********************************************************************************
 // Helper Functions
 
-void bD3DMatMultiply(D3DMATRIX* dest, const D3DMATRIX* left, const D3DMATRIX* right)
+void bD3DMatMultiply(D3DMATRIX* dest, const D3DMATRIX* src1, const D3DMATRIX* src2)
 {
-    // Handle potential aliasing of dest with inputs
-    const D3DMATRIX L = *left;
-    const D3DMATRIX R = *right;
+    // dest = src2 * src1
+    for (int r = 0; r < 4; ++r) {
+        const float a0 = src2->m[r][0];
+        const float a1 = src2->m[r][1];
+        const float a2 = src2->m[r][2];
+        const float a3 = src2->m[r][3];
 
-    for (int i = 0; i < 4; ++i) {          // row of L
-        for (int j = 0; j < 4; ++j) {      // column of R
-            dest->m[i][j] =
-                L.m[i][0] * R.m[0][j] +
-                L.m[i][1] * R.m[1][j] +
-                L.m[i][2] * R.m[2][j] +
-                L.m[i][3] * R.m[3][j];
-        }
+        dest->m[r][0] = a0 * src1->m[0][0] + a1 * src1->m[1][0] + a2 * src1->m[2][0] + a3 * src1->m[3][0];
+        dest->m[r][1] = a0 * src1->m[0][1] + a1 * src1->m[1][1] + a2 * src1->m[2][1] + a3 * src1->m[3][1];
+        dest->m[r][2] = a0 * src1->m[0][2] + a1 * src1->m[1][2] + a2 * src1->m[2][2] + a3 * src1->m[3][2];
+        dest->m[r][3] = a0 * src1->m[0][3] + a1 * src1->m[1][3] + a2 * src1->m[2][3] + a3 * src1->m[3][3];
     }
 }
 
@@ -67,197 +66,212 @@ void bdSetViewport(const int topLeftX, const int topLeftY, const int width, cons
     int screenWidth = 0, screenHeight = 0;
     bdGetDisplayInfo(&screenWidth, &screenHeight, 0, 0);
 
-    // Early rejects
-    if (width <= 0 || height <= 0) return;
-    if (topLeftX >= screenWidth || topLeftY >= screenHeight) return;
-    if (topLeftX + width <= 0 || topLeftY + height <= 0) return;
+    if (topLeftX >= screenWidth)  return;
+    if (topLeftY >= screenHeight) return;
+
+    const int right  = topLeftX + width;
+    const int bottom = topLeftY + height;
+
+    if (right  <= 0) return;
+    if (bottom <= 0) return;
 
     // Fast path: fully inside screen bounds
     if (topLeftX >= 0 &&
         topLeftY >= 0 &&
-        (topLeftX + width)  <= screenWidth &&
-        (topLeftY + height) <= screenHeight)
+        right  <= screenWidth &&
+        bottom <= screenHeight)
     {
-        // Write requested viewport to RT (vp*)
-        if (bDisplayInfo.curRenderTarget) {
-            TBRenderTarget* rt = bDisplayInfo.curRenderTarget;
-            rt->vpX      = topLeftX;
-            rt->vpY      = topLeftY;
-            rt->vpWidth  = width;
-            rt->vpHeight = height;
-        }
+        D3DVIEWPORT8 vp;
+        vp.X      = topLeftX;
+        vp.Y      = topLeftY;
+        vp.Width  = width;
+        vp.Height = height;
+        vp.MinZ   = 0.0f;
+        vp.MaxZ   = 1.0f;
 
-        // Device viewport = requested rectangle
-        if (bDisplayInfo.d3dDevice) {
-            D3DVIEWPORT8 vp;
-            vp.X      = (DWORD)topLeftX;
-            vp.Y      = (DWORD)topLeftY;
-            vp.Width  = (DWORD)width;
-            vp.Height = (DWORD)height;
-            vp.MinZ   = 0.0f;
-            vp.MaxZ   = 1.0f;
-            bDisplayInfo.d3dDevice->SetViewport(&vp);
-        }
+        bDisplayInfo.curRenderTarget->vpX      = topLeftX;
+        bDisplayInfo.curRenderTarget->vpY      = topLeftY;
+        bDisplayInfo.curRenderTarget->vpWidth  = width;
+        bDisplayInfo.curRenderTarget->vpHeight = height;
 
-        // Update bViewInfo geometry
-        bViewInfo.width      = (float)width;
-        bViewInfo.height     = (float)height;
-        bViewInfo.halfWidth  = bViewInfo.width  * 0.5f;
-        bViewInfo.halfHeight = bViewInfo.height * 0.5f;
-        bViewInfo.xTopLeft   = (float)topLeftX;
-        bViewInfo.yTopLeft   = (float)topLeftY;
-        bViewInfo.xCentre    = bViewInfo.xTopLeft + bViewInfo.halfWidth;
-        bViewInfo.yCentre    = bViewInfo.yTopLeft + bViewInfo.halfHeight;
+        bDisplayInfo.d3dDevice->SetViewport(&vp);
 
-        // viewportMatrix = T(center) * S(halfWidth, -halfHeight, 1)
-        {
-            TBMatrix S, T;
-            bmMatScale(S,  bViewInfo.halfWidth, -bViewInfo.halfHeight, 1.0f);
-            bmMatTranslate(T, bViewInfo.xCentre, bViewInfo.yCentre, 0.0f);
-            bmMatMultiply(bViewInfo.viewportMatrix, T, S);
-        }
+        bViewInfo.width  = (float)width;
+        bViewInfo.height = (float)height;
 
-        // Full-viewport clip handled by bdSetClipRectangle
+        // asm uses int division by 2 (SAR trick) then FILD -> float
+        const int halfW_i = width  / 2;
+        const int halfH_i = height / 2;
+
+        bViewInfo.halfWidth  = (float)halfW_i;
+        bViewInfo.halfHeight = (float)halfH_i;
+
+        bViewInfo.xTopLeft = (float)topLeftX;
+        bViewInfo.yTopLeft = (float)topLeftY;
+
+        bViewInfo.xCentre = bViewInfo.xTopLeft + bViewInfo.halfWidth;
+        bViewInfo.yCentre = bViewInfo.yTopLeft + bViewInfo.halfHeight;
+
+        TBMatrix matScale;
+        TBMatrix matTrans;
+
+        bmMatScale(matScale, bViewInfo.halfWidth, -bViewInfo.halfHeight, 1.0f);
+        bmMatTranslate(
+            matTrans,
+            bViewInfo.xTopLeft + bViewInfo.halfWidth,
+            bViewInfo.yTopLeft + bViewInfo.halfHeight,
+            0.0f
+        );
+
+        // multiplication is performed so src2 takes effect first
+        bmMatMultiply(bViewInfo.viewportMatrix, matTrans, matScale);
+
         bdSetClipRectangle(topLeftX, topLeftY, width, height);
         return;
     }
 
-    // Clipped path: compute overflows on all sides, set device viewport to intersection
+    // Clipped path
+    const int overflowLeft   = (topLeftX < 0) ? -topLeftX : 0;
+    const int overflowRight  = (right  > screenWidth)  ? (right  - screenWidth)  : 0;
+    const int overflowTop    = (topLeftY < 0) ? -topLeftY : 0;
+    const int overflowBottom = (bottom > screenHeight) ? (bottom - screenHeight) : 0;
+
+    D3DVIEWPORT8 vp;
+    vp.X      = topLeftX + overflowLeft;
+    vp.Y      = topLeftY + overflowTop;
+    vp.Width  = width  - overflowLeft - overflowRight;
+    vp.Height = height - overflowTop  - overflowBottom;
+    vp.MinZ   = 0.0f;
+    vp.MaxZ   = 1.0f;
+
+    bDisplayInfo.curRenderTarget->vpX      = topLeftX;
+    bDisplayInfo.curRenderTarget->vpY      = topLeftY;
+    bDisplayInfo.curRenderTarget->vpWidth  = width;
+    bDisplayInfo.curRenderTarget->vpHeight = height;
+
+    bDisplayInfo.d3dDevice->SetViewport(&vp);
+
+    bViewInfo.width      = (float)vp.Width;
+    bViewInfo.height     = (float)vp.Height;
+    bViewInfo.halfWidth  = bViewInfo.width  * 0.5f;
+    bViewInfo.halfHeight = bViewInfo.height * 0.5f;
+
+    bViewInfo.xTopLeft = (float)vp.X;
+    bViewInfo.yTopLeft = (float)vp.Y;
+
+    const float halfW = (float)width  * 0.5f;
+    const float halfH = (float)height * 0.5f;
+
+    bViewInfo.xCentre = (float)topLeftX + halfW;
+    bViewInfo.yCentre = (float)topLeftY + halfH;
+
+    TBMatrix vpScale;
+    TBMatrix vpTrans;
+
+    bmMatScale(vpScale, bViewInfo.halfWidth, -bViewInfo.halfHeight, 1.0f);
+    bmMatTranslate(
+        vpTrans,
+        bViewInfo.xTopLeft + bViewInfo.halfWidth,
+        bViewInfo.yTopLeft + bViewInfo.halfHeight,
+        0.0f
+    );
+    bmMatMultiply(bViewInfo.viewportMatrix, vpTrans, vpScale);
+
+    // store clipped rect into render target
+    bDisplayInfo.curRenderTarget->clipXPos    = vp.X;
+    bDisplayInfo.curRenderTarget->clipYPos    = vp.Y;
+    bDisplayInfo.curRenderTarget->clipWidth   = vp.Width;
+    bDisplayInfo.curRenderTarget->clipHeight  = vp.Height;
+
+    const float clipCentreX =
+        (float)bDisplayInfo.curRenderTarget->clipXPos +
+        (float)bDisplayInfo.curRenderTarget->clipWidth * 0.5f;
+
+    const float clipCentreY =
+        (float)bDisplayInfo.curRenderTarget->clipYPos +
+        (float)bDisplayInfo.curRenderTarget->clipHeight * 0.5f;
+
+    TBMatrix clipTrans;
+    TBMatrix clipScale;
+
+    bmMatTranslate(
+        clipTrans,
+        (bViewInfo.xCentre - clipCentreX) / halfW,
+        -((bViewInfo.yCentre - clipCentreY) / halfH),
+        0.0f
+    );
+
+    bmMatScale(
+        clipScale,
+        (float)width  / bViewInfo.width,
+        (float)height / bViewInfo.height,
+        1.0f
+    );
+
+    // clipRectMatrix = translate * scale (per call order + "src2 takes effect first")
+    bmMatMultiply(bViewInfo.clipRectMatrix, clipScale, clipTrans);
+
+    bD3DMatMultiply(
+        &bOrthoProjectionWithClip,
+        (const D3DMATRIX*)bViewInfo.clipRectMatrix,
+        &bOrthoProjectionMatrix
+    );
+
+    bCalcPerspProjectionMatrix();
+    bUpdateViewFromCamera();
+
+    TBMatrix viewTrans;
+    bmMatTranslate(viewTrans, -bViewInfo.xPos, -bViewInfo.yPos, -bViewInfo.zPos);
+
+    bD3DMatMultiply(
+        &bViewMatrix,
+        (const D3DMATRIX*)bViewInfo.rotMatrix,
+        (const D3DMATRIX*)viewTrans
+    );
+
+    if (bViewInfo.projectionMode == BDISPLAY_PROJECTIONMODE3D)
     {
-        int overflowLeft   = (topLeftX < 0) ? -topLeftX : 0;
-        int overflowTop    = (topLeftY < 0) ? -topLeftY : 0;
-        int overflowRight  = ((topLeftX + width)  > screenWidth)  ? (topLeftX + width  - screenWidth)  : 0;
-        int overflowBottom = ((topLeftY + height) > screenHeight) ? (topLeftY + height - screenHeight) : 0;
+        bDisplayInfo.d3dDevice->SetTransform(D3DTS_VIEW, &bViewMatrix);
+    }
 
-        D3DVIEWPORT8 vp;
-        vp.X      = (DWORD)(topLeftX + overflowLeft);
-        vp.Y      = (DWORD)(topLeftY + overflowTop);
-        vp.Width  = (DWORD)(width  - overflowLeft - overflowRight);
-        vp.Height = (DWORD)(height - overflowTop  - overflowBottom);
-        vp.MinZ   = 0.0f;
-        vp.MaxZ   = 1.0f;
+    bmMatCopy(bViewInfo.worldToView, (const float*)&bViewMatrix);
 
-        // Store requested viewport on RT (vp*)
-        if (bDisplayInfo.curRenderTarget) {
-            TBRenderTarget* rt = bDisplayInfo.curRenderTarget;
-            rt->vpX      = topLeftX;
-            rt->vpY      = topLeftY;
-            rt->vpWidth  = width;
-            rt->vpHeight = height;
-        }
+    bmMatMultiply(bViewInfo.objectToView, bViewInfo.worldToView, bViewInfo.objectMatrix);
 
-        if (bDisplayInfo.d3dDevice) {
-            bDisplayInfo.d3dDevice->SetViewport(&vp);
-        }
+    {
+        TBMatrix perspA;
+        bmMatCopy(perspA, (const float*)&bPerspProjectionMatrix);
 
-        // View info uses the *device* viewport (intersection)
-        bViewInfo.width      = (float)vp.Width;
-        bViewInfo.height     = (float)vp.Height;
-        bViewInfo.halfWidth  = bViewInfo.width  * 0.5f;
-        bViewInfo.halfHeight = bViewInfo.height * 0.5f;
-        bViewInfo.xTopLeft   = (float)vp.X;
-        bViewInfo.yTopLeft   = (float)vp.Y;
-        bViewInfo.xCentre    = bViewInfo.xTopLeft + bViewInfo.halfWidth;
-        bViewInfo.yCentre    = bViewInfo.yTopLeft + bViewInfo.halfHeight;
+        bmMatMultiply(bViewInfo.objectToProjection, perspA, bViewInfo.objectToView);
+        bmMatMultiply(bViewInfo.worldToProjection,  perspA, bViewInfo.worldToView);
+        bmMatMultiply(bViewInfo.objectToScreen,     bViewInfo.viewportMatrix, bViewInfo.objectToProjection);
+        bmMatMultiply(bViewInfo.viewportProjectionMatrix, bViewInfo.viewportMatrix, perspA);
+    }
 
-        // viewportMatrix = T(center) * S(halfWidth, -halfHeight, 1)
-        {
-            TBMatrix Svp, Tvp;
-            bmMatScale(Svp,  bViewInfo.halfWidth, -bViewInfo.halfHeight, 1.0f);
-            bmMatTranslate(Tvp, bViewInfo.xTopLeft + bViewInfo.halfWidth,
-                                 bViewInfo.yTopLeft + bViewInfo.halfHeight, 0.0f);
-            bmMatMultiply(bViewInfo.viewportMatrix, Tvp, Svp);
-        }
+    // bdSetProjectionMode block
+    if (bViewInfo.projectionMode == BDISPLAY_PROJECTIONMODE3D)
+    {
+        bDisplayInfo.d3dDevice->SetTransform(D3DTS_VIEW, &bViewMatrix);
+        bDisplayInfo.d3dDevice->SetTransform(D3DTS_PROJECTION, &bPerspProjectionMatrix);
+        bProjectionMatrix = &bPerspProjectionMatrix;
+    }
+    else
+    {
+        bDisplayInfo.d3dDevice->SetTransform(D3DTS_VIEW, &bIdentityD3DMatrix);
+        bDisplayInfo.d3dDevice->SetTransform(D3DTS_PROJECTION, &bOrthoProjectionWithClip);
+        bProjectionMatrix = &bOrthoProjectionWithClip;
+    }
 
-        // Clip rect inside requested viewport:
-        // - clipX/Y measured from requested viewport top-left (overflow)
-        // - clipWidth/Height are the visible extents
-        if (bDisplayInfo.curRenderTarget) {
-            TBRenderTarget* rt = bDisplayInfo.curRenderTarget;
-            rt->clipXPos   = overflowLeft;
-            rt->clipYPos   = overflowTop;
-            rt->clipWidth  = (int)vp.Width;
-            rt->clipHeight = (int)vp.Height;
-        }
+    bmMatMultiply(bViewInfo.objectToView, bViewInfo.worldToView, bViewInfo.objectMatrix);
 
-        // clipRectMatrix = S * T (normalize visible sub-rect back onto requested viewport)
-        {
-            float clipCx = (float)vp.X + (float)vp.Width  * 0.5f;
-            float clipCy = (float)vp.Y + (float)vp.Height * 0.5f;
+    {
+        TBMatrix perspB;
+        bmMatCopy(perspB, (const float*)&bPerspProjectionMatrix);
 
-            // Normalize translation from viewport center; note flipped Y
-            float dx = (bViewInfo.xCentre - clipCx) / ((float)width  * 0.5f);
-            float dy = -((bViewInfo.yCentre - clipCy) / ((float)height * 0.5f));
-
-            TBMatrix T, S;
-            bmMatTranslate(T, dx, dy, 0.0f);
-            bmMatScale(S, (float)width  / (float)vp.Width,
-                          (float)height / (float)vp.Height,
-                          1.0f);
-            bmMatMultiply(bViewInfo.clipRectMatrix, S, T);
-        }
-
-        // Ortho with clip: dest = left * right  => Ortho * Clip
-        bD3DMatMultiply(&bOrthoProjectionWithClip,
-                        (D3DMATRIX*)bViewInfo.clipRectMatrix, /* right  */
-                        &bOrthoProjectionMatrix);             /* left   */
-
-        // Rebuild perspective and view
-        bCalcPerspProjectionMatrix();
-        bUpdateViewFromCamera();
-
-        // view = R * T(-pos)
-        {
-            TBMatrix Tneg;
-            bmMatTranslate(Tneg, -bViewInfo.xPos, -bViewInfo.yPos, -bViewInfo.zPos);
-            bD3DMatMultiply(&bViewMatrix,
-                            (D3DMATRIX*)Tneg,                 /* right */
-                            (D3DMATRIX*)bViewInfo.rotMatrix); /* left  */
-        }
-
-        // Inline: update VIEW only if in 3D mode (first small block)
-        if (bViewInfo.projectionMode == BDISPLAY_PROJECTIONMODE3D) {
-            if (bDisplayInfo.d3dDevice) {
-                bDisplayInfo.d3dDevice->SetTransform(D3DTS_VIEW, &bViewMatrix);
-            }
-        }
-
-        // PASS 1: derived using current *bProjectionMatrix
-        bmMatMultiply(bViewInfo.objectToView, bViewInfo.worldToView, bViewInfo.objectMatrix);
-        {
-            TBMatrix tmpProj;
-            bmMatCopy(tmpProj, bProjectionMatrix);
-
-            bmMatMultiply(bViewInfo.objectToProjection, tmpProj, bViewInfo.objectToView);
-            bmMatMultiply(bViewInfo.worldToProjection,  tmpProj, bViewInfo.worldToView);
-            bmMatMultiply(bViewInfo.objectToScreen,     bViewInfo.viewportMatrix, bViewInfo.objectToProjection);
-            bmMatMultiply(bViewInfo.viewportProjectionMatrix, bViewInfo.viewportMatrix, tmpProj);
-        }
-
-        // Inline: set VIEW/PROJECTION and choose bProjectionMatrix according to mode
-        if (bDisplayInfo.d3dDevice) {
-            if (bViewInfo.projectionMode == BDISPLAY_PROJECTIONMODE3D) {
-                bDisplayInfo.d3dDevice->SetTransform(D3DTS_VIEW,       &bViewMatrix);
-                bDisplayInfo.d3dDevice->SetTransform(D3DTS_PROJECTION, &bPerspProjectionMatrix);
-                bProjectionMatrix = &bPerspProjectionMatrix;
-            } else {
-                bDisplayInfo.d3dDevice->SetTransform(D3DTS_VIEW,       &bIdentityD3DMatrix);
-                bDisplayInfo.d3dDevice->SetTransform(D3DTS_PROJECTION, &bOrthoProjectionWithClip);
-                bProjectionMatrix = &bOrthoProjectionWithClip;
-            }
-        }
-
-        // PASS 2: derived using updated *bProjectionMatrix
-        bmMatMultiply(bViewInfo.objectToView, bViewInfo.worldToView, bViewInfo.objectMatrix);
-        {
-            TBMatrix tmpProj2;
-            bmMatCopy(tmpProj2, bProjectionMatrix);
-
-            bmMatMultiply(bViewInfo.objectToProjection, tmpProj2, bViewInfo.objectToView);
-            bmMatMultiply(bViewInfo.worldToProjection,  tmpProj2, bViewInfo.worldToView);
-            bmMatMultiply(bViewInfo.objectToScreen,     bViewInfo.viewportMatrix, bViewInfo.objectToProjection);
-            bmMatMultiply(bViewInfo.viewportProjectionMatrix, bViewInfo.viewportMatrix, tmpProj2);
-        }
+        bmMatMultiply(bViewInfo.objectToProjection, perspB, bViewInfo.objectToView);
+        bmMatMultiply(bViewInfo.worldToProjection,  perspB, bViewInfo.worldToView);
+        bmMatMultiply(bViewInfo.objectToScreen,     bViewInfo.viewportMatrix, bViewInfo.objectToProjection);
+        bmMatMultiply(bViewInfo.viewportProjectionMatrix, bViewInfo.viewportMatrix, perspB);
     }
 }
 
@@ -297,8 +311,7 @@ void bdSetViewOrientation(const float xRot, const float yRot, const float zRot, 
 */
 void bdSetViewOrientationFromQuaternion(const TBQuaternion quat)
 {
-        bkPrintf("*** WARNING *** bdSetViewOrientationFromQuaternion was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    bmQuatToMatrix(bViewInfo.rotMatrix, quat);
 }
 
 /*	--------------------------------------------------------------------------------
@@ -369,7 +382,7 @@ void bdSetupView()
                          bViewInfo.worldToView,
                          bViewInfo.objectMatrix);
 
-    // 6) Use the perspective projection (matches disasm sequence)
+    // 6) Use the perspective projection
     TBMatrix tmpProj;
     bmMatCopy(tmpProj, bProjectionMatrix);
 
@@ -413,16 +426,12 @@ void bdSetViewClipPlanes(const float nearClip, const float farClip)
     // Set D3D transforms and select active projection pointer
     dev = bDisplayInfo.d3dDevice;
     if (bViewInfo.projectionMode == BDISPLAY_PROJECTIONMODE3D) {
-        if (dev) {
-            dev->SetTransform(D3DTS_VIEW,       &bViewMatrix);
-            dev->SetTransform(D3DTS_PROJECTION, &bPerspProjectionMatrix);
-        }
+        dev->SetTransform(D3DTS_VIEW,       &bViewMatrix);
+        dev->SetTransform(D3DTS_PROJECTION, &bPerspProjectionMatrix);
         bProjectionMatrix = &bPerspProjectionMatrix;
     } else {
-        if (dev) {
-            dev->SetTransform(D3DTS_VIEW,       &bIdentityD3DMatrix);
-            dev->SetTransform(D3DTS_PROJECTION, &bOrthoProjectionWithClip);
-        }
+        dev->SetTransform(D3DTS_VIEW,       &bIdentityD3DMatrix);
+        dev->SetTransform(D3DTS_PROJECTION, &bOrthoProjectionWithClip);
         bProjectionMatrix = &bOrthoProjectionWithClip;
     }
 
@@ -470,19 +479,16 @@ void bdSetObjectMatrix(const TBMatrix objMat)
     }
 
     // Set the D3D world transform to the current object matrix
-    if (bDisplayInfo.d3dDevice) {
-        bDisplayInfo.d3dDevice->SetTransform(D3DTS_WORLD,
-            reinterpret_cast<const D3DMATRIX*>(&bViewInfo.objectMatrix[0][0]));
-    }
+    bDisplayInfo.d3dDevice->SetTransform(D3DTS_WORLD,
+            reinterpret_cast<const D3DMATRIX*>(bViewInfo.objectMatrix));
 
     // Rebuild cached transforms following the pipeline used in the disassembly
-    bmMatMultiplyUnaligned(bViewInfo.objectToView,
+    bmMatMultiply(bViewInfo.objectToView,
                            bViewInfo.worldToView,
                            bViewInfo.objectMatrix);
 
     TBMatrix proj;
-    // Copy 64 bytes from current active projection (D3DMATRIX -> TBMatrix)
-    memcpy(proj, bProjectionMatrix, sizeof(TBMatrix));
+    bmMatCopy(proj, bProjectionMatrix);
 
     bmMatMultiply(bViewInfo.objectToProjection,
                            proj,
@@ -530,16 +536,12 @@ void bdSetProjectionMode(const uint32 mode, int force)
     {
         IDirect3DDevice8* dev = bDisplayInfo.d3dDevice;
         if (mode == BDISPLAY_PROJECTIONMODE3D) {
-            if (dev) {
-                dev->SetTransform(D3DTS_VIEW,       &bViewMatrix);
-                dev->SetTransform(D3DTS_PROJECTION, &bPerspProjectionMatrix);
-            }
+            dev->SetTransform(D3DTS_VIEW,       &bViewMatrix);
+            dev->SetTransform(D3DTS_PROJECTION, &bPerspProjectionMatrix);
             bProjectionMatrix = &bPerspProjectionMatrix;
         } else {
-            if (dev) {
-                dev->SetTransform(D3DTS_VIEW,       &bIdentityD3DMatrix);
-                dev->SetTransform(D3DTS_PROJECTION, &bOrthoProjectionWithClip);
-            }
+            dev->SetTransform(D3DTS_VIEW,       &bIdentityD3DMatrix);
+            dev->SetTransform(D3DTS_PROJECTION, &bOrthoProjectionWithClip);
             bProjectionMatrix = &bOrthoProjectionWithClip;
         }
     }
@@ -605,34 +607,33 @@ void bCalcPerspProjectionMatrix()
     const float zn = bViewInfo.nearClip;
     const float zf = bViewInfo.farClip;
 
-    // far / (far - near)
-    const float q  = (zf) / (zf - zn);
+    // q = far / (far - near)
+    const float q = zf / (zf - zn);
 
-    // 1 / tan(FOV/2) — per-axis cotangent
-    const float cotX = 1.0f / (float)tan(bViewInfo.xFov * 0.5f);
-    const float cotY = 1.0f / (float)tan(bViewInfo.yFov * 0.5f);
+    // cot = 1 / tan(fov/2)
+    const float cotX = 1.0f / (float)tan((double)(bViewInfo.xFov * 0.5f));
+    const float cotY = 1.0f / (float)tan((double)(bViewInfo.yFov * 0.5f));
 
     D3DMATRIX P;
     memset(&P, 0, sizeof(P));
 
-    // Diagonal scales
     P._11 = cotX;
     P._22 = cotY;
 
-    // Principal point shift (projection offsets)
-    P._13 = bViewInfo.projOffsetX;
-    P._23 = bViewInfo.projOffsetY;
+    // Depth terms
+    P._33 = q;
+    P._34 = 1.0f;
+    P._43 = -(zn * q) + bViewInfo.zBias; // -near*q + zBias
 
-    // Depth terms (engine’s convention)
-    P._34 = q;
-    P._43 = 1.0f;
+    // Projection offsets
+    P._41 = bViewInfo.projOffsetX;
+    P._42 = bViewInfo.projOffsetY;
 
-    // Compose with clip-rect transform: dest = left * right
-    bD3DMatMultiply(&bPerspProjectionMatrix,
-                    reinterpret_cast<const D3DMATRIX*>(&bViewInfo.clipRectMatrix),
-                    &P);
-
-	bProjectionMatrix = &bPerspProjectionMatrix; // initialization, doesn't exist in ASM
+    bD3DMatMultiply(
+        &bPerspProjectionMatrix,
+        reinterpret_cast<const D3DMATRIX*>(&bViewInfo.clipRectMatrix),
+        &P
+    );
 }
 
 /*	--------------------------------------------------------------------------------
@@ -657,8 +658,27 @@ void bdProjectClipVertices(TBVector dest, const TBVector src, int noofVerts, int
 */
 void bdProjectVertices(TBVector dest, const TBVector src, int noofVerts)
 {
-        bkPrintf("*** WARNING *** bdProjectVertices was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    if (noofVerts == 0) return;
+
+    do
+    {
+        bmMatMultiplyVector2(dest, bViewInfo.objectToScreen, src);
+
+        float w = dest[3];
+        float invW = (w == 0.0f) ? 1.0f : (1.0f / w);
+        dest[3] = invW;
+
+        float x = dest[0] * invW;
+        float y = dest[1] * invW;
+
+        dest[0] = x - bViewInfo.xCentre;
+        dest[1] = bViewInfo.yCentre - y;
+        dest[2] = dest[2] * invW;
+
+        src  += 4;
+        dest += 4;
+        --noofVerts;
+    } while (noofVerts != 0);
 }
 
 /*	--------------------------------------------------------------------------------
@@ -737,8 +757,80 @@ void bdSetFOV(const float horzFOVRadians, const float vertFOVRadians)
 */
 int bdTestBBVisibility(const TBMatrix bbMatrix, const float xMin, const float xMax, const float yMin, const float yMax, const float zMin, const float zMax)
 {
-        bkPrintf("*** WARNING *** bdTestBBVisibility was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    TBMatrix clipMatrix;
+    TBVector corner;
+    TBVector points[8];
+
+    // worldToProjection * bbMatrix
+    bmMatMultiply(clipMatrix, bViewInfo.worldToProjection, bbMatrix);
+
+    // (xMin, yMin, zMin)
+    corner[0] = xMin;
+    corner[1] = yMin;
+    corner[2] = zMin;
+    corner[3] = 1.0f;
+    bmMatMultiplyVector2(points[0], clipMatrix, corner);
+
+    // (xMin, yMin, zMax)
+    corner[2] = zMax;
+    bmMatMultiplyVector2(points[1], clipMatrix, corner);
+
+    // (xMin, yMax, zMax)
+    corner[1] = yMax;
+    bmMatMultiplyVector2(points[2], clipMatrix, corner);
+
+    // (xMin, yMax, zMin)
+    corner[2] = zMin;
+    bmMatMultiplyVector2(points[3], clipMatrix, corner);
+
+    // (xMax, yMin, zMin)
+    corner[0] = xMax;
+    corner[1] = yMin;
+    corner[2] = zMin;
+    bmMatMultiplyVector2(points[4], clipMatrix, corner);
+
+    // (xMax, yMin, zMax)
+    corner[2] = zMax;
+    bmMatMultiplyVector2(points[5], clipMatrix, corner);
+
+    // (xMax, yMax, zMax)
+    corner[1] = yMax;
+    bmMatMultiplyVector2(points[6], clipMatrix, corner);
+
+    // (xMax, yMax, zMin)
+    corner[2] = zMin;
+    bmMatMultiplyVector2(points[7], clipMatrix, corner);
+
+    uchar andMask = 0x3f;
+    uchar orMask  = 0;
+
+    for (int i = 0; i < 8; ++i)
+    {
+        const float x = points[i][0];
+        const float y = points[i][1];
+        const float z = points[i][2];
+        const float w = points[i][3];
+
+        uchar code = 0;
+
+        if (x < -w)  code |= 0x01; // left
+        if (x >  w)  code |= 0x02; // right
+        if (y < -w)  code |= 0x04; // bottom
+        if (y >  w)  code |= 0x08; // top
+        if (z <  0.0f) code |= 0x10; // near
+        if (z >  w)  code |= 0x20; // far
+
+        andMask &= code;
+        orMask  |= code;
+    }
+
+    int result = 0;
+    if (andMask == 0)
+    {
+        result = (orMask != 0) + 1;
+    }
+
+    return result;
 }
 
 /*	--------------------------------------------------------------------------------
@@ -763,7 +855,31 @@ int bdTestSphereVisibility(TBVector centre, const float radius)
 */
 float bdWorldToScreenSizeXY(const TBVector basisPoint, const float xWorldLen, const float yWorldLen, float * const xScreenLen, float * const yScreenLen)
 {
-        bkPrintf("*** WARNING *** bdWorldToScreenSizeXY was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    float num =
+        (bViewInfo.objectToView[0][2]  * basisPoint[0]) +
+        (bViewInfo.objectToView[1][2]  * basisPoint[1]) +
+        (bViewInfo.objectToView[2][2] * basisPoint[2]) +
+        (bViewInfo.objectToView[3][2] * basisPoint[3]);
+
+    float den =
+        (bViewInfo.objectToView[0][3]  * basisPoint[0]) +
+        (bViewInfo.objectToView[1][3]  * basisPoint[1]) +
+        (bViewInfo.objectToView[2][3] * basisPoint[2]) +
+        (bViewInfo.objectToView[3][3] * basisPoint[3]);
+
+    float scale = num / den;
+
+    if ((scale > bViewInfo.nearClip) && (scale < bViewInfo.farClip))
+    {
+        const float sx = (bPerspProjectionMatrix._11 * xWorldLen) / scale;
+        const float sy = (bPerspProjectionMatrix._22 * yWorldLen) / scale;
+
+        *xScreenLen = sx * (float)bDisplayInfo.curRenderTarget->clipWidth  * 0.5;
+        *yScreenLen = sy * (float)bDisplayInfo.curRenderTarget->clipHeight * 0.5;
+
+        return scale;
+    }
+
     return 0.0f;
 }
 
@@ -776,7 +892,29 @@ float bdWorldToScreenSizeXY(const TBVector basisPoint, const float xWorldLen, co
 */
 float bdWorldToScreenSizeX(const TBVector basisPoint, const float xWorldLen, float * const xScreenLen)
 {
-        bkPrintf("*** WARNING *** bdWorldToScreenSizeX was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    float num =
+        (bViewInfo.objectToView[0][2] * basisPoint[0]) +
+        (bViewInfo.objectToView[1][2] * basisPoint[1]) +
+        (bViewInfo.objectToView[2][2] * basisPoint[2]) +
+        (bViewInfo.objectToView[3][2] * basisPoint[3]);
+
+    float den =
+        (bViewInfo.objectToView[0][3] * basisPoint[0]) +
+        (bViewInfo.objectToView[1][3] * basisPoint[1]) +
+        (bViewInfo.objectToView[2][3] * basisPoint[2]) +
+        (bViewInfo.objectToView[3][3] * basisPoint[3]);
+
+    float scale = num / den;
+
+    if ((scale > bViewInfo.nearClip) && (scale < bViewInfo.farClip))
+    {
+        const float sx = (bPerspProjectionMatrix._11 * xWorldLen) / scale;
+
+        *xScreenLen = sx * (float)bDisplayInfo.curRenderTarget->clipWidth * 0.5f;
+
+        return scale;
+    }
+
     return 0.0f;
 }
 
@@ -802,8 +940,33 @@ float bdWorldToScreenSizeY(const TBVector basisPoint, const float yWorldLen, flo
 */
 void bdSetZBias(const float zBias)
 {
-        bkPrintf("*** WARNING *** bdSetZBias was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    float delta = zBias - bViewInfo.zBias;
+    bViewInfo.zBias = zBias;
+
+    bOrthoProjectionWithClip._43 += delta;
+    bPerspProjectionMatrix._43   += delta;
+
+    IDirect3DDevice8* dev = bDisplayInfo.d3dDevice;
+
+    if (bViewInfo.projectionMode == 1) {
+        dev->SetTransform(D3DTS_VIEW,       &bViewMatrix);
+        dev->SetTransform(D3DTS_PROJECTION, &bPerspProjectionMatrix);
+        bProjectionMatrix = &bPerspProjectionMatrix;
+    } else {
+        dev->SetTransform(D3DTS_VIEW,       &bIdentityD3DMatrix);
+        dev->SetTransform(D3DTS_PROJECTION, &bOrthoProjectionWithClip);
+        bProjectionMatrix = &bOrthoProjectionWithClip;
+    }
+
+    bmMatMultiply(bViewInfo.objectToView, bViewInfo.worldToView, bViewInfo.objectMatrix);
+
+    float projTmp[4][4];
+    bmMatCopy(projTmp, bProjectionMatrix);
+
+    bmMatMultiply(bViewInfo.objectToProjection, projTmp, bViewInfo.objectToView);
+    bmMatMultiply(bViewInfo.worldToProjection,  projTmp, bViewInfo.worldToView);
+    bmMatMultiply(bViewInfo.objectToScreen, bViewInfo.viewportMatrix, bViewInfo.objectToProjection);
+    bmMatMultiply(bViewInfo.viewportProjectionMatrix, bViewInfo.viewportMatrix, projTmp);
 }
 
 /*	--------------------------------------------------------------------------------

@@ -976,7 +976,7 @@ void VFX_stereoPreDraw(void)
 		}
 	}
 
-#if(BPLATFORM == PC) // MG: FIX IT ASAP!
+#if(BPLATFORM == PC)
 			if(bDisplayInfo.devCaps.PrimitiveMiscCaps & D3DPMISCCAPS_COLORWRITEENABLE)
 #else
 			if(COLOUR_CHANNEL_MASKING_SUPPORTED)

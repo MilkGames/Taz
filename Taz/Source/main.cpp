@@ -163,7 +163,7 @@ extern uint _end;
 	#ifndef START_SCENE
 		#if(BPLATFORM == XBOX)
 			// PP: NOTE: lanugage select scene gets skipped so we actually appear to start on the main game intro
-			#define START_SCENE				SCENE_ZOOBOSS
+			#define START_SCENE				SCENE_LANGUAGESELECT
 		#elif(BPLATFORM == PC)
 			#define START_SCENE				SCENE_LANGUAGESELECT
 		#else
@@ -186,7 +186,7 @@ extern uint _end;
 
 	#ifdef PHIL
 		#undef START_SCENE
-	#define START_SCENE				SCENE_LANGUAGESELECT
+	#define START_SCENE				SCENE_LANGUAGESELECT // MG: sorry, Phil! your START_SCENE is now mine!
 	#endif// PP: def PHIL
 
 	#ifndef START_SCENE
@@ -525,7 +525,9 @@ void Main(void *context)
 
 //#ifdef CONSUMERDEMO	// JW: Little 3 second pasue in the demo cos Pesty can't be arsed to alter his precious lil splash screen
 	// TP: Move to demo.cpp, lets keep things tidy
+#ifdef DRAWLEGALSPLASH // MG: just to skip this stuff, sorry
 	DrawLegalSplashScreen();
+#endif
 //#endif
 
 
@@ -579,6 +581,13 @@ void Main(void *context)
 
 	// load font
 	standardFont = LoadFont("yikes.ttf","restex");
+
+#ifdef CONSOLEWINDOW // MG: initialize the console window as early as possible
+#if BPLATFORM == PC // MG: I'm excluding other platforms because we can be a bit tight on memory
+	SetupConsole();
+	bdShowConsoleWindow(true);
+#endif
+#endif
 
 	// PP: Initialise text effects// PP: this has gotter be done real early like,
 	// PP: certainly before any books are set up
@@ -1044,7 +1053,7 @@ void Main(void *context)
 
 	#else// PP: ifndef INFOGRAMES
 
-		if ((controller1.guiDebounceChannel->value))
+		if (controller1.guiDebounceChannel->value)
 		{
 			biZeroMap(controller1.inputMap);
 			UpdateGuiItems();
@@ -1221,7 +1230,6 @@ void Main(void *context)
 	}
 	catch(...)
 	{
-		//bkPrintf("*** FATAL ERROR! *** ", err);
 		// PP: Should the unthinkable happen - should the final game crash for any reason -
 		// PP: let's put up the "damaged disk" message.
 		// PP: It's a whole lot prettier than a frozen screen!
@@ -1245,9 +1253,9 @@ void Main(void *context)
 
 void Flip(int red, int green, int blue, int alpha, int flags)
 {
-#if BPLATFORM==XBOX
+//#if BPLATFORM == XBOX // MG: now it's my world, now it's my rules, muhahahaha!!! nah, tbh, it adds just a few CPU cycles, not a big deal
 	bRenderConsoleWindow();
-#endif
+//#endif
 	bdFlip(red, green, blue, alpha, flags);
 }
 
@@ -3272,14 +3280,9 @@ char* strcatf(char * const buffer, const char * const format, ...)
 	return buffer;
 }
 
-#if BPLATFORM == PC
+// MG: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ BINK ROUTINES - should these be here? ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// MG: so! actually our bink headers can be outdated/too new for this
-// it's not a good approach to actually call for struct params
-// if you can't tell for sure if they're valid or not
-// that's why you can undefine this in case of any problems
-// but right now it works just fine
-#define BINK_EXPOSE_MINIMAL_FIELDS
+#if BPLATFORM == PC
 
 int BinkShowFrame(HBINK bink, U32 surfType)
 {
@@ -3295,15 +3298,10 @@ int BinkShowFrame(HBINK bink, U32 surfType)
             D3DLOCKED_RECT lr;
             HRESULT hr;
 
-            // Lock the backbuffer. The decompiled loop retried until success
-            for (;;)
-            {
+            // Lock the backbuffer. Loop retried until success
+            do {
                 hr = bb->LockRect(&lr, NULL, 0);
-                if (SUCCEEDED(hr)) break;
-                // Very defensive: spin until we get it (matches the binary behavior)
-                hr = bb->LockRect(&lr, NULL, 0);
-                if (SUCCEEDED(hr)) break;
-            }
+            } while (FAILED(hr));
 
             // Copy the frame into the backbuffer memory
             // Params: (bink, destBits, destPitch, destHeight, destX, destY, destFormat)
@@ -3314,22 +3312,19 @@ int BinkShowFrame(HBINK bink, U32 surfType)
                 (S32)lr.Pitch,
                 (U32)videoMode.yScreen,
                 0, 0,
-                surfType);
+                surfType | BINKCOPYALL);
 
             bb->UnlockRect();
             bdEndScene();
 
-            // If Bink had to block (e.g., waiting on vsync path), advance frame with an extra flip
-            if (ok == 0)
-                bdFlip(0, 0, 0, 0, 1);
+			// If Bink had to block (e.g., waiting on vsync path), advance frame with an extra flip
+			if (ok == 0) bdFlip(0, 0, 0, 0, 1);
         }
     }
 
-#ifdef BINK_EXPOSE_MINIMAL_FIELDS
     // Stop when we've displayed the last frame
     if (bink->Frames <= bink->FrameNum)
         return 0;
-#endif
 
     // Advance to the next frame
     BinkNextFrame(bink);
@@ -3343,20 +3338,16 @@ U32 binkPlayVideo(char* video, IDirect3DSurface8* surface)
 		return 0;
 	}
 
-    U32 surfType;
-    HBINK bnk;
-    S32 shouldWait;
-    int done = 0;
-
     // Clear a couple of frames
     bdFlip(0, 0, 0, 0, 1);
     bdFlip(0, 0, 0, 0, 1);
 
     // Query Bink pixel format corresponding to the D3D8 surface
-    surfType = BinkDX8SurfaceType(surface);
+    U32 surfType = BinkDX8SurfaceType(surface);
     if ((surfType == 0) || (surfType == 0xFFFFFFFF))
     {
         bkPrintf("*** Error *** Bink does not support the supplied surface type\n");
+		Bink_UnloadDLL();
         return 0;
     }
 
@@ -3364,52 +3355,70 @@ U32 binkPlayVideo(char* video, IDirect3DSurface8* surface)
     BinkSetSoundSystem(BinkOpenDirectSound, 0);
 
     // Open the movie
-    bnk = BinkOpen(video, 0);
+    HBINK bnk = BinkOpen(video, 0);
     if (!bnk)
     {
         bkPrintf("*** Error *** Bink couldn't open the \"%s\" file\n", video);
+		Bink_UnloadDLL();
         return 0;
     }
 
     bkPrintf("Started Playing Video \"%s\"\n", video);
 
     // log whether we could double-size to screen
-    // needs minimal public fields in BINK (Width/Height)
-#ifdef BINK_EXPOSE_MINIMAL_FIELDS
-    if ((U32)videoMode.xScreen < (bnk->Width << 1) ||
-        (U32)videoMode.yScreen < (bnk->Height << 1))
+    if ((U32)videoMode.xScreen < (bnk->Width * 2) ||
+        (U32)videoMode.yScreen <= (bnk->Height * 2) && ((bnk->Height * 2) != videoMode.yScreen))
         bkPrintf("Standard Height And Width for this Bink video\n");
     else
         bkPrintf("Double Height And Width for this Bink video\n");
-#endif
+
+	// Dummy call
+	D3DSURFACE_DESC dsc;
+    surface->GetDesc(&dsc);
 
     // Make sure target is cleared before first copy
     bdSetRenderState(BDRENDERSTATE_CLEAR, 0, 0);
 
-    // Main loop
-    for (;;)
-    {
-        if (done) break;
+	int finished = 0;
+    bool skipped = false;
 
-        // BinkWait returns 0 when it's time to decompress the next frame
-        shouldWait = BinkWait(bnk);
-        if (shouldWait == 0)
+    // THE LOOP!
+    do 
+    {
+        if (finished) break;
+
+        if (!BinkWait(bnk))
         {
-            // Decode + blit one frame; returns 0 when the last frame was just drawn
-            if (!BinkShowFrame(bnk, surfType))
-                done = 1;
+            if (BinkShowFrame(bnk, surfType) == 0)
+            {
+                finished = 1;
+            }
         }
 
-        // Game input pump
-        //biReadDevices();
-        //UpdateMousePointer(&mouse);
-		//MG: todo on skipping
+        biReadDevices();
+        UpdateMousePointer(&mouse);
+    } 
+    while ( (*video == '\0') || 
+            (
+                (controller1.crossDebounceChannel->value == 0) &&
+                (!mouse.active || controller1.mb1DebounceChannel->value == 0) &&
+                (controller1.menuSelectDebounceChannel->value == 0) &&
+                (controller1.triangleDebounceChannel->value == 0) &&
+                (!mouse.active || controller1.mb2DebounceChannel->value == 0) &&
+                (controller1.menuBackDebounceChannel->value == 0)
+            ) 
+          ); // Really sorry for that, "There's nothing we can do..."
+
+    // If we exited the loop and not finished naturally, it means we skipped
+    if (!finished)
+    {
+        bkPrintf("Skipping Video \"%s\"\n", video);
     }
 
     // Final clear (the original set CLEAR with 0xFF at the end)
     bdSetRenderState(BDRENDERSTATE_CLEAR, 0xFF, 0);
-
     bkPrintf("Finished Playing Video \"%s\"\n", video);
+
     BinkClose(bnk);
 	Bink_UnloadDLL();
     return 1;
@@ -3460,6 +3469,8 @@ void doCorporateStuff()
 	}
 
 #else // NH: #if(BPLATFORM != PC)
+	mouse.active = true;
+	mouse.draw = false;
 	{
 		// NH: For all corporate videos...
 		for (vidNo=0;vidNo<numVideos;vidNo++)
@@ -3469,6 +3480,7 @@ void doCorporateStuff()
 				bkPrintf("*** ERROR *** There was an error in displaying the \"%s\" Bink video\n", videos[vidNo]);
 		}
 	}
+	mouse.active = false;
 #endif // NH: #if(BPLATFORM != PC)
 
 	if (mainStringTable && videoMode.flags & BDISPLAYFLAG_NTSC)

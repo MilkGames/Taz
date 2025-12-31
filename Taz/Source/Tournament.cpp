@@ -977,10 +977,10 @@ void DoTournamentWin(FADE *fade)
 	{
 		UpdateTournamentWin();
 		DrawTournamentWin();
-
+#if BPLATFORM != PC // MG: can't find this function in Ghidra, also see checkForMissingControllers2
 		// PP: check for missing controllers; display a message if any are missing
 		checkForMissingControllers2(true);
-
+#endif
 		Flip(0, 0, 0, 128);
 
 		biReadDevices();

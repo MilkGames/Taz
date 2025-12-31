@@ -413,6 +413,48 @@ void bDeleteTexture(TBTexture *handle)
     bkHeapFree(handle);
 }
 
+/* --------------------------------------------------------------------------------
+   Function : bdLockTexture
+   Purpose : Lock a texture for data/palette access
+   Parameters :texture handle, frame number (0..), returned width, returned height, returned pitch, returned format, returned palette ptr
+   Returns : ptr to data or NULL for failure
+   Info : 
+*/
+
+void *bdLockTexture(TBTexture *texture, int frame, int *xDim, int *yDim, int *pitch, EBTextureFormat *format, uchar **palette)
+{
+	D3DLOCKED_RECT locked;
+	HRESULT hr;
+
+	*xDim = (int32)(uint32)texture->xDim;
+	*yDim = (int32)(uint32)texture->yDim;
+	*format = (EBTextureFormat)(uint32)texture->format;
+
+	if (texture->format == BTEXTUREFORMAT_256PALETTE_8888ARGB) {
+		*palette = (uchar *)texture->palHeapBase;
+		*pitch = (int32)(uint32)texture->xDim;
+		return (void *)((uchar *)texture->indexStream + ((int32)texture->totalArea * frame));
+	}
+
+	if (texture->format == BTEXTUREFORMAT_16PALETTE_8888ARGB) {
+		*palette = (uchar *)texture->palHeapBase;
+		*pitch = (int32)((uint32)texture->xDim >> 1);
+		return (void *)((uchar *)texture->indexStream + (((int32)texture->totalArea * frame) / 2));
+	}
+
+	hr = texture->frames[frame]->LockRect(0, &locked, 0, 0);
+	if (hr < 0) {
+		bkPrintf("bLockTexture: Lock failed (%s)\n", (char *)DXGetErrorString8A(hr));
+		return 0;
+	}
+
+	if (pitch != 0) {
+		*pitch = locked.Pitch;
+	}
+
+	return locked.pBits;
+}
+
 /*	--------------------------------------------------------------------------------
 	Function : bdUnlockTexture
 	Purpose : unlock texture
@@ -493,8 +535,17 @@ int bMakeTextureSurface(TBTexture *handle, int xDim, int yDim, int format, int m
 */
 int bdSetTextureFrame(TBTexture *texturePtr, int frameNumber)
 {
-        bkPrintf("*** WARNING *** bdSetTextureFrame was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+  uint uVar1;
+  int iVar2;
+  
+  uVar1 = (uint)texturePtr->noofFrames;
+  if (frameNumber < 0) {
+    frameNumber = uVar1 - -frameNumber % (int)uVar1;
+  }
+  iVar2 = frameNumber % (int)uVar1;
+  texturePtr->curFrame = texturePtr->frames[iVar2];
+  texturePtr->currentFrame = (ushort)iVar2;
+  return iVar2;
 }
 
 /* --------------------------------------------------------------------------------
@@ -566,8 +617,21 @@ LPDIRECT3DSURFACE8 bGetTextureSurface(LPDIRECT3DTEXTURE8 texture, int level)
 */
 void bdGetTextureInfo(TBTexture *texture, int *width, int *height, EBTextureFormat *format, int *noofFrames, int *currentFrame)
 {
-        bkPrintf("*** WARNING *** bdGetTextureInfo was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    if (width != NULL) {
+        *width = (uint)texture->xDim;
+    }
+    if (height != NULL) {
+        *height = (uint)texture->yDim;
+    }
+    if (format != NULL) {
+        *format = (EBTextureFormat)(uint)texture->format;
+    }
+    if (noofFrames != NULL) {
+        *noofFrames = (uint)texture->noofFrames;
+    }
+    if (currentFrame != NULL) {
+        *currentFrame = (uint)texture->currentFrame;
+    }
 }
 
 /*	--------------------------------------------------------------------------------
@@ -755,6 +819,82 @@ TBTexture *bFixupTexture(void *fileData)
 */
 void bdScrollTexture(struct _TBTexture *sourTexture, struct _TBTexture *destTexture, float s, float t)
 {
-        bkPrintf("*** WARNING *** bdScrollTexture was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    void *srcBits;
+    void *dstBits;
+    EBTextureFormat lockFormat;
+    int32 xDim;
+    int32 yDim;
+    int32 srcPitch;
+    int32 dstPitch;
+    int32 yOffset;
+    int32 xOffset;
+    int32 row;
+    uchar *srcRow;
+    uchar *dstRow;
+
+    srcBits = bdLockTexture(sourTexture, 0, &xDim, &yDim, &srcPitch, &lockFormat, (uchar **)0);
+    dstBits = bdLockTexture(destTexture, 0, &xDim, &yDim, &dstPitch, &lockFormat, (uchar **)0);
+
+    yOffset = (int32)((float)yDim * t);
+    xOffset = (int32)((float)xDim * s);
+
+    srcRow = (uchar *)srcBits + yOffset * srcPitch + xOffset * 2;
+    dstRow = (uchar *)dstBits;
+
+    row = yDim;
+    if (row != 0) {
+        do {
+            uint32 dwordCount;
+            uint32 byteCount;
+            uint32 *src32;
+            uint32 *dst32;
+
+            dwordCount = (uint32)dstPitch >> 2;
+            byteCount = (uint32)dstPitch & 3;
+            src32 = (uint32 *)srcRow;
+            dst32 = (uint32 *)dstRow;
+
+            while (dwordCount != 0) {
+                *dst32 = *src32;
+                dst32++;
+                src32++;
+                dwordCount--;
+            }
+
+            {
+                uchar *src8;
+                uchar *dst8;
+
+                src8 = (uchar *)src32;
+                dst8 = (uchar *)dst32;
+
+                while (byteCount != 0) {
+                    *dst8 = *src8;
+                    dst8++;
+                    src8++;
+                    byteCount--;
+                }
+            }
+
+            srcRow += srcPitch;
+            dstRow += dstPitch;
+            row--;
+        } while (row != 0);
+    }
+
+    if ((sourTexture->format != BTEXTUREFORMAT_256PALETTE_8888ARGB) &&
+        (sourTexture->format != BTEXTUREFORMAT_16PALETTE_8888ARGB)) {
+        (*sourTexture->frames)->UnlockRect(0);
+    }
+
+    if (destTexture->format != BTEXTUREFORMAT_256PALETTE_8888ARGB) {
+        if (destTexture->format != BTEXTUREFORMAT_16PALETTE_8888ARGB) {
+            (*destTexture->frames)->UnlockRect(0);
+            return;
+        }
+        MakePalettedTexture16(destTexture);
+        return;
+    }
+
+    MakePalettedTexture256(destTexture);
 }

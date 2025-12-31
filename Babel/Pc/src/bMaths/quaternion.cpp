@@ -14,6 +14,11 @@
 TBQuaternion bIdentityQuaternion = {0.0f, 0.0f, 0.0f, 1.0f};
 
 // ********************************************************************************
+// Locals
+
+
+
+// ********************************************************************************
 // Function Implementations
 
 /* --------------------------------------------------------------------------------
@@ -26,8 +31,40 @@ TBQuaternion bIdentityQuaternion = {0.0f, 0.0f, 0.0f, 1.0f};
 
 void bmQuatToRotation(TBVector dest, const TBQuaternion src)
 {
-        bkPrintf("*** WARNING *** bmQuatToRotation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    float w = src[3];
+
+    if (w > 1.0f)
+        w = 1.0f;
+    else if (w < -1.0f)
+        w = -1.0f;
+
+    const float half = bmACos(w);
+    const float angle = half + half;
+
+    dest[3] = angle;
+
+    const float s = bmSin(angle * 0.5f);
+
+    if (s == 0.0f)
+    {
+        dest[0] = 0.0f;
+        dest[1] = 1.0f;
+        dest[2] = 0.0f;
+        return;
+    }
+
+    dest[0] = src[0] / s;
+    dest[1] = src[1] / s;
+    dest[2] = src[2] / s;
+
+    const float len = bmSqrt(dest[0] * dest[0] + dest[1] * dest[1] + dest[2] * dest[2]);
+    if (len != 0.0f)
+    {
+        const float inv = 1.0f / len;
+        dest[0] *= inv;
+        dest[1] *= inv;
+        dest[2] *= inv;
+    }
 }
 
 
@@ -41,8 +78,15 @@ void bmQuatToRotation(TBVector dest, const TBQuaternion src)
 
 void bmRotationToQuat(TBQuaternion dest, const TBVector src)
 {
-        bkPrintf("*** WARNING *** bmRotationToQuat was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    const float half = src[3] * 0.5f;
+
+    const float s = bmSin(half);
+    const float c = bmCos(half);
+
+    dest[3] = c;
+    dest[0] = src[0] * s;
+    dest[1] = src[1] * s;
+    dest[2] = src[2] * s;
 }
 
 
@@ -73,10 +117,25 @@ void bmQuatToDirection(TBVector dest, const TBQuaternion src, float *tilt)
 
 void bmDirectionToQuat(TBQuaternion quat, const TBVector direction, const float tilt)
 {
-        bkPrintf("*** WARNING *** bmDirectionToQuat was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
-}
+    const float dx = direction[0];
+    const float dy = direction[1];
+    const float dz = direction[2];
+    float yaw = bmATan2(dz, dx);
 
+    yaw += HALFPI;
+    while (yaw > PI) yaw -= TWOPI;
+    yaw = -yaw;
+
+    const float horizLenSq = dx * dx + dz * dz;
+    const float horizLen   = bmSqrt(horizLenSq);
+
+    float pitch = bmATan2(dy, horizLen);
+    while (pitch > PI) pitch -= TWOPI;
+
+    TBMatrix m;
+    bmMatYXZRotation(m, pitch, yaw, tilt);
+    bmMatrixToQuat(quat, m);
+}
 
 /*	--------------------------------------------------------------------------------
 	Function : bmQuatNorm
@@ -162,8 +221,21 @@ void bmEulerToQuatXZY(TBQuaternion quat, float x, float y, float z)
 
 void bmEulerToQuatZXY(TBQuaternion quat, float x, float y, float z)
 {
-        bkPrintf("*** WARNING *** bmEulerToQuatZXY was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    const float halfX = x / 2.0f;
+    const float halfY = y / 2.0f;
+    const float halfZ = z / 2.0f;
+
+    const float sx = bmSin(halfX);
+    const float cx = bmCos(halfX);
+    const float sy = bmSin(halfY);
+    const float cy = bmCos(halfY);
+    const float sz = bmSin(halfZ);
+    const float cz = bmCos(halfZ);
+
+    quat[0] =  cy * cz * sx - cx * sy * sz;   /* x */
+    quat[1] =  cx * cz * sy + cy * sx * sz;   /* y */
+    quat[2] =  cx * cy * sz + cz * sx * sy;   /* z */
+    quat[3] =  cx * cy * cz - sx * sy * sz;   /* w */
 }
 
 
@@ -192,8 +264,10 @@ void bmEulerToQuatZYX(TBQuaternion quat, float x, float y, float z)
 
 void bmQuatToEulerYXZ(TBQuaternion quat, float *x, float *y, float *z)
 {
-        bkPrintf("*** WARNING *** bmQuatToEulerYXZ was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    TBMatrix m;
+
+    bmQuatToMatrix(m, quat);
+    bmMatFactorYXZ(m, x, y, z);
 }
 
 
@@ -282,6 +356,25 @@ void bmQuatToEulerZYX(TBQuaternion quat, float *x, float *y, float *z)
 
 float bmQuatSlerpAtFixedSpeed(TBQuaternion dest, const TBQuaternion src1, const TBQuaternion src2, const float speed)
 {
-        bkPrintf("*** WARNING *** bmQuatSlerpAtFixedSpeed was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    float dot = bmQuatDot(src1, src2);
+
+    if (dot > 1.0f)
+        dot = 1.0f;
+    else if (dot < -1.0f)
+        dot = -1.0f;
+
+    const double a = acos((double)dot);
+    const float angle = (float)fabs(a + a);
+
+    if (angle <= speed)
+    {
+        dest[0] = src2[0];
+        dest[1] = src2[1];
+        dest[2] = src2[2];
+        dest[3] = src2[3];
+        return angle;
+    }
+
+    bmQuatSlerp(dest, src1, src2, speed / angle);
+    return angle;
 }

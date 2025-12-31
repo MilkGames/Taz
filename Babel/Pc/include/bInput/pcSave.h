@@ -65,7 +65,7 @@ void bShutdownGameSave();
    Info : 
 */
 
-//void bGameSavePoll(void *saveDataPtr, ushort *saveNamePrefix, ushort *saveDataName, int saveDataSize, TBGameSaveDirEntry *dirEntries, int noofDirEntries, int *noofFiles, TBGameSaveInfo *saveInfo, int deleteFile);
+void bGameSavePoll(void *saveDataPtr, ushort *saveNamePrefix, ushort *saveDataName, int saveDataSize, TBGameSaveDirEntry *dirEntries, int noofDirEntries, int *noofFiles, TBGameSaveInfo *saveInfo, int deleteFile);
 
 
 /* --------------------------------------------------------------------------------

@@ -129,8 +129,21 @@ TBPackageIndex *bkOpenPackage(char *filename)
 
 TBPackageIndex *bkLoadPackage(TBPackageIndex *parentIndex, char *filename, uchar *dataPtr)
 {
-        bkPrintf("*** WARNING *** bkLoadPackage was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return NULL;
+    char  local_100[256];
+    uchar *fileData;
+    uint32 fixupFlags;
+
+    sprintf(local_100, "%s%s", filename, BPACKAGE_EXT);
+
+    fileData = bkLoadFile(parentIndex, local_100, dataPtr, NULL, NULL, 0);
+    if (fileData == NULL)
+    {
+        bkPrintf("bkLoadPackage: Could not load file '%s'\n", local_100);
+        return NULL;
+    }
+
+    fixupFlags = (dataPtr != NULL) ? 0x100u : 0u;
+    return bFixupPackage(filename, (int)fixupFlags, fileData);
 }
 
 

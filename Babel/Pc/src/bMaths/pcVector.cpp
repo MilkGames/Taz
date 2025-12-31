@@ -47,8 +47,15 @@ float bmVectorNorm(TBVector dest, const TBVector src)
 
 float bmVectorNorm4(TBVector dest, const TBVector src)
 {
-        bkPrintf("*** WARNING *** bmVectorNorm4 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    const float len = bmSqrt(src[0]*src[0] + src[1]*src[1] + src[2]*src[2] + src[3]*src[3]);
+    if (len != 0.0f) {
+        const float inv = 1.0f / len;
+        dest[0] = src[0] * inv;
+        dest[1] = src[1] * inv;
+        dest[2] = src[2] * inv;
+        dest[3] = src[3] * inv;
+    }
+    return len;
 }
 
 /*	--------------------------------------------------------------------------------
@@ -61,8 +68,11 @@ float bmVectorNorm4(TBVector dest, const TBVector src)
 
 float bmVectorDistance(const TBVector src1, const TBVector src2)
 {
-        bkPrintf("*** WARNING *** bmVectorDistance was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    const float dx = src1[0] - src2[0];
+    const float dy = src1[1] - src2[1];
+    const float dz = src1[2] - src2[2];
+
+    return bmSqrt(dx * dx + dy * dy + dz * dz);
 }
 
 
@@ -76,8 +86,11 @@ float bmVectorDistance(const TBVector src1, const TBVector src2)
 
 float bmVectorDistanceApprox(const TBVector src1, const TBVector src2)
 {
-        bkPrintf("*** WARNING *** bmVectorDistanceApprox was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    const float dx = src1[0] - src2[0];
+    const float dy = src1[1] - src2[1];
+    const float dz = src1[2] - src2[2];
+
+    return bmSqrtApprox(dx * dx + dy * dy + dz * dz);
 }
 
 
@@ -106,8 +119,15 @@ float bmVectorDistance4(const TBVector src1, const TBVector src2)
 
 float bmVectorSquaredDistance(const TBVector src1, const TBVector src2)
 {
-        bkPrintf("*** WARNING *** bmVectorSquaredDistance was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    const float dx = src1[0] - src2[0];
+    const float dy = src1[1] - src2[1];
+    const float dz = src1[2] - src2[2];
+
+    const float dz2 = dz * dz;
+    const float dx2 = dx * dx;
+    const float dy2 = dy * dy;
+
+    return (dz2 + dx2) + dy2;
 }
 
 
@@ -135,10 +155,25 @@ float bmVectorSquaredDistance4(const TBVector src1, const TBVector src2)
 
 void bmVectorScaleToLength(TBVector dest, const TBVector src, const float length)
 {
-        bkPrintf("*** WARNING *** bmVectorScaleToLength was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
-}
+    const float x = src[0];
+    const float y = src[1];
+    const float z = src[2];
 
+    const float len = bmSqrt(x * x + y * y + z * z);
+
+    if (len == 0.0f) {
+        dest[0] = 0.0f;
+        dest[1] = 0.0f;
+        dest[2] = 0.0f;
+        dest[3] = 1.0f;
+        return;
+    }
+
+    const float s = length / len;
+    dest[0] = x * s;
+    dest[1] = y * s;
+    dest[2] = z * s;
+}
 
 /*	--------------------------------------------------------------------------------
 	Function : bmVectorScaleToLength4
@@ -227,8 +262,36 @@ void bmVectorCombine4(TBVector dest, const TBVector src1, const float factor1, c
 
 void bmVectorCalcNormal(TBVector dest, const TBVector src1, const TBVector src2, const TBVector src3)
 {
-        bkPrintf("*** WARNING *** bmVectorCalcNormal was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+	const float edge1x = src2[0] - src1[0];
+	const float edge1y = src2[1] - src1[1];
+	const float edge1z = src2[2] - src1[2];
+
+	const float edge2x = src3[0] - src2[0];
+	const float edge2y = src3[1] - src2[1];
+	const float edge2z = src3[2] - src2[2];
+
+	const float normalX = edge1y * edge2z - edge1z * edge2y;
+	const float normalY = edge1z * edge2x - edge1x * edge2z;
+	const float normalZ = edge1x * edge2y - edge1y * edge2x;
+
+	dest[0] = normalX;
+	dest[1] = normalY;
+	dest[2] = normalZ;
+
+	const float length = bmSqrt(normalX * normalX + normalY * normalY + normalZ * normalZ);
+	if (length == 0.0f)
+	{
+		dest[0] = 0.0f;
+		dest[1] = 0.0f;
+		dest[2] = 0.0f;
+		return;
+	}
+
+	const float invLength = 1.0f / length;
+	dest[0] = invLength * dest[0];
+	dest[1] = invLength * dest[1];
+	dest[2] = invLength * dest[2];
+	return;
 }
 
 /*	--------------------------------------------------------------------------------
@@ -279,8 +342,16 @@ void bmVectorRotateY(TBVector dest, const TBVector src, const float rads)
 
 void bmVectorRotateZ(TBVector dest, const TBVector src, const float rads)
 {
-        bkPrintf("*** WARNING *** bmVectorRotateZ was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    float x = src[0];
+    float y = src[1];
+    float z = src[2];
+
+    float c = bmCos(rads);
+    float s = bmSin(rads);
+
+    dest[0] = c * x + s * y;
+    dest[1] = c * y - s * x;
+	dest[2] = z;
 }
 
 
@@ -294,8 +365,24 @@ void bmVectorRotateZ(TBVector dest, const TBVector src, const float rads)
 
 void bmVectorRotateXY(TBVector dest, const TBVector src, const float xrads, const float yrads)
 {
-        bkPrintf("*** WARNING *** bmVectorRotateXY was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    float sx = src[0];
+    float sy = src[1];
+    float sz = src[2];
+
+    float cosX = (float)cos(xrads);
+    float sinX = (float)sin(xrads);
+
+    float tmpY = cosX * sy + sinX * sz;
+    float tmpZ = cosX * sz - sinX * sy;
+
+    float cosY = (float)cos(yrads);
+    float sinY = (float)sin(yrads);
+
+    float tmpX = cosY * sx + sinY * tmpZ;
+
+    dest[0] = tmpX;
+    dest[1] = tmpY;
+    dest[2] = cosY * tmpZ - sinY * sx;
 }
 
 

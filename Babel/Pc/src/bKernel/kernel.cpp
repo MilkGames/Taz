@@ -28,8 +28,24 @@
 
 char *bkGenerateUniqueFilename(char *filename, const char *prefix, const char *ext)
 {
-        bkPrintf("*** WARNING *** bkGenerateUniqueFilename was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return NULL;
+    TBClock clock;
+
+    bkReadClock(&clock);
+
+    sprintf(
+        filename,
+        "%s%05d_%02d%02d_%02d%02d%02d%s",
+        prefix,
+        bFlipCount,
+        (int)clock.day,
+        (int)clock.second,
+        (int)clock.hour,
+        (int)clock.month,
+        (int)clock.year,
+        ext
+    );
+
+    return filename;
 }
 
 

@@ -535,8 +535,15 @@ void *bkHeapAllocEx(uint size, char *file, int line, ushort flags, uint32 group,
 
 void *bkHeapCalloc(uint size, int32 value, char *file, int line, ushort flags)
 {
-        bkPrintf("*** WARNING *** bkHeapCalloc was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return NULL;
+    // group is taken from the current group stack
+    void *ptr = bkHeapAllocEx(size,file,line,flags,bGroupStack[bGroupSP]);
+
+    if (!ptr) return NULL;
+
+    // fill the allocated block with the low 8 bits of 'value'
+    memset(ptr, value, size);
+
+    return ptr;
 }
 
 
@@ -575,12 +582,11 @@ void bkHeapFree(void* user)
 
     // header is exactly 0x20 bytes before user pointer
     THeapBlock* blk = (THeapBlock*)((unsigned char*)user - 0x20);
-
-    // CRT-allocated chunk (orderPrev == NULL) -> free(header) and return
-    if (blk->orderPrev == NULL) {
-        free(blk);
-        return;
-    }
+	
+	if (blk->orderPrev == NULL) {
+		free(blk);
+		return;
+	}
 
     // bookkeeping
     bBytesAllocated -= blk->size;

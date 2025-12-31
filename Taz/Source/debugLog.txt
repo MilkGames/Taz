@@ -1,0 +1,2397 @@
+
+-----------------------------------------
+Babel Execution Log, (c) 2001 Blitz Games
+  Babel 64.03, Wed Mar 20 15:46:19 2002
+-----------------------------------------
+This Babel library was reverse-engineered
+by MilkGames in 2025 using Release version
+of the Taz: Wanted game AND .h files from
+Taz Source Delivery DVD on archive.org.
+Even though both Taz: Wanted and Babel
+are abandonware it doesn't exclude
+the possibility, for example, that other
+companies may have legal rights to these
+products after the liquidation of Blitz Games.
+The use of this software for commercial
+purposes is strictly prohibited.
+
+We don't guarantee that this
+software will work and that it won't
+cause damage to your computer.
+-----------------------------------------
+Real Babel build date:
+Mon Dec 29 01:28:19 2025
+-----------------------------------------
+                Credits:                 
+  Reverse Engineering & Implementation:  
+   MilkGames                             
+
+  Quality Assurance & Testing:           
+   MuxaJlbl4 (MuLLlaH9!)                 
+   CycloneFN                             
+
+  Special Thanks:                        
+   To the original team at Blitz Games:  
+   Thank you for the childhood memories  
+   and the incredible tech you built.    
+   Your code lives on.                   
+-----------------------------------------
+This reverse-engineered library uses AI  
+resources to declare pre-built variables 
+and functions, as well as implement some 
+particularly complex functions for direct
+use/reference. All functions (sooner or  
+later) undergo a manual thorough check   
+against disassembled code; the status of each
+function can be viewed on the Taz: Wanted
+Preservation Community Discord server.   
+-----------------------------------------
+Current time is 04:10:09, 31 Dec 2025
+Debugger is not present
+SHORT_PLATFORMINFO is defined -> hiding computer name and user name
+PlatformInfo: OS Win7 build #7601 (v6.1), physical memory 4095 Mb
+bInitDebug: Loaded ImageHelp.dll
+bInitDbgHelp: symInitialize OK
+bInitTimer: Using *timestamp* timer (~3593.256852 Mhz)
+--------------------------------------------------------------------------------------------------
+TestCPU: Testing for SIMD support, benign 'illegal instruction' first-chance exception possible...
+TestCPU: ID 'AuthenticAMD', family 15, model 1, stepping 0, MMX Detected, SIMD Detected
+--------------------------------------------------------------------------------------------------
+bInitHeap: Allocated 61440 Kb DYNAMIC heap at 0x04570000
+bInitCommandLine: No command line arguments found
+*** WARNING *** bInitSpecificWave was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***
+*** WARNING *** bInitGenericWave was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***
+*** WARNING *** bInitSpecificMusic was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***
+bStartDisplay: Trying (640x480) 32 bpp 32 Z
+bStartDisplay: FORCE_WINDOWED is defined -> running in windowed mode
+bStartDisplay: Found 1 display adapters
+bStartDisplay: Windowed screen mode is (640x480), 60Hz, D3DFMT_X8R8G8B8
+bStartDisplay: Rejecting display device due to clients GUID requirements
+bStartDisplay: Could not find a compatible adapter
+bdOpenDisplay: *** WARNING *** Failed to start display @ (640 x 480), 32 bpp, 32 Z
+bdOpenDisplay: *** FATAL ERROR *** Could not open display in any resolution or depth combination
+bStartDisplay: Trying (640x480) 32 bpp 32 Z
+bStartDisplay: FORCE_WINDOWED is defined -> running in windowed mode
+bStartDisplay: Found 1 display adapters
+bStartDisplay: Windowed screen mode is (640x480), 60Hz, D3DFMT_X8R8G8B8
+bStartDisplay: Trying depth format D3DFMT_D24S8
+bStartDisplay: BlendOp alpha blending IS NOT supported
+bStartDisplay: FrameWrite settings ARE NOT supported
+bStartDisplay: Device supports Vertex Shaders v1.1 with 96 constant registers
+bStartDisplay: Edge anti-aliasing IS NOT supported
+bStartDisplay: There are 8 texture blend stages with 8 simultaneous textures
+bStartDisplay: Max point size is 189.00
+bStartDisplay: No multisampling capability supported
+bStartDisplay: Using adapter 'vm3dum_loader.dll' 'VMware SVGA 3D', product 9, version 17.6 build 5
+bStartDisplay: TnL hardware IS available
+bStartDisplay: Device supports up to 10 active HW light sources
+bStartDisplay: Modulate2X IS supported on this card
+bStartDisplay: Found 1917 Mb of texture memory
+bStartDisplay: Global Non-POW2 textures ARE supported
+bStartDisplay: Conditional Non-POW2 textures ARE NOT supported
+Resuming 0 vertex buffers...
+Resuming 0 index buffers...
+Display established at (640 x 480) in 32 bpp with a 24 bit Z buffer and 8 bit stencil buffer
+EnumDevicesCallback: Found MOUSE input device 'Ìûøü' 'Ìûøü'
+EnumDevicesCallback: Found KEYBOARD input device 'Êëàâèàòóðà' 'Êëàâèàòóðà'
+--- --- Created Display --- ---
+xRes: 640, yRes: 480, bpp: 32, zDepth: 24
+pushRenderTarget: warning - pushing a NULL target (this should happen only once, at the beginning of the game.)
+bInitGuiHAL
+*** WARNING *** bUpdateSound was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***
+Started Playing Video "videos\infoident_taz.bik"
+Standard Height And Width for this Bink video
+*** WARNING *** bRenderGraphs was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***
+Skipping Video "videos\infoident_taz.bik"
+Finished Playing Video "videos\infoident_taz.bik"
+Started Playing Video "videos\warnerident_taz.bik"
+Standard Height And Width for this Bink video
+Skipping Video "videos\warnerident_taz.bik"
+Finished Playing Video "videos\warnerident_taz.bik"
+Started Playing Video "videos\blitzident_taz.bik"
+Standard Height And Width for this Bink video
+Skipping Video "videos\blitzident_taz.bik"
+Finished Playing Video "videos\blitzident_taz.bik"
+Started Playing Video "videos\milkident_taz.bik"
+Standard Height And Width for this Bink video
+Skipping Video "videos\milkident_taz.bik"
+Finished Playing Video "videos\milkident_taz.bik"
+LoadSplashScreen(splashpc\splash04.bmp,splshscr)
+bLoadResource: Could not find 'splashpc\splash04.bmp' in memory
+
+bkOpenPackage: *** WARNING : package 'splshscr.pc' from build 69 used with build 64 (package should be rebuilt) ***
+
+Opened package 'splshscr' OK (247 files)
+Opened package 'text' OK (7 files)
+bFixupPackage: Loaded package 'restex.pc' OK (186 files, Dynamic buffer)
+bLoadPackageResources took 0 ms
+bFixupPackage: Loaded package 'glyphs.pc' OK (36 files, Dynamic buffer)
+bLoadPackageResources took 0 ms
+bFixupPackage: Loaded package 'resobjs.pc' OK (127 files, Dynamic buffer)
+bLoadPackageResources took 0 ms
+Opened package 'streams' OK (118 files)
+*** WARNING *** bsGetMaxSampleChannel was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***
+0 sound channels available for sound effects.
+InitialiseScene(32,)
+*** WARNING *** bsSetGlobalAudioStreamVolume was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***
+*** WARNING *** bsSetGlobalSampleVolume was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***
+TEXTBOX::updateAfterTextChange: LONGEST TEXTBOX STRING SO FAR IS 1 CHARACTERS (256 max)
+LoadActor(capturecage_base.obe,resobjs) - 57127264
+LoadActor(capturecage_top.obe,resobjs) - 57127104
+LoadActor(bubble.obe,resobjs) - 57126944
+LoadActor(drumstickfull.obe,resobjs) - 57126784
+LoadActor(drumstickhalf.obe,resobjs) - 57126624
+LoadActor(drumstickempty.obe,resobjs) - 57126464
+LoadActor(cloudwacky.obe,resobjs) - 57126304
+LoadActor(injuredstar.obe,resobjs) - 57126144
+LoadActor(tazspark.obe,resobjs) - 57125984
+LoadActor(agentwatch.obe,resobjs) - 57125824
+LoadActor(food_dynamite.obe,resobjs) - 57125664
+LoadActor(clubsandwich.obe,resobjs) - 57125504
+LoadActor(dynamite.obe,resobjs) - 57125344
+LoadActor(snowball.obe,resobjs) - 57124992
+LoadActor(rivet.obe,resobjs) - 57124832
+LoadActor(voodoocloud.obe,resobjs) - 57124672
+LoadActor(postcard.obe,resobjs) - 57124064
+LoadActor(explosionyellow.obe,resobjs) - 57123904
+LoadActor(explosionred.obe,resobjs) - 57123744
+LoadActor(phonebox.obe,resobjs) - 57123584
+LoadActor(phonebox_collision.obe,resobjs) - 57109088
+LoadActor(phonehiderbox.obe,resobjs) - 57108544
+LoadActor(burpcan.obe,resobjs) - 57108064
+LoadActor(testtube.obe,resobjs) - 57107712
+LoadActor(bubblegum.obe,resobjs) - 57107488
+LoadActor(hiccupcan.obe,resobjs) - 57107200
+LoadActor(chillipepper.obe,resobjs) - 57107040
+LoadActor(blastradius.obe,resobjs) - 57106880
+LoadActor(gumbubble.obe,resobjs) - 57106720
+LoadActor(arrow.obe,resobjs) - 57106560
+LoadActor(checkpoint.obe,resobjs) - 57106400
+LoadActor(startpoint.obe,resobjs) - 57105984
+LoadActor(target.obe,resobjs) - 57105504
+LoadActor(secbox.obe,resobjs) - 57105280
+LoadActor(spinpad.obe,resobjs) - 57104800
+LoadActor(tazeyeblink.obe,resobjs) - 57104576
+LoadActor(boxing.obe,resobjs) - 57104288
+LoadActor(cheeese.obe,resobjs) - 57104128
+LoadActor(ice clock.obe,resobjs) - 57103968
+LoadActor(speed clock.obe,resobjs) - 57103744
+LoadActor(mplayer box.obe,resobjs) - 57103456
+LoadActor(yosamiteskull.obe,resobjs) - 57103296
+LoadActor(capturecagedebris1.obe,resobjs) - 57103136
+LoadActor(capturecagedebris2.obe,resobjs) - 57102976
+LoadActor(capturecagedebris3.obe,resobjs) - 57102816
+LoadActor(capturecagedebris4.obe,resobjs) - 57102656
+LoadActor(capturecagedebris5.obe,resobjs) - 57102496
+LoadActor(tazcube.obe,resobjs) - 57102336
+bkLoadFile: Could not find 0x022f1b23 in package
+bLoadResource: Could not load 'tazcube.obe' from 'resobjs'
+*** WARNING *** Actor tazcube.obe not found
+*** ERROR *** Could not load actor
+*** WARNING *** bsSet3DDistanceFactor was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***
+TEXTBOX::updateAfterTextChange: LONGEST TEXTBOX STRING SO FAR IS 6 CHARACTERS (256 max)
+TEXTBOX::updateAfterTextChange: LONGEST TEXTBOX STRING SO FAR IS 7 CHARACTERS (256 max)
+TEXTBOX::updateAfterTextChange: LONGEST TEXTBOX STRING SO FAR IS 12 CHARACTERS (256 max)
+TEXTBOX::updateAfterTextChange: LONGEST TEXTBOX STRING SO FAR IS 15 CHARACTERS (256 max)
+TEXTBOX::updateAfterTextChange: LONGEST TEXTBOX STRING SO FAR IS 32 CHARACTERS (256 max)
+TEXTBOX::updateAfterTextChange: LONGEST TEXTBOX STRING SO FAR IS 50 CHARACTERS (256 max)
+TEXTBOX::updateAfterTextChange: LONGEST TEXTBOX STRING SO FAR IS 137 CHARACTERS (256 max)
+bdCreateRenderTarget: Creating (512x256) render target with surface format D3DFMT_A8R8G8B8, depth/stencil format D3DFMT_D24S8...
+VFX_useRenderTarget: created render target successfully (512*256, 21 bit RGB, 0 bit Z)
+TEXTBOX::updateAfterTextChange: LONGEST TEXTBOX STRING SO FAR IS 164 CHARACTERS (256 max)
+TEXTBOX::updateAfterTextChange: LONGEST TEXTBOX STRING SO FAR IS 194 CHARACTERS (256 max)
+Save data is valid.
+*** WARNING *** biGameSaveGetStatus was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***
+InitialiseScene(0,)
+LoadSplashScreen(splashpc\splash04.bmp,splshscr)
+Music (null) already playing.
+Memory free 56757232
+bFixupPackage: Loaded package 'language.pc' OK (24 files, Dynamic buffer)
+bLoadPackageResources took 0 ms
+bFixupPackage: Loaded package 'maingameintro.pc' OK (245 files, Dynamic buffer)
+bLoadPackageResources took 0 ms
+bFixupPackage: Loaded package 'ressounds_uk.pc' OK (107 files, Dynamic buffer)
+bLoadPackageResources took 1 ms
+bFixupPackage: Loaded package 'languagesound.pc' OK (14 files, Dynamic buffer)
+bLoadPackageResources took 1 ms
+Map loaded ok
+LoadActor(objects\cloud.obe,language) - 43940032
+bkLoadFile: Could not find 0xeb27b90f in package
+bLoadResource: Could not load 'objects\cloud.obe' from 'language'
+*** WARNING *** Actor objects\cloud.obe not found
+*** ERROR *** Could not load actor
+Creating map system.
+bkLoadFile: Could not find 0x4ce4f898 in package
+Could not load lom file
+LoadSplashScreen(splashpc\maps\language.bmp,splshscr)
+
+bkOpenPackage: *** WARNING : package 'splshscr.pc' from build 69 used with build 64 (package should be rebuilt) ***
+
+Opened package 'splshscr' OK (247 files)
+bkLoadFile: Could not find 0xbe9b3ee4 in package
+bLoadResource: Could not load 'splashpc\maps\language.bmp' from '..\paks\pc\splshscr'
+bkLoadFile: Could not find 0xc5949133 in package
+bLoadResource: Could not load 'extras\maps\language.bmp' from '..\paks\pc\splshscr'
+*** ERROR *** Package splshscr not loaded
+bFixupPackage: Loaded package 'taz.pc' OK (12 files, Dynamic buffer)
+bLoadPackageResources took 0 ms
+LoadActor(tazdevil.obe,taz) - 42697536
+LoadActor(spindevil.obe,taz) - 42621408
+*** WARNING *** No background specified or textures ,  and  not present
+Music (null) already playing.
+*** WARNING *** bsUpdate was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***
+bFixupPackage: Loaded package 'maingameintrosound_uk.pc' OK (64 files, Dynamic buffer)
+bLoadPackageResources took 1 ms
+*** WARNING *** bsStopAllChannels was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***
+*** WARNING *** bLoadSampleByCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***
+bLoadPackageResources took 1 ms
+LoadActor(sam.obe,maingameintro) - 38932656
+LoadActor(elmer.obe,maingameintro) - 38844208
+LoadActor(daffy.obe,maingameintro) - 38780080
+LoadActor(wile.obe,maingameintro) - 38703360
+LoadActor(taz.obe,maingameintro) - 38617616
+LoadActor(sylvestor.obe,maingameintro) - 38508000
+LoadActor(pigeon.obe,maingameintro) - 38428368
+LoadActor(spindummy.obe,maingameintro) - 38418256
+LoadActor(scenary.obe,maingameintro) - 38416832
+LoadActor(sound.obe,maingameintro) - 38330768
+LoadActor(camera.obe,maingameintro) - 38329344
+
+
+ Sound memory left 0
+
+bkLoadAudioStream start
+*** WARNING *** bLoadAudioStreamByCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***
+bLoadResource: Could not load 'gameintro.wav' from '..\paks\pc\streams'
+bkLoadAudioStream end
+*** WARNING *** Could not read audio gameintro.wav
+*** WARNING *** Could not read audio gameintro.wav
+Music (null) already playing.
+FreeActor(sam.obe)
+FreeActor(elmer.obe)
+FreeActor(daffy.obe)
+FreeActor(wile.obe)
+FreeActor(taz.obe)
+FreeActor(sylvestor.obe)
+FreeActor(pigeon.obe)
+FreeActor(spindummy.obe)
+FreeActor(scenary.obe)
+FreeActor(sound.obe)
+FreeActor(camera.obe)
+FlushRumbleQueue
+FlushRumbleQueue
+*** WARNING *** bsPauseAllChannels was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***
+FreeScene(0,)
+Destroying all security boxes.
+Destroying all spin pads.
+shutting down page ''
+shutting down page ''
+shutting down page ''
+*** ERROR *** Could not free whole file
+Collision Cache Free'd, peak usage 0
+FreeAllFallingObjectsFromList
+FreeAllPrecipitationFromList
+FreeWaterRingList
+FreeCloudBank
+FreeAllEffectsFromList
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllPolyFXFromList
+FreeAllActorInstances( )
+FreeAllActors
+*** ERROR *** Could not free whole file
+
+
+ Sound memory left 0
+
+InitialiseScene(1,)
+LoadSplashScreen(splashpc\splash04.bmp,splshscr)
+bkLoadAudioStream start
+bLoadResource: Could not load 'taz options screen.wav' from '..\paks\pc\streams'
+bkLoadAudioStream end
+*** WARNING *** Could not read audio taz options screen.wav
+*** WARNING *** Could not read audio taz options screen.wav
+bFixupPackage: Loaded package 'frontend.pc' OK (373 files, Dynamic buffer)
+bLoadPackageResources took 0 ms
+bFixupPackage: Loaded package 'ressounds_uk.pc' OK (107 files, Dynamic buffer)
+bLoadPackageResources took 1 ms
+bFixupPackage: Loaded package 'frontendsound.pc' OK (19 files, Dynamic buffer)
+bLoadPackageResources took 1 ms
+LoadActor(extras\tazdevil_frontend.obe,frontend) - 43635440
+LoadActor(extras\tazpath_opt01.obe,frontend) - 43558976
+LoadActor(extras\tazpath_opt02.obe,frontend) - 43558816
+LoadActor(extras\tazpath_sound01.obe,frontend) - 43558656
+LoadActor(extras\tazpath_sound02.obe,frontend) - 43558496
+LoadActor(extras\tazpath_save01.obe,frontend) - 43558336
+LoadActor(extras\tazpath_save02.obe,frontend) - 43558176
+LoadActor(extras\tazpath_savea01.obe,frontend) - 43558016
+LoadActor(extras\tazpath_saveb01.obe,frontend) - 43557856
+LoadActor(extras\tazpath_savec01.obe,frontend) - 43557696
+LoadActor(extras\tazpath_savea02.obe,frontend) - 43557536
+LoadActor(extras\tazpath_savea201.obe,frontend) - 43557376
+LoadActor(extras\tazpath_saveatob.obe,frontend) - 43557216
+LoadActor(extras\tazpath_saveb02.obe,frontend) - 43557056
+LoadActor(extras\tazpath_saveb201.obe,frontend) - 43556896
+LoadActor(extras\tazpath_savebtoa.obe,frontend) - 43556736
+LoadActor(extras\tazpath_savebtoc.obe,frontend) - 43556576
+LoadActor(extras\tazpath_savec02.obe,frontend) - 43556416
+LoadActor(extras\tazpath_savec201.obe,frontend) - 43556256
+LoadActor(extras\tazpath_savectob.obe,frontend) - 43556096
+LoadActor(extras\tazpath_multiplayer01.obe,frontend) - 43555936
+LoadActor(extras\tazpath_multiplayer02.obe,frontend) - 43555776
+LoadActor(extras\tazpath_records01.obe,frontend) - 43555616
+LoadActor(extras\tazpath_records02.obe,frontend) - 43555456
+LoadActor(extras\tazpath_extras01.obe,frontend) - 43555296
+LoadActor(extras\tazpath_extras02.obe,frontend) - 43555136
+LoadActor(extras\alarmclock01.obe,frontend) - 43554976
+LoadActor(extras\television01.obe,frontend) - 43554432
+LoadActor(extras\gramophone.obe,frontend) - 43554208
+LoadActor(extras\tntplunger01.obe,frontend) - 43553792
+LoadActor(extras\pizzaboxes.obe,frontend) - 43553568
+LoadActor(extras\camerastartpos.obe,frontend) - 43553088
+LoadActor(extras\deckchair01.obe,frontend) - 43552800
+Map loaded ok
+LoadActor(objects\cloud.obe,frontend) - 43405280
+bkLoadFile: Could not find 0xeb27b90f in package
+bLoadResource: Could not load 'objects\cloud.obe' from 'frontend'
+*** WARNING *** Actor objects\cloud.obe not found
+*** ERROR *** Could not load actor
+Creating map system.
+--------------------------------------
+LoadSet(world.obe,frontend)
+LoadActor(world_coll.obe,frontend) - 43240928
+bkLoadFile: Could not find 0xa84affb5 in package
+bLoadResource: Could not load 'world_coll.obe' from 'frontend'
+*** WARNING *** Actor world_coll.obe not found
+--------------------------------------
+LoadActor(objects\bank - table.obe,frontend) - 43019264
+   bank - table
+   table01
+   Number of instances:2
+--------------------------------------
+LoadActor(objects\line24_o.obe,frontend) - 43016288
+   line24_o
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\i_loft15.obe,frontend) - 43014736
+   i_loft15
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\i_shafts of light.obe,frontend) - 43013184
+   i_shafts of light
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\sea01.obe,frontend) - 43011616
+   sea01
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\waterfall03.obe,frontend) - 43010064
+   SPECIALTYPE_WATERFALL: waterfall03
+   SPECIALTYPE_WATERFALL: waterfall04
+   Number of instances:2
+--------------------------------------
+LoadActor(objects\waterfall04.obe,frontend) - 43007120
+   SPECIALTYPE_WATERFALL: waterfall03
+   SPECIALTYPE_WATERFALL: waterfall04
+   Number of instances:2
+--------------------------------------
+LoadActor(objects\bank - rocking chair.obe,frontend) - 43004176
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - monkey tree.obe,frontend) - 43004016
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - plant red.obe,frontend) - 43003856
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - plant blue.obe,frontend) - 43003696
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - bush green.obe,frontend) - 43003536
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - bush purple.obe,frontend) - 43003376
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - bush blue.obe,frontend) - 43003216
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - bush red .obe,frontend) - 43003056
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - food pizza.obe,frontend) - 43002896
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\hanging plantsa.obe,frontend) - 43002736
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - television.obe,frontend) - 43002576
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - fencing.obe,frontend) - 43002416
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - palm tree.obe,frontend) - 43002256
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - record player.obe,frontend) - 43002096
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - reeds.obe,frontend) - 43001680
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - food pizza pilea.obe,frontend) - 43001520
+   food pizza pilea
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\bank - food pizza pileb.obe,frontend) - 42999968
+   food pizza pileb
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\bank - fridge body.obe,frontend) - 42998416
+   fridge body
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\bank - dynamite.obe,frontend) - 42995392
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - food exotic drink.obe,frontend) - 42995232
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - plunger box.obe,frontend) - 42995072
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - lily pad big.obe,frontend) - 42994848
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - lily pad medium.obe,frontend) - 42994688
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - lily pad small.obe,frontend) - 42994528
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - deckchair struta.obe,frontend) - 42994368
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\vines.obe,frontend) - 42994016
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - safari tree.obe,frontend) - 42993408
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - dummy box.obe,frontend) - 42993248
+   INVISIBLE:savetoslotthree
+   NOCOLLISION:savetoslotthree
+   INVISIBLE:savetoslot
+   NOCOLLISION:savetoslot
+   INVISIBLE:savetoslottwo
+   NOCOLLISION:savetoslottwo
+   INVISIBLE:savetoslotone
+   NOCOLLISION:savetoslotone
+   INVISIBLE:starttoextrastwo
+   NOCOLLISION:starttoextrastwo
+   INVISIBLE:starttoextrasone
+   NOCOLLISION:starttoextrasone
+   INVISIBLE:starttorecordsone
+   NOCOLLISION:starttorecordsone
+   INVISIBLE:starttorecordstwo
+   NOCOLLISION:starttorecordstwo
+   INVISIBLE:starttoaudiotwo
+   NOCOLLISION:starttoaudiotwo
+   INVISIBLE:starttoaudioone
+   NOCOLLISION:starttoaudioone
+   INVISIBLE:starttomultiplayertwo
+   NOCOLLISION:starttomultiplayertwo
+   INVISIBLE:starttomultiplayerone
+   NOCOLLISION:starttomultiplayerone
+   INVISIBLE:starttosavetwo
+   NOCOLLISION:starttosavetwo
+   INVISIBLE:starttosaveone
+   NOCOLLISION:starttosaveone
+   INVISIBLE:starttooptionstwo
+   NOCOLLISION:starttooptionstwo
+   INVISIBLE:starttooptionsone
+   NOCOLLISION:starttooptionsone
+   INVISIBLE:camera pos - save slot3
+   NOCOLLISION:camera pos - save slot3
+   SPECIALTYPE_FECAMERA: camera pos - extras
+   SPECIALTYPE_FECAMERA: camera pos - records
+   SPECIALTYPE_FECAMERA: camera pos - save slot2
+   SPECIALTYPE_FECAMERA: camera pos - save slot1
+   SPECIALTYPE_FECAMERA: camera pos - sound
+   SPECIALTYPE_FECAMERA: camera pos - options
+   SPECIALTYPE_FECAMERA: camera pos - start
+   SPECIALTYPE_FECAMERA: camera pos - save
+   INVISIBLE:startpoint
+   NOCOLLISION:startpoint
+   SPECIALTYPE_FECAMERA: camera pos - multiplayer
+   SPECIALTYPE_FECAMERA: camera pos - tournament
+   SPECIALTYPE_FECAMERA: camera pos - race
+   SPECIALTYPE_FECAMERA: camera pos - destruction
+   SPECIALTYPE_FECAMERA: camera pos - time
+   INVISIBLE:twoplayertotimeone
+   NOCOLLISION:twoplayertotimeone
+   INVISIBLE:twoplayertotimetwo
+   NOCOLLISION:twoplayertotimetwo
+   INVISIBLE:twoplayertoraceone
+   NOCOLLISION:twoplayertoraceone
+   INVISIBLE:twoplayertoracetwo
+   NOCOLLISION:twoplayertoracetwo
+   INVISIBLE:twoplayertodestructiontwo
+   NOCOLLISION:twoplayertodestructiontwo
+   INVISIBLE:twoplayertodestructionone
+   NOCOLLISION:twoplayertodestructionone
+   INVISIBLE:twoplayertotournamentone
+   NOCOLLISION:twoplayertotournamentone
+   INVISIBLE:twoplayertotournamenttwo
+   NOCOLLISION:twoplayertotournamenttwo
+   SPECIALTYPE_FECAMERA: extras_credits
+   SPECIALTYPE_FECAMERA: extras_gallery
+   SPECIALTYPE_FECAMERA: extras_secrets
+   INVISIBLE:extrastogallerytwo
+   NOCOLLISION:extrastogallerytwo
+   INVISIBLE:extrastogalleryone
+   NOCOLLISION:extrastogalleryone
+   INVISIBLE:extrastocreditsone
+   NOCOLLISION:extrastocreditsone
+   INVISIBLE:extrastocredittwo
+   NOCOLLISION:extrastocredittwo
+   INVISIBLE:extrastosecretsone
+   NOCOLLISION:extrastosecretsone
+   INVISIBLE:extrastosecretstwo
+   NOCOLLISION:extrastosecretstwo
+   Number of instances:48
+--------------------------------------
+LoadActor(objects\bank - camera lookat.obe,frontend) - 42932416
+   INVISIBLE:camera lookat - records
+   NOCOLLISION:camera lookat - records
+   INVISIBLE:camera lookat - extras
+   NOCOLLISION:camera lookat - extras
+   INVISIBLE:camera lookat - options
+   NOCOLLISION:camera lookat - options
+   INVISIBLE:camera lookat - sound
+   NOCOLLISION:camera lookat - sound
+   INVISIBLE:camera lookat - slot3
+   NOCOLLISION:camera lookat - slot3
+   INVISIBLE:camera lookat - slot2
+   NOCOLLISION:camera lookat - slot2
+   INVISIBLE:camera lookat - slot1
+   NOCOLLISION:camera lookat - slot1
+   INVISIBLE:camera lookat - save
+   NOCOLLISION:camera lookat - save
+   INVISIBLE:camera lookat - start
+   NOCOLLISION:camera lookat - start
+   INVISIBLE:camera lookat - tournament
+   NOCOLLISION:camera lookat - tournament
+   INVISIBLE:camera lookat - multiplayer
+   NOCOLLISION:camera lookat - multiplayer
+   INVISIBLE:camera lookat - destruction
+   NOCOLLISION:camera lookat - destruction
+   INVISIBLE:camera lookat - time
+   NOCOLLISION:camera lookat - time
+   INVISIBLE:camera lookat - race
+   NOCOLLISION:camera lookat - race
+   INVISIBLE:camera lookat - credits
+   NOCOLLISION:camera lookat - credits
+   INVISIBLE:camera lookat - secrets
+   NOCOLLISION:camera lookat - secrets
+   INVISIBLE:camera lookat - gallery
+   NOCOLLISION:camera lookat - gallery
+   Number of instances:17
+--------------------------------------
+LoadActor(objects\bank_ river.obe,frontend) - 42910768
+   river01
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\bank_reel_a.obe,frontend) - 42909216
+   reel_a01
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\tasmania plant b01.obe,frontend) - 42907664
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\dynamite01.obe,frontend) - 42907504
+   dynamite02
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\bank_reel_b.obe,frontend) - 42905952
+   reel_b01
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\bank_reel_c.obe,frontend) - 42904400
+   reel_c01
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\machine.obe,frontend) - 42902848
+   machine01
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\butterfly.obe,frontend) - 42896880
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank_butterfly.obe,frontend) - 42896592
+   SPECIALTYPE_FLOCKING: bank_butterfly01
+Actor objects\butterfly.obe already loaded.
+   SPECIALTYPE_FLOCKING: bank_butterfly03
+Actor objects\butterfly.obe already loaded.
+   SPECIALTYPE_FLOCKING: bank_butterfly02
+Actor objects\butterfly.obe already loaded.
+   Number of instances:3
+--------------------------------------
+LoadActor(objects\bank - food banana skin.obe,frontend) - 42869936
+   food banana skin02
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\bank - food banana.obe,frontend) - 42868384
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - alarm clock.obe,frontend) - 42868224
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - plant green.obe,frontend) - 42867680
+   plant green01
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\chest_node.obe,frontend) - 42866128
+   chest_node01
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\drawing_board.obe,frontend) - 42863104
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank cave painting.obe,frontend) - 42862944
+   cave painting
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\bank_tree house.obe,frontend) - 42861392
+   tree house01
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\i_jetty.obe,frontend) - 42851008
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\jetty01.obe,frontend) - 42850848
+   jetty02
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\bank_waterfall.obe,frontend) - 42849296
+   SPECIALTYPE_WATERFALL: waterfall02
+   SPECIALTYPE_WATERFALL: waterfall01
+   Number of instances:2
+--------------------------------------
+LoadActor(objects\bank_waterfall2.obe,frontend) - 42846352
+   SPECIALTYPE_WATERFALL: waterfall03
+   SPECIALTYPE_WATERFALL: waterfall04
+   Number of instances:2
+--------------------------------------
+LoadActor(objects\drawing board.obe,frontend) - 42843408
+   drawing board01
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\bank_gull.obe,frontend) - 42841856
+   SPECIALTYPE_FLOCKING: bank_gull01
+LoadActor(objects\gull.obe,frontend) - 42838992
+   Number of instances:1
+--------------------------------------
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank tasmanian tree.obe,frontend) - 42832240
+   tasmanian tree05
+   tasmanian tree03
+   Number of instances:2
+--------------------------------------
+LoadActor(objects\bank_blu rock.obe,frontend) - 42829296
+   blu rock
+   Number of instances:1
+LoadSplashScreen(splashpc\maps\frontend.bmp,splshscr)
+
+bkOpenPackage: *** WARNING : package 'splshscr.pc' from build 69 used with build 64 (package should be rebuilt) ***
+
+Opened package 'splshscr' OK (247 files)
+bkLoadFile: Could not find 0x37f8df38 in package
+bLoadResource: Could not load 'splashpc\maps\frontend.bmp' from '..\paks\pc\splshscr'
+bkLoadFile: Could not find 0x4cf770ef in package
+bLoadResource: Could not load 'extras\maps\frontend.bmp' from '..\paks\pc\splshscr'
+*** ERROR *** Package splshscr not loaded
+bFixupPackage: Loaded package 'taz.pc' OK (12 files, Dynamic buffer)
+bLoadPackageResources took 0 ms
+LoadActor(tazdevil.obe,taz) - 41749376
+LoadActor(spindevil.obe,taz) - 41673248
+*** WARNING *** Could not find animation static
+Music taz options screen.wav already playing.
+
+
+ Sound memory left 0
+
+*** ERROR *** Could not free whole file
+
+
+ Sound memory left 0
+
+bLoadPackageResources took 1 ms
+
+
+ Sound memory left 0
+
+
+
+ Sound memory left 0
+
+bLoadPackageResources took 1 ms
+LoadLevelSamplesMemory: NO SAMPLES LOADED FROM PACKAGE "frontendsound"!
+
+
+ Sound memory left 0
+
+Music taz options screen.wav already playing.
+
+
+ Sound memory left 0
+
+FlushRumbleQueue
+FlushRumbleQueue
+FreeScene(1,)
+FlushRumbleQueue
+Destroying all security boxes.
+Destroying all spin pads.
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+*** ERROR *** Could not free whole file
+Collision Cache Free'd, peak usage 204328
+FreeAllFallingObjectsFromList
+FreeAllPrecipitationFromList
+FreeWaterRingList
+FreeCloudBank
+FreeAllEffectsFromList
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllPolyFXFromList
+FreeAllActorInstances( )
+FreeAllActors
+*** ERROR *** Could not free whole file
+
+
+ Sound memory left 0
+
+InitialiseScene(17,)
+LoadSplashScreen(splashpc\splash.bmp,splshscr)
+
+bkOpenPackage: *** WARNING : package 'splshscr.pc' from build 69 used with build 64 (package should be rebuilt) ***
+
+Opened package 'splshscr' OK (247 files)
+Memory free 56738400
+Memory free 56737248
+bkLoadAudioStream start
+bLoadResource: Could not load 'wild west hub loop.wav' from '..\paks\pc\streams'
+bkLoadAudioStream end
+*** WARNING *** Could not read audio wild west hub loop.wav
+*** WARNING *** Could not read audio wild west hub loop.wav
+bFixupPackage: Loaded package 'westboss.pc' OK (189 files, Dynamic buffer)
+bLoadPackageResources took 0 ms
+bFixupPackage: Loaded package 'westboss_outro.pc' OK (78 files, Dynamic buffer)
+bLoadPackageResources took 0 ms
+bFixupPackage: Loaded package 'westboss_outrosound_uk.pc' OK (13 files, Dynamic buffer)
+bLoadPackageResources took 1 ms
+bFixupPackage: Loaded package 'westboss_intro.pc' OK (23 files, Dynamic buffer)
+bLoadPackageResources took 0 ms
+bFixupPackage: Loaded package 'westboss_introsound_uk.pc' OK (16 files, Dynamic buffer)
+bLoadPackageResources took 1 ms
+bFixupPackage: Loaded package 'crashhelmet.pc' OK (7 files, Dynamic buffer)
+bLoadPackageResources took 1 ms
+LoadActor(crashhelmet.obe,crashhelmet) - 48127760
+bFixupPackage: Loaded package 'ressounds_uk.pc' OK (107 files, Dynamic buffer)
+bLoadPackageResources took 1 ms
+bFixupPackage: Loaded package 'westbosssound_uk.pc' OK (30 files, Dynamic buffer)
+bLoadPackageResources took 1 ms
+Map loaded ok
+LoadActor(objects\cloud.obe,westboss) - 43432672
+bkLoadFile: Could not find 0xeb27b90f in package
+bLoadResource: Could not load 'objects\cloud.obe' from 'westboss'
+*** WARNING *** Actor objects\cloud.obe not found
+*** ERROR *** Could not load actor
+Creating map system.
+--------------------------------------
+LoadSet(world.obe,westboss)
+LoadActor(world_coll.obe,westboss) - 43281568
+bkLoadFile: Could not find 0xa84affb5 in package
+bLoadResource: Could not load 'world_coll.obe' from 'westboss'
+*** WARNING *** Actor world_coll.obe not found
+--------------------------------------
+LoadActor(objects\taz_blocker.obe,westboss) - 42904224
+   INVISIBLE:taz_blocker
+   taz_blocker
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\wall05.obe,westboss) - 42902640
+   wall05
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\megabomb01.obe,westboss) - 42901088
+   megabomb01
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\medcardboxb_i.obe,westboss) - 42899536
+   medcardboxb_i07
+   medcardboxb_i04
+   Number of instances:2
+--------------------------------------
+LoadActor(objects\longthinbox_i.obe,westboss) - 42896576
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank_torpedo_i.obe,westboss) - 42896416
+   bank_torpedo_i16
+   bank_torpedo_i04
+   bank_torpedo_i06
+   bank_torpedo_i07
+   bank_torpedo_i01
+   bank_torpedo_i05
+   bank_torpedo_i02
+   bank_torpedo_i03
+   bank_torpedo_i08
+   bank_torpedo_i09
+   bank_torpedo_i10
+   bank_torpedo_i12
+   bank_torpedo_i11
+   bank_torpedo_i14
+   bank_torpedo_i19
+   bank_torpedo_i18
+   bank_torpedo_i13
+   bank_torpedo_i15
+   bank_torpedo_i28
+   bank_torpedo_i17
+   bank_torpedo_i21
+   bank_torpedo_i20
+   bank_torpedo_i22
+   bank_torpedo_i23
+   bank_torpedo_i24
+   bank_torpedo_i26
+   bank_torpedo_i25
+   bank_torpedo_i27
+   bank_torpedo_i29
+   bank_torpedo_i30
+   Number of instances:30
+--------------------------------------
+LoadActor(objects\fatrocket_i.obe,westboss) - 42854496
+   fatrocket_i02
+   fatrocket_i01
+   fatrocket_i04
+   fatrocket_i03
+   Number of instances:4
+--------------------------------------
+LoadActor(objects\starting.obe,westboss) - 42848768
+   INVISIBLE:starting_inst
+   NOCOLLISION:starting_inst
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\sam_bank.obe,westboss) - 42847344
+   INVISIBLE:sam_inst
+   NOCOLLISION:sam_inst
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\collisionboxboundary.obe,westboss) - 42845920
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\destructible_block_box.obe,westboss) - 42845760
+   INVISIBLE:d_block_box_inst
+   d_block_box_inst
+   INVISIBLE:d_block_box_inst01
+   d_block_box_inst01
+   INVISIBLE:d_block_box_inst02
+   d_block_box_inst02
+   INVISIBLE:d_block_box_inst04
+   d_block_box_inst04
+   INVISIBLE:d_block_box_inst05
+   d_block_box_inst05
+   INVISIBLE:d_block_box_inst08
+   d_block_box_inst08
+   INVISIBLE:d_block_box_inst09
+   d_block_box_inst09
+   INVISIBLE:d_block_box_inst10
+   d_block_box_inst10
+   INVISIBLE:d_block_box_inst11
+   d_block_box_inst11
+   INVISIBLE:d_block_box_inst12
+   d_block_box_inst12
+   INVISIBLE:d_block_box_inst13
+   d_block_box_inst13
+   INVISIBLE:d_block_box_inst14
+   d_block_box_inst14
+   INVISIBLE:d_block_box_inst15
+   d_block_box_inst15
+   INVISIBLE:d_block_box_inst16
+   d_block_box_inst16
+   INVISIBLE:d_block_box_inst17
+   d_block_box_inst17
+   INVISIBLE:d_block_box_inst18
+   d_block_box_inst18
+   INVISIBLE:d_block_box_inst19
+   d_block_box_inst19
+   INVISIBLE:d_block_box_inst20
+   d_block_box_inst20
+   INVISIBLE:d_block_box_inst22
+   d_block_box_inst22
+   INVISIBLE:d_block_box_inst23
+   d_block_box_inst23
+   INVISIBLE:d_block_box_inst24
+   d_block_box_inst24
+   INVISIBLE:d_block_box_inst25
+   d_block_box_inst25
+   Number of instances:22
+--------------------------------------
+LoadActor(objects\fishtank_i.obe,westboss) - 42814976
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\watertank_i.obe,westboss) - 42814624
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\imp_huugebox.obe,westboss) - 42813632
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank_bigbox_i.obe,westboss) - 42813472
+   bank_bigbox_i04
+   bank_bigbox_i02
+   bank_bigbox_i12
+   bank_bigbox_i08
+   Number of instances:4
+--------------------------------------
+LoadActor(objects\tnt-crate_i.obe,westboss) - 42807744
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\centrerockets01.obe,westboss) - 42807584
+   centrerockets
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\i_bank_tntcrate_bank.obe,westboss) - 42806032
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\normaltntcrate_2.obe,westboss) - 42805872
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\supertntcrate_null.obe,westboss) - 42803664
+   SPECIALTYPE_DESTRUCTIBLE:supertntcrate04
+   SPECIALTYPE_DESTRUCTIBLE:supertntcrate03
+   SPECIALTYPE_DESTRUCTIBLE:supertntcrate02
+   SPECIALTYPE_DESTRUCTIBLE:supertntcrate01
+   Number of instances:4
+--------------------------------------
+LoadActor(objects\supertntcrate.obe,westboss) - 42795952
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\xbox_bank.obe,westboss) - 42795792
+   SPECIALTYPE_DESTRUCTIBLE:xbox_inst01
+   SPECIALTYPE_DESTRUCTIBLE:xbox_inst02
+   SPECIALTYPE_DESTRUCTIBLE:xbox_inst03
+   SPECIALTYPE_DESTRUCTIBLE:xbox_inst04
+   SPECIALTYPE_DESTRUCTIBLE:xbox_inst05
+   SPECIALTYPE_DESTRUCTIBLE:xbox_inst06
+   SPECIALTYPE_DESTRUCTIBLE:xbox_inst07
+   SPECIALTYPE_DESTRUCTIBLE:xbox_inst08
+   SPECIALTYPE_DESTRUCTIBLE:xbox_inst09
+   SPECIALTYPE_DESTRUCTIBLE:xbox_inst10
+   SPECIALTYPE_DESTRUCTIBLE:xbox_inst11
+   SPECIALTYPE_DESTRUCTIBLE:xbox_inst12
+   SPECIALTYPE_DESTRUCTIBLE:xbox_inst13
+   SPECIALTYPE_DESTRUCTIBLE:xbox_inst14
+   SPECIALTYPE_DESTRUCTIBLE:xbox_inst15
+   SPECIALTYPE_DESTRUCTIBLE:xbox_inst16
+   SPECIALTYPE_DESTRUCTIBLE:xbox_inst17
+   SPECIALTYPE_DESTRUCTIBLE:xbox_inst18
+   SPECIALTYPE_DESTRUCTIBLE:xbox_inst19
+   Number of instances:19
+--------------------------------------
+LoadActor(objects\centrefatones_bank.obe,westboss) - 42761424
+   centrefatones
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\centredynamite_bank.obe,westboss) - 42759872
+   centredynamite
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\box01.obe,westboss) - 42758320
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\box09.obe,westboss) - 42758160
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\light.obe,westboss) - 42758000
+   NOCOLLISION:light04
+   NOCOLLISION:light05
+   NOCOLLISION:light06
+   NOCOLLISION:light02
+   NOCOLLISION:light01
+   NOCOLLISION:light03
+   Number of instances:6
+--------------------------------------
+LoadActor(objects\the sky.obe,westboss) - 42750256
+   sky01
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\supertntcrate_null01.obe,westboss) - 42748704
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank-checkpoint.obe,westboss) - 42746368
+   SPECIALTYPE_CHECKPOINT:checkpoint01
+   Number of instances:1
+LoadSplashScreen(splashpc\maps\westboss.bmp,splshscr)
+
+bkOpenPackage: *** WARNING : package 'splshscr.pc' from build 69 used with build 64 (package should be rebuilt) ***
+
+Opened package 'splshscr' OK (247 files)
+bkLoadFile: Could not find 0xb05471d9 in package
+bLoadResource: Could not load 'splashpc\maps\westboss.bmp' from '..\paks\pc\splshscr'
+bkLoadFile: Could not find 0xcb5bde0e in package
+bLoadResource: Could not load 'extras\maps\westboss.bmp' from '..\paks\pc\splshscr'
+*** ERROR *** Package splshscr not loaded
+bFixupPackage: Loaded package 'taz.pc' OK (12 files, Dynamic buffer)
+bLoadPackageResources took 0 ms
+LoadActor(tazdevil.obe,taz) - 41650624
+LoadActor(spindevil.obe,taz) - 41574496
+LoadSingleFile: Loaded file 'continue.pc' of 977824 bytes OK
+bFixupPackage: Loaded package 'continue' OK (38 files, Dynamic buffer)
+bLoadPackageResources took 0 ms
+LoadActor(sharktank.obe,continue) - 40326384
+LoadActor(continuedevil.obe,continue) - 40326160
+LoadActor(shark01.obe,continue) - 40249648
+LoadActor(shark02.obe,continue) - 40228784
+LoadActor(shark03.obe,continue) - 40207392
+LoadActor(shedevilbowtie.obe,continue) - 40186624
+LoadSplashScreen(splashpc\boss.bmp,splshscr)
+
+bkOpenPackage: *** WARNING : package 'splshscr.pc' from build 69 used with build 64 (package should be rebuilt) ***
+
+Opened package 'splshscr' OK (247 files)
+bkLoadAudioStream start
+bLoadResource: Could not load 'bomberman normal loop.wav' from '..\paks\pc\streams'
+bkLoadAudioStream end
+*** WARNING *** Could not read audio bomberman normal loop.wav
+*** WARNING *** Could not read audio bomberman normal loop.wav
+bLoadPackageResources took 1 ms
+*** WARNING *** could not find instance yosemite.obe to hide in cutscene.
+LoadActor(cs13_yosamitesam.obe,westboss_intro) - 40158160
+LoadActor(cs13_tnt.obe,westboss_intro) - 40069424
+LoadActor(cs13_tazdevil.obe,westboss_intro) - 40065792
+LoadActor(sound.obe,westboss_intro) - 39953392
+bkLoadFile: Could not find 0xd5f1b780 in package
+bLoadResource: Could not load 'sound.obe' from 'westboss_intro'
+*** WARNING *** Actor sound.obe not found
+*** ERROR *** Could not load actor
+*** ERROR *** Could not create instance
+*** WARNING *** could not create instance sound.obe in cutscene.
+LoadActor(camera.obe,westboss_intro) - 39953392
+bkLoadAudioStream start
+bLoadResource: Could not load 'bomberman intro cs.wav' from '..\paks\pc\streams'
+bkLoadAudioStream end
+*** WARNING *** Could not read audio bomberman intro cs.wav
+*** WARNING *** Could not read audio bomberman intro cs.wav
+FreeActor(cs13_yosamitesam.obe)
+FreeActor(cs13_tnt.obe)
+FreeActor(cs13_tazdevil.obe)
+FreeActor(camera.obe)
+PAPERBOOK::gotoPageNumber: cur 0, new 6
+*** WARNING *** biResetChannel was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***
+biBindInput: ERROR - Channel 'f10' is full
+biBindInput: ERROR - Channel 'menuselect' is full
+biBindInput: ERROR - Channel 'menuselect' is full
+biBindInput: ERROR - Channel 'menuselect' is full
+biBindInput: ERROR - Channel 'menuselectDB' is full
+biBindInput: ERROR - Channel 'menuselectDB' is full
+biBindInput: ERROR - Channel 'menuselectDB' is full
+biBindInput: ERROR - Channel 'f10' is full
+biBindInput: ERROR - Channel 'f10' is full
+biBindInput: ERROR - Channel 'f10' is full
+biBindInput: ERROR - Channel 'menuselect' is full
+biBindInput: ERROR - Channel 'menuselect' is full
+biBindInput: ERROR - Channel 'menuselect' is full
+biBindInput: ERROR - Channel 'menuselectDB' is full
+biBindInput: ERROR - Channel 'menuselectDB' is full
+biBindInput: ERROR - Channel 'menuselectDB' is full
+biBindInput: ERROR - Channel 'f10' is full
+biBindInput: ERROR - Channel 'f10' is full
+LoadSplashScreen(splashpc\bonus.bmp,splshscr)
+
+bkOpenPackage: *** WARNING : package 'splshscr.pc' from build 69 used with build 64 (package should be rebuilt) ***
+
+Opened package 'splshscr' OK (247 files)
+bkLoadAudioStream start
+bLoadResource: Could not load 'bomberman normal loop.wav' from '..\paks\pc\streams'
+bkLoadAudioStream end
+*** WARNING *** Could not read audio bomberman normal loop.wav
+*** WARNING *** Could not read audio bomberman normal loop.wav
+*** ERROR *** Could not free whole file
+
+
+ Sound memory left 0
+
+bLoadPackageResources took 1 ms
+
+
+ Sound memory left 0
+
+
+
+ Sound memory left 0
+
+bLoadPackageResources took 1 ms
+LoadLevelSamplesMemory: NO SAMPLES LOADED FROM PACKAGE "westbosssound_uk"!
+
+
+ Sound memory left 0
+
+Music bomberman normal loop.wav already playing.
+
+
+ Sound memory left 0
+
+LoadActor(extras\bank_arrow.obe,westboss) - 42014112
+WBTAZ::init: this->markerInstance: 0471c590
+LoadSingleFile: Loaded file 'yosemite.pc' of 226128 bytes OK
+bFixupPackage: Loaded package 'yosemite' OK (7 files, Dynamic buffer)
+bLoadPackageResources took 1 ms
+LoadActor(yosemite.obe,yosemite) - 41785312
+LoadActor(objects\throwntnt.obe,westboss) - 41681344
+WESTBOSSGAME::init: found 0 deputies in grid - should have found 4!!!
+WBTAZ::getHitByExplosion: ***** LOSING HEALTH ******
+*** WARNING *** bdDrawStreakClipped was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***
+WBTAZ::getHitByExplosion: ***** LOSING HEALTH ******
+WBTAZ::getHitByExplosion: ***** LOSING HEALTH ******
+WBTAZ::getHitByExplosion: ***** LOSING HEALTH ******
+FlushRumbleQueue
+FlushRumbleQueue
+FreeScene(17,)
+FlushRumbleQueue
+Destroying all security boxes.
+Destroying all spin pads.
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+WESTBOSSGAME::shutdown() complete
+Collision Cache Free'd, peak usage 596972
+FreeAllFallingObjectsFromList
+FreeAllPrecipitationFromList
+FreeWaterRingList
+FreeCloudBank
+FreeAllEffectsFromList
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllPolyFXFromList
+FreeAllActorInstances( )
+FreeAllActors
+*** ERROR *** Could not free whole file
+
+
+ Sound memory left 0
+
+InitialiseScene(1,)
+LoadSplashScreen(splashpc\splash02.bmp,splshscr)
+
+bkOpenPackage: *** WARNING : package 'splshscr.pc' from build 69 used with build 64 (package should be rebuilt) ***
+
+Opened package 'splshscr' OK (247 files)
+bkLoadAudioStream start
+bLoadResource: Could not load 'taz options screen.wav' from '..\paks\pc\streams'
+bkLoadAudioStream end
+*** WARNING *** Could not read audio taz options screen.wav
+*** WARNING *** Could not read audio taz options screen.wav
+bFixupPackage: Loaded package 'frontend.pc' OK (373 files, Dynamic buffer)
+bLoadPackageResources took 0 ms
+bFixupPackage: Loaded package 'ressounds_uk.pc' OK (107 files, Dynamic buffer)
+bLoadPackageResources took 1 ms
+bFixupPackage: Loaded package 'frontendsound.pc' OK (19 files, Dynamic buffer)
+bLoadPackageResources took 1 ms
+LoadActor(extras\tazdevil_frontend.obe,frontend) - 43633232
+LoadActor(extras\tazpath_opt01.obe,frontend) - 43556768
+LoadActor(extras\tazpath_opt02.obe,frontend) - 43556608
+LoadActor(extras\tazpath_sound01.obe,frontend) - 43556448
+LoadActor(extras\tazpath_sound02.obe,frontend) - 43556288
+LoadActor(extras\tazpath_save01.obe,frontend) - 43556128
+LoadActor(extras\tazpath_save02.obe,frontend) - 43555968
+LoadActor(extras\tazpath_savea01.obe,frontend) - 43555808
+LoadActor(extras\tazpath_saveb01.obe,frontend) - 43555648
+LoadActor(extras\tazpath_savec01.obe,frontend) - 43555488
+LoadActor(extras\tazpath_savea02.obe,frontend) - 43555328
+LoadActor(extras\tazpath_savea201.obe,frontend) - 43555168
+LoadActor(extras\tazpath_saveatob.obe,frontend) - 43555008
+LoadActor(extras\tazpath_saveb02.obe,frontend) - 43554848
+LoadActor(extras\tazpath_saveb201.obe,frontend) - 43554688
+LoadActor(extras\tazpath_savebtoa.obe,frontend) - 43554528
+LoadActor(extras\tazpath_savebtoc.obe,frontend) - 43554368
+LoadActor(extras\tazpath_savec02.obe,frontend) - 43554208
+LoadActor(extras\tazpath_savec201.obe,frontend) - 43554048
+LoadActor(extras\tazpath_savectob.obe,frontend) - 43553888
+LoadActor(extras\tazpath_multiplayer01.obe,frontend) - 43553728
+LoadActor(extras\tazpath_multiplayer02.obe,frontend) - 43553568
+LoadActor(extras\tazpath_records01.obe,frontend) - 43553408
+LoadActor(extras\tazpath_records02.obe,frontend) - 43553248
+LoadActor(extras\tazpath_extras01.obe,frontend) - 43553088
+LoadActor(extras\tazpath_extras02.obe,frontend) - 43552928
+LoadActor(extras\alarmclock01.obe,frontend) - 43552768
+LoadActor(extras\television01.obe,frontend) - 43552224
+LoadActor(extras\gramophone.obe,frontend) - 43552000
+LoadActor(extras\tntplunger01.obe,frontend) - 43551584
+LoadActor(extras\pizzaboxes.obe,frontend) - 43551360
+LoadActor(extras\camerastartpos.obe,frontend) - 43550880
+LoadActor(extras\deckchair01.obe,frontend) - 43550592
+Map loaded ok
+LoadActor(objects\cloud.obe,frontend) - 43403072
+bkLoadFile: Could not find 0xeb27b90f in package
+bLoadResource: Could not load 'objects\cloud.obe' from 'frontend'
+*** WARNING *** Actor objects\cloud.obe not found
+*** ERROR *** Could not load actor
+Creating map system.
+--------------------------------------
+LoadSet(world.obe,frontend)
+LoadActor(world_coll.obe,frontend) - 43238688
+bkLoadFile: Could not find 0xa84affb5 in package
+bLoadResource: Could not load 'world_coll.obe' from 'frontend'
+*** WARNING *** Actor world_coll.obe not found
+--------------------------------------
+LoadActor(objects\bank - table.obe,frontend) - 43017024
+   bank - table
+   table01
+   Number of instances:2
+--------------------------------------
+LoadActor(objects\line24_o.obe,frontend) - 43014080
+   line24_o
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\i_loft15.obe,frontend) - 43012512
+   i_loft15
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\i_shafts of light.obe,frontend) - 43010960
+   i_shafts of light
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\sea01.obe,frontend) - 43009408
+   sea01
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\waterfall03.obe,frontend) - 43007840
+   SPECIALTYPE_WATERFALL: waterfall03
+   SPECIALTYPE_WATERFALL: waterfall04
+   Number of instances:2
+--------------------------------------
+LoadActor(objects\waterfall04.obe,frontend) - 43004896
+   SPECIALTYPE_WATERFALL: waterfall03
+   SPECIALTYPE_WATERFALL: waterfall04
+   Number of instances:2
+--------------------------------------
+LoadActor(objects\bank - rocking chair.obe,frontend) - 43001952
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - monkey tree.obe,frontend) - 43001792
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - plant red.obe,frontend) - 43001632
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - plant blue.obe,frontend) - 43001472
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - bush green.obe,frontend) - 43001312
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - bush purple.obe,frontend) - 43001152
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - bush blue.obe,frontend) - 43000992
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - bush red .obe,frontend) - 43000832
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - food pizza.obe,frontend) - 43000672
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\hanging plantsa.obe,frontend) - 43000512
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - television.obe,frontend) - 43000352
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - fencing.obe,frontend) - 43000192
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - palm tree.obe,frontend) - 43000032
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - record player.obe,frontend) - 42999872
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - reeds.obe,frontend) - 42999456
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - food pizza pilea.obe,frontend) - 42999296
+   food pizza pilea
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\bank - food pizza pileb.obe,frontend) - 42997744
+   food pizza pileb
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\bank - fridge body.obe,frontend) - 42996192
+   fridge body
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\bank - dynamite.obe,frontend) - 42993168
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - food exotic drink.obe,frontend) - 42993008
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - plunger box.obe,frontend) - 42992848
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - lily pad big.obe,frontend) - 42992624
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - lily pad medium.obe,frontend) - 42992464
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - lily pad small.obe,frontend) - 42992304
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - deckchair struta.obe,frontend) - 42992144
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\vines.obe,frontend) - 42991792
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - safari tree.obe,frontend) - 42991184
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - dummy box.obe,frontend) - 42991024
+   INVISIBLE:savetoslotthree
+   NOCOLLISION:savetoslotthree
+   INVISIBLE:savetoslot
+   NOCOLLISION:savetoslot
+   INVISIBLE:savetoslottwo
+   NOCOLLISION:savetoslottwo
+   INVISIBLE:savetoslotone
+   NOCOLLISION:savetoslotone
+   INVISIBLE:starttoextrastwo
+   NOCOLLISION:starttoextrastwo
+   INVISIBLE:starttoextrasone
+   NOCOLLISION:starttoextrasone
+   INVISIBLE:starttorecordsone
+   NOCOLLISION:starttorecordsone
+   INVISIBLE:starttorecordstwo
+   NOCOLLISION:starttorecordstwo
+   INVISIBLE:starttoaudiotwo
+   NOCOLLISION:starttoaudiotwo
+   INVISIBLE:starttoaudioone
+   NOCOLLISION:starttoaudioone
+   INVISIBLE:starttomultiplayertwo
+   NOCOLLISION:starttomultiplayertwo
+   INVISIBLE:starttomultiplayerone
+   NOCOLLISION:starttomultiplayerone
+   INVISIBLE:starttosavetwo
+   NOCOLLISION:starttosavetwo
+   INVISIBLE:starttosaveone
+   NOCOLLISION:starttosaveone
+   INVISIBLE:starttooptionstwo
+   NOCOLLISION:starttooptionstwo
+   INVISIBLE:starttooptionsone
+   NOCOLLISION:starttooptionsone
+   INVISIBLE:camera pos - save slot3
+   NOCOLLISION:camera pos - save slot3
+   SPECIALTYPE_FECAMERA: camera pos - extras
+   SPECIALTYPE_FECAMERA: camera pos - records
+   SPECIALTYPE_FECAMERA: camera pos - save slot2
+   SPECIALTYPE_FECAMERA: camera pos - save slot1
+   SPECIALTYPE_FECAMERA: camera pos - sound
+   SPECIALTYPE_FECAMERA: camera pos - options
+   SPECIALTYPE_FECAMERA: camera pos - start
+   SPECIALTYPE_FECAMERA: camera pos - save
+   INVISIBLE:startpoint
+   NOCOLLISION:startpoint
+   SPECIALTYPE_FECAMERA: camera pos - multiplayer
+   SPECIALTYPE_FECAMERA: camera pos - tournament
+   SPECIALTYPE_FECAMERA: camera pos - race
+   SPECIALTYPE_FECAMERA: camera pos - destruction
+   SPECIALTYPE_FECAMERA: camera pos - time
+   INVISIBLE:twoplayertotimeone
+   NOCOLLISION:twoplayertotimeone
+   INVISIBLE:twoplayertotimetwo
+   NOCOLLISION:twoplayertotimetwo
+   INVISIBLE:twoplayertoraceone
+   NOCOLLISION:twoplayertoraceone
+   INVISIBLE:twoplayertoracetwo
+   NOCOLLISION:twoplayertoracetwo
+   INVISIBLE:twoplayertodestructiontwo
+   NOCOLLISION:twoplayertodestructiontwo
+   INVISIBLE:twoplayertodestructionone
+   NOCOLLISION:twoplayertodestructionone
+   INVISIBLE:twoplayertotournamentone
+   NOCOLLISION:twoplayertotournamentone
+   INVISIBLE:twoplayertotournamenttwo
+   NOCOLLISION:twoplayertotournamenttwo
+   SPECIALTYPE_FECAMERA: extras_credits
+   SPECIALTYPE_FECAMERA: extras_gallery
+   SPECIALTYPE_FECAMERA: extras_secrets
+   INVISIBLE:extrastogallerytwo
+   NOCOLLISION:extrastogallerytwo
+   INVISIBLE:extrastogalleryone
+   NOCOLLISION:extrastogalleryone
+   INVISIBLE:extrastocreditsone
+   NOCOLLISION:extrastocreditsone
+   INVISIBLE:extrastocredittwo
+   NOCOLLISION:extrastocredittwo
+   INVISIBLE:extrastosecretsone
+   NOCOLLISION:extrastosecretsone
+   INVISIBLE:extrastosecretstwo
+   NOCOLLISION:extrastosecretstwo
+   Number of instances:48
+--------------------------------------
+LoadActor(objects\bank - camera lookat.obe,frontend) - 42930192
+   INVISIBLE:camera lookat - records
+   NOCOLLISION:camera lookat - records
+   INVISIBLE:camera lookat - extras
+   NOCOLLISION:camera lookat - extras
+   INVISIBLE:camera lookat - options
+   NOCOLLISION:camera lookat - options
+   INVISIBLE:camera lookat - sound
+   NOCOLLISION:camera lookat - sound
+   INVISIBLE:camera lookat - slot3
+   NOCOLLISION:camera lookat - slot3
+   INVISIBLE:camera lookat - slot2
+   NOCOLLISION:camera lookat - slot2
+   INVISIBLE:camera lookat - slot1
+   NOCOLLISION:camera lookat - slot1
+   INVISIBLE:camera lookat - save
+   NOCOLLISION:camera lookat - save
+   INVISIBLE:camera lookat - start
+   NOCOLLISION:camera lookat - start
+   INVISIBLE:camera lookat - tournament
+   NOCOLLISION:camera lookat - tournament
+   INVISIBLE:camera lookat - multiplayer
+   NOCOLLISION:camera lookat - multiplayer
+   INVISIBLE:camera lookat - destruction
+   NOCOLLISION:camera lookat - destruction
+   INVISIBLE:camera lookat - time
+   NOCOLLISION:camera lookat - time
+   INVISIBLE:camera lookat - race
+   NOCOLLISION:camera lookat - race
+   INVISIBLE:camera lookat - credits
+   NOCOLLISION:camera lookat - credits
+   INVISIBLE:camera lookat - secrets
+   NOCOLLISION:camera lookat - secrets
+   INVISIBLE:camera lookat - gallery
+   NOCOLLISION:camera lookat - gallery
+   Number of instances:17
+--------------------------------------
+LoadActor(objects\bank_ river.obe,frontend) - 42908544
+   river01
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\bank_reel_a.obe,frontend) - 42906992
+   reel_a01
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\tasmania plant b01.obe,frontend) - 42905440
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\dynamite01.obe,frontend) - 42905280
+   dynamite02
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\bank_reel_b.obe,frontend) - 42903728
+   reel_b01
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\bank_reel_c.obe,frontend) - 42902176
+   reel_c01
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\machine.obe,frontend) - 42900624
+   machine01
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\butterfly.obe,frontend) - 42894656
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank_butterfly.obe,frontend) - 42894368
+   SPECIALTYPE_FLOCKING: bank_butterfly01
+Actor objects\butterfly.obe already loaded.
+   SPECIALTYPE_FLOCKING: bank_butterfly03
+Actor objects\butterfly.obe already loaded.
+   SPECIALTYPE_FLOCKING: bank_butterfly02
+Actor objects\butterfly.obe already loaded.
+   Number of instances:3
+--------------------------------------
+LoadActor(objects\bank - food banana skin.obe,frontend) - 42867712
+   food banana skin02
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\bank - food banana.obe,frontend) - 42866160
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - alarm clock.obe,frontend) - 42866000
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank - plant green.obe,frontend) - 42865456
+   plant green01
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\chest_node.obe,frontend) - 42863904
+   chest_node01
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\drawing_board.obe,frontend) - 42860880
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank cave painting.obe,frontend) - 42860720
+   cave painting
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\bank_tree house.obe,frontend) - 42859168
+   tree house01
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\i_jetty.obe,frontend) - 42848784
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\jetty01.obe,frontend) - 42848624
+   jetty02
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\bank_waterfall.obe,frontend) - 42847072
+   SPECIALTYPE_WATERFALL: waterfall02
+   SPECIALTYPE_WATERFALL: waterfall01
+   Number of instances:2
+--------------------------------------
+LoadActor(objects\bank_waterfall2.obe,frontend) - 42844128
+   SPECIALTYPE_WATERFALL: waterfall03
+   SPECIALTYPE_WATERFALL: waterfall04
+   Number of instances:2
+--------------------------------------
+LoadActor(objects\drawing board.obe,frontend) - 42841184
+   drawing board01
+   Number of instances:1
+--------------------------------------
+LoadActor(objects\bank_gull.obe,frontend) - 42839632
+   SPECIALTYPE_FLOCKING: bank_gull01
+LoadActor(objects\gull.obe,frontend) - 42836768
+   Number of instances:1
+--------------------------------------
+   *** WARNING *** There are no instances of this object Bucky.
+--------------------------------------
+LoadActor(objects\bank tasmanian tree.obe,frontend) - 42830016
+   tasmanian tree05
+   tasmanian tree03
+   Number of instances:2
+--------------------------------------
+LoadActor(objects\bank_blu rock.obe,frontend) - 42827072
+   blu rock
+   Number of instances:1
+LoadSplashScreen(splashpc\maps\frontend.bmp,splshscr)
+
+bkOpenPackage: *** WARNING : package 'splshscr.pc' from build 69 used with build 64 (package should be rebuilt) ***
+
+Opened package 'splshscr' OK (247 files)
+bkLoadFile: Could not find 0x37f8df38 in package
+bLoadResource: Could not load 'splashpc\maps\frontend.bmp' from '..\paks\pc\splshscr'
+bkLoadFile: Could not find 0x4cf770ef in package
+bLoadResource: Could not load 'extras\maps\frontend.bmp' from '..\paks\pc\splshscr'
+*** ERROR *** Package splshscr not loaded
+bFixupPackage: Loaded package 'taz.pc' OK (12 files, Dynamic buffer)
+bLoadPackageResources took 0 ms
+LoadActor(tazdevil.obe,taz) - 41747184
+LoadActor(spindevil.obe,taz) - 41671056
+*** WARNING *** Could not find animation static
+Music taz options screen.wav already playing.
+
+
+ Sound memory left 0
+
+*** ERROR *** Could not free whole file
+
+
+ Sound memory left 0
+
+bLoadPackageResources took 1 ms
+
+
+ Sound memory left 0
+
+
+
+ Sound memory left 0
+
+bLoadPackageResources took 1 ms
+LoadLevelSamplesMemory: NO SAMPLES LOADED FROM PACKAGE "frontendsound"!
+
+
+ Sound memory left 0
+
+Music taz options screen.wav already playing.
+
+
+ Sound memory left 0
+
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+FreeActor(tazdevil.obe)
+FreeActor(spindevil.obe)
+FreeAllActors
+bkDeleteAudioStream start
+bkDeleteAudioStream end
+Audio stream ÷½¾Öµu©u©u©u©u©u©u©u©u©u©u©u©u©u©u©u©u©u©u©u©u©÷¹¾¾¾¾¾¾¾ free'd.
+*** WARNING *** biDeleteMap was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***
+FreeScene(1,)
+Destroying all security boxes.
+Destroying all spin pads.
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+shutting down page ''
+*** ERROR *** Could not free whole file
+Collision Cache Free'd, peak usage 204328
+FreeAllFallingObjectsFromList
+FreeAllPrecipitationFromList
+FreeWaterRingList
+FreeCloudBank
+FreeAllEffectsFromList
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllActorInstances( )
+FreeAllPolyFXFromList
+FreeAllActorInstances( )
+FreeAllActors
+*** ERROR *** Could not free whole file
+*** ERROR *** Could not free whole file
+
+
+ Sound memory left 0
+
+shutting down page ''
+*** ERROR *** Could not free whole file
+*** WARNING *** bgShutdownGui was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***
+shutting down page ''
+*** WARNING *** bdCloseDisplay was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***
+*** WARNING *** bkHeapShow was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***
+bKernelShutdownBkgLoad: stopping worker thread...
+bKernelShutdownBkgLoad: worker thread stopped
+*** WARNING *** bShutdownGenericWave was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***
+*** WARNING *** bShutdownSpecificWave was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***
+*** WARNING *** bdEnableFrameTimeGraph was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***
+*** WARNING *** bdEnableMemoryGraph was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***
+Resource list is clean

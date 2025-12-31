@@ -4223,7 +4223,7 @@ void PAGE::navigate(const float navAng, const bool recur, const EPageNavInput in
 
 	if(this->selectedItem == NULL)
 	{
-#if(BPLATFORM != PC)// PP: TEMP?
+#if 1 //(BPLATFORM != PC)// PP: TEMP? MG: TEST?
 		this->selectItem(this->getFirstSelectableItem(recur));
 #endif// PP: (BPLATFORM != PC)
 
@@ -6944,7 +6944,7 @@ float BOOK::getRequiredHeight(void)
 
 	this->requiredHeight=0.0f;
 
-	bkPrintf("BOOK::getRequiredHeight (%s)\n", this->name);
+	//bkPrintf("BOOK::getRequiredHeight (%s)\n", this->name);
 
 	for(int p=BOOK_NUM_PAGES-1;p>=0;p--)
 	{
@@ -6976,7 +6976,7 @@ float BOOK::getRequiredWidth(void)
 
 	this->requiredWidth=0.0f;
 
-	bkPrintf("BOOK::getRequiredWidth (%s)\n", this->name);
+	//bkPrintf("BOOK::getRequiredWidth (%s)\n", this->name);
 
 	for(int p=BOOK_NUM_PAGES-1;p>=0;p--)
 	{

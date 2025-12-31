@@ -134,8 +134,16 @@ void bInitCRCTable()
 uchar *bkLoadFile(TBPackageIndex *indexPtr, char *filename, uchar *dataPtr, int *retPtr, TBFileTagInfo *tagInfo,
 																									int noofExtraBytes)
 {
-        bkPrintf("*** WARNING *** bkLoadFile was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+	uchar *result;
+	uint32 crc;
+
+	if (indexPtr == NULL) {
+		result = bLoadSingleFile(filename,dataPtr,retPtr,noofExtraBytes);
+		return result;
+	}
+	crc = bkStringCRC(filename);
+	result = bkLoadFileByCRC(indexPtr,crc,dataPtr,retPtr,tagInfo,noofExtraBytes);
+	return result;
 }
 
 
@@ -993,8 +1001,58 @@ int bkFileLength(TBPackageIndex *index, char *filename, int flags)
 
 uchar *bLoadSingleFile(char *filename, uchar *dataPtr, int *retSize, int noofExtraBytes)
 {
-        bkPrintf("*** WARNING *** bLoadSingleFile was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return NULL;
+    char *originalFilename;
+    int fileLen;
+    uint size;
+    uint32 group;
+    int largest;
+    int freeSpace;
+    uchar *data;
+    TBFileHandle fp;
+
+    originalFilename = filename;
+
+    if (bkOpenFileReadOnlyWithSearch(filename, &fp, NULL, 0, 0) == 0) {
+        bkPrintf("LoadSingleFile: *** Could not load file '%s' ***\n", originalFilename);
+        return NULL;
+    }
+
+    fileLen = bFileLength(fp);
+
+    data = dataPtr;
+    size = (uint)(fileLen + noofExtraBytes);
+
+    if (dataPtr == NULL) {
+        group = bGetCurrentGroup();
+        if (group == (uint32)BDEFAULTGROUP) {
+            group = (uint32)"Package";
+        }
+
+        data = (uchar *)MALLOCEX(size, group);
+        if (data == NULL) {
+            bkPrintf("EnsureAlloc: *** Out of memory on Babel heap for file (need %d bytes) ***\n", size);
+
+            largest = 0;
+            freeSpace = bkHeapFreeSpace(&largest);
+            bkPrintf("EnsureAlloc: (only %d bytes available: %d more required, max %d bytes (%d short)) ***\n",
+                     freeSpace, (int)size - freeSpace, largest, (int)size - largest);
+            return NULL;
+        }
+    } else {
+        if (bkHeapGetBlockSize(dataPtr) < (int)size) {
+            return NULL;
+        }
+    }
+
+    bkReadFromFile(fp, data, fileLen);
+    fclose(fp);
+
+    if (retSize != NULL) {
+        *retSize = fileLen;
+    }
+
+    bkPrintf("LoadSingleFile: Loaded file '%s' of %d bytes OK\n", originalFilename, fileLen);
+    return data;
 }
 
 

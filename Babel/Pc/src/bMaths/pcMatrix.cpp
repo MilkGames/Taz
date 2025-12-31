@@ -12,7 +12,7 @@
 // ********************************************************************************
 // Globals
 
-float bIdentityMatrix[4][4] = { 
+TBMatrix bIdentityMatrix = { 
     {1,0,0,0}, {0,1,0,0}, {0,0,1,0}, {0,0,0,1} 
 };
 
@@ -29,8 +29,32 @@ float bIdentityMatrix[4][4] = {
 
 void bmMatXRotation(TBMatrix mat, const float radians)
 {
-        bkPrintf("*** WARNING *** bmMatXRotation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    const float c = bmCos(radians);
+    const float s = bmSin(radians);
+
+    // First row
+    mat[0][0] = 1.0f;
+    mat[0][1] = 0.0f;
+    mat[0][2] = 0.0f;
+    mat[0][3] = 0.0f;
+
+    // Second row
+    mat[1][0] = 0.0f;
+    mat[1][1] = c;
+    mat[1][2] = s;
+    mat[1][3] = 0.0f;
+
+    // Third row
+    mat[2][0] = 0.0f;
+    mat[2][1] = -s;
+    mat[2][2] = c;
+    mat[2][3] = 0.0f;
+
+    // Fourth row
+    mat[3][0] = 0.0f;
+    mat[3][1] = 0.0f;
+    mat[3][2] = 0.0f;
+    mat[3][3] = 1.0f;
 }
 
 
@@ -44,8 +68,32 @@ void bmMatXRotation(TBMatrix mat, const float radians)
 
 void bmMatYRotation(TBMatrix mat, const float radians)
 {
-        bkPrintf("*** WARNING *** bmMatYRotation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    const float c = bmCos(radians);
+    const float s = bmSin(radians);
+
+    // First row
+    mat[0][0] = c;
+    mat[0][1] = 0.0f;
+    mat[0][2] = -s;
+    mat[0][3] = 0.0f;
+
+    // Second row
+    mat[1][0] = 0.0f;
+    mat[1][1] = 1.0f;
+    mat[1][2] = 0.0f;
+    mat[1][3] = 0.0f;
+
+    // Third row
+    mat[2][0] = s;
+    mat[2][1] = 0.0f;
+    mat[2][2] = c;
+    mat[2][3] = 0.0f;
+
+    // Fourth row
+    mat[3][0] = 0.0f;
+    mat[3][1] = 0.0f;
+    mat[3][2] = 0.0f;
+    mat[3][3] = 1.0f;
 }
 
 
@@ -59,8 +107,32 @@ void bmMatYRotation(TBMatrix mat, const float radians)
 
 void bmMatZRotation(TBMatrix mat, const float radians)
 {
-        bkPrintf("*** WARNING *** bmMatZRotation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    const float c = bmCos(radians);
+    const float s = bmSin(radians);
+
+    // First row
+    mat[0][0] = c;
+    mat[0][1] = s;
+    mat[0][2] = 0.0f;
+    mat[0][3] = 0.0f;
+
+    // Second row
+    mat[1][0] = -s;
+    mat[1][1] = c;
+    mat[1][2] = 0.0f;
+    mat[1][3] = 0.0f;
+
+    // Third row
+    mat[2][0] = 0.0f;
+    mat[2][1] = 0.0f;
+    mat[2][2] = 1.0f;
+    mat[2][3] = 0.0f;
+
+    // Fourth row
+    mat[3][0] = 0.0f;
+    mat[3][1] = 0.0f;
+    mat[3][2] = 0.0f;
+    mat[3][3] = 1.0f;
 }
 
 
@@ -114,25 +186,19 @@ void bmMatScale(TBMatrix mat, const float x, const float y, const float z)
 
 void bmMatMultiplyAligned(TBMatrix dest, const TBMatrix src1, const TBMatrix src2)
 {
-	// MG: there's no difference between this and bmMatMultiplyUnligned,
-	// MG: because... erm... I don't care?
-    TBMatrix A; /* src2 */
-    TBMatrix B; /* src1 */
-    /* Copy sources into temporaries to handle potential aliasing */
-    for (int i = 0; i < 4; ++i) {
-        for (int c = 0; c < 4; ++c) {
-            A[i][c] = src2[i][c];
-            B[i][c] = src1[i][c];
-        }
-    }
-    /* Row-major multiplication: dest = A * B */
-    for (int r = 0; r < 4; ++r) {
-        const float a0 = A[r][0], a1 = A[r][1], a2 = A[r][2], a3 = A[r][3];
-        dest[r][0] = a0*B[0][0] + a1*B[1][0] + a2*B[2][0] + a3*B[3][0];
-        dest[r][1] = a0*B[0][1] + a1*B[1][1] + a2*B[2][1] + a3*B[3][1];
-        dest[r][2] = a0*B[0][2] + a1*B[1][2] + a2*B[2][2] + a3*B[3][2];
-        dest[r][3] = a0*B[0][3] + a1*B[1][3] + a2*B[2][3] + a3*B[3][3];
-    }
+	/* Row-major multiplication with explicit ordering: dest = src2 * src1 */
+	for (int r = 0; r < 4; ++r)
+	{
+		const float a0 = src2[r][0];
+		const float a1 = src2[r][1];
+		const float a2 = src2[r][2];
+		const float a3 = src2[r][3];
+
+		dest[r][0] = a0 * src1[0][0] + a1 * src1[1][0] + a2 * src1[2][0] + a3 * src1[3][0];
+		dest[r][1] = a0 * src1[0][1] + a1 * src1[1][1] + a2 * src1[2][1] + a3 * src1[3][1];
+		dest[r][2] = a0 * src1[0][2] + a1 * src1[1][2] + a2 * src1[2][2] + a3 * src1[3][2];
+		dest[r][3] = a0 * src1[0][3] + a1 * src1[1][3] + a2 * src1[2][3] + a3 * src1[3][3];
+	}
 }
 
 
@@ -291,8 +357,35 @@ void bmMatZYRotation(TBMatrix dest, const float y, const float z)
 
 void bmMatXYZRotation(TBMatrix dest, const float xRadians, const float yRadians, const float zRadians)
 {
-        bkPrintf("*** WARNING *** bmMatXYZRotation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    const float cx = bmCos(xRadians);
+    const float sx = bmSin(xRadians);
+    const float cy = bmCos(yRadians);
+    const float sy = bmSin(yRadians);
+    const float cz = bmCos(zRadians);
+    const float sz = bmSin(zRadians);
+
+    const float czSy = cz * sy;
+    const float szSy = sz * sy;
+
+    dest[0][0] = cz * cy;
+    dest[0][1] = (czSy * sx) + (sz * cx);
+    dest[0][2] = (sz * sx) - (czSy * cx);
+    dest[0][3] = 0.0f;
+
+    dest[1][0] = -(sz * cy);
+    dest[1][1] = (cz * cx) - (szSy * sx);
+    dest[1][2] = (szSy * cx) + (cz * sx);
+    dest[1][3] = 0.0f;
+
+    dest[2][0] = sy;
+    dest[2][1] = -(cy * sx);
+    dest[2][2] = cy * cx;
+    dest[2][3] = 0.0f;
+
+    dest[3][0] = 0.0f;
+    dest[3][1] = 0.0f;
+    dest[3][2] = 0.0f;
+    dest[3][3] = 1.0f;
 }
 
 
@@ -321,8 +414,32 @@ void bmMatXZYRotation(TBMatrix dest, const float x, const float y, const float z
 
 void bmMatYXZRotation(TBMatrix dest, const float x, const float y, const float z)
 {
-        bkPrintf("*** WARNING *** bmMatYXZRotation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    float sx = (float)sin(x);
+    float cx = (float)cos(x);
+    float sy = (float)sin(y);
+    float cy = (float)cos(y);
+    float sz = (float)sin(z);
+    float cz = (float)cos(z);
+
+    dest[0][0] = cy * cz + sx * sy * sz;
+    dest[0][1] = cx * sz;
+    dest[0][2] = sx * sz * cy - sy * cz;
+    dest[0][3] = 0.0f;
+
+    dest[1][0] = sx * sy * cz - cy * sz;
+    dest[1][1] = cx * cz;
+    dest[1][2] = sx * cz * cy + sy * sz;
+    dest[1][3] = 0.0f;
+
+    dest[2][0] = sy * cx;
+    dest[2][1] = -sx;
+    dest[2][2] = cy * cx;
+    dest[2][3] = 0.0f;
+
+    dest[3][0] = 0.0f;
+    dest[3][1] = 0.0f;
+    dest[3][2] = 0.0f;
+    dest[3][3] = 1.0f;
 }
 
 
@@ -391,8 +508,32 @@ void bmMatZXYRotation(TBMatrix dest, const float x, const float y, const float z
 
 void bmMatZYXRotation(TBMatrix dest, const float x, const float y, const float z)
 {
-        bkPrintf("*** WARNING *** bmMatZYXRotation was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    const float cx = bmCos(x);
+    const float sx = bmSin(x);
+    const float cy = bmCos(y);
+    const float sy = bmSin(y);
+    const float cz = bmCos(z);
+    const float sz = bmSin(z);
+
+    dest[0][0] =  cz * cy;
+    dest[0][1] =  sz * cy;
+    dest[0][2] = -sy;
+    dest[0][3] =  0.0f;
+
+    dest[1][0] =  cz * sy * sx - sz * cx;
+    dest[1][1] =  cz * cx + sz * sy * sx;
+    dest[1][2] =  cy * sx;
+    dest[1][3] =  0.0f;
+
+    dest[2][0] =  sz * sx + cz * sy * cx;
+    dest[2][1] =  sz * sy * cx - cz * sx;
+    dest[2][2] =  cy * cx;
+    dest[2][3] =  0.0f;
+
+    dest[3][0] =  0.0f;
+    dest[3][1] =  0.0f;
+    dest[3][2] =  0.0f;
+    dest[3][3] =  1.0f;
 }
 
 
@@ -406,8 +547,75 @@ void bmMatZYXRotation(TBMatrix dest, const float x, const float y, const float z
 
 int bmMatInverse(TBMatrix dest, const TBMatrix in)
 {
-        bkPrintf("*** WARNING *** bmMatInverse was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    float pos = 0.0f;
+    float neg = 0.0f;
+
+    float term;
+
+    // aei
+    term = in[2][2] * in[0][0] * in[1][1];
+    if (0.0f < term) pos += term; else neg += term;
+
+    // bfg
+    term = in[0][1] * in[2][0] * in[1][2];
+    if (0.0f < term) pos += term; else neg += term;
+
+    // cdh
+    term = in[2][1] * in[1][0] * in[0][2];
+    if (0.0f < term) pos += term; else neg += term;
+
+    // -ceg
+    term = -(in[2][0] * in[0][2] * in[1][1]);
+    if (0.0f < term) pos += term; else neg += term;
+
+    // -bdi
+    term = -(in[2][2] * in[0][1] * in[1][0]);
+    if (0.0f < term) pos += term; else neg += term;
+
+    // -afh
+    term = -(in[2][1] * in[1][2] * in[0][0]);
+    if (0.0f < term) pos += term; else neg += term;
+
+    const float det = neg + pos;
+    if (det == 0.0f)
+        return 0;
+
+    // Robust singularity test: abs(det / (pos - neg)) >= 1e-15
+    {
+        const double denom = (double)(pos - neg);
+        const double ratio = (double)det / denom;
+        const double ar = fabs(ratio);
+        if (!(ar >= 1.0000000036274937e-15))
+            return 0;
+    }
+
+    const float invDet = 1.0f / det;
+
+    // Inverse of upper-left 3x3
+    dest[0][0] = (in[2][2] * in[1][1] - in[2][1] * in[1][2]) * invDet;
+    dest[1][0] = -((in[2][2] * in[1][0] - in[2][0] * in[1][2]) * invDet);
+    dest[2][0] = (in[2][1] * in[1][0] - in[2][0] * in[1][1]) * invDet;
+
+    dest[0][1] = -((in[2][2] * in[0][1] - in[2][1] * in[0][2]) * invDet);
+    dest[1][1] = (in[2][2] * in[0][0] - in[2][0] * in[0][2]) * invDet;
+    dest[2][1] = -((in[2][1] * in[0][0] - in[0][1] * in[2][0]) * invDet);
+
+    dest[0][2] = (in[0][1] * in[1][2] - in[0][2] * in[1][1]) * invDet;
+    dest[1][2] = -((in[1][2] * in[0][0] - in[1][0] * in[0][2]) * invDet);
+    dest[2][2] = (in[0][0] * in[1][1] - in[0][1] * in[1][0]) * invDet;
+
+    // Affine form
+    dest[0][3] = 0.0f;
+    dest[1][3] = 0.0f;
+    dest[2][3] = 0.0f;
+
+    // Translation (row 3)
+    dest[3][0] = -(in[3][0] * dest[0][0] + in[3][1] * dest[1][0] + in[3][2] * dest[2][0]);
+    dest[3][1] = -(in[3][0] * dest[0][1] + in[3][1] * dest[1][1] + in[3][2] * dest[2][1]);
+    dest[3][2] = -(in[3][0] * dest[0][2] + in[3][1] * dest[1][2] + in[3][2] * dest[2][2]);
+    dest[3][3] = 1.0f;
+
+    return 1;
 }
 
 
@@ -452,8 +660,15 @@ void bmMatMultiplyVector(const TBMatrix mat, TBVector vec)
 
 void bmMatMultiplyVector2(TBVector dest, const TBMatrix mat, const TBVector vec)
 {
-        bkPrintf("*** WARNING *** bmMatMultiplyVector2 was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    const float x = vec[0];
+    const float y = vec[1];
+    const float z = vec[2];
+    const float w = vec[3];
+
+    dest[0] = x * mat[0][0] + y * mat[1][0] + z * mat[2][0] + w * mat[3][0];
+    dest[1] = x * mat[0][1] + y * mat[1][1] + z * mat[2][1] + w * mat[3][1];
+    dest[2] = x * mat[0][2] + y * mat[1][2] + z * mat[2][2] + w * mat[3][2];
+    dest[3] = x * mat[0][3] + y * mat[1][3] + z * mat[2][3] + w * mat[3][3];
 }
 
 
@@ -481,8 +696,64 @@ void bmMatTranspose(TBMatrix dest, const TBMatrix src)
 
 void bmMatDecompose(TBMatrix mat, TBVector pos, TBVector scale, TBQuaternion orientation)
 {
-        bkPrintf("*** WARNING *** bmMatDecompose was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    float r0x = mat[0][0], r0y = mat[0][1], r0z = mat[0][2];
+    float r1x = mat[1][0], r1y = mat[1][1], r1z = mat[1][2];
+    float r2x = mat[2][0], r2y = mat[2][1], r2z = mat[2][2];
+
+    pos[0] = mat[3][0];
+    pos[1] = mat[3][1];
+    pos[2] = mat[3][2];
+    pos[3] = 1.0f;
+
+    float sx = bmSqrtApprox(r0x*r0x + r0y*r0y + r0z*r0z);
+    scale[0] = sx;
+    if (sx != 0.0f) {
+        float inv = 1.0f / sx;
+        r0x *= inv; r0y *= inv; r0z *= inv;
+    }
+
+    float t = -(r1x*r0x + r1y*r0y + r1z*r0z);
+    r1x += t*r0x; r1y += t*r0y; r1z += t*r0z;
+
+    float sy = bmSqrtApprox(r1x*r1x + r1y*r1y + r1z*r1z);
+    scale[1] = sy;
+    if (sy != 0.0f) {
+        float inv = 1.0f / sy;
+        r1x *= inv; r1y *= inv; r1z *= inv;
+    }
+
+    t = -(r2x*r0x + r2y*r0y + r2z*r0z);
+    r2x += t*r0x; r2y += t*r0y; r2z += t*r0z;
+
+    t = -(r2x*r1x + r2y*r1y + r2z*r1z);
+    r2x += t*r1x; r2y += t*r1y; r2z += t*r1z;
+
+    float sz = bmSqrtApprox(r2x*r2x + r2y*r2y + r2z*r2z);
+    scale[2] = sz;
+    if (sz != 0.0f) {
+        float inv = 1.0f / sz;
+        r2x *= inv; r2y *= inv; r2z *= inv;
+    }
+
+    float cx = r1y*r2z - r1z*r2y;
+    float cy = r1z*r2x - r1x*r2z;
+    float cz = r1x*r2y - r1y*r2x;
+
+    if (cx*r0x + cy*r0y + cz*r0z < 0.0f) {
+        scale[0] = -scale[0]; r0x = -r0x; r0y = -r0y; r0z = -r0z;
+        scale[1] = -scale[1]; r1x = -r1x; r1y = -r1y; r1z = -r1z;
+        scale[2] = -scale[2]; r2x = -r2x; r2y = -r2y; r2z = -r2z;
+    }
+
+    scale[3] = 1.0f;
+
+    TBMatrix rot;
+    rot[0][0]=r0x; rot[0][1]=r0y; rot[0][2]=r0z; rot[0][3]=0.0f;
+    rot[1][0]=r1x; rot[1][1]=r1y; rot[1][2]=r1z; rot[1][3]=0.0f;
+    rot[2][0]=r2x; rot[2][1]=r2y; rot[2][2]=r2z; rot[2][3]=0.0f;
+    rot[3][0]=0.0f; rot[3][1]=0.0f; rot[3][2]=0.0f; rot[3][3]=1.0f;
+
+    bmMatrixToQuat(orientation, rot);
 }
 
 /*	--------------------------------------------------------------------------------
@@ -496,8 +767,30 @@ void bmMatDecompose(TBMatrix mat, TBVector pos, TBVector scale, TBQuaternion ori
 void bmMatTransOrScale(TBMatrix dest, float xTrans,float yTrans,float zTrans, TBMatrix orientation,
 																				float xScale,float yScale,float zScale)
 {
-        bkPrintf("*** WARNING *** bmMatTransOrScale was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+	float *d = &dest[0][0];
+	float *o = &orientation[0][0];
+
+	// scale * orientation
+	d[0]  = o[0]  * xScale;
+	d[1]  = o[1]  * xScale;
+	d[2]  = o[2]  * xScale;
+	d[3]  = 0.0f;
+
+	d[4]  = o[4]  * yScale;
+	d[5]  = o[5]  * yScale;
+	d[6]  = o[6]  * yScale;
+	d[7]  = 0.0f;
+
+	d[8]  = o[8]  * zScale;
+	d[9]  = o[9]  * zScale;
+	d[10] = o[10] * zScale;
+	d[11] = 0.0f;
+
+	// translation
+	d[12] = xTrans;
+	d[13] = yTrans;
+	d[14] = zTrans;
+	d[15] = 1.0f;
 }
 
 
@@ -511,8 +804,35 @@ void bmMatTransOrScale(TBMatrix dest, float xTrans,float yTrans,float zTrans, TB
 
 void bmMatTransOr(TBMatrix dest, float xTrans,float yTrans,float zTrans, TBMatrix orientation)
 {
-        bkPrintf("*** WARNING *** bmMatTransOr was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    // If dest aliases orientation, only update translation
+    if (dest != orientation)
+    {
+        dest[0][0] = orientation[0][0];
+        dest[1][0] = orientation[1][0];
+        dest[2][0] = orientation[2][0];
+
+        dest[0][1] = orientation[0][1];
+        dest[1][1] = orientation[1][1];
+        dest[2][1] = orientation[2][1];
+
+        dest[0][2] = orientation[0][2];
+        dest[1][2] = orientation[1][2];
+        dest[2][2] = orientation[2][2];
+
+        dest[3][0] = xTrans;
+        dest[3][1] = yTrans;
+        dest[3][2] = zTrans;
+
+        dest[0][3] = 0.0f;
+        dest[1][3] = 0.0f;
+        dest[2][3] = 0.0f;
+        dest[3][3] = 1.0f;
+        return;
+    }
+
+    dest[3][0] = xTrans;
+    dest[3][1] = yTrans;
+    dest[3][2] = zTrans;
 }
 
 

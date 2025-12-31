@@ -9,6 +9,11 @@
 #include <babel.h>
 
 // ********************************************************************************
+// Locals
+
+int stopSpam15 = 0;
+
+// ********************************************************************************
 // Function Implementations
 
 /*	--------------------------------------------------------------------------------
@@ -33,7 +38,10 @@ void biGameSaveStart(EBGameSaveMode loadSave, void *saveData, ushort *saveNamePr
 */
 EBGameSaveStatus biGameSaveGetStatus(TBGameSaveDirEntry *dirEntries, int numDirEntries, int *numFiles, struct _TBGameSaveInfo *saveInfo)
 {
+	if (!stopSpam15) {
         bkPrintf("*** WARNING *** biGameSaveGetStatus was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+		stopSpam15++;
+	}
     return BGAMESAVE_NOSTATE;
 }
 

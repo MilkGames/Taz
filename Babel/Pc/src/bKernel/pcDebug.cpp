@@ -9,19 +9,11 @@
 #include <babel.h>
 
 // ********************************************************************************
-// Globals
-
-TBDebugStream *bCurrentDebugStream;		// current debug stream
-int			   bDebuggerPresent;		// 1=running under debugger, 0=not running under debugger
-int			   bPrintPause         = 0; // time in milliseconds to pause between each print statement
-
-// ********************************************************************************
 // Locals
 
-TBMutex        bDebugMutex;
-// select your debug system here, meow
-TBDebugStream  bDefaultDebugStream;
-char		   _debugBuffer[1024];
+TBMutex        bDebugMutex = NULL;
+TBDebugStream  bDefaultDebugStream = { "", BDEBUGSTREAMFLAG_TODEBUGGER, NULL };
+char		   _debugBuffer[2048] = "";
 
 static const char* months[13] =
 { "", "Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec" };
@@ -43,7 +35,14 @@ typedef LONG (WINAPI *PFN_RtlGetVersion)(RTL_OSVERSIONINFOEXW_*);
 #endif // FIX_PLATFORMINFO
 
 // ********************************************************************************
-// Helper Functions
+// Globals
+
+TBDebugStream *bCurrentDebugStream = &bDefaultDebugStream; // current debug stream
+int			   bDebuggerPresent    = 0;					   // 1=running under debugger, 0=not running under debugger
+int			   bPrintPause         = 0;					   // time in milliseconds to pause between each print statement
+
+// ********************************************************************************
+// Local Functions
 
 #ifdef FIX_PLATFORMINFO
 
@@ -176,6 +175,23 @@ TBDebugStream *bkCreateDebugStream(TBDebugStream *stream, char *filename, uint32
 
 void bkPrintf(char *format, ...)
 {
+#ifdef FILTER_STUB_SPAM
+	if (strstr(format, "wasn't implemented") != NULL ||
+		strstr(format, "bLoadResource: Could not find") != NULL)
+	{
+		static uint32 warned_crcs[512];
+		static int	  warned_count = 0;
+
+		uint32 msgCRC = bkStringCRC(format);
+
+		for (int i = 0; i < warned_count; i++) {
+			if (warned_crcs[i] == msgCRC) return;
+		}
+
+		if (warned_count < 512) warned_crcs[warned_count++] = msgCRC;
+	}
+#endif
+
     bkWaitMutex(&bDebugMutex);
 
     char* out = _debugBuffer;
@@ -269,7 +285,7 @@ void bInitDebug(void)
     bkPrintf("  Babel " BVERSION ", Wed Mar 20 15:46:19 2002\n");
 #ifdef PRINT_DISCLAIMER
 	bkPrintf("-----------------------------------------\n");
-	bkPrintf("This Babel library was reverse engineered\n");
+	bkPrintf("This Babel library was reverse-engineered\n");
 	bkPrintf("by MilkGames in 2025 using Release version\n");
 	bkPrintf("of the Taz: Wanted game AND .h files from\n");
 	bkPrintf("Taz Source Delivery DVD on archive.org.\n");
@@ -287,6 +303,32 @@ void bInitDebug(void)
 	bkPrintf("-----------------------------------------\n");
 	bkPrintf("Real Babel build date:\n");
 	bkPrintf(__TIMESTAMP__"\n");
+#ifdef PRINT_CREDITS
+	bkPrintf("-----------------------------------------\n");
+	bkPrintf("                Credits:                 \n");
+	bkPrintf("  Reverse Engineering & Implementation:  \n");
+    bkPrintf("   MilkGames                             \n");
+    bkPrintf("\n");
+    bkPrintf("  Quality Assurance & Testing:           \n");
+    bkPrintf("   MuxaJlbl4 (MuLLlaH9!)                 \n");
+    bkPrintf("   CycloneFN                             \n");
+    bkPrintf("\n");
+    bkPrintf("  Special Thanks:                        \n");
+    bkPrintf("   To the original team at Blitz Games:  \n");
+    bkPrintf("   Thank you for the childhood memories  \n");
+    bkPrintf("   and the incredible tech you built.    \n");
+	bkPrintf("   Your code lives on.                   \n");
+	bkPrintf("-----------------------------------------\n");
+	bkPrintf("This reverse-engineered library uses AI  \n");
+	bkPrintf("resources to declare pre-built variables \n");
+	bkPrintf("and functions, as well as implement some \n");
+	bkPrintf("particularly complex functions for direct\n");
+	bkPrintf("use/reference. All functions (sooner or  \n");
+	bkPrintf("later) undergo a manual thorough check   \n");
+	bkPrintf("against disassembled code; the status of each\n");
+	bkPrintf("function can be viewed on the Taz: Wanted\n");
+	bkPrintf("Preservation Community Discord server.   \n");
+#endif
 #endif
 #endif
     bkPrintf("-----------------------------------------\n");
@@ -339,10 +381,17 @@ void bInitDebug(void)
         const unsigned vMajor = (unsigned)((vi.dwBuildNumber >> 24) & 0xFF);
         const unsigned vMinor = (unsigned)((vi.dwBuildNumber >> 16) & 0xFF);
 
-        bkPrintf("PlatformInfo: computer '%s', user '%s', OS %s build #%u (v%u.%u), physical memory %u Mb\n",
+#ifdef SHORT_PLATFORMINFO
+		bkPrintf("SHORT_PLATFORMINFO is defined -> hiding computer name and user name\n");
+        bkPrintf("PlatformInfo: OS %s build #%u (v%u.%u), physical memory %u Mb\n",
+                 kOsNames[bOSIndex],
+                 build, vMajor, vMinor, (unsigned)physMB);
+#else
+		bkPrintf("PlatformInfo: computer '%s', user '%s', OS %s build #%u (v%u.%u), physical memory %u Mb\n",
                  computerName, userName,
                  kOsNames[bOSIndex],
                  build, vMajor, vMinor, (unsigned)physMB);
+#endif
     }
 #else
     // ----------------------- FIXED (modern-correct) ---------------------
@@ -373,13 +422,21 @@ void bInitDebug(void)
 
         MEMORYSTATUS ms; GlobalMemoryStatus(&ms);
         const DWORD physMB = ms.dwTotalPhys >> 20;
-
-        bkPrintf("PlatformInfo: computer '%s', user '%s', OS %s build #%lu (v%lu.%lu), physical memory %lu Mb\n",
+#ifdef SHORT_PLATFORMINFO
+		bkPrintf("SHORT_PLATFORMINFO is defined -> hiding computer name and user name\n");
+        bkPrintf("PlatformInfo: OS %s build #%lu (v%lu.%lu), physical memory %lu Mb\n",
+                 osName,
+                 (unsigned long)bld,
+                 (unsigned long)maj, (unsigned long)min,
+                 (unsigned long)physMB);
+#else
+		bkPrintf("PlatformInfo: computer '%s', user '%s', OS %s build #%lu (v%lu.%lu), physical memory %lu Mb\n",
                  computerName, userName,
                  osName,
                  (unsigned long)bld,
                  (unsigned long)maj, (unsigned long)min,
                  (unsigned long)physMB);
+#endif
     }
 #endif // FIX_PLATFORMINFO
 
@@ -419,6 +476,49 @@ void bShutdownDebug()
     if ((bDefaultDebugStream.flags & BDEBUGSTREAMFLAG_DYNAMIC) != 0) { // flags per debug.h
         bkHeapFree(&bDefaultDebugStream);
     }
+}
+
+/* --------------------------------------------------------------------------------
+   Function : bkStreamPrintf
+   Purpose : print a string to a debug stream
+   Parameters : debug stream, as for printf
+   Returns : 
+   Info : 
+*/
+
+void bkStreamPrintf(TBDebugStream *stream, char *format, ...)
+{
+	if (!stream) return;
+
+	va_list args;
+	va_start(args, format);
+	
+	if (stream->flags & BDEBUGSTREAMFLAG_TIMESTAMP) {
+		SYSTEMTIME st;
+		GetLocalTime(&st);
+
+		sprintf(_debugBuffer, "%02d/%02d/%02d %02d:%02d:%02d.%03d ",
+            st.wDay,
+            st.wMonth,
+            st.wYear - 2000,
+            st.wHour,
+            st.wMinute,
+            st.wSecond,
+            st.wMilliseconds
+        );
+
+		vsprintf(_debugBuffer + 0x16, format, args);
+	}
+	else {
+		vsprintf(_debugBuffer, format, args);
+	}
+
+	va_end(args);
+
+	if (stream->file != NULL) {
+		fprintf(stream->file, "%s", _debugBuffer);
+		fflush(stream->file);
+	}
 }
 
 /* --------------------------------------------------------------------------------

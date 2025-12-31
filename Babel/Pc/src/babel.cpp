@@ -39,8 +39,6 @@ int bkInit(uint base, uint size, uint32 flags)
   }
 
   bInitCommandLine();
-  // MG: placed it here so I wouldn't forget about it
-  bkPrintf("*** WARNING *** bdConsoleWindowPrintf was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
   bDumpDXVersions();
   if (!bInitDisplay()) {
     bDumpDXVersions();

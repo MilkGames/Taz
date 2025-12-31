@@ -15,11 +15,10 @@
 
 
 // ********************************************************************************
-// include all headers from bGui/
+// include all required headers
 
-#include "bGui/gui.h"
-//#include "bGui/defFont.h"
 #include "bGui/guiHal.h"
 #include "bGui/pcGui.h"
+#include "bGui/gui.h"
 
 #endif		// __BGUI_H__

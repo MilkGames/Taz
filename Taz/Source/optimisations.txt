@@ -1,0 +1,379 @@
+language
+-------------------------------------
+frontend
+-------------------------------------
+*** ERROR *** Object "objects\bank - table.obe" 		 has Instances with _BANK_OBJECT properties.
+Instance "bank - table"[objects\bank - table.obe] 		 could be MERGED with landscape.
+Instance "table01"[objects\bank - table.obe] 		 could be MERGED with landscape.
+*** ERROR *** Object "objects\line24_o.obe" 		 has Instances with _BANK_OBJECT properties.
+Instance "line24_o"[objects\line24_o.obe] 		 could be MERGED with landscape.
+*** ERROR *** Object "objects\i_loft15.obe" 		 has Instances with _BANK_OBJECT properties.
+Instance "i_loft15"[objects\i_loft15.obe] 		 could be MERGED with landscape.
+*** ERROR *** Object "objects\i_shafts of light.obe" 		 has Instances with _BANK_OBJECT properties.
+Instance "i_shafts of light"[objects\i_shafts of light.obe] 		 could be MERGED with landscape.
+*** ERROR *** Object "objects\sea01.obe" 		 has Instances with _BANK_OBJECT properties.
+Instance "sea01"[objects\sea01.obe] 		 could be MERGED with landscape.
+*** ERROR *** Object "objects\waterfall03.obe" 		 has Instances with _BANK_OBJECT properties.
+*** ERROR *** Object "objects\waterfall04.obe" 		 has Instances with _BANK_OBJECT properties.
+Instance "food pizza pilea"[objects\bank - food pizza pilea.obe] 		 could be MERGED with landscape.
+Instance "food pizza pileb"[objects\bank - food pizza pileb.obe] 		 could be MERGED with landscape.
+Instance "fridge body"[objects\bank - fridge body.obe] 		 could be MERGED with landscape.
+Instance "river01"[objects\bank_ river.obe] 		 could be MERGED with landscape.
+Instance "reel_a01"[objects\bank_reel_a.obe] 		 has FADE OUT turned off.
+Instance "reel_a01"[objects\bank_reel_a.obe] 		 could be MERGED with landscape.
+Instance "dynamite02"[objects\dynamite01.obe] 		 could be MERGED with landscape.
+Instance "reel_b01"[objects\bank_reel_b.obe] 		 has FADE OUT turned off.
+Instance "reel_b01"[objects\bank_reel_b.obe] 		 could be MERGED with landscape.
+Instance "reel_c01"[objects\bank_reel_c.obe] 		 has FADE OUT turned off.
+Instance "reel_c01"[objects\bank_reel_c.obe] 		 could be MERGED with landscape.
+Instance "machine01"[objects\machine.obe] 		 has FADE OUT turned off.
+Instance "machine01"[objects\machine.obe] 		 could be MERGED with landscape.
+Instance "food banana skin02"[objects\bank - food banana skin.obe] 		 could be MERGED with landscape.
+Instance "plant green01"[objects\bank - plant green.obe] 		 could be MERGED with landscape.
+Instance "chest_node01"[objects\chest_node.obe] 		 could be MERGED with landscape.
+Instance "cave painting"[objects\bank cave painting.obe] 		 could be MERGED with landscape.
+Instance "tree house01"[objects\bank_tree house.obe] 		 could be MERGED with landscape.
+Instance "jetty02"[objects\jetty01.obe] 		 could be MERGED with landscape.
+Instance "drawing board01"[objects\drawing board.obe] 		 could be MERGED with landscape.
+Instance "tasmanian tree05"[objects\bank tasmanian tree.obe] 		 could be MERGED with landscape.
+Instance "tasmanian tree03"[objects\bank tasmanian tree.obe] 		 could be MERGED with landscape.
+Instance "blu rock"[objects\bank_blu rock.obe] 		 could be MERGED with landscape.
+---------------------------- STATS -----------------------
+SPECIALTYPE_PROJECTILE			 no:0
+SPECIALTYPE_PROJECTILESLIDE			 no:0
+SPECIALTYPE_FALLINGOBJECT			 no:0
+SPECIALTYPE_DIVINGBOARD			 no:0
+SPECIALTYPE_TRAMAMPOLINE			 no:0
+SPECIALTYPE_STEPPINGSTONE			 no:0
+SPECIALTYPE_TILTINGOBJECT			 no:0
+SPECIALTYPE_SEESAWOBJECT			 no:0
+SPECIALTYPE_SWINGINGOBJECT			 no:0
+SPECIALTYPE_WATERYOBJECT			 no:0
+SPECIALTYPE_DESTRUCTIBLE			 no:0
+SPECIALTYPE_MAILBOX			 no:0
+SPECIALTYPE_WANTEDPOSTER			 no:0
+SPECIALTYPE_PNEUMATICPLUNGER			 no:0
+SPECIALTYPE_PATH			 no:0
+SPECIALTYPE_PLATFORM			 no:0
+SPECIALTYPE_RESETPOINT			 no:0
+SPECIALTYPE_TRIGGER			 no:0
+SPECIALTYPE_HIGHVOLTAGE			 no:0
+SPECIALTYPE_EFFECT			 no:0
+SPECIALTYPE_CAMERACASE			 no:0
+SPECIALTYPE_PRECIPITATION			 no:0
+SPECIALTYPE_ELECTRICITY			 no:0
+SPECIALTYPE_ZOOKEEPER			 no:0
+SPECIALTYPE_FIRE			 no:0
+SPECIALTYPE_TRANSPORTER			 no:0
+SPECIALTYPE_ICE			 no:0
+SPECIALTYPE_SPEEDBOOST			 no:0
+SPECIALTYPE_SLIDE			 no:0
+SPECIALTYPE_RANDOMFOOD			 no:0
+SPECIALTYPE_ESCALATOR			 no:0
+SPECIALTYPE_VEHICLE			 no:0
+SPECIALTYPE_DOOR			 no:0
+SPECIALTYPE_SCENIC			 no:0
+SPECIALTYPE_PHONEBOX			 no:0
+SPECIALTYPE_WATERFALL			 no:8
+SPECIALTYPE_LASER			 no:0
+SPECIALTYPE_FOUNTAIN			 no:0
+SPECIALTYPE_SHATTER			 no:0
+SPECIALTYPE_TARBUBBLE			 no:0
+SPECIALTYPE_ENEMY			 no:0
+SPECIALTYPE_LIGHTNING			 no:0
+SPECIALTYPE_CHECKPOINT			 no:0
+SPECIALTYPE_BUMPER			 no:0
+SPECIALTYPE_MONITOR			 no:0
+SPECIALTYPE_TARGET			 no:0
+SPECIALTYPE_SAFEPOINT			 no:0
+SPECIALTYPE_MAGNET			 no:0
+SPECIALTYPE_FLOCKING			 no:4
+SPECIALTYPE_BUZZARD			 no:0
+SPECIALTYPE_FECAMERA			 no:16
+SPECIALTYPE_MAPPOINT			 no:0
+SPECIALTYPE_MIRROR			 no:0
+SPECIALTYPE_LAVA			 no:0
+SPECIALTYPE_SPLAT			 no:0
+SPECIALTYPE_DEATH			 no:0
+SPECIALTYPE_HAAR			 no:0
+SPECIALTYPE_MUSICBOX			 no:0
+SPECIALTYPE_MINECART			 no:0
+SPECIALTYPE_MINECARTDUMMY			 no:0
+SPECIALTYPE_PORTALWORLD			 no:0
+SPECIALTYPE_FLAMETHROWA			 no:0
+SPECIALTYPE_SECURITYBOX			 no:0
+SPECIALTYPE_MECHATWEETY			 no:0
+SPECIALTYPE_TAZBOSSITEM			 no:0
+SPECIALTYPE_CLIPPLANE			 no:0
+SPECIALTYPE_ROCKET			 no:0
+SPECIALTYPE_XDOOR			 no:0
+SPECIALTYPE_HALO			 no:0
+SPECIALTYPE_ZAPPER			 no:0
+SPECIALTYPE_SPAWNCRATE			 no:0
+SPECIALTYPE_POLICEBOX			 no:0
+SPECIALTYPE_EGG			 no:0
+SPECIALTYPE_AIRCON			 no:0
+SPECIALTYPE_TUMBLEWEED			 no:0
+SPECIALTYPE_ARROW			 no:0
+SPECIALTYPE_MIRRORBALL			 no:0
+SPECIALTYPE_WATERRIPPLE			 no:0
+
+ 
+ 
+westboss
+-------------------------------------
+*** ERROR *** Object "objects\taz_blocker.obe" 		 has Instances with _BANK_OBJECT properties.
+*** ERROR *** Object "objects\wall05.obe" 		 has Instances with _BANK_OBJECT properties.
+Instance "wall05"[objects\wall05.obe] 		 could be MERGED with landscape.
+*** ERROR *** Object "objects\megabomb01.obe" 		 has Instances with _BANK_OBJECT properties.
+Instance "megabomb01"[objects\megabomb01.obe] 		 could be MERGED with landscape.
+Instance "medcardboxb_i07"[objects\medcardboxb_i.obe] 		 could be MERGED with landscape.
+Instance "medcardboxb_i04"[objects\medcardboxb_i.obe] 		 could be MERGED with landscape.
+Instance "bank_torpedo_i16"[objects\bank_torpedo_i.obe] 		 could be MERGED with landscape.
+Instance "bank_torpedo_i04"[objects\bank_torpedo_i.obe] 		 could be MERGED with landscape.
+Instance "bank_torpedo_i06"[objects\bank_torpedo_i.obe] 		 could be MERGED with landscape.
+Instance "bank_torpedo_i07"[objects\bank_torpedo_i.obe] 		 could be MERGED with landscape.
+Instance "bank_torpedo_i01"[objects\bank_torpedo_i.obe] 		 could be MERGED with landscape.
+Instance "bank_torpedo_i05"[objects\bank_torpedo_i.obe] 		 could be MERGED with landscape.
+Instance "bank_torpedo_i02"[objects\bank_torpedo_i.obe] 		 could be MERGED with landscape.
+Instance "bank_torpedo_i03"[objects\bank_torpedo_i.obe] 		 could be MERGED with landscape.
+Instance "bank_torpedo_i08"[objects\bank_torpedo_i.obe] 		 could be MERGED with landscape.
+Instance "bank_torpedo_i09"[objects\bank_torpedo_i.obe] 		 could be MERGED with landscape.
+Instance "bank_torpedo_i10"[objects\bank_torpedo_i.obe] 		 could be MERGED with landscape.
+Instance "bank_torpedo_i12"[objects\bank_torpedo_i.obe] 		 could be MERGED with landscape.
+Instance "bank_torpedo_i11"[objects\bank_torpedo_i.obe] 		 could be MERGED with landscape.
+Instance "bank_torpedo_i14"[objects\bank_torpedo_i.obe] 		 could be MERGED with landscape.
+Instance "bank_torpedo_i19"[objects\bank_torpedo_i.obe] 		 could be MERGED with landscape.
+Instance "bank_torpedo_i18"[objects\bank_torpedo_i.obe] 		 could be MERGED with landscape.
+Instance "bank_torpedo_i13"[objects\bank_torpedo_i.obe] 		 could be MERGED with landscape.
+Instance "bank_torpedo_i15"[objects\bank_torpedo_i.obe] 		 could be MERGED with landscape.
+Instance "bank_torpedo_i28"[objects\bank_torpedo_i.obe] 		 could be MERGED with landscape.
+Instance "bank_torpedo_i17"[objects\bank_torpedo_i.obe] 		 could be MERGED with landscape.
+Instance "bank_torpedo_i21"[objects\bank_torpedo_i.obe] 		 could be MERGED with landscape.
+Instance "bank_torpedo_i20"[objects\bank_torpedo_i.obe] 		 could be MERGED with landscape.
+Instance "bank_torpedo_i22"[objects\bank_torpedo_i.obe] 		 could be MERGED with landscape.
+Instance "bank_torpedo_i23"[objects\bank_torpedo_i.obe] 		 could be MERGED with landscape.
+Instance "bank_torpedo_i24"[objects\bank_torpedo_i.obe] 		 could be MERGED with landscape.
+Instance "bank_torpedo_i26"[objects\bank_torpedo_i.obe] 		 could be MERGED with landscape.
+Instance "bank_torpedo_i25"[objects\bank_torpedo_i.obe] 		 could be MERGED with landscape.
+Instance "bank_torpedo_i27"[objects\bank_torpedo_i.obe] 		 could be MERGED with landscape.
+Instance "bank_torpedo_i29"[objects\bank_torpedo_i.obe] 		 could be MERGED with landscape.
+Instance "bank_torpedo_i30"[objects\bank_torpedo_i.obe] 		 could be MERGED with landscape.
+Instance "fatrocket_i02"[objects\fatrocket_i.obe] 		 could be MERGED with landscape.
+Instance "fatrocket_i01"[objects\fatrocket_i.obe] 		 could be MERGED with landscape.
+Instance "fatrocket_i04"[objects\fatrocket_i.obe] 		 could be MERGED with landscape.
+Instance "fatrocket_i03"[objects\fatrocket_i.obe] 		 could be MERGED with landscape.
+Instance "bank_bigbox_i04"[objects\bank_bigbox_i.obe] 		 could be MERGED with landscape.
+Instance "bank_bigbox_i02"[objects\bank_bigbox_i.obe] 		 could be MERGED with landscape.
+Instance "bank_bigbox_i12"[objects\bank_bigbox_i.obe] 		 could be MERGED with landscape.
+Instance "bank_bigbox_i08"[objects\bank_bigbox_i.obe] 		 could be MERGED with landscape.
+Instance "centrerockets"[objects\centrerockets01.obe] 		 could be MERGED with landscape.
+Instance "supertntcrate04"[objects\supertntcrate_null.obe] 		 has LIVE update.
+Instance "supertntcrate03"[objects\supertntcrate_null.obe] 		 has LIVE update.
+Instance "supertntcrate02"[objects\supertntcrate_null.obe] 		 has LIVE update.
+Instance "supertntcrate01"[objects\supertntcrate_null.obe] 		 has LIVE update.
+Instance "centrefatones"[objects\centrefatones_bank.obe] 		 could be MERGED with landscape.
+Instance "centredynamite"[objects\centredynamite_bank.obe] 		 could be MERGED with landscape.
+Instance "sky01"[objects\the sky.obe] 		 could be MERGED with landscape.
+---------------------------- STATS -----------------------
+SPECIALTYPE_PROJECTILE			 no:0
+SPECIALTYPE_PROJECTILESLIDE			 no:0
+SPECIALTYPE_FALLINGOBJECT			 no:0
+SPECIALTYPE_DIVINGBOARD			 no:0
+SPECIALTYPE_TRAMAMPOLINE			 no:0
+SPECIALTYPE_STEPPINGSTONE			 no:0
+SPECIALTYPE_TILTINGOBJECT			 no:0
+SPECIALTYPE_SEESAWOBJECT			 no:0
+SPECIALTYPE_SWINGINGOBJECT			 no:0
+SPECIALTYPE_WATERYOBJECT			 no:0
+SPECIALTYPE_DESTRUCTIBLE			 no:23
+SPECIALTYPE_MAILBOX			 no:0
+SPECIALTYPE_WANTEDPOSTER			 no:0
+SPECIALTYPE_PNEUMATICPLUNGER			 no:0
+SPECIALTYPE_PATH			 no:0
+SPECIALTYPE_PLATFORM			 no:0
+SPECIALTYPE_RESETPOINT			 no:0
+SPECIALTYPE_TRIGGER			 no:0
+SPECIALTYPE_HIGHVOLTAGE			 no:0
+SPECIALTYPE_EFFECT			 no:0
+SPECIALTYPE_CAMERACASE			 no:0
+SPECIALTYPE_PRECIPITATION			 no:0
+SPECIALTYPE_ELECTRICITY			 no:0
+SPECIALTYPE_ZOOKEEPER			 no:0
+SPECIALTYPE_FIRE			 no:0
+SPECIALTYPE_TRANSPORTER			 no:0
+SPECIALTYPE_ICE			 no:0
+SPECIALTYPE_SPEEDBOOST			 no:0
+SPECIALTYPE_SLIDE			 no:0
+SPECIALTYPE_RANDOMFOOD			 no:0
+SPECIALTYPE_ESCALATOR			 no:0
+SPECIALTYPE_VEHICLE			 no:0
+SPECIALTYPE_DOOR			 no:0
+SPECIALTYPE_SCENIC			 no:0
+SPECIALTYPE_PHONEBOX			 no:0
+SPECIALTYPE_WATERFALL			 no:0
+SPECIALTYPE_LASER			 no:0
+SPECIALTYPE_FOUNTAIN			 no:0
+SPECIALTYPE_SHATTER			 no:0
+SPECIALTYPE_TARBUBBLE			 no:0
+SPECIALTYPE_ENEMY			 no:0
+SPECIALTYPE_LIGHTNING			 no:0
+SPECIALTYPE_CHECKPOINT			 no:1
+SPECIALTYPE_BUMPER			 no:0
+SPECIALTYPE_MONITOR			 no:0
+SPECIALTYPE_TARGET			 no:0
+SPECIALTYPE_SAFEPOINT			 no:0
+SPECIALTYPE_MAGNET			 no:0
+SPECIALTYPE_FLOCKING			 no:0
+SPECIALTYPE_BUZZARD			 no:0
+SPECIALTYPE_FECAMERA			 no:0
+SPECIALTYPE_MAPPOINT			 no:0
+SPECIALTYPE_MIRROR			 no:0
+SPECIALTYPE_LAVA			 no:0
+SPECIALTYPE_SPLAT			 no:0
+SPECIALTYPE_DEATH			 no:0
+SPECIALTYPE_HAAR			 no:0
+SPECIALTYPE_MUSICBOX			 no:0
+SPECIALTYPE_MINECART			 no:0
+SPECIALTYPE_MINECARTDUMMY			 no:0
+SPECIALTYPE_PORTALWORLD			 no:0
+SPECIALTYPE_FLAMETHROWA			 no:0
+SPECIALTYPE_SECURITYBOX			 no:0
+SPECIALTYPE_MECHATWEETY			 no:0
+SPECIALTYPE_TAZBOSSITEM			 no:0
+SPECIALTYPE_CLIPPLANE			 no:0
+SPECIALTYPE_ROCKET			 no:0
+SPECIALTYPE_XDOOR			 no:0
+SPECIALTYPE_HALO			 no:0
+SPECIALTYPE_ZAPPER			 no:0
+SPECIALTYPE_SPAWNCRATE			 no:0
+SPECIALTYPE_POLICEBOX			 no:0
+SPECIALTYPE_EGG			 no:0
+SPECIALTYPE_AIRCON			 no:0
+SPECIALTYPE_TUMBLEWEED			 no:0
+SPECIALTYPE_ARROW			 no:0
+SPECIALTYPE_MIRRORBALL			 no:0
+SPECIALTYPE_WATERRIPPLE			 no:0
+
+ 
+ 
+frontend
+-------------------------------------
+*** ERROR *** Object "objects\bank - table.obe" 		 has Instances with _BANK_OBJECT properties.
+Instance "bank - table"[objects\bank - table.obe] 		 could be MERGED with landscape.
+Instance "table01"[objects\bank - table.obe] 		 could be MERGED with landscape.
+*** ERROR *** Object "objects\line24_o.obe" 		 has Instances with _BANK_OBJECT properties.
+Instance "line24_o"[objects\line24_o.obe] 		 could be MERGED with landscape.
+*** ERROR *** Object "objects\i_loft15.obe" 		 has Instances with _BANK_OBJECT properties.
+Instance "i_loft15"[objects\i_loft15.obe] 		 could be MERGED with landscape.
+*** ERROR *** Object "objects\i_shafts of light.obe" 		 has Instances with _BANK_OBJECT properties.
+Instance "i_shafts of light"[objects\i_shafts of light.obe] 		 could be MERGED with landscape.
+*** ERROR *** Object "objects\sea01.obe" 		 has Instances with _BANK_OBJECT properties.
+Instance "sea01"[objects\sea01.obe] 		 could be MERGED with landscape.
+*** ERROR *** Object "objects\waterfall03.obe" 		 has Instances with _BANK_OBJECT properties.
+*** ERROR *** Object "objects\waterfall04.obe" 		 has Instances with _BANK_OBJECT properties.
+Instance "food pizza pilea"[objects\bank - food pizza pilea.obe] 		 could be MERGED with landscape.
+Instance "food pizza pileb"[objects\bank - food pizza pileb.obe] 		 could be MERGED with landscape.
+Instance "fridge body"[objects\bank - fridge body.obe] 		 could be MERGED with landscape.
+Instance "river01"[objects\bank_ river.obe] 		 could be MERGED with landscape.
+Instance "reel_a01"[objects\bank_reel_a.obe] 		 has FADE OUT turned off.
+Instance "reel_a01"[objects\bank_reel_a.obe] 		 could be MERGED with landscape.
+Instance "dynamite02"[objects\dynamite01.obe] 		 could be MERGED with landscape.
+Instance "reel_b01"[objects\bank_reel_b.obe] 		 has FADE OUT turned off.
+Instance "reel_b01"[objects\bank_reel_b.obe] 		 could be MERGED with landscape.
+Instance "reel_c01"[objects\bank_reel_c.obe] 		 has FADE OUT turned off.
+Instance "reel_c01"[objects\bank_reel_c.obe] 		 could be MERGED with landscape.
+Instance "machine01"[objects\machine.obe] 		 has FADE OUT turned off.
+Instance "machine01"[objects\machine.obe] 		 could be MERGED with landscape.
+Instance "food banana skin02"[objects\bank - food banana skin.obe] 		 could be MERGED with landscape.
+Instance "plant green01"[objects\bank - plant green.obe] 		 could be MERGED with landscape.
+Instance "chest_node01"[objects\chest_node.obe] 		 could be MERGED with landscape.
+Instance "cave painting"[objects\bank cave painting.obe] 		 could be MERGED with landscape.
+Instance "tree house01"[objects\bank_tree house.obe] 		 could be MERGED with landscape.
+Instance "jetty02"[objects\jetty01.obe] 		 could be MERGED with landscape.
+Instance "drawing board01"[objects\drawing board.obe] 		 could be MERGED with landscape.
+Instance "tasmanian tree05"[objects\bank tasmanian tree.obe] 		 could be MERGED with landscape.
+Instance "tasmanian tree03"[objects\bank tasmanian tree.obe] 		 could be MERGED with landscape.
+Instance "blu rock"[objects\bank_blu rock.obe] 		 could be MERGED with landscape.
+---------------------------- STATS -----------------------
+SPECIALTYPE_PROJECTILE			 no:0
+SPECIALTYPE_PROJECTILESLIDE			 no:0
+SPECIALTYPE_FALLINGOBJECT			 no:0
+SPECIALTYPE_DIVINGBOARD			 no:0
+SPECIALTYPE_TRAMAMPOLINE			 no:0
+SPECIALTYPE_STEPPINGSTONE			 no:0
+SPECIALTYPE_TILTINGOBJECT			 no:0
+SPECIALTYPE_SEESAWOBJECT			 no:0
+SPECIALTYPE_SWINGINGOBJECT			 no:0
+SPECIALTYPE_WATERYOBJECT			 no:0
+SPECIALTYPE_DESTRUCTIBLE			 no:0
+SPECIALTYPE_MAILBOX			 no:0
+SPECIALTYPE_WANTEDPOSTER			 no:0
+SPECIALTYPE_PNEUMATICPLUNGER			 no:0
+SPECIALTYPE_PATH			 no:0
+SPECIALTYPE_PLATFORM			 no:0
+SPECIALTYPE_RESETPOINT			 no:0
+SPECIALTYPE_TRIGGER			 no:0
+SPECIALTYPE_HIGHVOLTAGE			 no:0
+SPECIALTYPE_EFFECT			 no:0
+SPECIALTYPE_CAMERACASE			 no:0
+SPECIALTYPE_PRECIPITATION			 no:0
+SPECIALTYPE_ELECTRICITY			 no:0
+SPECIALTYPE_ZOOKEEPER			 no:0
+SPECIALTYPE_FIRE			 no:0
+SPECIALTYPE_TRANSPORTER			 no:0
+SPECIALTYPE_ICE			 no:0
+SPECIALTYPE_SPEEDBOOST			 no:0
+SPECIALTYPE_SLIDE			 no:0
+SPECIALTYPE_RANDOMFOOD			 no:0
+SPECIALTYPE_ESCALATOR			 no:0
+SPECIALTYPE_VEHICLE			 no:0
+SPECIALTYPE_DOOR			 no:0
+SPECIALTYPE_SCENIC			 no:0
+SPECIALTYPE_PHONEBOX			 no:0
+SPECIALTYPE_WATERFALL			 no:8
+SPECIALTYPE_LASER			 no:0
+SPECIALTYPE_FOUNTAIN			 no:0
+SPECIALTYPE_SHATTER			 no:0
+SPECIALTYPE_TARBUBBLE			 no:0
+SPECIALTYPE_ENEMY			 no:0
+SPECIALTYPE_LIGHTNING			 no:0
+SPECIALTYPE_CHECKPOINT			 no:0
+SPECIALTYPE_BUMPER			 no:0
+SPECIALTYPE_MONITOR			 no:0
+SPECIALTYPE_TARGET			 no:0
+SPECIALTYPE_SAFEPOINT			 no:0
+SPECIALTYPE_MAGNET			 no:0
+SPECIALTYPE_FLOCKING			 no:4
+SPECIALTYPE_BUZZARD			 no:0
+SPECIALTYPE_FECAMERA			 no:16
+SPECIALTYPE_MAPPOINT			 no:0
+SPECIALTYPE_MIRROR			 no:0
+SPECIALTYPE_LAVA			 no:0
+SPECIALTYPE_SPLAT			 no:0
+SPECIALTYPE_DEATH			 no:0
+SPECIALTYPE_HAAR			 no:0
+SPECIALTYPE_MUSICBOX			 no:0
+SPECIALTYPE_MINECART			 no:0
+SPECIALTYPE_MINECARTDUMMY			 no:0
+SPECIALTYPE_PORTALWORLD			 no:0
+SPECIALTYPE_FLAMETHROWA			 no:0
+SPECIALTYPE_SECURITYBOX			 no:0
+SPECIALTYPE_MECHATWEETY			 no:0
+SPECIALTYPE_TAZBOSSITEM			 no:0
+SPECIALTYPE_CLIPPLANE			 no:0
+SPECIALTYPE_ROCKET			 no:0
+SPECIALTYPE_XDOOR			 no:0
+SPECIALTYPE_HALO			 no:0
+SPECIALTYPE_ZAPPER			 no:0
+SPECIALTYPE_SPAWNCRATE			 no:0
+SPECIALTYPE_POLICEBOX			 no:0
+SPECIALTYPE_EGG			 no:0
+SPECIALTYPE_AIRCON			 no:0
+SPECIALTYPE_TUMBLEWEED			 no:0
+SPECIALTYPE_ARROW			 no:0
+SPECIALTYPE_MIRRORBALL			 no:0
+SPECIALTYPE_WATERRIPPLE			 no:0
+
+ 
+ 

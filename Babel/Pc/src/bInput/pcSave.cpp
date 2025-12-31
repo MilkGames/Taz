@@ -20,8 +20,7 @@
 */
 int bInitGameSave()
 {
-        bkPrintf("*** WARNING *** bInitGameSave was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    return OK; // empty, confirmed
 }
 
 /*	--------------------------------------------------------------------------------
@@ -33,8 +32,7 @@ int bInitGameSave()
 */
 void bShutdownGameSave()
 {
-        bkPrintf("*** WARNING *** bShutdownGameSave was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    return; // empty, confirmed
 }
 
 /* --------------------------------------------------------------------------------

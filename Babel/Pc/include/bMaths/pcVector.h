@@ -622,6 +622,7 @@ void bmVectorCalcNormal(TBVector dest, const TBVector src1, const TBVector src2,
 
 __inline void bmVectorCopy(TBVector dest, const TBVector src)
 {
+	if (!dest || (unsigned int)src < 0x10000) return; // MG: temp
 	dest[0] = src[0];
 	dest[1] = src[1];
 	dest[2] = src[2];

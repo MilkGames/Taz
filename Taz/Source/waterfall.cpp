@@ -101,8 +101,9 @@ void UpdateWaterfallInstance(ACTORINSTANCE *actorInstance)
 			bmVectorSub(dist, actorInstance->actorInstance.position, gameStatus.player[j-1].actorInstance->actorInstance.position);
 			if(len = bmVectorLen(dist) < METERTOUNIT(30.0f))
 			{
-				if (actorInstance->waterfallInfo->soundHandle == -1)
-					actorInstance->waterfallInfo->soundHandle = PlayTrackingSample("waterfall.wav", 128, actorInstance->actorInstance.position, 0, 0, METERTOUNIT(10.0f), METERTOUNIT(20.5f));
+				// MG: TEMP!!!! doesn't exist, stop spamming!!!
+				//if (actorInstance->waterfallInfo->soundHandle == -1)
+					//actorInstance->waterfallInfo->soundHandle = PlayTrackingSample("waterfall.wav", 128, actorInstance->actorInstance.position, 0, 0, METERTOUNIT(10.0f), METERTOUNIT(20.5f));
 
 				num = 1;
 				if(len < METERTOUNIT(15.0f))

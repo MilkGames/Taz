@@ -19,9 +19,13 @@
 
 // platform specific GUI info container
 typedef struct _TBGuiHALInfo {
-	uint32			*lpSurface;						// ptr to surface memory
-	int				lPitch;							// screen pitch/4
-} TBGuiHALInfo;
+	uint32 savedZTest;          // 0x00: bRenderState.renderState[ZTEST][0]
+	uint32 savedTextureFilter;  // 0x04: bRenderState.renderState[TEXTUREFILTER][0]
+	uint32 savedAlphaEnable;    // 0x08: bRenderState.renderState[ALPHAENABLE][0]
+	uint32 savedAlphaBlendMode; // 0x0C: bRenderState.renderState[ALPHABLENDMODE][0]
+	int32  savedProjectionMode; // 0x10: bViewInfo.projectionMode
+	int32  locked;              // 0x14: "already locked?" guard
+} TBGuiHALInfo; // sizeof(TBGuiHALInfo) == 0x18
 
 
 // ********************************************************************************

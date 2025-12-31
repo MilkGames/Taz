@@ -381,7 +381,9 @@ int InitialiseScene(int scene)
 		//FreeSplashScreen(&gameStatus.splashScreen);
 
 #ifdef ENABLESNAPSHOT
+#if BPLATFORM != PC // MG: that's mine!
 		snap = bkTakeHeapSnapshot(BALLGROUPS);
+#endif
 #endif
 
 		// JW: Draw Demo Book and set save slot to empty
@@ -577,11 +579,13 @@ int InitialiseScene(int scene)
 		{
 			bkPrintf("*** ERROR *** Could not load map package\n");
 #ifdef ENABLESNAPSHOT
+#if BPLATFORM != PC // MG: that's mine!
 			if (bkCompareHeapSnapshot(snap))
 			{
 				//DrawMemLeakWarning();
 			}
 			bkDeleteHeapSnapshot(snap);
+#endif
 #endif
 			return -1;
 		}
@@ -1786,6 +1790,7 @@ int UpdateScene(int scene)
 	case SCENE_OBJECTVIEWONLY:
 		break;
 	case SCENE_NOSCENE:
+		BookList_update();
 		break;
 	case SCENE_LANGUAGESELECT:
 		UpdateSpecial(scene);
@@ -2035,6 +2040,7 @@ int FreeScene(int scene)
 #endif
 
 #ifdef ENABLESNAPSHOT
+#if BPLATFORM != PC // MG: that's mine!
 
 #ifndef MEMLEAKS_TO_DEBUG_WINDOW
 	bkSetDebugStream(&map.errorStream);
@@ -2067,7 +2073,7 @@ int FreeScene(int scene)
 	bkFlushDebugStreamToFile(&map.optimizeStream);
 	bkFlushDebugStreamToFile(&map.memoryStream);
 #endif// PP: ndef MEMLEAKS_TO_DEBUG_WINDOW
-
+#endif// MG: if BPLATFORM != PC
 #endif// PP: def ENABLESNAPSHOT
 	
 	return TRUE;

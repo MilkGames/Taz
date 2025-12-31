@@ -154,7 +154,7 @@ typedef struct _TBMesh {
 	int32						noofVertices;				// total #vertices in all prims in this mesh
 	union {
 		uchar					*vertices;					// vertices
-		//TBMeshVertexBuffer		*vertexBuffer;				// vb for vertices
+		TBMeshVertexBuffer		*vertexBuffer;				// vb for vertices
 	};
 	int32						noofBatches;				// total #batches in this mesh
 	TBMeshBatch					*batches;					// batch array

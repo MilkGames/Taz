@@ -12,8 +12,6 @@
 // ********************************************************************************
 // Constants and Macros
 
-#define BDIRECTINPUTKEYMAPSIZE 107
-
 // maximum possible +ve or -ve channel value
 #define BIMAX			32760
 
@@ -256,6 +254,8 @@ typedef struct _TBRumbleController {
 extern TBInputStateInfo		bInputState;									// general input state info
 extern TBRumbleController	bRumbleControllers[BMAXPADS][BRUMBLEARRAYSIZE];	// rumble controller array
 extern TBIChannelMap		*bInputMapList;									// root of the channel map list
+
+extern TBIChannelMap        *bExclusiveMap;								    // MG: didn't exist before, for some reason (check gui.cpp) now global
 
 
 // ********************************************************************************

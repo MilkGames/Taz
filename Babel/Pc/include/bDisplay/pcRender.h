@@ -49,8 +49,9 @@ typedef struct _TBRenderStateInfo {
 	int      forceTextureStage[BMAX_TEXTURE_STAGES];          // ref-counts to force actor texture usage [0x898] (2 * 4 = 8)
 	int      shadowActive;                                    // skinned actors receiving-shadow hazard  [0x8A0]
 
-	uchar    pad[5];                                          // pad/alignment (to 8-byte boundary)      [0x8A4]
-} TBRenderStateInfo; // sizeof(TBRenderStateInfo) == 0x8B0
+	int		 UNKNOWN;                                         // unknown (see bDrawSoftSkinCPU)			 [0x8A4]
+	uchar    pad[8];										  // padding								 [0x8A8]
+} TBRenderStateInfo; // sizeof(TBRenderStateInfo) == 0x8B0 with alignment: 0x8
 
 
 // a render target control structure

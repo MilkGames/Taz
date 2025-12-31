@@ -119,7 +119,11 @@ void FADE::InitFade()
 	for(i=0;i<6;i++)
 	{
 		BDVERTEX_SETXYZW(&swipePolyVerts[i],swipeVerts[i][X],swipeVerts[i][Z],0.0f,1.0f);
+#if BPLATFORM == PC && defined(MILKGAMES)
+		BDVERTEX_SETRGBA(&swipePolyVerts[i],0,0,0,255);
+#else
 		BDVERTEX_SETRGBA(&swipePolyVerts[i],0,0,0,127);
+#endif
 	}
 	BDVERTEX_SETRGBA(&swipePolyVerts[4], 0,0,0, 0);
 	BDVERTEX_SETRGBA(&swipePolyVerts[5], 0,0,0, 0);
@@ -130,14 +134,21 @@ void FADE::InitFade()
 	tempVector[Z] = distanceToScreenCorner;
 	tempVector[W] = 1.0f;
 	bmVectorCopy(innerCircle[90],tempVector);
-	BDVERTEX_SETRGBA(&circlePolyVerts[90*2], 0,0,0, 127);
+#if BPLATFORM == PC && defined(MILKGAMES)
+	BDVERTEX_SETRGBA(&circlePolyVerts[90*2], 0,0,0, 255);
+#else
 	BDVERTEX_SETUV(&circlePolyVerts[90*2], 0.0f,CTEXC2);
+#endif
 	for (i=0;i<90;i++)
 	{
 		bmVectorCopy(innerCircle[i],tempVector);
 		bmVectorRotateY(tempVector,tempVector,PI/45.0f);
 		BDVERTEX_SETXYZW(&circlePolyVerts[i*2],tempVector[X],tempVector[Z],0.0f,1.0f);
+#if BPLATFORM == PC && defined(MILKGAMES)
+		BDVERTEX_SETRGBA(&circlePolyVerts[i*2], 0,0,0, 255);
+#else
 		BDVERTEX_SETRGBA(&circlePolyVerts[i*2], 0,0,0, 127);
+#endif
 		BDVERTEX_SETUV(&circlePolyVerts[i*2], 0.0f,CTEXC2);
 	}
 
@@ -149,12 +160,20 @@ void FADE::InitFade()
 	for (i=0;i<90;i++)
 	{
 		BDVERTEX_SETXYZW(&circlePolyVerts[(i*2)+1],tempVector[X],tempVector[Z],0.0f,1.0f);
-	    BDVERTEX_SETRGBA(&circlePolyVerts[(i*2)+1], 0,0,0, 127);
+#if BPLATFORM == PC && defined(MILKGAMES)
+	    BDVERTEX_SETRGBA(&circlePolyVerts[(i*2)+1], 0,0,0, 255);
+#else
+		BDVERTEX_SETRGBA(&circlePolyVerts[(i*2)+1], 0,0,0, 127);
+#endif
 	    BDVERTEX_SETUV(&circlePolyVerts[(i*2)+1], 0.0f,CTEXC1);
 		bmVectorRotateY(tempVector,tempVector,PI/45.0f);
 	}
 	BDVERTEX_SETXYZW(&circlePolyVerts[(90*2)+1],0,distanceToScreenCorner + 0.0f,0.0f,1.0f);
-    BDVERTEX_SETRGBA(&circlePolyVerts[(90*2)+1], 0,0,0, 127);
+#if BPLATFORM == PC && defined(MILKGAMES)
+    BDVERTEX_SETRGBA(&circlePolyVerts[(90*2)+1], 0,0,0, 255);
+#else
+	BDVERTEX_SETRGBA(&circlePolyVerts[(90*2)+1], 0,0,0, 127);
+#endif
     BDVERTEX_SETUV(&circlePolyVerts[(90*2)+1], 0.0f,CTEXC1);
 
 	SetFadeState();
@@ -575,14 +594,24 @@ bool FADE::SetFadeState()
 	TBVector tempVector;
 	float	scaleFactor;
 	int		colour=0;
+#if BPLATFORM == PC && defined(MILKGAMES)
+	int alpha = (fadeValue >= 127.0f) ? 255 : (int)(fadeValue * 2.0f);
+#endif
 
 	switch(fadeType)
 	{
 	case FADETYPE_NORMAL:
+#if BPLATFORM == PC && defined(MILKGAMES)
+		BDVERTEX_SETRGBA(&screenPolyVerts[0], r,g,b, (int)(alpha));
+		BDVERTEX_SETRGBA(&screenPolyVerts[1], r,g,b, (int)(alpha));
+		BDVERTEX_SETRGBA(&screenPolyVerts[2], r,g,b, (int)(alpha));
+		BDVERTEX_SETRGBA(&screenPolyVerts[3], r,g,b, (int)(alpha));
+#else
 		BDVERTEX_SETRGBA(&screenPolyVerts[0], r,g,b, (int)(fadeValue));
 		BDVERTEX_SETRGBA(&screenPolyVerts[1], r,g,b, (int)(fadeValue));
 		BDVERTEX_SETRGBA(&screenPolyVerts[2], r,g,b, (int)(fadeValue));
 		BDVERTEX_SETRGBA(&screenPolyVerts[3], r,g,b, (int)(fadeValue));
+#endif
 		break;
 	case FADETYPE_CIRCLEWB:
 		colour = 127;
@@ -590,7 +619,11 @@ bool FADE::SetFadeState()
 		for (i=0;i<91;i++)
 		{
 			// update outer circle colour
+#if BPLATFORM == PC && defined(MILKGAMES)
+			BDVERTEX_SETRGBA(&circlePolyVerts[(i*2)+1], colour,colour,colour, 255);
+#else
 			BDVERTEX_SETRGBA(&circlePolyVerts[(i*2)+1], colour,colour,colour, 127);
+#endif
 			tempVector[X] = innerCircle[i][X];
 			tempVector[Y] = 0.0f;
 			tempVector[Z] = innerCircle[i][Z];
@@ -602,9 +635,17 @@ bool FADE::SetFadeState()
 			tempVector[Z] += circleFadeTo[Z]*(1.0f-scaleFactor);
 			tempVector[W] = 1.0f;
 			BDVERTEX_SETXYZW(&circlePolyVerts[i*2],tempVector[X],tempVector[Z],0.0f,1.0f);
+#if BPLATFORM == PC && defined(MILKGAMES)
+			BDVERTEX_SETRGBA(&circlePolyVerts[i*2], colour,colour,colour, 255);
+#else
 			BDVERTEX_SETRGBA(&circlePolyVerts[i*2], colour,colour,colour, 127);
+#endif
 			BDVERTEX_SETXYZW(&circleEdgePolyVerts[(i*2)+1],tempVector[X],tempVector[Z],0.0f,1.0f);
+#if BPLATFORM == PC && defined(MILKGAMES)
+			BDVERTEX_SETRGBA(&circleEdgePolyVerts[(i*2)+1], colour,colour,colour, 255);
+#else
 			BDVERTEX_SETRGBA(&circleEdgePolyVerts[(i*2)+1], colour,colour,colour, 127);
+#endif
 			BDVERTEX_SETUV(&circleEdgePolyVerts[(i*2)+1], 0.0f,CTEXC2);
 			tempVector[X] = innerCircle[i][X];
 			tempVector[Y] = 0.0f;

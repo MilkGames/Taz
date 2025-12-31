@@ -194,8 +194,8 @@ int CreateCollectibleActor(char *actorName, TBVector position, float life, int r
 
 		data = (COLLECTIBLE *) temp;
 
-		if (gameStatus.globalSettings.saveInfo.saveSlot[gameStatus.globalSettings.currentSaveSlot].level[map.sceneNumber].swirls[data->ident])
-			data->flags |= COLLECTIBLEFLAG_DISABLED;
+		//if (gameStatus.globalSettings.saveInfo.saveSlot[gameStatus.globalSettings.currentSaveSlot].level[map.sceneNumber].swirls[data->ident])
+			//data->flags |= COLLECTIBLEFLAG_DISABLED;
 
 		break;
 	case COLLECTIBLETYPE_FOOD:

@@ -14,6 +14,55 @@
 TBExtraSystem bExtraSystemList;
 
 // ********************************************************************************
+// Locals
+
+int stopSpam17 = 0;
+int stopSpam18 = 0;
+int stopSpam19 = 0;
+int stopSpam20 = 0;
+
+// ********************************************************************************
+// Local Functions
+
+void CalculateSystemXForm(TBExtraSystem *eSystem)
+{
+    TBMatrix local_c0;
+    TBMatrix local_80;
+    TBMatrix local_40;
+
+    eSystem->flags &= ~BEXSYSFLAG_XFORMDIRTY;
+
+    bmMatTranslate(local_c0,
+                   eSystem->position[0],
+                   eSystem->position[1],
+                   eSystem->position[2]);
+
+    bmQuatToMatrix(local_40, eSystem->orientation);
+
+    if (eSystem->actorAttachedTo != NULL)
+    {
+        bmMatMultiply(local_80, local_c0, local_40);
+
+        if (eSystem->nodeAttachedTo != NULL)
+        {
+            bmMatMultiply(local_c0,
+                          eSystem->actorAttachedTo->objectToWorld,
+                          eSystem->nodeAttachedTo->nodeToLocalWorld);
+
+            bmMatMultiply(eSystem->systemToWorld, local_c0, local_80);
+            return;
+        }
+
+        bmMatMultiply(eSystem->systemToWorld,
+                      eSystem->actorAttachedTo->objectToWorld,
+                      local_80);
+        return;
+    }
+
+    bmMatMultiply(eSystem->systemToWorld, local_c0, local_40);
+}
+
+// ********************************************************************************
 // Function Implementations
 
 /*	--------------------------------------------------------------------------------
@@ -61,9 +110,72 @@ TBExtraSystem *baCreateExtraSystem(char *ident, TBExtraCreateFunc create, TBExtr
 								   TBExtraRenderFunc render, TBExtraSystemInitFunc sysInit, int32 dataSize, int32 maxInstances,
 								   uint32 flags, int32 systemDataSize)
 {
-		bkPrintf("*** WARNING *** baCreateExtraSystem was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-	TBExtraSystem *example;
-	return example;
+    uint32 dataSizeAligned = ((uint32)dataSize + 0x0Fu) & 0xFFFFFFF0u;
+    uint32 maxInstancesEven = ((uint32)maxInstances + 1u) & 0xFFFFFFFEu;
+    uint32 sysDataSizeAligned = ((uint32)systemDataSize + 0x0Fu) & 0xFFFFFFF0u;
+
+    uint32 totalSize = (dataSizeAligned + 8u) * maxInstancesEven + 0xC0u + sysDataSizeAligned;
+
+    TBExtraSystem *eSystem = (TBExtraSystem *)CALLOCEX(totalSize, 0, (uint32) "Extra System");
+    if (eSystem == NULL)
+        return NULL;
+
+    {
+        uchar *p = (uchar *)eSystem + 0xC0;
+
+        eSystem->sysData = p;
+        p += sysDataSizeAligned;
+
+        eSystem->activeFlags = (int32 *)p;
+        p += maxInstancesEven * 4u;
+
+        eSystem->dataPtrs = (uchar **)p;
+        p += maxInstancesEven * 4u;
+
+        eSystem->data = p;
+    }
+
+    eSystem->prev = bExtraSystemList.prev;
+    eSystem->next = &bExtraSystemList;
+    bExtraSystemList.prev->next = eSystem;
+    bExtraSystemList.prev = eSystem;
+
+    eSystem->crc = bkStringCRC(ident);
+
+    eSystem->flags = flags;
+    eSystem->maxInstances = (int32)maxInstancesEven;
+    eSystem->dataSize = (int32)dataSizeAligned;
+
+    eSystem->createFunc = create;
+    eSystem->updateFunc = update;
+    eSystem->deleteFunc = del;
+    eSystem->renderFunc = render;
+    eSystem->sysInitFunc = sysInit;
+
+    eSystem->noofInstances = 0;
+    eSystem->nextInstance = 0;
+
+    eSystem->sysDataSize = (int32)sysDataSizeAligned;
+    eSystem->highestNoofInstances = 0;
+
+    eSystem->position[0] = 0.0f;
+    eSystem->position[1] = 0.0f;
+    eSystem->position[2] = 0.0f;
+    eSystem->position[3] = 1.0f;
+
+    eSystem->orientation[0] = 0.0f;
+    eSystem->orientation[1] = 0.0f;
+    eSystem->orientation[2] = 0.0f;
+    eSystem->orientation[3] = 1.0f;
+
+    eSystem->actorAttachedTo = NULL;
+    eSystem->nodeAttachedTo = NULL;
+
+    if (sysInit != NULL)
+        sysInit(eSystem, 0);
+
+    CalculateSystemXForm(eSystem);
+    return eSystem;
 }
 
 
@@ -77,45 +189,54 @@ TBExtraSystem *baCreateExtraSystem(char *ident, TBExtraCreateFunc create, TBExtr
 
 void baDeleteExtraSystem(TBExtraSystem *eSystem)
 {
-    if (eSystem == NULL) {
-        // delete all systems
-        while (bExtraSystemList.next != &bExtraSystemList) {
+    if (eSystem == NULL)
+    {
+        if (bExtraSystemList.next == &bExtraSystemList)
+            return;
+
+        do
+        {
             baDeleteExtraSystem(bExtraSystemList.next);
-        }
+        } while (bExtraSystemList.next != &bExtraSystemList);
+
         return;
     }
 
-    // if there are live instances, call the system’s deleteFunc on each one (last>first)
-    if (eSystem->noofInstances > 0 && eSystem->deleteFunc) {
-        while (eSystem->noofInstances > 0) {
-            const int idx = eSystem->noofInstances - 1;
-            eSystem->noofInstances = idx;
-            // deleteFunc(TBExtraSystem*, uchar* data)
-            eSystem->deleteFunc(eSystem, eSystem->dataPtrs[idx]);
+    if (eSystem->noofInstances != 0)
+    {
+        if (eSystem->deleteFunc != NULL)
+        {
+            do
+            {
+                eSystem->noofInstances--;
+                eSystem->deleteFunc(eSystem, eSystem->dataPtrs[eSystem->noofInstances]);
+            } while (eSystem->noofInstances != 0);
         }
 
-        // reset counters
         eSystem->noofInstances = 0;
-        eSystem->nextInstance  = 0;
+        eSystem->nextInstance = 0;
 
-        // clear active flags for the full capacity.
-        const int cap = (eSystem->maxInstances & 0x3fffffff);
-        for (int i = 0; i < cap; ++i) {
-            eSystem->activeFlags[i] = 0;
+        {
+            uint32 count = (uint32)eSystem->maxInstances;
+            int32* p = eSystem->activeFlags;
+
+            while (count != 0)
+            {
+                *p = 0;
+                ++p;
+                --count;
+            }
         }
-        // the decompile had a second tiny loop for potential byte-tail; safe to ignore in C/C++
     }
 
-    // call system init function with reason=1 (decompile passes 1 here)
-    if (eSystem->sysInitFunc) {
-        eSystem->sysInitFunc(eSystem, /*reason=*/1); // BEXSYSFLAG_NEWPRIORITY ??
+    if (eSystem->sysInitFunc != NULL)
+    {
+        eSystem->sysInitFunc(eSystem, 1);
     }
 
-    // unlink from the global doubly-linked list
     eSystem->next->prev = eSystem->prev;
     eSystem->prev->next = eSystem->next;
 
-    // free the system itself
     bkHeapFree(eSystem);
 }
 
@@ -146,8 +267,77 @@ TBExtraSystem *baFindExtraSystem(char *ident)
 
 uchar *baCreateExtra(TBExtraSystem *eSystem, ...)
 {
-        bkPrintf("*** WARNING *** baCreateExtra was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return NULL;
+    int32 i;
+    int32 idx;
+
+    if (eSystem->noofInstances == eSystem->maxInstances)
+    {
+        if (eSystem->maxInstances == 0)
+            return (uchar *)0;
+
+        if (((eSystem->flags & 1) == 0) || (eSystem->noofInstances <= 0))
+            return (uchar *)0;
+
+        idx = 0;
+
+        if (eSystem->deleteFunc != (TBExtraDeleteFunc)0)
+        {
+            while (idx < eSystem->noofInstances)
+            {
+                if (eSystem->deleteFunc(eSystem, eSystem->dataPtrs[idx]) != 0)
+                    break;
+                idx++;
+            }
+
+            if (idx >= eSystem->noofInstances)
+                return (uchar *)0;
+        }
+        else
+        {
+            if (eSystem->noofInstances <= 0)
+                return (uchar *)0;
+        }
+
+        i = (int32)((int32)(eSystem->dataPtrs[idx] - eSystem->data) / eSystem->dataSize);
+        eSystem->activeFlags[i] = 0;
+
+        if (idx != (eSystem->noofInstances - 1))
+        {
+            memmove(&eSystem->dataPtrs[idx],
+                    &eSystem->dataPtrs[idx + 1],
+                    (uint32)(eSystem->noofInstances - (idx + 1)) * 4);
+        }
+
+        eSystem->noofInstances -= 1;
+    }
+
+    while (eSystem->activeFlags[eSystem->nextInstance] != 0)
+    {
+        eSystem->nextInstance = (eSystem->nextInstance + 1) % eSystem->maxInstances;
+    }
+
+    eSystem->dataPtrs[eSystem->noofInstances] =
+        eSystem->data + (eSystem->dataSize * eSystem->nextInstance);
+
+    eSystem->activeFlags[eSystem->nextInstance] = 1;
+    eSystem->noofInstances += 1;
+
+    if (eSystem->noofInstances > eSystem->highestNoofInstances)
+        eSystem->highestNoofInstances = eSystem->noofInstances;
+
+    if (eSystem->createFunc != (TBExtraCreateFunc)0)
+    {
+        va_list args;
+        va_start(args, eSystem);
+        eSystem->createFunc(eSystem,
+                            eSystem->dataPtrs[eSystem->noofInstances - 1],
+                            args);
+        va_end(args);
+    }
+
+    eSystem->nextInstance = (eSystem->nextInstance + 1) % eSystem->maxInstances;
+
+    return (uchar *)eSystem->dataPtrs[eSystem->noofInstances - 1];
 }
 
 
@@ -176,8 +366,37 @@ uchar *baCloneExtra(TBExtraSystem *eSystem, void *parmTemplate)
 
 void baResetExtraSystem(TBExtraSystem *eSystem)
 {
-        bkPrintf("*** WARNING *** baResetExtraSystem was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    if (eSystem == 0)
+    {
+        TBExtraSystem *cur = bExtraSystemList.next;
+        while (cur != &bExtraSystemList)
+        {
+            baResetExtraSystem(cur);
+            cur = cur->next;
+        }
+        return;
+    }
+
+    if (eSystem->noofInstances == 0)
+        return;
+
+    if (eSystem->deleteFunc != 0)
+    {
+        while (eSystem->noofInstances != 0)
+        {
+            eSystem->noofInstances -= 1;
+            eSystem->deleteFunc(eSystem, eSystem->dataPtrs[eSystem->noofInstances]);
+        }
+    }
+
+    eSystem->noofInstances = 0;
+    eSystem->nextInstance  = 0;
+
+    {
+        int32 i;
+        for (i = 0; i < eSystem->maxInstances; ++i)
+            eSystem->activeFlags[i] = 0;
+    }
 }
 
 
@@ -191,8 +410,30 @@ void baResetExtraSystem(TBExtraSystem *eSystem)
 
 void baUpdateExtraSystem(TBExtraSystem *eSystem, float t)
 {
-        bkPrintf("*** WARNING *** baUpdateExtraSystem was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    if (eSystem == NULL)
+    {
+        TBExtraSystem *it = bExtraSystemList.next;
+        if (it == &bExtraSystemList)
+            return;
+
+        do
+        {
+            baUpdateExtraSystem(it, t);
+            it = it->next;
+        } while (it != &bExtraSystemList);
+
+        return;
+    }
+
+    if (((eSystem->flags & BEXSYSFLAG_XFORMDIRTY) != 0) || (eSystem->actorAttachedTo != NULL))
+    {
+        CalculateSystemXForm(eSystem);
+    }
+
+    if ((eSystem->updateFunc != NULL) && (eSystem->noofInstances != 0))
+    {
+        eSystem->updateFunc(eSystem, eSystem->noofInstances, eSystem->dataPtrs, t);
+    }
 }
 
 
@@ -206,8 +447,33 @@ void baUpdateExtraSystem(TBExtraSystem *eSystem, float t)
 
 void baRenderExtraSystem(TBExtraSystem *eSystem, void *context)
 {
-        bkPrintf("*** WARNING *** baRenderExtraSystem was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    if (eSystem == NULL)
+    {
+        TBExtraSystem *it = bExtraSystemList.next;
+        if (it == &bExtraSystemList)
+            return;
+
+        do
+        {
+            baRenderExtraSystem(it, context);
+            it = it->next;
+        } while (it != &bExtraSystemList);
+
+        return;
+    }
+
+    if (eSystem->renderFunc == NULL)
+        return;
+
+    if (eSystem->noofInstances == 0)
+        return;
+
+    if ((eSystem->flags & BEXSYSFLAG_GLOBALEXTRAS) != 0)
+        bdSetObjectMatrix(bIdentityMatrix);
+    else
+        bdSetObjectMatrix(eSystem->systemToWorld);
+
+    eSystem->renderFunc(eSystem, eSystem->noofInstances, eSystem->dataPtrs, context);
 }
 
 
@@ -221,8 +487,34 @@ void baRenderExtraSystem(TBExtraSystem *eSystem, void *context)
 
 int baDeleteExtraInstance(TBExtraSystem *eSystem, int instanceIndex)
 {
-        bkPrintf("*** WARNING *** baDeleteExtraInstance was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    int32 ok;
+
+    if (eSystem->deleteFunc != NULL)
+    {
+        ok = eSystem->deleteFunc(eSystem, eSystem->dataPtrs[instanceIndex]);
+        if (ok == 0)
+        {
+            return 0;
+        }
+    }
+
+    /* activeFlags[((dataPtrs[i] - data) / dataSize)] = 0 */
+    {
+        int32 diff = (int32)((uchar *)eSystem->dataPtrs[instanceIndex] - (uchar *)eSystem->data);
+        int32 slot = diff / eSystem->dataSize;
+        eSystem->activeFlags[slot] = 0;
+    }
+
+    if (instanceIndex != (eSystem->noofInstances - 1))
+    {
+        uint32 moveBytes = (uint32)((eSystem->noofInstances - (instanceIndex + 1)) * 4);
+        memmove(&eSystem->dataPtrs[instanceIndex],
+                &eSystem->dataPtrs[instanceIndex + 1],
+                moveBytes);
+    }
+
+    eSystem->noofInstances -= 1;
+    return 1;
 }
 
 

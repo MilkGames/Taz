@@ -59,21 +59,6 @@ void bkSetDebugStreamFlags(TBDebugStream *stream, uint32 flagMask, uint32 newVal
 
 
 /* --------------------------------------------------------------------------------
-   Function : bkStreamPrintf
-   Purpose : print a string to a debug stream
-   Parameters : debug stream, as for printf
-   Returns : 
-   Info : 
-*/
-
-void bkStreamPrintf(TBDebugStream *stream, char *format, ...)
-{
-        bkPrintf("*** WARNING *** bkStreamPrintf was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
-}
-
-
-/* --------------------------------------------------------------------------------
    Function : bkFlushDebugStreamToFile
    Purpose : flush all currently buffered debug output to stream's log file
    Parameters : ptr to stream

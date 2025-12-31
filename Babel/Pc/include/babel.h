@@ -27,6 +27,7 @@
 #error "This codebase must be built with DirectX 8.0 headers (D3D_SDK_VERSION==120)."
 #endif
 
+#include <dinput.h> // for DX input
 #include <dxerr8.h> // for DX errors
 
 #ifdef _DEBUG

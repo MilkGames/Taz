@@ -6428,7 +6428,7 @@ int DIKToBabel(int DIKCode)
 #if BPLATFORM == PC
 	
 	// Search for DIKCode in lookup table
-	while((enumeratedKey<BDIRECTINPUTKEYMAPSIZE) && (bDirectInputKeyMap[enumeratedKey] != DIKCode)) // MG: IMPLEMENT bDirectInputKeyMap!!!!
+	while((enumeratedKey<BDIRECTINPUTKEYMAPSIZE) && (bDirectInputKeyMap[enumeratedKey] != DIKCode))
 		enumeratedKey++;
 
 	if (bDirectInputKeyMap[enumeratedKey] != DIKCode)
@@ -6667,7 +6667,8 @@ static bool checkForPadRemoval(PADCONTROLSTATUS& controller, bool& present)
 	}
 }
 
-
+#if BPLATFORM != PC // MG: PC doesn't actually call for this function and idk if bInputInfo should have
+					// MG: a noofConnectedDevices variable. I guess it shouldn't
 /*	--------------------------------------------------------------------------------
 	Function 	: checkForMissingControllers2
 	Purpose 	: find and bind required controllers; if a required controller is missing,
@@ -7022,6 +7023,7 @@ void checkForMissingControllers2(bool display)
 
 	}// PP: end if(padMissng && display, etc)
 }
+#endif
 
 
 /*	--------------------------------------------------------------------------------

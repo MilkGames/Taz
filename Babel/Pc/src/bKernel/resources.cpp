@@ -247,7 +247,7 @@ int bLoadPackageResources(TBPackageIndex *pak, uint typeMask, int groupId, uint3
             if (tagCount <= 0)
                 continue;
 
-            uint32 *tagsBase = pak->tags + (fe->tagOffset >> 2);
+            uint32* tagsBase = (uint32*)((uchar*)pak->tags + (fe->tagOffset & ~3u));
 
             bool hasTypeTag  = false;
             bool hasMatchTag = (tagMatch == 0);
@@ -290,8 +290,42 @@ int bLoadPackageResources(TBPackageIndex *pak, uint typeMask, int groupId, uint3
 
 void bDeletePackageResources(TBPackageID packageId, uint typeMask)
 {
-        bkPrintf("*** WARNING *** bDeletePackageResources was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    uint32 idToMatch;
+    memcpy(&idToMatch, &packageId, 4);
+
+    for (;;)
+    {
+        TBResourceInfo* res = bGlobalResourceList.globalNext;
+
+        if (res == &bGlobalResourceList) {
+            return;
+        }
+
+        while (res != &bGlobalResourceList)
+        {
+            const uint32 bit = 1u << (res->type & 31);
+
+            if ((typeMask & bit) &&
+                (((res->packageId32 ^ idToMatch) & 0x7FFFFFFFu) == 0))
+            {
+                res->globalNext->globalPrev = res->globalPrev;
+                res->globalPrev->globalNext = res->globalNext;
+
+                res->localNext->localPrev = res->localPrev;
+                res->localPrev->localNext = res->localNext;
+
+                bResDeleteFunction[res->type](res);
+
+                break;
+            }
+
+            res = res->globalNext;
+        }
+
+        if (res == &bGlobalResourceList) {
+            return;
+        }
+    }
 }
 
 /* --------------------------------------------------------------------------------
@@ -363,8 +397,18 @@ void bDeleteAllResources()
 
 void bDeleteResource(void *resPtr)
 {
-        bkPrintf("*** WARNING *** bDeleteResource was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    TBResourceInfo* const res = (TBResourceInfo*)resPtr;
+
+    // Unlink from global intrusive list
+    res->globalNext->globalPrev = res->globalPrev;
+    res->globalPrev->globalNext = res->globalNext;
+
+    // Unlink from local intrusive list
+    res->localNext->localPrev = res->localPrev;
+    res->localPrev->localNext = res->localNext;
+
+    // Delete by resource type (tailcall in asm via jmp)
+    bResDeleteFunction[res->type](res);
 }
 
 /* --------------------------------------------------------------------------------
@@ -448,10 +492,107 @@ TBResourceInfo *bLoadResourceByCRC(TBPackageIndex *index, uint crc, EBResourceTy
 
 TBResourceInfo *bkFindResourceByCRC(EBResourceType resType, uint32 crc, TBPackageID packageId, uint32 groupId, uint32 flags)
 {
-        bkPrintf("*** WARNING *** bkFindResourceByCRC was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return NULL;
-}
+    const uint32 packageId32 = packageId.crc;
 
+    if ((uint32)resType == (uint32)EBRESTYPE_ANY)
+    {
+        TBResourceInfo* start = bGlobalResourceList.globalNext;
+        TBResourceInfo* it = start;
+
+        // Pass 1: (crc && packageId match, ignoring high bit)
+        while (it != &bGlobalResourceList)
+        {
+            if (it->crc == crc)
+            {
+                uint32 x = it->packageId32 ^ packageId32;
+                if ((x & 0x7fffffffU) == 0)
+                    return it;
+            }
+            it = it->globalNext;
+        }
+
+        // if (flags & 1) return NULL
+        if ((flags & 1U) != 0)
+            return (TBResourceInfo*)0;
+
+        // Pass 2: (crc && groupId match) or (groupId == 0xFFFF => accept any group)
+        it = start;
+        while (it != &bGlobalResourceList)
+        {
+            if (it->crc == crc)
+            {
+                if (groupId == 0xFFFFU)
+                    return it;
+
+                if ((uint32)it->groupId == groupId)
+                    return it;
+            }
+            it = it->globalNext;
+        }
+
+        // Pass 3: (crc only)
+        it = start;
+        while (it != &bGlobalResourceList)
+        {
+            if (it->crc == crc)
+                return it;
+
+            it = it->globalNext;
+        }
+
+        return (TBResourceInfo*)0;
+    }
+    else
+    {
+        // Local list for this resType
+        TBResourceInfo* head = &bLocalResourceList[(uint32)resType];
+        TBResourceInfo* start = head->localNext;
+        TBResourceInfo* it = start;
+
+        // Pass 1: (crc && packageId match, ignoring high bit)
+        while (it != head)
+        {
+            if (it->crc == crc)
+            {
+                uint32 x = it->packageId32 ^ packageId32;
+                if ((x & 0x7fffffffU) == 0)
+                    return it;
+            }
+            it = it->localNext;
+        }
+
+        // if (flags & 1) return NULL
+        if ((flags & 1U) != 0)
+            return (TBResourceInfo*)0;
+
+        // Pass 2: (crc && groupId match) or (groupId == 0xFFFF => accept any group)
+        it = start;
+        while (it != head)
+        {
+            if (it->crc == crc)
+            {
+                if (groupId == 0xFFFFU)
+                    return it;
+
+                if ((uint32)it->groupId == groupId)
+                    return it;
+            }
+            it = it->localNext;
+        }
+
+        // Pass 3: (crc only)
+        it = start;
+        while (it != head)
+        {
+            if (it->crc == crc)
+                return it;
+
+            it = it->localNext;
+        }
+
+        return (TBResourceInfo*)0;
+    }
+}
 
 /* --------------------------------------------------------------------------------
    Function : bkWalkResourceList
@@ -463,8 +604,20 @@ TBResourceInfo *bkFindResourceByCRC(EBResourceType resType, uint32 crc, TBPackag
 
 TBResourceInfo *bkWalkResourceList(EBResourceType resType, TBResourceInfo *resource)
 {
-        bkPrintf("*** WARNING *** bkWalkResourceList was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return NULL;
+    if (resource == NULL)
+    {
+        TBResourceInfo* head = &bLocalResourceList[(int)resType];
+        TBResourceInfo* next = head->localNext;
+        return (next == head) ? NULL : next;
+    }
+
+    if ((EBResourceType)resource->type != resType) {
+        return NULL;
+    }
+
+    TBResourceInfo* head = &bLocalResourceList[(int)resource->type];
+    TBResourceInfo* next = resource->localNext;
+    return (next == head) ? NULL : next;
 }
 
 

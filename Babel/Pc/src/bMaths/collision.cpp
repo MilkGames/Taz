@@ -9,6 +9,11 @@
 #include <babel.h>
 
 // ********************************************************************************
+// Globals
+
+float bCollisionEpsilon = 0.001f;
+
+// ********************************************************************************
 // Function Implementations
 
 /*	--------------------------------------------------------------------------------
@@ -96,9 +101,182 @@ extern int bmCollideRaySphere_Unit(const TBCollisionRay * const ray, const TBCol
 */
 
 extern int bmCollideRayTriangle(const TBCollisionRay * const ray, const TBCollisionTriangle * const tri, TBCollisionInfo * const collisionInfo)
-{
-        bkPrintf("*** WARNING *** bmCollideRayTriangle was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+{		
+    const TBCollisionTriangle *tri0 = tri;
+
+    float e1x = tri->verts[1][0] - tri->verts[0][0];
+    float e1y = tri->verts[1][1] - tri->verts[0][1];
+    float e1z = tri->verts[1][2] - tri->verts[0][2];
+
+    float e2x = tri->verts[2][0] - tri->verts[0][0];
+    float e2y = tri->verts[2][1] - tri->verts[0][1];
+    float e2z = tri->verts[2][2] - tri->verts[0][2];
+
+    float tx = ray->start[0] - tri->verts[0][0];
+    float ty = ray->start[1] - tri->verts[0][1];
+    float tz = ray->start[2] - tri->verts[0][2];
+
+    float qx = (ty * e1z) - (tz * e1y);
+    float qy = (tz * e1x) - (e1z * tx);
+    float qz = (e1y * tx) - (ty * e1x);
+
+    float px = (e2z * ray->unitVector[1]) - (e2y * ray->unitVector[2]);
+    float py = (e2x * ray->unitVector[2]) - (e2z * ray->unitVector[0]);
+    float pz = (e2y * ray->unitVector[0]) - (e2x * ray->unitVector[1]);
+
+    float det = (px * e1x) + (e1y * py) + (e1z * pz);
+
+    float uNum;
+    float vNum;
+
+    if (det <= bCollisionEpsilon)
+    {
+        if (det >= -bCollisionEpsilon)
+        {
+            if (collisionInfo->flags & BMCOLLINFO_RETURNEXTENDEDINFO)
+            {
+                collisionInfo->extInfo = 0x800;
+            }
+            return 0;
+        }
+
+        uNum = (px * tx) + (ty * py) + (tz * pz);
+        if ((uNum > 0.0f) || (uNum < det))
+        {
+            if (collisionInfo->flags & BMCOLLINFO_RETURNEXTENDEDINFO)
+            {
+                collisionInfo->extInfo = 0x800;
+            }
+            return 0;
+        }
+
+        vNum = (qz * ray->unitVector[2]) + (qy * ray->unitVector[1]) + (qx * ray->unitVector[0]);
+        if ((vNum > 0.0f) || ((vNum + uNum) < det))
+        {
+            if (collisionInfo->flags & BMCOLLINFO_RETURNEXTENDEDINFO)
+            {
+                collisionInfo->extInfo = 0x800;
+            }
+            return 0;
+        }
+    }
+    else
+    {
+        uNum = (px * tx) + (ty * py) + (tz * pz);
+        if ((uNum < 0.0f) || (uNum > det))
+        {
+            if (collisionInfo->flags & BMCOLLINFO_RETURNEXTENDEDINFO)
+            {
+                collisionInfo->extInfo = 0x800;
+            }
+            return 0;
+        }
+
+        vNum = (qz * ray->unitVector[2]) + (qy * ray->unitVector[1]) + (qx * ray->unitVector[0]);
+        if ((vNum < 0.0f) || ((vNum + uNum) > det))
+        {
+            if (collisionInfo->flags & BMCOLLINFO_RETURNEXTENDEDINFO)
+            {
+                collisionInfo->extInfo = 0x800;
+            }
+            return 0;
+        }
+    }
+
+    {
+        float invDet = 1.0f / det;
+
+        float t = ((e2z * qz) + (e2y * qy) + (e2x * qx)) * invDet;
+        if (t < 0.0f)
+        {
+            if (collisionInfo->flags & BMCOLLINFO_RETURNEXTENDEDINFO)
+            {
+                collisionInfo->extInfo = 0x200;
+            }
+            return 0;
+        }
+
+        if (t > 1.0f)
+        {
+            if (collisionInfo->flags & BMCOLLINFO_RETURNEXTENDEDINFO)
+            {
+                collisionInfo->extInfo = 0x100;
+            }
+            return 0;
+        }
+
+        float u = uNum * invDet;
+        float v = vNum * invDet;
+
+        {
+            uint32 flags = collisionInfo->flags;
+
+            if (flags & BMCOLLINFO_RETURNTIME)
+            {
+                collisionInfo->time = t;
+            }
+
+            if (flags & BMCOLLINFO_RETURNUV)
+            {
+                collisionInfo->u = u;
+                collisionInfo->v = v;
+            }
+
+            if (flags & BMCOLLINFO_RETURNPOSITION)
+            {
+                float e1xu = e1x * u;
+                float e1yu = e1y * u;
+                float e1zu = e1z * u;
+
+                float e2xv = e2x * v;
+                float e2yv = e2y * v;
+                float e2zv = e2z * v;
+
+                collisionInfo->position[0] = (e2xv + e1xu) + tri0->verts[0][0];
+                collisionInfo->position[1] = (e2yv + e1yu) + tri0->verts[0][1];
+                collisionInfo->position[2] = (e2zv + e1zu) + tri0->verts[0][2];
+                collisionInfo->position[3] = 1.0f;
+            }
+
+            if (flags & BMCOLLINFO_RETURNNORMAL)
+            {
+                float local_10;
+                float local_c;
+                float local_8;
+                float local_4;
+
+                local_10 = (e2z * e1y) - (e2y * e1z);
+                local_c  = (e1z * e2x) - (e2z * e1x);
+                local_8  = (e2y * e1x) - (e1y * e2x);
+
+                {
+                    TBVector n;
+                    n[0] = local_10;
+                    n[1] = local_c;
+                    n[2] = local_8;
+                    bmVectorNorm(n, n);
+                    local_10 = n[0];
+                    local_c  = n[1];
+                    local_8  = n[2];
+                }
+
+                if (det < 0.0f)
+                {
+                    collisionInfo->normal[0] = -local_10;
+                    collisionInfo->normal[1] = -local_c;
+                    collisionInfo->normal[2] = -local_8;
+                    return 1;
+                }
+
+                collisionInfo->normal[0] = local_10;
+                collisionInfo->normal[1] = local_c;
+                collisionInfo->normal[2] = local_8;
+                collisionInfo->normal[3] = local_4;
+            }
+        }
+
+        return 1;
+    }
 }
 
 

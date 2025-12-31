@@ -231,7 +231,50 @@ TBEventClient *bkTrapEventCallback(char *eventName, TBEventCallback callback, vo
 
 TBEventClient *bkTrapEventQueue(char *eventName, int queueSize, uint32 flags)
 {
-        bkPrintf("*** WARNING *** bkTrapEventQueue was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
+    const uint32 crc = bkStringCRC(eventName);
+
+    // Traverse global event ring: evt = bEventRoot.next; while (evt != &bEventRoot) ...
+    TBEvent *evt = bEventRoot.next;
+    while (evt != &bEventRoot)
+    {
+        if (evt->crc == crc)
+        {
+            // Allocate TBEventClient + queue buffer in one contiguous block
+            const size_t totalSize =
+                sizeof(TBEventClient) + (size_t)queueSize * sizeof(TBEventEntry);
+
+            TBEventClient *client =
+                (TBEventClient *)MALLOCEX(totalSize, (uint32)"Event Client (Queue)");
+            if (!client)
+                return NULL;
+
+            // Link into event's client ring (doubly-linked list)
+            TBEventClient *prev = evt->clients.prev;
+            client->next = &evt->clients;
+            client->prev = prev;
+            prev->next   = client;
+            client->next->prev = client;
+
+            // Basic client fields
+            client->event = evt;
+            client->type  = EBEVENTCLIENTTYPE_QUEUE;
+
+            // Queue payload
+            client->queue.queue   = (TBEventEntry *)((char *)client + sizeof(TBEventClient));
+            client->queue.size    = 0;
+            client->queue.maxSize = queueSize;
+            client->queue.flags   = flags;
+
+            // Increment queue count on this event
+            evt->noofQueues++;
+
+            return client;
+        }
+
+        evt = evt->next;
+    }
+
+    // Event with given name not found
     return NULL;
 }
 
@@ -246,8 +289,83 @@ TBEventClient *bkTrapEventQueue(char *eventName, int queueSize, uint32 flags)
 
 int bkPopEvent(TBEventClient *client, char *parmBuffer, void *data)
 {
-        bkPrintf("*** WARNING *** bkPopEvent was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    // No client or no events in queue
+    if (!client || client->queue.size == 0)
+        return FAIL;
+
+    bkWaitMutex(&bEventMutex);
+
+    TBEventEntry *queue = client->queue.queue;
+    if (!queue)
+    {
+        bkReleaseMutex(&bEventMutex);
+        return FAIL;
+    }
+
+    // FILO mode (stack-like behaviour)
+    if (client->queue.flags & BEVENTQUEUEFLAG_FILO)
+    {
+        int index = --client->queue.size;    // pre-decrement size, use last entry
+        TBEventEntry *entry = queue + index;
+
+        // Copy parameter string (null-terminated)
+        if (parmBuffer)
+        {
+            const char *src = entry->parms;
+            char c;
+            do
+            {
+                c = *src++;
+                *parmBuffer++ = c;
+            } while (c != '\0');
+        }
+
+        // Copy event data block (16 bytes)
+        if (data)
+        {
+            memcpy(data, entry->data, BMAXEVENTDATALEN);
+        }
+
+        bkReleaseMutex(&bEventMutex);
+        return OK;
+    }
+    else
+    {
+        // FIFO mode (queue behaviour)
+        TBEventEntry *entry = queue;
+
+        // Copy parameter string from first entry
+        if (parmBuffer)
+        {
+            const char *src = entry->parms;
+            char c;
+            do
+            {
+                c = *src++;
+                *parmBuffer++ = c;
+            } while (c != '\0');
+        }
+
+        // Copy event data from first entry
+        if (data)
+        {
+            memcpy(data, entry->data, BMAXEVENTDATALEN);
+        }
+
+        // Shift remaining entries down if more than one
+        int count = client->queue.size;
+        if (count > 1)
+        {
+            memmove(queue,
+                    queue + 1,
+                    static_cast<size_t>(count - 1) * sizeof(TBEventEntry));
+        }
+
+        --client->queue.size;
+
+        bkReleaseMutex(&bEventMutex);
+        return OK;
+    }
 }
 
 
@@ -261,8 +379,87 @@ int bkPopEvent(TBEventClient *client, char *parmBuffer, void *data)
 
 void bkDeleteEvent(char *eventName)
 {
-        bkPrintf("*** WARNING *** bkDeleteEvent was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    if (eventName != NULL)
+    {
+        uint32 wantCRC = bkStringCRC(eventName);
+
+        // walk global event ring (no mutex taken in this search in the disasm)
+        TBEvent* it = bEventRoot.next;
+        while (it != &bEventRoot)
+        {
+            if (it->crc == wantCRC)
+            {
+                // delete this single event (inline in asm)
+                bkWaitMutex(&bEventMutex);
+
+                TBEventClient* head = &it->clients;
+                TBEventClient* c = head->next;
+
+                if (c != head)
+                {
+                    do
+                    {
+                        c = c->next;
+                        bkHeapFree(c->prev);
+                        c->prev = NULL;
+                    } while (c != head);
+                }
+
+                head->next = head;
+                head->prev = head;
+
+                it->next->prev = it->prev;
+                it->prev->next = it->next;
+
+                bkReleaseMutex(&bEventMutex);
+
+                bkHeapFree(it);
+                return;
+            }
+
+            it = it->next;
+        }
+
+        return;
+    }
+
+    // eventName == NULL: delete all events (step-first, delete-prev pattern)
+    TBEvent* iter = bEventRoot.next;
+    if (iter == &bEventRoot) {
+        return;
+    }
+
+    do
+    {
+        iter = iter->next;
+        TBEvent* evt = iter->prev;
+
+        bkWaitMutex(&bEventMutex);
+
+        TBEventClient* head = &evt->clients;
+        TBEventClient* c = head->next;
+
+        if (c != head)
+        {
+            do
+            {
+                c = c->next;
+                bkHeapFree(c->prev);
+                c->prev = NULL;
+            } while (c != head);
+        }
+
+        head->next = head;
+        head->prev = head;
+
+        evt->next->prev = evt->prev;
+        evt->prev->next = evt->next;
+
+        bkReleaseMutex(&bEventMutex);
+
+        bkHeapFree(evt);
+
+    } while (iter != &bEventRoot);
 }
 
 
@@ -276,8 +473,20 @@ void bkDeleteEvent(char *eventName)
 
 void bkDeleteEventClient(TBEventClient *client)
 {
-        bkPrintf("*** WARNING *** bkDeleteEventClient was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    bkWaitMutex(&bEventMutex);
+
+    // unlink from doubly-linked list
+    client->prev->next = client->next;
+    client->next->prev = client->prev;
+
+    // type == 1
+    if (client->type == EBEVENTCLIENTTYPE_QUEUE) {
+        client->event->noofQueues--;
+    }
+
+    bkHeapFree(client);
+
+    bkReleaseMutex(&bEventMutex);
 }
 
 

@@ -9,10 +9,12 @@
 #include <babel.h>
 
 // ********************************************************************************
-// Function Implementations
+// Globals
 
 TBLightsource	bActiveLights, bInactiveLights;
-int				bMaxActiveLights;
+int				bAmbientLight[3] = {0x1E, 0x1E, 0x1E};
+int				bNoofActiveLights = 0;
+int				bMaxActiveLights = 0;
 
 // ********************************************************************************
 // Function Implementations
@@ -58,8 +60,40 @@ void bShutdownLights()
 */
 TBLightsource *baCreateLight(TBLightsource *lightPtr, uint32 flags)
 {
-        bkPrintf("*** WARNING *** baCreateLight was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return NULL;
+	TBLightsource *p;
+
+	p = lightPtr;
+
+	if (p == NULL)
+	{
+		p = (_TBLightsource *)MALLOC(0x70);
+		if (p == NULL)
+			return NULL;
+
+		p->flags = flags | 2;
+	}
+	else
+	{
+		p->flags = flags;
+	}
+
+	p->type = BLIGHTTYPE_INVALID;
+
+	p->colour[2] = 0x7f;
+	p->colour[1] = 0x7f;
+	p->colour[0] = 0x7f;
+
+	p->prev = bInactiveLights.prev;
+	p->next = &bInactiveLights;
+
+	bInactiveLights.prev->next = p;
+	bInactiveLights.prev = p;
+
+	bInitSpecLightsource(p);
+
+	p->specularIntensity = 0.5f;
+
+	return p;
 }
 
 /*	--------------------------------------------------------------------------------
@@ -71,8 +105,15 @@ TBLightsource *baCreateLight(TBLightsource *lightPtr, uint32 flags)
 */
 void baDeleteLight(TBLightsource *lightPtr)
 {
-        bkPrintf("*** WARNING *** baDeleteLight was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+	baEnableLight(lightPtr, 0);
+
+	lightPtr->next->prev = lightPtr->prev;
+	lightPtr->prev->next = lightPtr->next;
+
+	if (lightPtr->flags & 0x2)
+	{
+		bkHeapFree(lightPtr);
+	}
 }
 
 /*	--------------------------------------------------------------------------------
@@ -98,11 +139,20 @@ void baSetLightFlags(TBLightsource *lightPtr, uint32 flags)
 
 void baSetDirectionalLight(TBLightsource *lightPtr, TBVector lightVec)
 {
-        bkPrintf("*** WARNING *** baSetDirectionalLight was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+	lightPtr->type = BLIGHTTYPE_DIRECTIONAL;
+
+	lightPtr->directional.direction[0] = lightVec[0];
+	lightPtr->directional.direction[1] = lightVec[1];
+	lightPtr->directional.direction[2] = lightVec[2];
+	lightPtr->directional.direction[3] = lightVec[3];
+
+	bmVectorNorm(lightPtr->directional.unitDirection, lightVec);
+
+	lightPtr->directional.direction[3] = 0.0f;
+	lightPtr->directional.unitDirection[3] = 0.0f;
+
+	bSetSpecLightInfo(lightPtr);
 }
-
-
 
 /*	--------------------------------------------------------------------------------
 	Function : baSetPointLight
@@ -146,8 +196,47 @@ void baSetSpotLight(TBLightsource *lightPtr, TBVector position, TBVector focus, 
 
 void baEnableLight(TBLightsource *lightPtr, int newState)
 {
-        bkPrintf("*** WARNING *** baEnableLight was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+	uint32 wasEnabled;
+
+	wasEnabled = (lightPtr->flags & BLIGHTFLAG_ENABLED);
+
+	if (wasEnabled && newState)
+		return;
+
+	if (!wasEnabled && !newState)
+		return;
+
+	lightPtr->next->prev = lightPtr->prev;
+	lightPtr->prev->next = lightPtr->next;
+
+	if (newState)
+	{
+		if (bNoofActiveLights == bMaxActiveLights)
+		{
+			bkPrintf("baEnableLight: ERROR - max of %d lights already active\n", bMaxActiveLights);
+			return;
+		}
+
+		lightPtr->prev = bActiveLights.prev;
+		lightPtr->next = &bActiveLights;
+		bActiveLights.prev->next = lightPtr;
+		bActiveLights.prev = lightPtr;
+
+		lightPtr->flags |= BLIGHTFLAG_ENABLED;
+		bNoofActiveLights = bNoofActiveLights + 1;
+
+		bEnableSpecLight(lightPtr);
+		return;
+	}
+	bNoofActiveLights = bNoofActiveLights - 1;
+	lightPtr->flags &= ~BLIGHTFLAG_ENABLED;
+
+	lightPtr->prev = bInactiveLights.prev;
+	lightPtr->next = &bInactiveLights;
+	bInactiveLights.prev->next = lightPtr;
+	bInactiveLights.prev = lightPtr;
+
+	bEnableSpecLight(lightPtr);
 }
 
 
@@ -162,8 +251,11 @@ void baEnableLight(TBLightsource *lightPtr, int newState)
 
 void baSetAmbientLight(int red, int green, int blue)
 {
-        bkPrintf("*** WARNING *** baSetAmbientLight was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+	bAmbientLight[0] = red;
+	bAmbientLight[1] = green;
+	bAmbientLight[2] = blue;
+
+	bSetAmbientSpecLight();
 }
 
 
@@ -178,8 +270,10 @@ void baSetAmbientLight(int red, int green, int blue)
 
 void baSetLightColour(TBLightsource *light, int red, int green, int blue)
 {
-        bkPrintf("*** WARNING *** baSetLightColour was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+	light->colour[0] = red;
+	light->colour[1] = green;
+	light->colour[2] = blue;
+	bUpdateLightColour(light);
 }
 
 

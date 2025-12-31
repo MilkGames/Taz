@@ -18,9 +18,7 @@ float bRGBNormLUT[256];
 
 GUID  bDisplayAdapterGUIDBuffer;
 GUID *bDisplayAdapterGuid = NULL;
-GUID *bSoundHardwareGuid = NULL;               
-unsigned char bDirectInputKeyMap[256];    
-TBInputInfo bInputInfo;                   
+GUID *bSoundHardwareGuid = NULL;                               
 float bFPS = 0.0f;
 
 TBDisplayInfo bDisplayInfo;
@@ -206,6 +204,276 @@ static void EndScene(void) {
         }
         bDisplayInfo.inScene = 0;
     }
+}
+
+int bSaveSurfaceAsBMP(IDirect3DSurface8 *surface, char *fileName)
+{
+    HANDLE            hFile;
+    D3DSURFACE_DESC   desc;
+    D3DLOCKED_RECT    locked;
+    BITMAPFILEHEADER  fileHeader;
+    BITMAPINFOHEADER  infoHeader;
+    DWORD             bytesWritten;
+    BYTE             *buffer;
+    BYTE             *dstRow;
+    const BYTE       *srcRow;
+    BYTE             *srcBase;
+    int               dstStride;
+    int               result;
+    int               width;
+    int               height;
+    int               bpp;
+    int               rgb555;
+    int               pitch;
+    int               bytesPerPixel;
+    DWORD             imageSize;
+    int               x;
+    int               y;
+    HRESULT           hr;
+    HRESULT           hrUnlock;
+    int               lockSucceeded;
+
+    result        = 0;
+    buffer        = NULL;
+    dstRow        = NULL;
+    srcRow        = NULL;
+    srcBase       = NULL;
+    dstStride     = 0;
+    width         = 0;
+    height        = 0;
+    bpp           = 0;
+    rgb555        = 0;
+    pitch         = 0;
+    bytesPerPixel = 0;
+    imageSize     = 0;
+    bytesWritten  = 0;
+    lockSucceeded = 0;
+
+    if (!bDisplayInfo.started) {
+        return 0;
+    }
+
+    if (surface == NULL || fileName == NULL || fileName[0] == '\0') {
+        return 0;
+    }
+
+    hFile = CreateFileA(
+        fileName,
+        GENERIC_WRITE,
+        0,
+        NULL,
+        CREATE_ALWAYS,
+        FILE_ATTRIBUTE_NORMAL,
+        NULL
+    );
+
+    if (hFile == INVALID_HANDLE_VALUE) {
+        bkPrintf("bSaveSurfaceAsBMP: Could not write file '%s'\n", fileName);
+        return 0;
+    }
+
+    hr = surface->GetDesc(&desc);
+    if (FAILED(hr)) {
+        CloseHandle(hFile);
+        return 0;
+    }
+
+    width  = (int)desc.Width;
+    height = (int)desc.Height;
+
+    switch (desc.Format) {
+        case D3DFMT_R5G6B5:
+            bpp    = 16;
+            rgb555 = 0;   // 5:6:5
+            break;
+
+        case D3DFMT_X1R5G5B5:
+        case D3DFMT_A1R5G5B5:
+            bpp    = 16;
+            rgb555 = 1;   // 1:5:5:5
+            break;
+
+        case D3DFMT_R8G8B8:
+            bpp    = 24;
+            rgb555 = 0;
+            break;
+
+        case D3DFMT_X8R8G8B8:
+        case D3DFMT_A8R8G8B8:
+            bpp    = 32;
+            rgb555 = 0;
+            break;
+
+        default:
+            bkPrintf("bSaveSurfaceAsBMP: Unsupported pixel format\n");
+            CloseHandle(hFile);
+            return 0;
+    }
+
+    if (width <= 0 || height <= 0) {
+        CloseHandle(hFile);
+        return 0;
+    }
+
+    hr = surface->LockRect(&locked, NULL, D3DLOCK_READONLY);
+    if (FAILED(hr) || locked.pBits == NULL || locked.Pitch <= 0) {
+        bkPrintf("bSaveSurfaceAsBMP: Could not lock/describe back buffer\n");
+        CloseHandle(hFile);
+        return 0;
+    }
+
+    lockSucceeded = 1;
+    srcBase = (BYTE *)locked.pBits;
+    pitch   = locked.Pitch;
+
+    bytesPerPixel = 3;
+    imageSize     = (DWORD)(width * height * bytesPerPixel);
+
+    ZeroMemory(&fileHeader, sizeof(fileHeader));
+    ZeroMemory(&infoHeader, sizeof(infoHeader));
+
+    fileHeader.bfType    = 0x4D42; // "BM"
+    fileHeader.bfOffBits = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER);
+    fileHeader.bfSize    = fileHeader.bfOffBits + imageSize;
+
+    infoHeader.biSize        = sizeof(BITMAPINFOHEADER);
+    infoHeader.biWidth       = width;
+    infoHeader.biHeight      = height; // bottom-up
+    infoHeader.biPlanes      = 1;
+    infoHeader.biBitCount    = 24;
+    infoHeader.biCompression = BI_RGB;
+    infoHeader.biSizeImage   = imageSize;
+
+    /* headers */
+
+    if (!WriteFile(hFile, &fileHeader, sizeof(fileHeader), &bytesWritten, NULL) ||
+        bytesWritten != sizeof(fileHeader))
+    {
+        /* fall through to cleanup */
+    }
+    else if (!WriteFile(hFile, &infoHeader, sizeof(infoHeader), &bytesWritten, NULL) ||
+             bytesWritten != sizeof(infoHeader))
+    {
+        /* fall through to cleanup */
+    }
+    else {
+        /* allocate buffer and convert pixels */
+
+        buffer = (BYTE *)malloc(imageSize);
+        if (buffer != NULL) {
+            dstStride = width * bytesPerPixel;
+            dstRow    = buffer;
+            srcRow    = srcBase + (height - 1) * pitch;  // start from last row
+
+            switch (bpp) {
+                case 16:
+                {
+                    for (y = 0; y < height; ++y) {
+                        const WORD *srcPixel = (const WORD *)srcRow;
+                        BYTE       *dstPixel = dstRow;
+
+                        for (x = 0; x < width; ++x) {
+                            WORD p = *srcPixel++;
+                            BYTE r8, g8, b8;
+
+                            if (rgb555) {
+                                /* 1:5:5:5 (A1R5G5B5 / X1R5G5B5) */
+                                int r5 = (p >> 10) & 0x1F;
+                                int g5 = (p >> 5)  & 0x1F;
+                                int b5 =  p        & 0x1F;
+
+                                r8 = (BYTE)(r5 << 3);
+                                g8 = (BYTE)(g5 << 3);
+                                b8 = (BYTE)(b5 << 3);
+                            } else {
+                                /* 5:6:5 (R5G6B5) */
+                                int r5 = (p >> 11) & 0x1F;
+                                int g6 = (p >> 5)  & 0x3F;
+                                int b5 =  p        & 0x1F;
+
+                                r8 = (BYTE)(r5 << 3);  /* 5 -> 8 */
+                                g8 = (BYTE)(g6 << 2);  /* 6 -> 8 */
+                                b8 = (BYTE)(b5 << 3);
+                            }
+
+                            /* BMP expects B, G, R */
+                            *dstPixel++ = b8;
+                            *dstPixel++ = g8;
+                            *dstPixel++ = r8;
+                        }
+
+                        srcRow -= pitch;
+                        dstRow += dstStride;
+                    }
+                    break;
+                }
+
+                case 24:
+                {
+                    int srcRowBytes = width * 3;
+                    for (y = 0; y < height; ++y) {
+                        memcpy(dstRow, srcRow, srcRowBytes);
+                        srcRow -= pitch;
+                        dstRow += dstStride;
+                    }
+                    break;
+                }
+
+                case 32:
+                {
+                    for (y = 0; y < height; ++y) {
+                        const BYTE *srcPixel = srcRow;
+                        BYTE       *dstPixel = dstRow;
+
+                        for (x = 0; x < width; ++x) {
+                            BYTE b = srcPixel[0];
+                            BYTE g = srcPixel[1];
+                            BYTE r = srcPixel[2];
+
+                            dstPixel[0] = b;
+                            dstPixel[1] = g;
+                            dstPixel[2] = r;
+
+                            srcPixel += 4;
+                            dstPixel += 3;
+                        }
+
+                        srcRow -= pitch;
+                        dstRow += dstStride;
+                    }
+                    break;
+                }
+
+                default:
+                    bkPrintf("bSaveSurfaceAsBMP: Unsupported pixel format\n");
+                    break;
+            }
+
+            if (bpp == 16 || bpp == 24 || bpp == 32) {
+                if (WriteFile(hFile, buffer, imageSize, &bytesWritten, NULL) &&
+                    bytesWritten == imageSize)
+                {
+                    result = 1;
+                }
+            }
+        }
+    }
+
+    if (lockSucceeded) {
+        hrUnlock = surface->UnlockRect();
+        if (FAILED(hrUnlock)) {
+            bkPrintf("bUnlockSurface: *** Unlock surface FAILED (%s) ***\n",
+                     DXGetErrorString8A(hrUnlock));
+        }
+    }
+
+    if (buffer != NULL) {
+        free(buffer);
+    }
+
+    CloseHandle(hFile);
+
+    return result;
 }
 
 // ********************************************************************************
@@ -684,8 +952,18 @@ int bdGetScanline()
 */
 int bdScreenshot(char *filename)
 {
-        bkPrintf("*** WARNING *** bdScreenshot was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return 0;
+    char screenshotPath[MAX_PATH];  // 260
+
+    if (filename[1] == ':') {
+        strcpy(screenshotPath, filename);
+    } else {
+        GetModuleFileNameA(NULL, screenshotPath, MAX_PATH);
+        char *lastSlash = strrchr(screenshotPath, '\\');
+        if (lastSlash) strcpy(lastSlash + 1, filename);
+        else strcpy(screenshotPath, filename);
+    }
+
+    return bSaveSurfaceAsBMP(bDisplayInfo.backBuffer, screenshotPath);
 }
 
 /* --------------------------------------------------------------------------------
@@ -892,7 +1170,7 @@ int bStartDisplay()
 
         // VP flags and CreateDevice (retry w/ SWVP if needed)
         BOOL hasHwTnL = (bDisplayInfo.devCaps.DevCaps & D3DDEVCAPS_HWTRANSFORMANDLIGHT) ? TRUE : FALSE;
-        DWORD vpFlags = hasHwTnL ? D3DCREATE_HARDWARE_VERTEXPROCESSING : D3DCREATE_SOFTWARE_VERTEXPROCESSING;
+        DWORD vpFlags = hasHwTnL ? D3DCREATE_MIXED_VERTEXPROCESSING : D3DCREATE_SOFTWARE_VERTEXPROCESSING;
         bDisplayInfo.tnlHardware = hasHwTnL ? 1 : 0;
         bDisplayInfo.tnlActive   = bDisplayInfo.tnlHardware;
         bDisplayInfo.hwVertexShaders = 0;
@@ -1125,8 +1403,7 @@ void bUnlockSurface(LPDIRECT3DTEXTURE8 surf)
 */
 void bdSetScreenOffset(int x, int y)
 {
-        bkPrintf("*** WARNING *** bdSetScreenOffset was called but it wasn't implemented! REPORT IMMEDIATELY! *** WARNING ***\n");
-    return;
+    return; // empty, confirmed
 }
 
 /* --------------------------------------------------------------------------------

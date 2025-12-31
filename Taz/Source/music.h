@@ -493,10 +493,12 @@ public:
 	{
 		if (this->musicPak)
 		{
+#ifndef DISABLE_MOOD_SPAMMING // MG: sorry, Phil, but it's a bit stupid check
 			if(mood != streams[stream]->GetMood())
 			{
 				bkPrintf("mood %d\n", mood);
 			}
+#endif
 			streams[stream]->RequestMood(mood, specialFadeTime);
 
 			// PP: debug...
