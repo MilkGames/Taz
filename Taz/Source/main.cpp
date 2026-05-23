@@ -2032,7 +2032,7 @@ void GameStateIntro(void)
 		CompleteLoad(map.sceneNumber);		// JW: Load Enemy Samples
 		PlayAmbientSounds(map.sceneNumber);
 
-		demoBook->open();
+		//demoBook->open(); // MG: I REMOVED IT, SORRY
 
 		return;
 	}
@@ -2306,9 +2306,9 @@ void GameStateIntro(void)
 			musicSystem.ChooseMusic(map.sceneNumber,MUSICTYPE_MAIN,MUSICSTATE_START);
 			PlayAmbientSounds(map.sceneNumber);
 			sfxTimer = 0;
-
+#if BPLATFORM != PC // MG: that's mine
 			bkPrintf("\n\n Sound memory left %d\n\n",bkARAMHeapFreeSpace());
-
+#endif
 			break;
 		}
 
@@ -2895,7 +2895,7 @@ int SetScene(GAMESTATUS *gameStatus, int scene)
 */
 void PrintGameText(PLAYER *player)
 {
-	static	char	debugTextOn = FALSE;
+	static	char	debugTextOn = TRUE;
 
 	// PP: don't respond to this control if we're navigating in-game menus
 	if(!gameStatus.navigatingMenus && debugDPad)
@@ -3452,6 +3452,7 @@ void doCorporateStuff()
 		HideActorInstanceList(&characterInstances);
 	}
 
+#if(BPLATFORM != PC) // MG: I moved it here
 	if (videoMode.flags & BDISPLAYFLAG_PAL)
 		flags |= BVIDEOPLAY_PLAYPALSTREAM;
 
@@ -3459,8 +3460,6 @@ void doCorporateStuff()
 	if (!videoSkipEnable)
 		flags |= BVIDEOPLAY_NOAUTOQUIT;
 #endif// PP: !xbox
-	
-#if(BPLATFORM != PC)
 
 	// NH: Play the corporate videos.
 	for (vidNo=0;vidNo<numVideos;vidNo++)

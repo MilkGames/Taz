@@ -324,6 +324,8 @@ void DrawPostit(void);
 #endif
 
 // PP: TEMP DEBUG TEST - will remove
+// MG: I gotcha, I removed that.
+/*
 char* getVideoReturnCodeString(const EBVideoPlayStream code)
 {
 	static char tempStr[256];
@@ -344,6 +346,7 @@ char* getVideoReturnCodeString(const EBVideoPlayStream code)
 		}
 	}
 }
+*/
 
 /*	--------------------------------------------------------------------------------
 	Function 	: initMissingControllerBooks

@@ -437,7 +437,6 @@ bool EnterState(ACTORINSTANCE *actorInstance, ECharState state)
 	return false;
 }
 
-
 /*	--------------------------------------------------------------------------------
 	Function 	: UpdateActorStatus
 	Purpose 	: Updates the actor status

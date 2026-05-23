@@ -896,9 +896,9 @@ void LoadLevelSamplesMemory()
 			bkLoadPackageSamples(pak);
 		}
 	}
-
+#if BPLATFORM != PC // MG: that's mine
 	bkPrintf("\n\n Sound memory left %d\n\n",bkARAMHeapFreeSpace());
-
+#endif
 	#if BPLATFORM==GAMECUBE
 		// IH: Can only free a pak that exists
 		if( pak )
@@ -920,9 +920,9 @@ void LoadLevelSamplesMemory()
 		bkLoadPackageSamples(pak);
 #endif
 	}
-	
+#if BPLATFORM != PC // MG: that's mine
 	bkPrintf("\n\n Sound memory left %d\n\n",bkARAMHeapFreeSpace());
-
+#endif
 	#if BPLATFORM==GAMECUBE
 		// IH: Can only free a pak that exists
 		if( pak )
@@ -1038,7 +1038,9 @@ void LoadLevelSamplesMemory()
 	}
 #endif
 
+#if BPLATFORM != PC // MG: that's mine
 	bkPrintf("\n\n Sound memory left %d\n\n",bkARAMHeapFreeSpace());
+#endif
 }
 
 void LoadLevelIntroSamplesMemory()
@@ -1094,8 +1096,9 @@ void LoadLevelIntroSamplesMemory()
 		UpdateIndex(samplepakname, pak);
 	}
 #endif
-
+#if BPLATFORM != PC // MG: that's mine
 	bkPrintf("\n\n Sound memory left %d\n\n",bkARAMHeapFreeSpace());
+#endif
 }
 
 
@@ -1138,8 +1141,9 @@ void FreeLevelIntroSamples()
 	FreeWholePackage(samplepakname);
 	
 	bkDeleteResourceGroup(BRESMASK_SAMPLE, 255);
-
+#if BPLATFORM != PC // MG: that's mine
 	bkPrintf("\n\n Sound memory left %d\n\n",bkARAMHeapFreeSpace());
+#endif
 }
 
 
@@ -1222,8 +1226,9 @@ void FreeLevelSamples()
 #endif
 
 	bkDeleteAllSamples();
-
+#if BPLATFORM != PC // MG: that's mine
 	bkPrintf("\n\n Sound memory left %d\n\n",bkARAMHeapFreeSpace());
+#endif
 }
 
 
@@ -1293,8 +1298,9 @@ void LoadCharacterSamples(char *namein)
 	}
 
 	return;
-
+#if BPLATFORM != PC // MG: that's mine
 	bkPrintf("\n\n Sound memory left %d\n\n",bkARAMHeapFreeSpace());
+#endif
 }
 
 

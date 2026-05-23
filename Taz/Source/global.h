@@ -22,6 +22,8 @@
 //#define _MASTER
 
 #ifdef MILKGAMES // MG: this is my own stuff. check global.h in Babel for more info
+	#define VOODOO 0 // MG: PC build compatibility	
+
 	#define NOCD // MG: disable CD check (if _MASTER was defined)
 	//#define OBJECTVIEWONLY // MG: launch in object viewer right away (doesn't work for now)
 	#define _TAZDEBUG // MG: defining this here, because it's a bit stupid to define this in project settings for release build...
@@ -59,6 +61,7 @@
 	//#define SPLASH_TEST // MG: shows every splash that we have in the game instead of basic legal splash
 #endif
 	//#define SUGAR_COATED_CRASHES // MG: calls a bad disk message when a fatal error occurs
+	#define REMOVE_BADDISK // MG: removes a bad disk message
 	#define MODIFY_BADDISK // MG: replaces a bad disk message
 #endif
 

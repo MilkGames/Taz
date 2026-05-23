@@ -11,6 +11,9 @@ typedef struct TAG_MOUSE
 	bool				mouseB2Debounce;// Mouse Button 2 click flag
 	bool				active;	// NH: Update mouse? (Take in clicks and movement)
 	bool				draw;	// NH: If updating should we draw it?
+
+	// MG: XBOX SOURCE <-> PC RELEASE DIFFERENCES
+	bool                moved;  // MG: that's mine. PC Release writes this at +0x26
 } MOUSE, _MOUSE;
 
 extern MOUSE mouse;

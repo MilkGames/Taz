@@ -1916,6 +1916,7 @@ void DrawMouse()
 
 void badDisk(void)
 {
+#ifndef REMOVE_BADDISK
 	BOOK						book;
 	PAGE*						page;
 //	PAGE*						subPage;
@@ -2100,4 +2101,5 @@ TP:	Not allowed to, TCR 6-09
 
 		bkSleep(0);
 	}
+#endif // MG: #ifndef REMOVE_BADDISK
 }

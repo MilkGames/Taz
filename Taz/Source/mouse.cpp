@@ -53,10 +53,14 @@ void UpdateMousePointer(MOUSE *mousePointer)
 	if (mouse.draw)
 	{
 		mouseSize = (videoMode.xScreen/640.0f) * 25.0f;
-		mouseMovement = (videoMode.xScreen/640.0f) * 250.0f;
+
+		// MG: XBOX SOURCE <-> PC RELEASE DIFFERENCES
+		//mouseMovement = (videoMode.xScreen/640.0f) * 250.0f; // MG: OLD
+		mouseMovement = (videoMode.xScreen/640.0f) / 250.0f; // MG: NEW
 
 		// NH: X Movement
-		mousePointer->mousePos[X] += (controller1.mxChannel->value / mouseMovement);
+		//mousePointer->mousePos[X] += (controller1.mxChannel->value / mouseMovement); // MG: OLD
+		mousePointer->mousePos[X] += (controller1.mxChannel->value * mouseMovement); // MG: NEW
 
 		if (mousePointer->mousePos[X] > videoMode.xScreen/2.0f)
 			mousePointer->mousePos[X] = videoMode.xScreen/2.0f;
@@ -64,12 +68,19 @@ void UpdateMousePointer(MOUSE *mousePointer)
 			mousePointer->mousePos[X] = -(videoMode.xScreen/2.0f);
 		
 		// NH: Y Movement
-		mousePointer->mousePos[Y] -= (controller1.myChannel->value / mouseMovement);
+		//mousePointer->mousePos[Y] -= (controller1.myChannel->value / mouseMovement); // MG: OLD
+		mousePointer->mousePos[Y] -= (controller1.myChannel->value * mouseMovement); // MG: NEW
 
 		if (mousePointer->mousePos[Y] > videoMode.yScreen/2.0f)
 			mousePointer->mousePos[Y] = videoMode.yScreen/2.0f;
 		else if (mousePointer->mousePos[Y] < -(videoMode.yScreen/2.0f))
 			mousePointer->mousePos[Y] = -(videoMode.yScreen/2.0f);
+	}
+
+	// MG: NEW CODE
+	if (controller1.mxChannel->value || controller1.myChannel->value)
+	{
+		mouse.moved = TRUE;
 	}
 
 	// NH: Button 1 down
@@ -93,13 +104,30 @@ void DrawMousePointer(MOUSE *mousePointer)
 	TBTexture*	tex=bkLoadTexture(NULL, "mousepointer.bmp", 0);
 	//TBTexture*	tex=bkLoadTexture(NULL, "textures\\ramps.bmp", 0);
 
+	// MG: NEW CODE
+	bdSetProjectionMode(BDISPLAY_PROJECTIONMODE2D, FALSE);
+	bdSetObjectMatrix(bIdentityMatrix);
+
+	bdSetRenderState(BDRENDERSTATE_ZWRITE, FALSE, FALSE);
+	bdSetRenderState(BDRENDERSTATE_ZTEST, BDZTESTMODE_ALWAYS, FALSE);
+	bdSetRenderState(BDRENDERSTATE_ALPHAENABLE, TRUE, FALSE);
+	bdSetRenderState(BDRENDERSTATE_ALPHABLENDMODE, BDALPHABLENDMODE_BLEND, FALSE);
+	bdSetRenderState(BDRENDERSTATE_ALPHABLENDMODE, BDALPHABLENDMODE_BLEND, TRUE);
+	// MG: ---------
+
+	// MG: PC Release uses scaled mouseSize for both offset and draw size
+	float size = mouseSize * 0.6f;
+
 	spritePos[0] = mouse.mousePos[X]+15.0f;
 	spritePos[1] = mouse.mousePos[Y]-15.0f;
 	spritePos[2] = 0;
 	spritePos[3] = 0;
 
-	utilDraw2DSprite(tex, spritePos, mouseSize, mouseSize);
+	utilDraw2DSprite(tex, spritePos, size, size);
 	//utilDraw2DSprite(tex, spritePos, 100.0f, 100.0f);
+
+	// MG: NEW CODE
+	bdSetProjectionMode(BDISPLAY_PROJECTIONMODE3D, FALSE);
 }
 
 
@@ -120,6 +148,7 @@ void InitMouse(MOUSE *mousePointer)
 
 	mouse.active	= false;	// NH: Update the mouse?
 	mouse.draw		= true;		// NH: If updating mouse, draw the mouse?
+	mouse.moved		= true;     // MG: Mouse moved?
 
 	spritePos[0] = 0.0f;
 	spritePos[1] = 0.0f;

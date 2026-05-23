@@ -38,18 +38,18 @@ RSC=rc.exe
 # PROP BASE Output_Dir "Release"
 # PROP BASE Intermediate_Dir "Release"
 # PROP BASE Target_Dir ""
-# PROP Use_MFC 0
+# PROP Use_MFC 2
 # PROP Use_Debug_Libraries 0
 # PROP Output_Dir "Release"
 # PROP Intermediate_Dir "Release"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /YX /FD /c
-# ADD CPP /nologo /G6 /MT /W3 /GX /ZI /I "c:\taz\babel\pc\include" /I "c:\dxsdk\include" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /FR /YX /FD /c
+# ADD CPP /nologo /G6 /MD /W3 /GX /ZI /I "c:\taz\babel\pc\include" /I "c:\dxsdk\include" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_AFXDLL" /FR /YX /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x809 /d "NDEBUG"
-# ADD RSC /l 0x809 /d "NDEBUG"
+# ADD RSC /l 0x809 /d "NDEBUG" /d "_AFXDLL"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -2628,74 +2628,6 @@ SOURCE=..\..\Babel\Pc\Include\bActor\pcActor.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\Babel\Pc\Include\bActor\pcAnim.h
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\Include\bActor\pcLights.h
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\Include\bActor\pcSet.h
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\Include\bActor\pcStockExtras.h
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\Babel\Pc\Include\bActor\pcxbActor.h
 
 !IF  "$(CFG)" == "Taz - Win32 Release"
@@ -3007,23 +2939,6 @@ SOURCE=..\..\Babel\Pc\Include\bDisplay\pcSplash.h
 # Begin Source File
 
 SOURCE=..\..\Babel\Pc\Include\bDisplay\pcTexture.h
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\Include\bDisplay\pcVideo.h
 
 !IF  "$(CFG)" == "Taz - Win32 Release"
 
@@ -3444,23 +3359,6 @@ SOURCE=..\..\Babel\Pc\include\bKernel\package.h
 # Begin Source File
 
 SOURCE=..\..\Babel\Pc\Include\bKernel\pcBkgload.h
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\include\bKernel\pcCache.h
 
 !IF  "$(CFG)" == "Taz - Win32 Release"
 
@@ -3931,92 +3829,7 @@ SOURCE=..\..\Babel\Pc\include\bSound\lipSync.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\Babel\Pc\include\bSound\pcARAM.h
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\Babel\Pc\include\bSound\pcAudioStream.h
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\include\bSound\pcAudioStreamADPCM.h
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\include\bSound\pcAudioStreamWMA.h
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\include\bSound\pcDSPDefault.h
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\include\bSound\pcPlayList.h
 
 !IF  "$(CFG)" == "Taz - Win32 Release"
 
@@ -4066,22 +3879,6 @@ SOURCE=..\..\Babel\Pc\Include\bSound\wave.h
 
 # End Source File
 # End Group
-# Begin Group "fCamera"
-
-# PROP Default_Filter ""
-# End Group
-# Begin Group "fEffects"
-
-# PROP Default_Filter ""
-# End Group
-# Begin Group "fGui"
-
-# PROP Default_Filter ""
-# End Group
-# Begin Group "fScene"
-
-# PROP Default_Filter ""
-# End Group
 # Begin Source File
 
 SOURCE=..\..\Babel\Pc\Include\babel.h
@@ -4119,23 +3916,6 @@ SOURCE=..\..\Babel\Pc\Include\bActor.h
 # Begin Source File
 
 SOURCE=..\..\Babel\Pc\Include\bDisplay.h
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\Include\bfc.h
 
 !IF  "$(CFG)" == "Taz - Win32 Release"
 
@@ -4255,70 +4035,6 @@ SOURCE=..\..\Babel\Pc\Include\buildNumber.h
 # Begin Source File
 
 SOURCE=..\..\Babel\Pc\Include\Dbghelp.h
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\Include\fCamera.h
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\Include\fGui.h
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\Include\fScene.h
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -4436,74 +4152,6 @@ SOURCE=..\..\Babel\Pc\src\bActor\meshHelper.cpp
 # Begin Source File
 
 SOURCE=..\..\Babel\Pc\src\bActor\pcActor.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\bActor\pcAnim.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\bActor\pcLights.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\bActor\pcSet.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\bActor\pcStockExtras.cpp
 
 !IF  "$(CFG)" == "Taz - Win32 Release"
 
@@ -4694,6 +4342,23 @@ SOURCE=..\..\Babel\Pc\src\bDisplay\display.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\Babel\Pc\src\bDisplay\font.cpp
+
+!IF  "$(CFG)" == "Taz - Win32 Release"
+
+# PROP Intermediate_Dir "Babel_Release"
+
+!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
+
+!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
+
+!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\Babel\Pc\src\bDisplay\frametimegraph.cpp
 
 !IF  "$(CFG)" == "Taz - Win32 Release"
@@ -4814,23 +4479,6 @@ SOURCE=..\..\Babel\Pc\src\bDisplay\pcSplash.cpp
 # Begin Source File
 
 SOURCE=..\..\Babel\Pc\src\bDisplay\pcTexture.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\bDisplay\pcVideo.cpp
 
 !IF  "$(CFG)" == "Taz - Win32 Release"
 
@@ -5008,23 +4656,6 @@ SOURCE=..\..\Babel\Pc\src\bInput\pcHAL.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\Babel\Pc\src\bInput\pcInput.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\Babel\Pc\src\bInput\pcSave.cpp
 
 !IF  "$(CFG)" == "Taz - Win32 Release"
@@ -5047,23 +4678,6 @@ SOURCE=..\..\Babel\Pc\src\bInput\pcSave.cpp
 # Begin Source File
 
 SOURCE=..\..\Babel\Pc\src\bKernel\bassert.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\bKernel\bkgload.cpp
 
 !IF  "$(CFG)" == "Taz - Win32 Release"
 
@@ -5148,40 +4762,6 @@ SOURCE=..\..\Babel\Pc\src\bKernel\file.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\Babel\Pc\src\bKernel\heap.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\bKernel\heapNew.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\Babel\Pc\src\bKernel\kernel.cpp
 
 !IF  "$(CFG)" == "Taz - Win32 Release"
@@ -5216,7 +4796,7 @@ SOURCE=..\..\Babel\Pc\src\bKernel\package.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\Babel\Pc\src\bKernel\pcBkgload.cpp
+SOURCE=..\..\Babel\Pc\src\bKernel\pcBabel.cpp
 
 !IF  "$(CFG)" == "Taz - Win32 Release"
 
@@ -5233,7 +4813,7 @@ SOURCE=..\..\Babel\Pc\src\bKernel\pcBkgload.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\Babel\Pc\src\bKernel\pcCache.cpp
+SOURCE=..\..\Babel\Pc\src\bKernel\pcBkgload.cpp
 
 !IF  "$(CFG)" == "Taz - Win32 Release"
 
@@ -5301,7 +4881,37 @@ SOURCE=..\..\Babel\Pc\src\bKernel\pcFile.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\Babel\Pc\src\bKernel\pcHeap.cpp
+
+!IF  "$(CFG)" == "Taz - Win32 Release"
+
+# PROP Intermediate_Dir "Babel_Release"
+
+!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
+
+!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
+
+!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\Babel\Pc\src\bKernel\pcImagehlp.cpp
+
+!IF  "$(CFG)" == "Taz - Win32 Release"
+
+# PROP Intermediate_Dir "Babel_Release"
+
+!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
+
+!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
+
+!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
@@ -5339,41 +4949,7 @@ SOURCE=..\..\Babel\Pc\src\bKernel\pcPackage.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\Babel\Pc\src\bKernel\pcPerfMon.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\Babel\Pc\src\bKernel\pcTimer.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\bKernel\profile.cpp
 
 !IF  "$(CFG)" == "Taz - Win32 Release"
 
@@ -5446,6 +5022,23 @@ SOURCE=..\..\Babel\Pc\src\bKernel\timer.cpp
 # Begin Source File
 
 SOURCE=..\..\Babel\Pc\src\bMaths\animatingCollision.cpp
+
+!IF  "$(CFG)" == "Taz - Win32 Release"
+
+# PROP Intermediate_Dir "Babel_Release"
+
+!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
+
+!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
+
+!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Pc\src\bMaths\bMaths.cpp
 
 !IF  "$(CFG)" == "Taz - Win32 Release"
 
@@ -5615,6 +5208,40 @@ SOURCE=..\..\Babel\Pc\src\bMaths\pcVector.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\Babel\Pc\src\bMaths\pcxbCollision.cpp
+
+!IF  "$(CFG)" == "Taz - Win32 Release"
+
+# PROP Intermediate_Dir "Babel_Release"
+
+!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
+
+!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
+
+!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Pc\src\bMaths\pcxbGeometry.cpp
+
+!IF  "$(CFG)" == "Taz - Win32 Release"
+
+# PROP Intermediate_Dir "Babel_Release"
+
+!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
+
+!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
+
+!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\Babel\Pc\src\bMaths\physics.cpp
 
 !IF  "$(CFG)" == "Taz - Win32 Release"
@@ -5647,44 +5274,27 @@ SOURCE=..\..\Babel\Pc\src\bMaths\quaternion.cpp
 !ENDIF 
 
 # End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\bMaths\vector.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\bMaths\vector2D.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
 # End Group
 # Begin Group "~bSound"
 
 # PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\..\Babel\Pc\src\bSound\bSound.cpp
+
+!IF  "$(CFG)" == "Taz - Win32 Release"
+
+# PROP Intermediate_Dir "Babel_Release"
+
+!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
+
+!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
+
+!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
+
+!ENDIF 
+
+# End Source File
 # Begin Source File
 
 SOURCE=..\..\Babel\Pc\src\bSound\lipSync.cpp
@@ -5704,92 +5314,7 @@ SOURCE=..\..\Babel\Pc\src\bSound\lipSync.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\Babel\Pc\src\bSound\pcARAM.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\Babel\Pc\src\bSound\pcAudioStream.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\bSound\pcAudioStreamADPCM.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\bSound\pcAudioStreamWMA.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\bSound\pcDSPDefault.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\bSound\pcPlayList.cpp
 
 !IF  "$(CFG)" == "Taz - Win32 Release"
 
@@ -5839,277 +5364,6 @@ SOURCE=..\..\Babel\Pc\src\bSound\wave.cpp
 
 # End Source File
 # End Group
-# Begin Group "~fCamera"
-
-# PROP Default_Filter ""
-# End Group
-# Begin Group "~fEffects"
-
-# PROP Default_Filter ""
-# End Group
-# Begin Group "~fGui"
-
-# PROP Default_Filter ""
-# End Group
-# Begin Group "~fScene"
-
-# PROP Default_Filter ""
-# End Group
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\babel.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\bActor.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\bDisplay.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\bfc.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\bGui.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\bInput.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\bKernel.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\bMaths.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\bSound.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\buildNumber.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\Dbghelp.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\fCamera.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\fEffects.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\fGui.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\fScene.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
 # End Group
 # End Group
 # Begin Source File
