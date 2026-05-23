@@ -1,0 +1,4 @@
+[submodule "Babel"]
+	path = Babel
+	url = https://github.com/MilkGames/Babel.git
+	branch = VS6
