@@ -4168,6 +4168,23 @@ SOURCE=..\..\Babel\Pc\src\bActor\pcActor.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\Babel\Pc\src\bActor\pcShaderSelector.cpp
+
+!IF  "$(CFG)" == "Taz - Win32 Release"
+
+# PROP Intermediate_Dir "Babel_Release"
+
+!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
+
+!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
+
+!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\Babel\Pc\src\bActor\pcxbActor.cpp
 
 !IF  "$(CFG)" == "Taz - Win32 Release"
@@ -4253,41 +4270,24 @@ SOURCE=..\..\Babel\Pc\src\bActor\pcxbShaderSelector.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\Babel\Pc\src\bActor\pcxbShaderSelectorInternal.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\Babel\Pc\src\bActor\pcxbStockExtras.cpp
-
-!IF  "$(CFG)" == "Taz - Win32 Release"
-
-# PROP Intermediate_Dir "Babel_Release"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
-
-!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\Babel\Pc\src\bActor\set.cpp
+
+!IF  "$(CFG)" == "Taz - Win32 Release"
+
+# PROP Intermediate_Dir "Babel_Release"
+
+!ELSEIF  "$(CFG)" == "Taz - Win32 Debug"
+
+!ELSEIF  "$(CFG)" == "Taz - Win32 Debug Consumer Demo"
+
+!ELSEIF  "$(CFG)" == "Taz - Win32 Release Consumer Demo"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\Babel\Pc\src\bActor\stockExtras.cpp
 
 !IF  "$(CFG)" == "Taz - Win32 Release"
 
@@ -4584,7 +4584,7 @@ SOURCE=..\..\Babel\Pc\src\bGui\gui.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\Babel\Pc\src\bGui\guiHal.cpp
+SOURCE=..\..\Babel\Pc\src\bGui\pcGui.cpp
 
 !IF  "$(CFG)" == "Taz - Win32 Release"
 
